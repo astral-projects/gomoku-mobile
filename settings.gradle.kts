@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "gomoku"
+rootProject.name = "gomoku-2023-g22"
 include(":app")
  

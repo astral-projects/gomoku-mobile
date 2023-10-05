@@ -15,3 +15,8 @@
 local.properties
 /.idea/
 *.bkp
+
+build.gradle.kts
+settings.gradle.kts
+gradle.properties
+gradlew

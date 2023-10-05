@@ -62,9 +62,3 @@ fun MainScreen(stopWatch: StopWatch? = null) {
         }
     }
 }
-
-@Composable
-@Preview(showBackground = true, showSystemUi = true)
-fun MainScreenPreview() {
-    MainScreen(stopWatch = StopWatch(startedAt = 0, stoppedAt = 154432))
-}
