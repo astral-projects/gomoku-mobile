@@ -16,3 +16,6 @@ val orangeBubbleInterior = Color(0xFFfff2cc)
 val orangeBubbleBorder = Color(0xFFd79b00)
 val blueBubbleInterior = Color(0xFFdae8fc)
 val blueBubbleBorder = Color(0xFF6c8ebf)
+
+val loginComposableInterior = Color(0xFF748cab)
+val loginComposableBorder = Color(0xFF657a95)

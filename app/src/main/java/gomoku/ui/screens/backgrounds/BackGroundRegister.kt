@@ -1,4 +1,4 @@
-package gomoku.ui.screens
+package gomoku.ui.screens.backgrounds
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import gomoku.ui.GAME_NAME
 import gomoku.ui.lib.Bubble
+import gomoku.ui.lib.TextWithFont
 import gomoku.ui.theme.BlueBackGround
 import gomoku.ui.theme.GomokuTheme
 import gomoku.ui.theme.YellowBackGround
@@ -70,17 +71,11 @@ fun BackGroundRegister() {
                 ) {
                     // TODO(Add the symbol here for pop up menu)
 
-                    Text(
+                    TextWithFont(
                         text = GAME_NAME,
-                        fontSize = gameNameTextSize,
-                        fontFamily = FontFamily(
-                            Font(
-                                R.font.varelaround_regular,
-                                FontWeight.ExtraBold
-                            )
-                        ),
+                        textSize = gameNameTextSize,
                         modifier = Modifier
-                            .padding(top = 22.dp)
+                            .padding(top = 20.dp)
                     )
                 }
             }

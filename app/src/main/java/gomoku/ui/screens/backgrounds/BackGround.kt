@@ -1,4 +1,4 @@
-package gomoku.ui.screens
+package gomoku.ui.screens.backgrounds
 
 import android.content.res.Configuration
 import androidx.compose.ui.platform.LocalConfiguration

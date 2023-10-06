@@ -1,4 +1,4 @@
-package gomoku.ui.screens
+package gomoku.ui.screens.backgrounds
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import gomoku.ui.lib.TextWithFont
 import gomoku.ui.theme.BlueBackGround
 import gomoku.ui.theme.GomokuTheme
 import gomoku.ui.theme.YellowBackGround
@@ -60,16 +61,7 @@ fun BackGroundAbout() {
                 ) {
                     // TODO(Add the symbol here for pop up menu)
 
-                    Text(
-                        text = "About",
-                        fontSize = aboutTextSize,
-                        fontFamily = FontFamily(
-                            Font(
-                                R.font.varelaround_regular,
-                                FontWeight.Bold
-                            )
-                        )
-                    )
+                    TextWithFont(text = "About", textSize = aboutTextSize)
                     // TODO(Add the authors name in the bottom of the screen)
                 }
             }
