@@ -1,4 +1,4 @@
-package gomoku.ui.screens
+package gomoku.ui.screens.backgrounds
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -31,9 +32,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import gomoku.ui.GAME_NAME
+import gomoku.ui.lib.TextWithFont
 import gomoku.ui.theme.BlueBackGround
 import gomoku.ui.theme.GomokuTheme
+import gomoku.ui.theme.Pink40
 import gomoku.ui.theme.YellowBackGround
+import gomoku.ui.theme.loginComposableInterior
 import pdm.gomoku.R
 
 @Composable
@@ -57,7 +61,7 @@ fun BackGroundLoginAndHome() {
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
-                    Column(
+                    Box(
                         modifier = Modifier
                             .clip(
                                 RoundedCornerShape(
@@ -67,67 +71,95 @@ fun BackGroundLoginAndHome() {
                             )
                             .background(YellowBackGround)
                             .size(background.screenWidth, yellowSquareHeight),
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        contentAlignment = Alignment.TopCenter
                     ) {
-                        Row(
+                        Column(
                             modifier = Modifier
-                                .padding(top = 25.dp)
+                                .clip(
+                                    RoundedCornerShape(
+                                        bottomEnd = yellowSquareCornerSize,
+                                        bottomStart = yellowSquareCornerSize
+                                    )
+                                )
+                                .background(YellowBackGround)
+                                .size(background.screenWidth, yellowSquareHeight),
+                            verticalArrangement = Arrangement.Top,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Image(
-                                painterResource(gomokuLogo),
-                                contentDescription = null,
+                            Row(
                                 modifier = Modifier
-                                    .size(gomokuLogoWidth, gomokuLogoHeight)
+                                    .padding(top = 25.dp)
+                            ) {
+                                Image(
+                                    painterResource(gomokuLogo),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(gomokuLogoWidth, gomokuLogoHeight)
+                                )
+                            }
+                            Text(
+                                text = GAME_NAME,
+                                fontSize = 30.sp,
+                                fontFamily = FontFamily(
+                                    Font(
+                                        R.font.varelaround_regular,
+                                        FontWeight.Bold
+                                    )
+                                ),
+                                modifier = Modifier
+                                    .padding(top = 20.dp)
                             )
                         }
-                        Text(
-                            text = GAME_NAME,
-                            fontSize = 30.sp,
-                            fontFamily = FontFamily(
-                                Font(
-                                    R.font.varelaround_regular,
-                                    FontWeight.Bold
-                                )
-                            ),
-                            modifier = Modifier
-                                .padding(top = 20.dp)
-                        )
                     }
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                            .padding(top = 10.dp)
-                        ,
-                        contentAlignment = Alignment.TopCenter // Centralizando o conteúdo no Box
+                            .offset(y = (-30).dp)
+                            .fillMaxSize(),// Isso permite que o Box ocupe todo o espaço disponível
+                        contentAlignment = Alignment.TopCenter // Isso vai centralizar a Column no Box
                     ) {
                         Column(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(yellowSquareCornerSize))
+                                .background(loginComposableInterior)
+                                .width(background.screenWidth * 0.9f) // Define a largura da Column como 80% da largura da tela
+                                .height(background.screenHeight * 0.46f),
+                            //.size(background.screenWidth, yellowSquareHeight),
+                            verticalArrangement = Arrangement.Top,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "Welcome Back User...",
+
+                            Spacer(modifier = Modifier.padding(8.dp))
+                            Text(
+                                text = "Welcome Back User...",
                                 color = Color.Black,
                                 fontFamily = FontFamily(
                                     Font(
                                         R.font.varelaround_regular,
                                         FontWeight.Bold
                                     )
-                                ),)
+                                ),
+                            )
                             Spacer(modifier = Modifier.padding(10.dp))
-                            cliqueableRow(text = "Find Match",R.drawable.play_button ,background)
+                            cliqueableRow(
+                                text = "Find Match",
+                                R.drawable.play_button,
+                                background
+                            )
                             Spacer(modifier = Modifier.padding(10.dp))
-                            cliqueableRow(text = "LeaderBoards",R.drawable.leaderboard, background)
+                            cliqueableRow(
+                                text = "LeaderBoards",
+                                R.drawable.leaderboard,
+                                background
+                            )
                             Spacer(modifier = Modifier.padding(10.dp))
-                            cliqueableRow(text = "About",R.drawable.about, background)
+                            cliqueableRow(text = "About", R.drawable.about, background)
                             Spacer(modifier = Modifier.padding(10.dp))
-                            cliqueableRow(text = "Logout",R.drawable.door_out, background)
+                            cliqueableRow(text = "Logout", R.drawable.door_out, background)
+
                         }
                     }
                 }
-
             }
-
         }
     }
 }
@@ -140,7 +172,7 @@ fun BackGroundLoginAndHomePreview() {
 
 
 @Composable
-fun cliqueableRow(text: String,image:Int ,background: BackGround) {
+fun cliqueableRow(text: String, image: Int, background: BackGround) {
     Row(
         modifier = Modifier
             .width(background.screenWidth * 0.8f)
@@ -153,20 +185,27 @@ fun cliqueableRow(text: String,image:Int ,background: BackGround) {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painterResource(image),
-            contentDescription = null,
+        Box(
+            modifier = Modifier
+                .width(40.dp) // Largura fixa para o Box do ícone
+                .height(40.dp), // Altura fixa para o Box do ícone
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painterResource(image),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(30.dp) // Tamanho do ícone
+                    .align(Alignment.CenterStart) // Alinhar o ícone à esquerda dentro do Box
             )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = text,
-            color = Color.DarkGray,
-            fontFamily = FontFamily(
-                Font(
-                    R.font.varelaround_regular,
-                    FontWeight.Bold
-                )
-            ),
-        )
+        }
+        Spacer(modifier = Modifier.width(8.dp)) // Espaçador entre ícone e texto
+        Box(
+            modifier = Modifier
+                .weight(1f), // Faz o Box do texto ocupar o espaço restante
+            contentAlignment = Alignment.CenterStart // Alinha o texto à esquerda dentro do Box
+        ) {
+            TextWithFont(text = text)
+        }
     }
 }

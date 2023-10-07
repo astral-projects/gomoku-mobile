@@ -11,9 +11,11 @@ import androidx.compose.ui.unit.TextUnit
 import pdm.gomoku.R
 
 @Composable
-fun TextWithFont(text: String, textSize: TextUnit = TextUnit.Unspecified, modifier: Modifier = Modifier) {
+fun TextWithFont(text: String, maxLines: Int = 1, maxCharsPerLine: Int = 10, textSize: TextUnit = TextUnit.Unspecified, modifier: Modifier = Modifier) {
+    val adjustedText = formatText(text, maxCharsPerLine)
     Text(
-        text,
+        adjustedText,
+        maxLines = maxLines,
         fontFamily = FontFamily(
             Font(
                 R.font.varelaround_regular,
@@ -21,4 +23,21 @@ fun TextWithFont(text: String, textSize: TextUnit = TextUnit.Unspecified, modifi
             )
         )
     )
+}
+
+fun formatText(input: String, maxCharsPerLine: Int): String {
+    val words = input.split(' ')
+    val result = StringBuilder()
+    var lineLength = 0
+
+    for (word in words) {
+        if (lineLength + word.length > maxCharsPerLine) {
+            result.append('\n')
+            lineLength = 0
+        }
+        result.append(word).append(' ')
+        lineLength += word.length + 1 // +1 for the space
+    }
+
+    return result.toString().trim() // Remove the trailing space
 }
