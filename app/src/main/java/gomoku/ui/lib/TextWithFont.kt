@@ -1,6 +1,5 @@
 package gomoku.ui.lib
 
-import android.util.Size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,7 +10,7 @@ import androidx.compose.ui.unit.TextUnit
 import pdm.gomoku.R
 
 @Composable
-fun TextWithFont(text: String, maxLines: Int = 1, maxCharsPerLine: Int = 10, textSize: TextUnit = TextUnit.Unspecified, modifier: Modifier = Modifier) {
+fun TextWithFont(text: String, maxLines: Int = 1, maxCharsPerLine: Int = Int.MAX_VALUE, textSize: TextUnit = TextUnit.Unspecified, modifier: Modifier = Modifier) {
     val adjustedText = formatText(text, maxCharsPerLine)
     Text(
         adjustedText,

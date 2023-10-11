@@ -1,3 +1,4 @@
+/*
 package gomoku.ui.screens
 
 import androidx.compose.foundation.Image
@@ -351,4 +352,4 @@ fun pop_up_windowToLeaveTheGame(background: BackGround) {
 
         }
     }
-}
+}*/

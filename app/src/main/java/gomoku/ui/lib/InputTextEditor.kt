@@ -1,5 +1,6 @@
 package gomoku.ui.lib
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -12,35 +13,36 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import gomoku.ui.screens.backgrounds.BackGround
-import gomoku.ui.theme.YellowBackGround
+import gomoku.ui.screens.background.BackgroundConfig
+import gomoku.ui.theme.EggShell
 import gomoku.ui.theme.loginComposableBorder
 import pdm.gomoku.R
 
 /**
- * Composable of the Inputs Text for Login and Register
+ * InputTextEditor Composable
  * @param text - The Text of the Input
- * @param logo - The Image Logo to use in the image Composable
+ * @param iconId - The Image Logo to use in the image Composable
  * @param modifier - The Modifier Composable
  * @param image - The Image Composable. Receives the logo to use as parameter
- *
  */
 @Composable
 fun InputTextEditor(
     text: String,
-    logo: Int,
+    iconId: Int,
     modifier: Modifier = Modifier,
-    image: @Composable (logo: Int) -> Unit
+    backgroundColor: Color = EggShell,
+    backgroundConfig: BackgroundConfig
 ) {
-    val background = BackGround(LocalConfiguration.current)
-    val boxWidth = background.screenWidth * 0.6f
-    val boxHeight = background.screenHeight * 0.05f
-    val itemsWidth = boxWidth * 0.1f
-    val itemsHeight = boxHeight * 0.5f
+    val boxWidth = backgroundConfig.screenWidth * 0.7f
+    val boxHeight = backgroundConfig.screenHeight * 0.05f
+    val iconWidth = boxWidth * 0.1f
+    val iconHeight = boxHeight * 0.5f
     val textWidth = boxWidth * 0.8f
     val textHeight = boxHeight * 0.8f
     Row(
@@ -48,27 +50,30 @@ fun InputTextEditor(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .height(boxHeight)
-            .background(YellowBackGround)
+            .background(backgroundColor)
             .border(2.dp, loginComposableBorder, RectangleShape)
             .width(boxWidth)
     ) {
         // Image
-        Column (
+        Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
                 .padding(start = 10.dp)
-                .size(itemsWidth, itemsHeight)
-        ){
-            image(logo)
+                .size(iconWidth, iconHeight)
+        ) {
+            Image(
+                painter = painterResource(iconId),
+                contentDescription = null
+            )
         }
         // Text
-        Column (
+        Column(
             verticalArrangement = Arrangement.Center,
             modifier = modifier
                 .padding(start = 20.dp)
                 .size(textWidth, textHeight)
-        ){
+        ) {
             TextWithFont(text)
         }
     }
@@ -77,7 +82,10 @@ fun InputTextEditor(
 @Composable
 @Preview(showBackground = true)
 fun InputTextEditorPreview() {
-    InputTextEditor("User", R.drawable.user) { logo ->
-        LogoDraw(id = logo, description = "User logo")
-    }
+    InputTextEditor(
+        text = "User",
+        iconId = R.drawable.user,
+        backgroundColor = Color.Cyan,
+        backgroundConfig = BackgroundConfig(LocalConfiguration.current)
+    )
 }
