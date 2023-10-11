@@ -1,5 +1,5 @@
 *.iml
-.gradle
+
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -16,7 +16,7 @@ local.properties
 /.idea/
 *.bkp
 
-build.gradle.kts
-settings.gradle.kts
-gradle.properties
-gradlew
+### Gradle files ###
+.gradle
+build/
+*.gradle.kts
