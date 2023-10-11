@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 /**
@@ -28,4 +29,10 @@ fun Bubble(radius: Float, interiorColor: Color, borderColor: Color) {
             .background(interiorColor)
             .border(borderSize, borderColor, RoundedCornerShape(50))
     )
+}
+
+@Composable
+@Preview(showBackground = true)
+fun BubblePreview() {
+    Bubble(50f, Color.Red, Color.Blue)
 }
