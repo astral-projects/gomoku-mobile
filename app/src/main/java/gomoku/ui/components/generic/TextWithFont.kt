@@ -3,14 +3,16 @@ package gomoku.ui.components.generic
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import pdm.gomoku.R
 
+
 @Composable
-fun TextWithFont(text: String, maxLines: Int = 1, maxCharsPerLine: Int = Int.MAX_VALUE, textSize: TextUnit = TextUnit.Unspecified, modifier: Modifier = Modifier) {
+fun TextWithFont(text: String, maxLines: Int = 1, maxCharsPerLine: Int = Int.MAX_VALUE, textSize: TextUnit = TextUnit.Unspecified, modifier: Modifier = Modifier,color:Color = Color.Black) {
     val adjustedText = formatText(text, maxCharsPerLine)
     Text(
         adjustedText,
@@ -20,8 +22,9 @@ fun TextWithFont(text: String, maxLines: Int = 1, maxCharsPerLine: Int = Int.MAX
                 R.font.varelaround_regular,
                 FontWeight.ExtraBold
             )
-        )
+        ), color = color
     )
+    TODO("Tirar este TextWithFont e tentar usar o Text para usar o formatText")
 }
 
 fun formatText(input: String, maxCharsPerLine: Int): String {
