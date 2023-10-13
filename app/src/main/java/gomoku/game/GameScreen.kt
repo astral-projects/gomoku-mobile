@@ -18,7 +18,7 @@ import gomoku.ui.GAME_NAME
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.components.generic.CustomIconChip
-import gomoku.ui.components.generic.DismissButton
+import gomoku.ui.components.generic.SubmitButton
 import gomoku.ui.components.generic.TopNavHeader
 import gomoku.ui.containers.PlayerInfo
 import gomoku.ui.theme.GomokuTheme
@@ -82,9 +82,9 @@ fun GameScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    DismissButton(
+                    SubmitButton(
                         onButtonText = "Leave Game",
-                        onDismiss = onLeaveGameRequest
+                        onClick = onLeaveGameRequest
                     )
                 }
             }

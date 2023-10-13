@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.ui.platform.LocalConfiguration
+import gomoku.ui.background.BackgroundConfig
 
 class LoginActivity : ComponentActivity() {
 
@@ -19,6 +21,7 @@ class LoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LoginScreen(
+                backgroundConfig =  BackgroundConfig(LocalConfiguration.current),
                 onSubmit = { /*TODO*/ },
                 onSignUpClick = { /*TODO*/ }
             )

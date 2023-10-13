@@ -6,8 +6,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.components.domain.HeaderLogo
-import gomoku.ui.containers.InputButtonWithImage
-import gomoku.ui.components.generic.Form_Home_Menu
+import gomoku.ui.components.generic.Form
+import gomoku.ui.components.generic.SubmitButtonWithImage
+import gomoku.ui.containers.InputFieldData
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
@@ -19,14 +20,17 @@ fun HomeScreen(backgroundConfig: BackgroundConfig) {
         header = { HeaderLogo() }
     ) {
 
-        Form_Home_Menu(
+        Form(
             title = "Welcome Back User...",
             inputFieldsData = listOf(
-                InputButtonWithImage("Find a Match",R.drawable.play_button),
-                InputButtonWithImage("LeadersBoard",R.drawable.leaderboard),
-                InputButtonWithImage("About",R.drawable.about),
-                InputButtonWithImage("Logout" ,R.drawable.door_out)
-            )
+                InputFieldData("Find a Match",R.drawable.play_button),
+                InputFieldData("LeadersBoard",R.drawable.leaderboard),
+                InputFieldData("About",R.drawable.about),
+                InputFieldData("Logout" ,R.drawable.door_out)
+            ),
+            renderInputField = { inputData ->
+                SubmitButtonWithImage(text = inputData.text, iconId = inputData.iconId, onClick = { /* Ação aqui */ })
+            }
         )
     }
 }
@@ -39,5 +43,4 @@ fun HomeScreenPreview() {
             backgroundConfig = BackgroundConfig(LocalConfiguration.current)
         )
     }
-
 }

@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.components.generic.DismissButton
+import gomoku.ui.components.generic.SubmitButton
 import gomoku.ui.components.generic.TextWithFont
 
 @Composable
@@ -52,9 +52,9 @@ fun Pop_Up_WindowToLeaveTheGame(background: BackgroundConfig) {
             }
             Row(
             ) {
-                DismissButton(backgroundColor = Color.Green, letterColor =Color.White , onButtonText = "Nevermind" , enable =true, onDismiss = {} )
+                SubmitButton(backgroundColor = Color.Green, letterColor =Color.White , onButtonText = "Nevermind" , enable =true, onClick = {} )
                 Spacer(modifier = Modifier.width(80.dp))
-                DismissButton(backgroundColor = Color.Red, letterColor =Color.White , onButtonText = "Yes" , enable =true, onDismiss = {} )
+                SubmitButton(backgroundColor = Color.Red, letterColor =Color.White , onButtonText = "Yes" , enable =true, onClick = {} )
             }
 
         }
