@@ -3,9 +3,9 @@ package gomoku.home
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.ui.HeaderLogo
-import gomoku.ui.screens.background.Background
-import gomoku.ui.screens.background.BackgroundConfig
+import gomoku.ui.background.Background
+import gomoku.ui.background.BackgroundConfig
+import gomoku.ui.components.domain.HeaderLogo
 
 @Composable
 fun HomeScreen(backgroundConfig: BackgroundConfig) {

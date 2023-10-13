@@ -3,11 +3,11 @@ package gomoku.register
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import gomoku.ui.GAME_NAME
-import gomoku.ui.lib.CenteredHeader
-import gomoku.ui.lib.Form
-import gomoku.ui.screens.InputFieldData
-import gomoku.ui.screens.background.Background
 import gomoku.ui.FooterBubbles
+import gomoku.ui.background.Background
+import gomoku.ui.components.generic.Form
+import gomoku.ui.components.generic.TextWithFont
+import gomoku.ui.containers.InputFieldData
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
@@ -17,7 +17,7 @@ fun RegisterScreen(
 ) {
     GomokuTheme {
         Background(
-            header = { CenteredHeader(text = GAME_NAME) },
+            header = { TextWithFont(text = GAME_NAME) },
             footer = {
                 FooterBubbles()
             }

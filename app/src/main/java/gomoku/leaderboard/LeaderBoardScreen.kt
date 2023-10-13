@@ -2,18 +2,23 @@ package gomoku.leaderboard
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.ui.lib.CenteredHeader
-import gomoku.ui.lib.SearchBar
-import gomoku.ui.screens.background.Background
+import gomoku.ui.GAME_NAME
+import gomoku.ui.background.Background
+import gomoku.ui.components.generic.TopNavHeader
+
+import gomoku.ui.components.generic.SearchBar
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
 @Composable
-fun LeaderBoardScreen(onSearch: (String) -> Unit = {}) {
+fun LeaderBoardScreen(
+    onSearch: (String) -> Unit = {},
+    onBurgerMenuClick: () -> Unit = {}
+) {
     GomokuTheme {
         Background(
             header = {
-                CenteredHeader(text = "Leaderboard")
+                TopNavHeader(title = GAME_NAME, onBurgerMenuClick = onBurgerMenuClick)
                 SearchBar(
                     text = "Search a player...",
                     iconId = R.drawable.search,
@@ -32,5 +37,5 @@ fun LeaderBoardScreen(onSearch: (String) -> Unit = {}) {
 @Composable
 @Preview(showBackground = true)
 fun LeaderBoardScreenPreview() {
-    LeaderBoardScreen()
+    LeaderBoardScreen(onSearch = {}, onBurgerMenuClick = {})
 }

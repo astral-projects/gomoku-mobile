@@ -1,4 +1,4 @@
-package gomoku.ui
+package gomoku.register
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,12 +12,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.ui.components.domain.Bubble
 import gomoku.ui.theme.BubbleColors
+import gomoku.ui.theme.DarkBlue
+import gomoku.ui.theme.LightBlue
+import gomoku.ui.theme.DarkOrange
+import gomoku.ui.theme.LightOrange
 
-const val BIG_ORANGE_BUBBLE_RADIUS = 100f
-const val SMALL_ORANGE_BUBBLE_RADIUS = 20f
-const val BIG_BLUE_BUBBLE_RADIUS = 100f
-const val SMALL_BLUE_BUBBLE_RADIUS = 50f
-private val rightBubblesBottomPadding = 55.dp
+const val BIG_DARKER_BUBBLE_RADIUS = 100f
+const val SMALL_DARKER_BUBBLE_RADIUS = 20f
+const val BIG_LIGHTER_BUBBLE_RADIUS = 100f
+const val SMALL_LIGHTER_BUBBLE_RADIUS = 50f
 
 @Composable
 @Preview
@@ -29,42 +32,43 @@ fun FooterBubbles() {
             .fillMaxWidth()
     ) {
         Column(
-
+            modifier = Modifier
+                .padding(bottom = 20.dp, start = 20.dp),
             horizontalAlignment = Alignment.End,
         ) {
             // Small lighter bubble
             Bubble(
-                radius = SMALL_BLUE_BUBBLE_RADIUS,
+                radius = SMALL_LIGHTER_BUBBLE_RADIUS,
                 interiorColor = BubbleColors.LighterBubbleInterior,
                 borderColor = BubbleColors.LighterBubbleBorder
             )
             // Big darker bubble
             Bubble(
-                radius = BIG_ORANGE_BUBBLE_RADIUS,
+                radius = BIG_DARKER_BUBBLE_RADIUS,
                 interiorColor = BubbleColors.DarkerBubbleInterior,
                 borderColor = BubbleColors.DarkerBubbleBorder
             )
             // Small darker bubble
             Bubble(
-                radius = SMALL_ORANGE_BUBBLE_RADIUS,
-                interiorColor = BubbleColors.DarkerBubbleInterior,
-                borderColor = BubbleColors.DarkerBubbleBorder
+                radius = SMALL_DARKER_BUBBLE_RADIUS,
+                interiorColor = LightOrange,
+                borderColor = DarkOrange
             )
 
         }
         Column(
             modifier = Modifier
-                .padding(bottom = rightBubblesBottomPadding)
+                .padding(bottom = 75.dp, end = 30.dp)
         ) {
-            // Small darker ball
+            // Small darker bubble
             Bubble(
-                radius = SMALL_ORANGE_BUBBLE_RADIUS,
+                radius = SMALL_DARKER_BUBBLE_RADIUS,
                 interiorColor = BubbleColors.DarkerBubbleInterior,
                 borderColor = BubbleColors.DarkerBubbleBorder
             )
             // Big lighter bubble
             Bubble(
-                radius = BIG_BLUE_BUBBLE_RADIUS,
+                radius = BIG_LIGHTER_BUBBLE_RADIUS,
                 interiorColor = BubbleColors.LighterBubbleInterior,
                 borderColor = BubbleColors.LighterBubbleBorder
             )
