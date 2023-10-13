@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pdm.gomoku.R
 import gomoku.domain.StopWatch
-import gomoku.ui.lib.RoundButton
+import gomoku.ui.components.generic.RoundButton
 import gomoku.ui.theme.GomokuTheme
 
 const val START_BUTTON_TEST_TAG = "start"
