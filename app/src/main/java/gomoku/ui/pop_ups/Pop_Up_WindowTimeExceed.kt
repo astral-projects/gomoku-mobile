@@ -1,4 +1,4 @@
-package gomoku.ui.screens.pop_ups
+package gomoku.ui.pop_ups
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -7,12 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -27,11 +25,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.ui.background.BackgroundConfig
+import gomoku.ui.components.generic.DismissButton
 import gomoku.ui.components.generic.TextWithFont
 import gomoku.ui.theme.LightOrange
-
 import pdm.gomoku.R
-
 
 
 @Composable
@@ -88,26 +85,6 @@ fun Pop_Up_WindowTimeExceed(background: BackgroundConfig) {
 
         }
     }
-}
-
-
-@Composable
-fun DismissButton(
-    backgroundColor: Color,
-    letterColor: Color,
-    onButtonText: String,
-    enable: Boolean,
-    onDismiss: () -> Unit
-) {
-    Button(
-        onClick = onDismiss,
-        enabled = enable,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = backgroundColor,
-            contentColor = letterColor
-        ),
-        shape = RoundedCornerShape(10.dp)
-    ) { TextWithFont(onButtonText) }
 }
 
 

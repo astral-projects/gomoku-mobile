@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import pdm.gomoku.R
 
@@ -24,7 +25,13 @@ fun TextWithFont(text: String, maxLines: Int = 1, maxCharsPerLine: Int = Int.MAX
             )
         ), color = color
     )
-    TODO("Tirar este TextWithFont e tentar usar o Text para usar o formatText")
+   // TODO("Tirar este TextWithFont e tentar usar o Text para usar o formatText")
+}
+
+@Composable
+@Preview
+fun totest(){
+    TextWithFont("Teste")
 }
 
 fun formatText(input: String, maxCharsPerLine: Int): String {

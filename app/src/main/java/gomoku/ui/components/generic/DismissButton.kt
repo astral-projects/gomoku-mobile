@@ -22,19 +22,22 @@ import androidx.compose.ui.unit.dp
 fun DismissButton(
     onButtonText: String,
     onDismiss: () -> Unit,
+    backgroundColor: Color=MaterialTheme.colorScheme.error,
+    letterColor: Color=Color.White,
     enable: Boolean = true
 ) {
     Button(
         onClick = onDismiss,
         enabled = enable,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.error,
-            contentColor = Color.White
+            containerColor = backgroundColor,
+            contentColor = letterColor
         ),
         border = BorderStroke(3.dp, MaterialTheme.colorScheme.errorContainer),
         shape = RoundedCornerShape(10.dp)
     ) { Text(text = onButtonText, fontWeight = FontWeight.Bold) }
 }
+
 
 @Preview
 @Composable

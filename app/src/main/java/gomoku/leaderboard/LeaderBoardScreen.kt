@@ -4,9 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import gomoku.ui.GAME_NAME
 import gomoku.ui.background.Background
-import gomoku.ui.components.generic.TopNavHeader
-
 import gomoku.ui.components.generic.SearchBar
+import gomoku.ui.components.generic.TopNavHeader
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 

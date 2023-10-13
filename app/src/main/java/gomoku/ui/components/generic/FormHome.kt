@@ -1,4 +1,4 @@
-package gomoku.ui.lib
+package gomoku.ui.components.generic
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

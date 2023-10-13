@@ -1,4 +1,4 @@
-package gomoku.ui.lib
+package gomoku.ui.components.generic
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -21,7 +21,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.components.generic.TextWithFont
 import gomoku.ui.theme.EggShell
 import pdm.gomoku.R
 

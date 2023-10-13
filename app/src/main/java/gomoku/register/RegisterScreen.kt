@@ -2,8 +2,8 @@ package gomoku.register
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.ui.GAME_NAME
 import gomoku.ui.FooterBubbles
+import gomoku.ui.GAME_NAME
 import gomoku.ui.background.Background
 import gomoku.ui.components.generic.Form
 import gomoku.ui.components.generic.TextWithFont

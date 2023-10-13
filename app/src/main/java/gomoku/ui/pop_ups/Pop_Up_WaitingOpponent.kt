@@ -1,4 +1,4 @@
-package gomoku.ui.screens.pop_ups
+package gomoku.ui.pop_ups
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

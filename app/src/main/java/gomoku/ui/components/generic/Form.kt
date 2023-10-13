@@ -14,8 +14,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import gomoku.ui.containers.InputFieldData
 import gomoku.ui.background.BackgroundConfig
+import gomoku.ui.containers.InputFieldData
 import pdm.gomoku.R
 
 @Composable
