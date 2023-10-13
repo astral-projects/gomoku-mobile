@@ -16,8 +16,8 @@ import gomoku.ui.screens.background.BackgroundConfig
 import gomoku.ui.theme.orangeButtonBorder
 import gomoku.ui.theme.orangeButtonInterior
 
-private val BorderWidth = 2.dp
-private val RoundedCornerShapeSize = 7.dp
+private val borderWidth = 2.dp
+private val roundedCornerShapeSize = 7.dp
 
 @Composable
 fun SubmitButton(
@@ -32,12 +32,12 @@ fun SubmitButton(
 
     OutlinedButton(
         onClick = onClick,
-        shape = RoundedCornerShape(RoundedCornerShapeSize),
+        shape = RoundedCornerShape(roundedCornerShapeSize),
         colors = ButtonDefaults.buttonColors(
             containerColor = interiorColor,
         ),
         border = BorderStroke(
-            width = BorderWidth,
+            width = borderWidth,
             color = borderColor
         ),
         modifier = Modifier

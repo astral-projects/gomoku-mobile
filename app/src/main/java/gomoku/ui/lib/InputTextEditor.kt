@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import gomoku.ui.screens.background.Background
 import gomoku.ui.screens.background.BackgroundConfig
 import gomoku.ui.theme.EggShell
 import gomoku.ui.theme.loginComposableBorder

@@ -1,37 +1,39 @@
-import androidx.compose.material3.Text
+package gomoku.register
+
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.ui.lib.CenteredHeader
 import gomoku.ui.GAME_NAME
+import gomoku.ui.lib.CenteredHeader
 import gomoku.ui.lib.Form
 import gomoku.ui.screens.InputFieldData
 import gomoku.ui.screens.background.Background
-import gomoku.ui.screens.background.BackgroundConfig
-import gomoku.ui.screens.register.FooterBubbles
+import gomoku.ui.FooterBubbles
+import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
 @Composable
-fun RegisterScreen(backgroundConfig: BackgroundConfig) {
-    Background(
-        config = backgroundConfig,
-        header = { CenteredHeader(text = GAME_NAME) },
-        footer = {
-            FooterBubbles()
-            // Text("Already have an account? Log in")
+fun RegisterScreen(
+    onSubmit: () -> Unit,
+) {
+    GomokuTheme {
+        Background(
+            header = { CenteredHeader(text = GAME_NAME) },
+            footer = {
+                FooterBubbles()
+            }
+        ) {
+            Form(
+                title = "Introduce your data",
+                inputFieldsData = listOf(
+                    InputFieldData("username", R.drawable.user),
+                    InputFieldData("expl@domain.com", R.drawable.email),
+                    InputFieldData("************", R.drawable.lock),
+                    InputFieldData("************", R.drawable.lock),
+                ),
+                submitButtonText = "Register",
+                submitAction = onSubmit,
+            )
         }
-    ) {
-        Form(
-            title = "Introduce your data",
-            inputFieldsData = listOf(
-                InputFieldData("username", R.drawable.user),
-                InputFieldData("expl@domain.com", R.drawable.email),
-                InputFieldData("************", R.drawable.lock),
-                InputFieldData("************", R.drawable.email),
-            ),
-            submitButtonText = "Register",
-            backgroundConfig = backgroundConfig
-        )
     }
 }
 
@@ -39,6 +41,6 @@ fun RegisterScreen(backgroundConfig: BackgroundConfig) {
 @Composable
 fun RegisterScreenPreview() {
     RegisterScreen(
-        backgroundConfig = BackgroundConfig(LocalConfiguration.current)
+        onSubmit = {},
     )
 }

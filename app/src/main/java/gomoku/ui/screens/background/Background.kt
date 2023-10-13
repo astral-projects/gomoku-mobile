@@ -5,13 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import gomoku.ui.theme.EggShell
-import gomoku.ui.theme.GomokuTheme
 import gomoku.ui.theme.PaynesGrey
 import gomoku.ui.theme.SilverLakeBlue
 
@@ -34,7 +31,6 @@ private val headerPaddingTop: Dp = 20.dp
 private val headerPaddingBottom: Dp = 40.dp
 private val bodySurfacePaddingHorizontal: Dp = 35.dp
 private val bodySurfacePaddingVertical: Dp = 10.dp
-private val footerPaddingHorizontal: Dp = 10.dp
 private val footerPaddingVertical: Dp = 2.dp
 private val bodyPaddingHorizontal: Dp = 15.dp
 private val bodyPaddingVertical: Dp = 15.dp
@@ -64,79 +60,79 @@ fun Background(
     footer: @Composable (() -> Unit)? = null,
     body: @Composable () -> Unit
 ) {
-    GomokuTheme {
-        val headerMinHeight = config.screenHeight / 12
-        val headerMaxHeight = config.screenHeight / 3 + config.screenHeight / 10
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(backgroundColor)
-        ) {
-            Column {
-                // Header
+    val headerMinHeight = config.screenHeight / 12
+    val headerMaxHeight = config.screenHeight / 3 + config.screenHeight / 10
+    Box (
+        modifier = Modifier
+            .fillMaxSize()
+            .background(backgroundColor)
+    ) {
+        Column {
+            // Header
+            Column(
+                modifier = Modifier
+                    .heightIn(min = headerMinHeight, max = headerMaxHeight)
+                    .fillMaxWidth()
+                    .clip(
+                        RoundedCornerShape(
+                            bottomEnd = surfaceCornerShapeSize,
+                            bottomStart = surfaceCornerShapeSize
+                        )
+                    )
+                    .background(headerBackgroundColor),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Column(
-                    modifier = Modifier
-                        .heightIn(min = headerMinHeight, max = headerMaxHeight)
-                        .fillMaxWidth()
-                        .clip(
-                            RoundedCornerShape(
-                                bottomEnd = surfaceCornerShapeSize,
-                                bottomStart = surfaceCornerShapeSize
-                            )
-                        )
-                        .background(headerBackgroundColor),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier = Modifier.padding(
+                        start = headerPaddingHorizontal,
+                        end = headerPaddingHorizontal,
+                        top = headerPaddingTop,
+                        bottom = headerPaddingBottom
+                    )
                 ) {
-                    Column(
-                        modifier = Modifier.padding(
-                            start = headerPaddingHorizontal,
-                            end = headerPaddingHorizontal,
-                            top = headerPaddingTop,
-                            bottom = headerPaddingBottom
-                        )
-                    ) {
-                        header()
-                    }
+                    header()
                 }
-                // Body that includes the optional surface and footer
-                Column(
-                    modifier = Modifier
-                        .padding(
-                            horizontal = bodySurfacePaddingHorizontal,
-                            vertical = bodySurfacePaddingVertical
-                        )
-                        .let { if (useBodySurface) it.offset(y = bodyOffsetIntoHeader) else it }
-                ) {
-                    Column {
-                        if (useBodySurface) {
-                            Column(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(surfaceCornerShapeSize))
-                                    .background(bodyBackgroundColor)
-                                    .padding(
-                                        horizontal = bodyPaddingHorizontal,
-                                        vertical = bodyPaddingVertical
-                                    )
-                            ) {
-                                body()
-                            }
-                        } else {
-                            body()
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.weight(1f))
-                    footer?.let {
+            }
+            // Body that includes the optional surface and footer
+            Column(
+                modifier = Modifier
+                    .padding(
+                        horizontal = bodySurfacePaddingHorizontal,
+                        vertical = bodySurfacePaddingVertical
+                    )
+                    .let { if (useBodySurface) it.offset(y = bodyOffsetIntoHeader) else it }
+            ) {
+                Column (
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    if (useBodySurface) {
                         Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier
+                                .clip(RoundedCornerShape(surfaceCornerShapeSize))
+                                .background(bodyBackgroundColor)
                                 .padding(
-                                    horizontal = footerPaddingHorizontal,
-                                    vertical = footerPaddingVertical
+                                    horizontal = bodyPaddingHorizontal,
+                                    vertical = bodyPaddingVertical
                                 )
                         ) {
-                            it.invoke()
+                            body()
                         }
+                    } else {
+                        body()
+                    }
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+                footer?.let {
+                    Column(
+                        modifier = Modifier
+                            .padding(
+                                vertical = footerPaddingVertical
+                            )
+                    ) {
+                        it.invoke()
                     }
                 }
             }

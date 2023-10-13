@@ -1,4 +1,4 @@
-package gomoku.ui.screens
+package gomoku.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import gomoku.ui.GAME_NAME
 import pdm.gomoku.R
 
 private const val LOGO_ROTATION_DEGREES = 45f

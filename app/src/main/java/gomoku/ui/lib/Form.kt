@@ -23,7 +23,7 @@ fun Form(
     title: String,
     inputFieldsData: List<InputFieldData>,
     submitButtonText: String,
-    backgroundConfig: BackgroundConfig,
+    backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     formPaddingHorizontal: Dp = 20.dp,
     paddingBetweenInputFields: Dp = 10.dp,
     submitButtonPaddingTop: Dp = 30.dp,
