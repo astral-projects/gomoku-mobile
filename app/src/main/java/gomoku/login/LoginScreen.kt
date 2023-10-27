@@ -9,7 +9,7 @@ import gomoku.ui.components.domain.HeaderLogo
 import gomoku.ui.components.generic.Form
 import gomoku.ui.components.generic.TextWithFont
 import gomoku.ui.containers.InputFieldData
-import gomoku.ui.lib.HyperLink
+import gomoku.ui.components.generic.HyperLink
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 

@@ -1,4 +1,4 @@
-package gomoku.ui.lib
+package gomoku.ui.components.generic
 
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme

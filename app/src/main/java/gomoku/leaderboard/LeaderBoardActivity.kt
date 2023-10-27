@@ -10,7 +10,12 @@ class LeaderBoardActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LeaderBoardScreen()
+            LeaderBoardScreen(
+                onSearch = {/*TODO*/},
+                onBurgerMenuClick = {/*TODO*/},
+                onTargetClick = {/*TODO*/},
+                onLeaderBoardClick = {/*TODO*/},
+            )
         }
     }
 }
