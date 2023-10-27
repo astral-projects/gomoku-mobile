@@ -5,12 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import gomoku.Navigation
 import gomoku.register.RegisterActivity
 
 class LoginActivity : ComponentActivity() {
 
-    companion object {
-        fun navigateTo(origin: Activity) {
+    companion object : Navigation {
+        override fun navigateTo(origin: Activity) {
             val intent = Intent(origin, LoginActivity::class.java)
             origin.startActivity(intent)
         }

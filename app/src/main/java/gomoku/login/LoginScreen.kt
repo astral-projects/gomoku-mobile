@@ -27,7 +27,7 @@ import pdm.gomoku.R
  */
 @Composable
 fun LoginScreen(
-    backgroundConfig: BackgroundConfig,
+    backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     onSubmit: () -> Unit,
     onSignUpClick: (Int) -> Unit,
 ) {

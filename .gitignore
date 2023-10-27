@@ -20,3 +20,4 @@ local.properties
 .gradle
 build/
 *.gradle.kts
+/app/build.gradle.kts
