@@ -26,12 +26,10 @@ import pdm.gomoku.R
 fun Form(
     title: String,
     inputFieldsData: List<InputFieldData>,
-    backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     formPaddingHorizontal: Dp = 20.dp,
     paddingBetweenInputFields: Dp = 10.dp,
     submitButtonPaddingTop: Dp = 30.dp,
     submitButtonPaddingBottom: Dp = 20.dp,
-    submitAction: () -> Unit = {},
     footer: @Composable (() -> Unit)? = null,
     renderInputField: @Composable (InputFieldData) -> Unit
 ) {
@@ -72,7 +70,6 @@ fun RegisterFormPreview() {
     Form(
         title = "Introduce your data",
         inputFieldsData = inputFieldsData,
-        backgroundConfig = backgroundConfig,
         footer = {
             val boxWidth = backgroundConfig.screenWidth * 0.6f
             val boxHeight = backgroundConfig.screenHeight * 0.04f

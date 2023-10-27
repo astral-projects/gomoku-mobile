@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,6 +21,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.theme.EggShell
 import pdm.gomoku.R
@@ -27,6 +29,8 @@ import pdm.gomoku.R
 
 private val BorderWidth = 2.dp
 private val RoundedCornerShapeSize = 7.dp
+//TODO(Be careful with the size of the text, it can be too big for the button, this numbers with was used to the homeScreen, BUT
+// if you need another size, we need to somehow pass the size of the button to the textWithFont, so it can be adjusted to the size of the button)
 @Composable
 fun SubmitButtonWithImage(
     text: String,
@@ -37,7 +41,7 @@ fun SubmitButtonWithImage(
     onClick: () -> Unit
 ) {
     val boxWidth = backgroundConfig.screenWidth * 0.9f
-    val boxHeight = backgroundConfig.screenHeight * 0.05f
+    val boxHeight = backgroundConfig.screenHeight * 0.07f
 
     OutlinedButton(
         onClick = onClick,
@@ -58,17 +62,16 @@ fun SubmitButtonWithImage(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Ícone ou Imagem
             Image(
                 painter = painterResource(id = iconId),
                 contentDescription = null,
-                modifier = Modifier.size(20.dp).align(Alignment.CenterVertically) // Ajuste o tamanho conforme necessário
+                modifier = Modifier.size(40.dp).align(Alignment.CenterVertically)
             )
 
-            Spacer(modifier = Modifier.width(8.dp)) // Espaçador entre ícone e texto
+            Spacer(modifier = Modifier.width(8.dp))
 
-            // Texto
-            TextWithFont(text = text,color= Color.Black)
+
+            TextWithFont(text = text,color= Color.Black, textSize = 20.sp , modifier = Modifier.width(boxWidth).height(boxHeight).offset(y = 6.dp))
         }
     }
 }

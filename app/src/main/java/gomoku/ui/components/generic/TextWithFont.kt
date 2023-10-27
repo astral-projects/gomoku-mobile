@@ -15,15 +15,15 @@ import pdm.gomoku.R
 @Composable
 fun TextWithFont(text: String, maxLines: Int = 1, maxCharsPerLine: Int = Int.MAX_VALUE, textSize: TextUnit = TextUnit.Unspecified, modifier: Modifier = Modifier,color:Color = Color.Black) {
     val adjustedText = formatText(text, maxCharsPerLine)
-    Text(
-        adjustedText,
+    Text(modifier = modifier,
+        text = adjustedText,
         maxLines = maxLines,
         fontFamily = FontFamily(
             Font(
                 R.font.varelaround_regular,
                 FontWeight.ExtraBold
             )
-        ), color = color
+        ), color = color, fontSize = textSize
     )
    // TODO("Tirar este TextWithFont e tentar usar o Text para usar o formatText")
 }

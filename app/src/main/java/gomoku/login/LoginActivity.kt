@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.platform.LocalConfiguration
+import gomoku.home.HomeActivity
+import gomoku.register.RegisterActivity
 import gomoku.ui.background.BackgroundConfig
 
 class LoginActivity : ComponentActivity() {
@@ -22,8 +24,8 @@ class LoginActivity : ComponentActivity() {
         setContent {
             LoginScreen(
                 backgroundConfig =  BackgroundConfig(LocalConfiguration.current),
-                onSubmit = { /*TODO*/ },
-                onSignUpClick = { /*TODO*/ }
+                onSubmit = { HomeActivity.navigateTo(this) },
+                onSignUpClick = { RegisterActivity.navigateTo(this) }
             )
         }
     }

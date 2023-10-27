@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "pdm.gomoku"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -66,6 +66,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.wear.compose:compose-material3:1.0.0-alpha14")
 
     // for Junit
     testImplementation("junit:junit:4.13.2")

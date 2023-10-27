@@ -44,14 +44,17 @@ fun LoginScreen(
                 inputFieldsData = listOf(
                     InputFieldData("username", R.drawable.user),
                     InputFieldData("************", R.drawable.lock),
-                )
-            ){
-                SubmitButton(
-                    onButtonText = "Login",
-                    onClick = { onSubmit},
-                    modifier = Modifier.width(boxWidth).height(boxHeight)
+                ),
+                renderInputField = { //TODO(Here needs to put something to the user put text in the fields)
+                     },
+                footer={
+                    SubmitButton(
+                        onButtonText = "Login",
+                        onClick = onSubmit ,
+                        modifier = Modifier.width(boxWidth).height(boxHeight)
                     )
-            }
+                }
+            )
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
