@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import gomoku.ui.containers.InputFieldData
 import gomoku.ui.background.BackgroundConfig
+import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
 @Composable
@@ -61,14 +62,17 @@ fun Form(
 @Preview
 @Composable
 fun RegisterFormPreview() {
-    val inputFieldsData = listOf(
-        InputFieldData("Find Match", R.drawable.play_button),
-        InputFieldData("LeaderBoards", R.drawable.leaderboard)
-    )
-    Form(
-        title = "Introduce your data",
-        inputFieldsData = inputFieldsData,
-        backgroundConfig = BackgroundConfig(LocalConfiguration.current),
-        submitButtonText = "Register"
-    )
+    GomokuTheme {
+
+        val inputFieldsData = listOf(
+            InputFieldData("Find Match", R.drawable.play_button),
+            InputFieldData("LeaderBoards", R.drawable.leaderboard)
+        )
+        Form(
+            title = "Introduce your data",
+            inputFieldsData = inputFieldsData,
+            backgroundConfig = BackgroundConfig(LocalConfiguration.current),
+            submitButtonText = "Register"
+        )
+    }
 }

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import gomoku.register.RegisterActivity
 
 class LoginActivity : ComponentActivity() {
 
@@ -20,7 +21,7 @@ class LoginActivity : ComponentActivity() {
         setContent {
             LoginScreen(
                 onSubmit = { /*TODO*/ },
-                onSignUpClick = { /*TODO*/ }
+                onSignUpClick = { RegisterActivity.navigateTo(this) }
             )
         }
     }
