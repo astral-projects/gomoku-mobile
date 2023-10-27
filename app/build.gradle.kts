@@ -67,6 +67,7 @@ dependencies {
     implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.compose.foundation:foundation-layout-android:1.5.4")
+    implementation("androidx.wear.compose:compose-material3:1.0.0-alpha14")
 
     // for Junit
     testImplementation("junit:junit:4.13.2")

@@ -7,19 +7,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.domain.board.Board
 import gomoku.domain.Timer
 import gomoku.domain.Turn
+import gomoku.domain.board.Board
 import gomoku.domain.moves.Move
 import gomoku.domain.moves.move.Piece
 import gomoku.domain.moves.move.Player
 import gomoku.domain.moves.move.Square
 import gomoku.ui.GAME_NAME
-import gomoku.ui.components.generic.TopNavHeader
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.components.generic.CustomIconChip
-import gomoku.ui.components.generic.DismissButton
+import gomoku.ui.components.generic.SubmitButton
+import gomoku.ui.components.generic.TopNavHeader
 import gomoku.ui.containers.PlayerInfo
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
@@ -82,9 +82,9 @@ fun GameScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    DismissButton(
+                    SubmitButton(
                         onButtonText = "Leave Game",
-                        onDismiss = onLeaveGameRequest
+                        onClick = onLeaveGameRequest
                     )
                 }
             }

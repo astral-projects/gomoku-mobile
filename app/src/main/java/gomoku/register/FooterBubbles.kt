@@ -12,8 +12,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.ui.components.domain.Bubble
 import gomoku.ui.theme.BubbleColors
-import gomoku.ui.theme.DarkBlue
-import gomoku.ui.theme.LightBlue
 import gomoku.ui.theme.DarkOrange
 import gomoku.ui.theme.LightOrange
 

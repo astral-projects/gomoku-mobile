@@ -17,16 +17,21 @@
             android:name="gomoku.register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.login.LoginActivity"
+            android:name="gomoku.home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.ui.MainActivity"
-            android:exported="true">
+            android:name="gomoku.login.LoginActivity"
+            android:exported="true" >
             <intent-filter>
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="gomoku.ui.MainActivity"
+            android:exported="true">
         </activity>
     </application>
 

@@ -15,8 +15,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import gomoku.ui.theme.GomokuTheme
 import gomoku.ui.theme.ChipColors
+import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
 private val ChipCornerShapeSize = 10.dp

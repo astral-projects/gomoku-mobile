@@ -5,10 +5,10 @@ import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import gomoku.domain.StopWatch
 import gomoku.ui.stopwatch.RESET_BUTTON_TEST_TAG
 import gomoku.ui.stopwatch.START_BUTTON_TEST_TAG
 import gomoku.ui.stopwatch.STOP_BUTTON_TEST_TAG
-import gomoku.domain.StopWatch
 import gomoku.ui.stopwatch.StopWatchControl
 import org.junit.Assert.assertTrue
 import org.junit.Rule
