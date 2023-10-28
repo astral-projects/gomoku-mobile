@@ -20,6 +20,12 @@
             android:name="gomoku.home.HomeActivity"
             android:exported="false" />
         <activity
+            android:name="gomoku.about.AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name="gomoku.game.GameActivity"
+            android:exported="false" />
+        <activity
             android:name="gomoku.login.LoginActivity"
             android:exported="true" >
             <intent-filter>

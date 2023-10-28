@@ -12,7 +12,12 @@ import pdm.gomoku.R
 
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onFindMatch: () -> Unit = {},
+    onLeaderBoard: () -> Unit = {},
+    onAbout: () -> Unit = {},
+    onLogout: () -> Unit = {}
+    ) {
     GomokuTheme {
         Background(
             header = { HeaderLogo() }
@@ -20,16 +25,16 @@ fun HomeScreen() {
             Form(
                 title = "Welcome Back User...",
                 inputFieldsData = listOf(
-                    InputFieldData("Find a Match", R.drawable.play_button),
-                    InputFieldData("LeadersBoard", R.drawable.leaderboard),
-                    InputFieldData("About", R.drawable.about),
-                    InputFieldData("Logout", R.drawable.door_out)
+                    InputFieldData("Find a Match", R.drawable.play_button, onFindMatch),
+                    InputFieldData("LeadersBoard", R.drawable.leaderboard, onLeaderBoard),
+                    InputFieldData("About", R.drawable.about, onAbout),
+                    InputFieldData("Logout", R.drawable.door_out, onLogout)
                 ),
                 renderInputField = { inputData ->
                     SubmitButtonWithImage(
                         text = inputData.text,
                         iconId = inputData.iconId,
-                        onClick = { })
+                        onClick = inputData.onClick)
                 }
             )
         }

@@ -45,7 +45,7 @@ fun RegisterScreen(
                     val boxHeight = backgroundConfig.screenHeight * 0.04f
                     SubmitButton(
                         onButtonText = "Register",
-                        onClick = { onSubmit },
+                        onClick =  onSubmit ,
                         modifier = Modifier
                             .height(boxHeight)
                             .width(boxWidth),
