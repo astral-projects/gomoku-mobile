@@ -5,15 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.ui.platform.LocalConfiguration
-import gomoku.home.HomeActivity
+import gomoku.Navigation
 import gomoku.register.RegisterActivity
-import gomoku.ui.background.BackgroundConfig
 
 class LoginActivity : ComponentActivity() {
 
-    companion object {
-        fun navigateTo(origin: Activity) {
+    companion object : Navigation {
+        override fun navigateTo(origin: Activity) {
             val intent = Intent(origin, LoginActivity::class.java)
             origin.startActivity(intent)
         }
@@ -23,8 +21,7 @@ class LoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LoginScreen(
-                backgroundConfig =  BackgroundConfig(LocalConfiguration.current),
-                onSubmit = { HomeActivity.navigateTo(this) },
+                onSubmit = { /*TODO*/ },
                 onSignUpClick = { RegisterActivity.navigateTo(this) }
             )
         }

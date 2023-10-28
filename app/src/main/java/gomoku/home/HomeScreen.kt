@@ -44,5 +44,5 @@ fun HomeScreen(
 @Composable
 @Preview
 fun HomeScreenPreview() {
-        HomeScreen()
+    HomeScreen()
 }

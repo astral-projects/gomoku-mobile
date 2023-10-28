@@ -15,7 +15,7 @@ import gomoku.ui.components.generic.Form
 import gomoku.ui.components.generic.SubmitButton
 import gomoku.ui.components.generic.TextWithFont
 import gomoku.ui.containers.InputFieldData
-import gomoku.ui.lib.HyperLink
+import gomoku.ui.components.generic.HyperLink
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
@@ -27,7 +27,7 @@ import pdm.gomoku.R
  */
 @Composable
 fun LoginScreen(
-    backgroundConfig: BackgroundConfig,
+    backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     onSubmit: () -> Unit,
     onSignUpClick: (Int) -> Unit,
 ) {

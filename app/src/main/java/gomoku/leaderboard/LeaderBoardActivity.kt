@@ -5,11 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import gomoku.Navigation
 
 class LeaderBoardActivity : ComponentActivity() {
-
-    companion object {
-        fun navigateTo(origin: Activity) {
+    companion object : Navigation {
+        override fun navigateTo(origin: Activity) {
             val intent = Intent(origin, LeaderBoardActivity::class.java)
             origin.startActivity(intent)
         }
@@ -18,7 +18,12 @@ class LeaderBoardActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LeaderBoardScreen()
+            LeaderBoardScreen(
+                onSearch = {/*TODO*/},
+                onBurgerMenuClick = {/*TODO*/},
+                onTargetClick = {/*TODO*/},
+                onLeaderBoardClick = {/*TODO*/},
+            )
         }
     }
 }
