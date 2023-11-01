@@ -60,7 +60,7 @@ fun GameScreen(
                     PlayerInfoChip(
                         playerInfo = blackPlayer,
                         trailingIconId = R.drawable.white_circle,
-                        select = board.turn.player == Player.w
+                        select = board.turn.player == Player.W
                     )
                 }
                 BoardView(board = board)
@@ -71,7 +71,7 @@ fun GameScreen(
                     PlayerInfoChip(
                         playerInfo = blackPlayer,
                         trailingIconId = R.drawable.black_circle,
-                        select = board.turn.player == Player.b
+                        select = board.turn.player == Player.B
                     )
                     GameInfoChip(
                         leadingIconId = R.drawable.directions,
@@ -128,16 +128,16 @@ fun BoardView(board: Board) {
 @Composable
 fun GameScreenPreview() {
     val turn = Turn(
-        player = Player.w,
+        player = Player.W,
         timer = Timer(0, 55)
     )
     val moves = mapOf(
-        Move(Square(3, 6), Piece(Player.w)),
-        Move(Square(4, 4), Piece(Player.b)),
-        Move(Square(3, 2), Piece(Player.w)),
-        Move(Square(7, 3), Piece(Player.b)),
-        Move(Square(5, 4), Piece(Player.w)),
-        Move(Square(3, 5), Piece(Player.b)),
+        Move(Square(3, 6), Piece(Player.W)),
+        Move(Square(4, 4), Piece(Player.B)),
+        Move(Square(3, 2), Piece(Player.W)),
+        Move(Square(7, 3), Piece(Player.B)),
+        Move(Square(5, 4), Piece(Player.W)),
+        Move(Square(3, 5), Piece(Player.B)),
     )
     val board = Board(
         moves = moves,

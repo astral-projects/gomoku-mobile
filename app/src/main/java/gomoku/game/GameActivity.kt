@@ -37,7 +37,7 @@ class GameActivity: ComponentActivity() {
                 board = Board(
                     moves = mapOf<Square,Piece>(),
                     turn = Turn(
-                        player = Player.w,
+                        player = Player.W,
                         timer = Timer(0, 0,)
                     )
                 )
