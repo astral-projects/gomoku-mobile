@@ -26,7 +26,7 @@ import gomoku.ui.components.generic.TextWithFont
 import pdm.gomoku.R
 
 @Composable
-fun Pop_UP_WaitingOpponent  (background: BackgroundConfig) {
+fun Pop_UP_WaitingOpponent(background: BackgroundConfig) {
     Box(
         modifier = Modifier
             .width(background.screenWidth * 0.8f)
@@ -70,5 +70,5 @@ fun Pop_UP_WaitingOpponent  (background: BackgroundConfig) {
 @Composable
 @Preview(showBackground = true)
 fun Pop_UP_WaitingOpponent_Preview() {
-    Pop_UP_WaitingOpponent(background =  BackgroundConfig(LocalConfiguration.current))
+    Pop_UP_WaitingOpponent(background = BackgroundConfig(LocalConfiguration.current))
 }
