@@ -43,7 +43,7 @@ fun GomokuTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }*/
-
+        // TODO("always using light theme for now")
         darkTheme -> LightColorScheme // DarkColorScheme
         else -> LightColorScheme
     }
@@ -55,7 +55,6 @@ fun GomokuTheme(
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
-
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,

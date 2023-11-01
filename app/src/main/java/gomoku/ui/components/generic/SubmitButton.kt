@@ -1,7 +1,6 @@
 package gomoku.ui.components.generic
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape

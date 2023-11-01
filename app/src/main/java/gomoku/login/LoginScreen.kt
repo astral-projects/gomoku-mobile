@@ -57,8 +57,10 @@ fun LoginScreen(
                 footer={
                     SubmitButton(
                         onButtonText = "Login",
-                        onClick = onSubmit ,
-                        modifier = Modifier.width(boxWidth).height(boxHeight)
+                        onClick = onSubmit,
+                        modifier = Modifier
+                            .width(boxWidth)
+                            .height(boxHeight)
                     )
                 }
             )

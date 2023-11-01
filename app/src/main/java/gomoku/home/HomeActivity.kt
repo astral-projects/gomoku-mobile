@@ -11,6 +11,7 @@ import gomoku.game.GameActivity
 import gomoku.leaderboard.LeaderBoardActivity
 import gomoku.login.LoginActivity
 
+const val GAME_NAME = "Gomoku Royale"
 class HomeActivity : ComponentActivity() {
 
     companion object : Navigation {

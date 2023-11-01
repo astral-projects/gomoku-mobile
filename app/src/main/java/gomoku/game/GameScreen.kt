@@ -1,4 +1,3 @@
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,7 +21,7 @@ import gomoku.domain.moves.Move
 import gomoku.domain.moves.move.Piece
 import gomoku.domain.moves.move.Player
 import gomoku.domain.moves.move.Square
-import gomoku.ui.GAME_NAME
+import gomoku.home.GAME_NAME
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.components.domain.GameInfoChip
@@ -53,7 +52,6 @@ fun GameScreen(
         Column(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start
@@ -68,12 +66,11 @@ fun GameScreen(
                 horizontalArrangement = Arrangement.End
             ) {
                 PlayerInfoChip(
-                   playerInfo = whitePlayer,
+                    playerInfo = whitePlayer,
                     trailingIconId = R.drawable.white_circle,
-                   select = board.turn.player == Player.W
+                    select = board.turn.player == Player.W
                 )
             }
-
             BoardContainer(
                 board = board,
                 localPlayer = localPlayer,
