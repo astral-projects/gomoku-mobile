@@ -15,6 +15,7 @@ fun HyperLink (onClick: (Int) -> Unit, text: String) {
         style = MaterialTheme
             .typography
             .bodyMedium
+            // TODO("change hardcoded values")
             .copy(color = Color.White),
 
     )

@@ -43,7 +43,7 @@ fun Pop_Up_WindowToLeaveTheGame(background: BackgroundConfig) {
         Column(
             modifier = Modifier.fillMaxSize()
 
-        ){
+        ) {
             Row {
                 TextWithFont(
                     text = "Are you sure you want to quit this the game?" +

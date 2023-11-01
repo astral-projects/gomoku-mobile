@@ -57,28 +57,37 @@ dependencies {
     // androidx
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.activity:activity-compose:1.8.0")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.google.android.material:material:1.10.0")
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.11.0"))
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.compose.foundation:foundation-layout-android:1.5.4")
     implementation("androidx.wear.compose:compose-material3:1.0.0-alpha14")
 
-    // for Junit
+    // Extended material icons
+    implementation("androidx.compose.material:material-icons-extended-android:1.5.4")
+
+    // for Junit tests with coroutines and mockk
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation("io.mockk:mockk-android:1.13.8")
+    testImplementation("com.squareup.okhttp3:mockwebserver")
+
+    // for mock tests
+    androidTestImplementation("io.mockk:mockk-android:1.13.8")
 
     // android test
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-
-    // for mock tests
     androidTestImplementation("io.mockk:mockk-android:1.13.8")
 
     // for debugging in compose

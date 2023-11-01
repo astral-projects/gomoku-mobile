@@ -8,7 +8,7 @@ import androidx.activity.compose.setContent
 import gomoku.Navigation
 
 class AboutActivity : ComponentActivity() {
-    companion object : Navigation{
+    companion object : Navigation {
         override fun navigateTo(origin: Activity) {
             val intent = Intent(origin, AboutActivity::class.java)
             origin.startActivity(intent)
