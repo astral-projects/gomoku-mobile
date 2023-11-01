@@ -7,9 +7,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.platform.LocalConfiguration
 import gomoku.domain.Timer
-import gomoku.domain.board.BoardTurn
 import gomoku.domain.board.Board
 import gomoku.domain.board.BoardSize
+import gomoku.domain.board.BoardTurn
 import gomoku.domain.moves.Move
 import gomoku.domain.moves.move.Piece
 import gomoku.domain.moves.move.Player

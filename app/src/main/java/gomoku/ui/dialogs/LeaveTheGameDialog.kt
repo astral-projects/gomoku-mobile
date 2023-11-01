@@ -1,4 +1,4 @@
-package gomoku.ui.pop_ups
+package gomoku.ui.dialogs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,13 +23,7 @@ import gomoku.ui.components.generic.SubmitButton
 import gomoku.ui.components.generic.TextWithFont
 
 @Composable
-@Preview(showBackground = true)
-fun Pop_Up_WindowToLeaveTheGame_Preview() {
-    Pop_Up_WindowToLeaveTheGame(BackgroundConfig(LocalConfiguration.current))
-}
-
-@Composable
-fun Pop_Up_WindowToLeaveTheGame(background: BackgroundConfig) {
+fun LeaveTheGameDialog(background: BackgroundConfig) {
     Box(
         modifier = Modifier
             .width(background.screenWidth * 0.8f)
@@ -59,4 +53,10 @@ fun Pop_Up_WindowToLeaveTheGame(background: BackgroundConfig) {
 
         }
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun LeaveTheGameDialogPreview() {
+    LeaveTheGameDialog(BackgroundConfig(LocalConfiguration.current))
 }
