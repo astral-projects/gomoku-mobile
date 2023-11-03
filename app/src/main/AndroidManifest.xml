@@ -9,21 +9,22 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:theme="@style/Theme.Gomoku"
         tools:targetApi="31">
         <activity
-            android:name="gomoku.leaderboard.LeaderBoardActivity"
+            android:name="gomoku.leaderboard.ui.LeaderBoardActivity"
             android:exported="false" />
         <activity
             android:name="gomoku.register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.home.HomeActivity"
+            android:name="gomoku.home.ui.HomeActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.about.AboutActivity"
+            android:name="gomoku.about.ui.AboutActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.game.GameActivity"
+            android:name="gomoku.game.ui.GameActivity"
             android:exported="false" />
         <activity
             android:name="gomoku.login.LoginActivity"

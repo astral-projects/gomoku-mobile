@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import gomoku.Navigation
-import gomoku.home.HomeActivity
+import gomoku.home.ui.HomeActivity
 
 class RegisterActivity : ComponentActivity() {
 

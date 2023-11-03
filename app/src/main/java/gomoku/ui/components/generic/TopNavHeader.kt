@@ -15,6 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.ui.theme.GomokuTheme
 
+/**
+ * Top navigation header for the app.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopNavHeader(

@@ -9,17 +9,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
+import gomoku.home.ui.GAME_NAME
 import androidx.compose.ui.unit.dp
 import gomoku.home.GAME_NAME
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.components.generic.FooterBubbles
 import gomoku.ui.components.generic.Form
 import gomoku.ui.components.generic.InputTextEditor
 import gomoku.ui.components.generic.SubmitButton
 import gomoku.ui.components.generic.TextWithFont
-import gomoku.ui.containers.InputFieldData
-import gomoku.ui.theme.EggShell
+import gomoku.ui.containers.ButtonData
 import gomoku.ui.theme.GomokuTheme
 import gomoku.ui.theme.loginComposableBorder
 import pdm.gomoku.R
@@ -59,6 +58,7 @@ fun RegisterScreen(
                         modifier = Modifier
                             .height(boxHeight)
                             .width(boxWidth),
+                        textColor = Color.Black
                     )
                 },
             ) { inputFieldData ->
@@ -67,8 +67,9 @@ fun RegisterScreen(
                     Modifier
                         .background(EggShell)
                         .border(2.dp, loginComposableBorder, RectangleShape),
-                    text = inputFieldData.text,
+                    text = inputFieldData.label,
                     iconId = inputFieldData.iconId,
+                    backgroundConfig = BackgroundConfig(LocalConfiguration.current),
                 )
             }
         }

@@ -106,30 +106,24 @@ fun CustomInfo(
 @Composable
 @Preview
 fun CustomInfoPreviewWithLeadingIcon() {
-    GomokuTheme {
-        CustomInfo(
-            leadingIconId = R.drawable.gold_medal,
-            leadingNumber = 1,
-            labelIconId = R.drawable.man,
-            label = "Geralt of Rivia",
-            trailingNumber = 5432,
-            trailingIconId = R.drawable.coins
-        )
-    }
-
+    CustomInfo(
+        leadingIconId = R.drawable.gold_medal,
+        leadingNumber = 1,
+        labelIconId = R.drawable.man,
+        label = "Geralt of Rivia",
+        trailingNumber = 5432,
+        trailingIconId = R.drawable.coins
+    )
 }
 
 @Composable
 @Preview
 fun CustomInfoPreviewWithoutLeadingIcon() {
-    GomokuTheme {
-        CustomInfo(
-            leadingNumber = 4,
-            labelIconId = R.drawable.man,
-            label = "Geralt of Rivia",
-            trailingNumber = 100,
-            trailingIconId = R.drawable.coins
-        )
-    }
-
+    CustomInfo(
+        leadingNumber = 4,
+        labelIconId = R.drawable.man,
+        label = "Geralt of Rivia",
+        trailingNumber = 100,
+        trailingIconId = R.drawable.coins
+    )
 }

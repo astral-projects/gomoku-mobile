@@ -14,24 +14,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.components.domain.HeaderLogo
+import gomoku.ui.components.generic.HeaderLogo
 import gomoku.ui.components.generic.Form
 import gomoku.ui.components.generic.HyperLink
 import gomoku.ui.components.generic.InputTextEditor
 import gomoku.ui.components.generic.SubmitButton
 import gomoku.ui.components.generic.TextWithFont
-import gomoku.ui.containers.InputFieldData
-import gomoku.ui.theme.EggShell
+import gomoku.ui.containers.ButtonData
 import gomoku.ui.theme.GomokuTheme
 import gomoku.ui.theme.loginComposableBorder
 import pdm.gomoku.R
 
-//TODO()
 
 /**
- * Composable of the Login Screen
- * @param onSubmit - action to be executed when the submit (login) button is clicked
- * @param onSignUpClick - action to be executed when the sign up link is clicked
+ * Main composable of the login screen.
+ * @param onSubmit callback to be executed when the submit button is clicked.
+ * @param onSignUpClick callback to be executed when the sign-up link is clicked.
  */
 @Composable
 fun LoginScreen(
@@ -56,6 +54,7 @@ fun LoginScreen(
                 renderInputField = {
                         inputFieldData ->
                     InputTextEditor(
+                        text = inputFieldData.label,
                         modifier=Modifier
                             .background(EggShell)
                             .border(2.dp, loginComposableBorder, RectangleShape),

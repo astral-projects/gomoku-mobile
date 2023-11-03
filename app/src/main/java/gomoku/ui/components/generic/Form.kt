@@ -19,19 +19,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.containers.InputFieldData
+import gomoku.ui.containers.ButtonData
 import pdm.gomoku.R
 
 @Composable
 fun Form(
     title: String,
-    inputFieldsData: List<InputFieldData>,
+    inputFieldsData: List<ButtonData>,
     formPaddingHorizontal: Dp = 20.dp,
     paddingBetweenInputFields: Dp = 10.dp,
     submitButtonPaddingTop: Dp = 30.dp,
     submitButtonPaddingBottom: Dp = 20.dp,
     footer: @Composable (() -> Unit)? = null,
-    renderInputField: @Composable (InputFieldData) -> Unit
+    renderInputField: @Composable (ButtonData) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -64,8 +64,8 @@ fun Form(
 fun RegisterFormPreview() {
     val backgroundConfig = BackgroundConfig(LocalConfiguration.current)
     val inputFieldsData = listOf(
-        InputFieldData("Find Match", R.drawable.play_button),
-        InputFieldData("LeaderBoards", R.drawable.leaderboard)
+        ButtonData("Find Match", R.drawable.play_button),
+        ButtonData("LeaderBoards", R.drawable.leaderboard)
     )
     Form(
         title = "Introduce your data",
@@ -79,12 +79,12 @@ fun RegisterFormPreview() {
                 modifier = Modifier
                     .height(boxHeight)
                     .width(boxWidth),
-                letterColor = Color.Black
+                textColor = Color.Black
             )
         },
     ) { inputFieldData ->
         InputTextEditor(
-            text = inputFieldData.text,
+            text = inputFieldData.label,
             iconId = inputFieldData.iconId,
         )
     }
