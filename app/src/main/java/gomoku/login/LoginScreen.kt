@@ -22,7 +22,6 @@ import gomoku.ui.components.generic.SubmitButton
 import gomoku.ui.components.generic.TextWithFont
 import gomoku.ui.containers.ButtonData
 import gomoku.ui.theme.GomokuTheme
-import gomoku.ui.theme.loginComposableBorder
 import pdm.gomoku.R
 
 
@@ -48,19 +47,18 @@ fun LoginScreen(
             Form(
                 title = "Welcome",
                 inputFieldsData = listOf(
-                    InputFieldData("username", R.drawable.user, validationParameter = { text -> text.length >= 5 && text.length <= 30 }),
-                    InputFieldData("************", R.drawable.lock, validationParameter = { text -> text.length >= 8 && text.length <= 40 }),
+                    ButtonData("username", R.drawable.user, validationParameter = { text -> text.length >= 5 && text.length <= 30 }),
+                    ButtonData("************", R.drawable.lock, validationParameter = { text -> text.length >= 8 && text.length <= 40 }),
                 ),
                 renderInputField = {
                         inputFieldData ->
                     InputTextEditor(
                         text = inputFieldData.label,
-                        modifier=Modifier
-                            .background(EggShell)
-                            .border(2.dp, loginComposableBorder, RectangleShape),
-                        text = inputFieldData.text,
-                        iconId = inputFieldData.iconId,
-                        validateFunctionalInterface = inputFieldData.validationParameter
+                      //  modifier=Modifier.size(1.dp),
+                            //.background(EggShell)
+                            //.border(2.dp, Grey, RectangleShape),
+                        validateFunctionalInterface = inputFieldData.validationParameter,
+                        iconId = inputFieldData.iconId
                     )
                 },
                 footer={

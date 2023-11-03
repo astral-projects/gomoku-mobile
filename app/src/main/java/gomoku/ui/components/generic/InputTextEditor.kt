@@ -43,6 +43,6 @@ fun InputTextEditorPreview() {
         iconId = R.drawable.user,
         modifier= Modifier
             .background(EggShell)
-            .border(2.dp, loginComposableBorder, RectangleShape),
+            .border(2.dp, Grey, RectangleShape),
     )
 }

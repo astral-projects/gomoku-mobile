@@ -6,12 +6,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import gomoku.home.ui.GAME_NAME
 import androidx.compose.ui.unit.dp
-import gomoku.home.GAME_NAME
+
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.components.generic.Form
@@ -19,8 +20,8 @@ import gomoku.ui.components.generic.InputTextEditor
 import gomoku.ui.components.generic.SubmitButton
 import gomoku.ui.components.generic.TextWithFont
 import gomoku.ui.containers.ButtonData
-import gomoku.ui.theme.GomokuTheme
-import gomoku.ui.theme.loginComposableBorder
+import gomoku.ui.theme.EggShell
+import gomoku.ui.theme.Grey
 import pdm.gomoku.R
 
 @Composable
@@ -28,7 +29,7 @@ fun RegisterScreen(
     backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     onSubmit: () -> Unit,
 ) {
-    GomokuTheme {
+    GomokuTheme{
         Background(
             header = { TextWithFont(text = GAME_NAME) },
             footer = {
@@ -39,14 +40,14 @@ fun RegisterScreen(
             Form(
                 title = "Introduce your data",
                 inputFieldsData = listOf(
-                    InputFieldData("username", R.drawable.user, validationParameter = { text -> text.length >= 5 && text.length <= 30 }),
-                    InputFieldData("email", R.drawable.email,
+                    ButtonData("username", R.drawable.user, validationParameter = { text -> text.length >= 5 && text.length <= 30 }),
+                    ButtonData("email", R.drawable.email,
                         validationParameter = {
                                 email -> val regex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+$".toRegex()
                                 regex.matches(email)
                     }),
-                    InputFieldData("************", R.drawable.lock, validationParameter = { text -> text.length >= 8 && text.length <= 40 }),
-                    InputFieldData("************", R.drawable.lock, validationParameter = { text -> text.length >= 8 && text.length <= 40 }),
+                    ButtonData("************", R.drawable.lock, validationParameter = { text -> text.length >= 8 && text.length <= 40 }),
+                    ButtonData("************", R.drawable.lock, validationParameter = { text -> text.length >= 8 && text.length <= 40 }),
                 ),
                 footer = {
                     //TODO(nao esquecer meter as vairaveis globais )
@@ -66,10 +67,9 @@ fun RegisterScreen(
                     modifier=
                     Modifier
                         .background(EggShell)
-                        .border(2.dp, loginComposableBorder, RectangleShape),
+                        .border(2.dp, Grey, RectangleShape),
                     text = inputFieldData.label,
                     iconId = inputFieldData.iconId,
-                    backgroundConfig = BackgroundConfig(LocalConfiguration.current),
                 )
             }
         }

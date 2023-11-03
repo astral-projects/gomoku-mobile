@@ -8,7 +8,7 @@ import gomoku.ui.components.generic.HeaderLogo
 import gomoku.ui.components.generic.Form
 import gomoku.ui.components.generic.SubmitButtonWithImage
 import gomoku.ui.containers.ButtonData
-import gomoku.ui.theme.GomokuTheme
+import gomoku.ui.theme.*
 import pdm.gomoku.R
 
 
@@ -26,10 +26,10 @@ fun HomeScreen(
             Form(
                 title = Home.WELCOME,
                 inputFieldsData = listOf(
-                    InputFieldData("Find a Match", R.drawable.play_button, onClick = onFindMatch),
-                    InputFieldData("LeadersBoard", R.drawable.leaderboard, onClick = onLeaderBoard),
-                    InputFieldData("About", R.drawable.about, onClick = onAbout),
-                    InputFieldData("Logout", R.drawable.door_out, onClick = onLogout)
+                    ButtonData("Find a Match", R.drawable.play_button, onClick = onFindMatch),
+                    ButtonData("LeadersBoard", R.drawable.leaderboard, onClick = onLeaderBoard),
+                    ButtonData("About", R.drawable.about, onClick = onAbout),
+                    ButtonData("Logout", R.drawable.door_out, onClick = onLogout)
                 ),
                 renderInputField = { inputData ->
                     SubmitButtonWithImage(

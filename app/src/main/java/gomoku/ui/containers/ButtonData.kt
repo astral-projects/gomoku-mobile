@@ -6,5 +6,6 @@ package gomoku.ui.containers
 data class ButtonData(
     val label: String,
     val iconId: Int,
-    val onClick: () -> Unit = {}
+    val onClick: () -> Unit = {},
+    val validationParameter: (String)->Boolean ={true}
 )
