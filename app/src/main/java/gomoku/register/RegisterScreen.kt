@@ -7,10 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.home.GAME_NAME
+import gomoku.home.ui.GAME_NAME
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.components.generic.FooterBubbles
 import gomoku.ui.components.generic.Form
 import gomoku.ui.components.generic.InputTextEditor
 import gomoku.ui.components.generic.SubmitButton

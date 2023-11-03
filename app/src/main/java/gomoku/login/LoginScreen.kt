@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.components.domain.HeaderLogo
+import gomoku.ui.components.generic.HeaderLogo
 import gomoku.ui.components.generic.Form
 import gomoku.ui.components.generic.HyperLink
 import gomoku.ui.components.generic.InputTextEditor

@@ -1,6 +1,6 @@
 package gomoku
 
-import gomoku.domain.Timer
+import gomoku.game.domain.Timer
 import org.junit.Test
 
 class TimerTests {

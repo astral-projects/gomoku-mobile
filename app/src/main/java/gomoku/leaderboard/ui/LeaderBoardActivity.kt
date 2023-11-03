@@ -1,4 +1,4 @@
-package gomoku.register
+package gomoku.leaderboard.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -6,13 +6,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import gomoku.Navigation
-import gomoku.home.ui.HomeActivity
 
-class RegisterActivity : ComponentActivity() {
-
+class LeaderBoardActivity : ComponentActivity() {
     companion object : Navigation {
         override fun navigateTo(origin: Activity) {
-            val intent = Intent(origin, RegisterActivity::class.java)
+            val intent = Intent(origin, LeaderBoardActivity::class.java)
             origin.startActivity(intent)
         }
     }
@@ -20,8 +18,11 @@ class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            RegisterScreen(
-                onSubmit = { HomeActivity.navigateTo(this) },
+            LeaderBoardScreen(
+                onSearch = {/*TODO*/},
+                onBurgerMenuClick = {/*TODO*/},
+                onTargetClick = {/*TODO*/},
+                onLeaderBoardClick = {/*TODO*/},
             )
         }
     }
