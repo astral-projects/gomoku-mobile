@@ -1,7 +1,6 @@
 package gomoku.home.domain
 
-class Home {
-    companion object {
-        const val WELCOME = "Welcome Back User ..."
-    }
+object Home {
+    const val GAME_NAME = "Gomoku Royale"
+    fun welcome(username: String) = "Welcome back, $username!"
 }

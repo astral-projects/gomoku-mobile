@@ -8,10 +8,9 @@ import androidx.activity.compose.setContent
 import gomoku.Navigation
 import gomoku.about.ui.AboutActivity
 import gomoku.game.ui.GameActivity
-import gomoku.leaderboard.ui.LeaderBoardActivity
+import gomoku.leaderboard.LeaderboardActivity
 import gomoku.login.LoginActivity
 
-const val GAME_NAME = "Gomoku Royale"
 class HomeActivity : ComponentActivity() {
 
     companion object : Navigation {
@@ -25,8 +24,9 @@ class HomeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             HomeScreen(
+                username = "John Doe",
                 onFindMatch = { GameActivity.navigateTo(this)  },
-                onLeaderBoard = { LeaderBoardActivity.navigateTo(this) },
+                onLeaderBoard = { LeaderboardActivity.navigateTo(this) },
                 onAbout = { AboutActivity.navigateTo(this) },
                 onLogout = { LoginActivity.navigateTo(this) }
             )

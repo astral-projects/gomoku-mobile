@@ -23,12 +23,14 @@ import gomoku.game.domain.moves.Move
 import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
-import gomoku.home.ui.GAME_NAME
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
-import gomoku.game.ui.board.BoardView
-import gomoku.ui.components.generic.DismissButton
-import gomoku.ui.components.generic.TopNavHeader
+import gomoku.game.ui.components.board.BoardView
+import gomoku.game.ui.components.chips.GameInfoChip
+import gomoku.game.ui.components.chips.PlayerInfoChip
+import gomoku.home.domain.Home.GAME_NAME
+import gomoku.ui.components.DismissButton
+import gomoku.ui.components.TopNavHeader
 import gomoku.ui.containers.PlayerInfo
 import pdm.gomoku.R
 

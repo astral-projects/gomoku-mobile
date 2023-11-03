@@ -1,10 +1,12 @@
 package gomoku.ui.background
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -28,12 +30,13 @@ private val surfaceCornerShapeSize: Dp = 35.dp
 private val headerPaddingHorizontal: Dp = 20.dp
 private val headerPaddingTop: Dp = 20.dp
 private val headerPaddingBottom: Dp = 40.dp
-private val bodySurfacePaddingHorizontal: Dp = 15.dp
+private val bodySurfacePaddingHorizontal: Dp = 30.dp
 private val bodySurfacePaddingVertical: Dp = 10.dp
 private val footerPaddingVertical: Dp = 2.dp
 private val bodyPaddingHorizontal: Dp = 15.dp
 private val bodyPaddingVertical: Dp = 15.dp
 private val bodyOffsetIntoHeader: Dp = (-30).dp
+private val BodySurfaceBorderWidth: Dp = 2.dp
 
 /**
  * A background that has a [header], [body], and an optional [footer].
@@ -53,9 +56,10 @@ fun Background(
     footer: @Composable (() -> Unit)? = null,
     body: @Composable () -> Unit
 ) {
+    // TODO("up this constants")
     val headerMinHeight = config.screenHeight / 12
     val headerMaxHeight = config.screenHeight / 3 + config.screenHeight / 10
-    Box (
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
@@ -97,9 +101,15 @@ fun Background(
                     // goes into the header
                     .let { if (useBodySurface) it.offset(y = bodyOffsetIntoHeader) else it }
             ) {
-                Column (
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ){
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .border(
+                            BodySurfaceBorderWidth,
+                            MaterialTheme.colorScheme.outline,
+                            RoundedCornerShape(surfaceCornerShapeSize)
+                        )
+                ) {
                     if (useBodySurface) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -117,14 +127,11 @@ fun Background(
                         body()
                     }
                 }
-
                 Spacer(modifier = Modifier.weight(1f))
                 footer?.let {
                     Column(
                         modifier = Modifier
-                            .padding(
-                                vertical = footerPaddingVertical
-                            )
+                            .padding(vertical = footerPaddingVertical)
                     ) {
                         it.invoke()
                     }

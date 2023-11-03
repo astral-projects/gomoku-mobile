@@ -23,7 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.components.generic.SubmitButton
+import gomoku.ui.components.SubmitButton
 import gomoku.ui.theme.LightOrange
 import pdm.gomoku.R
 

@@ -16,6 +16,7 @@ val LightGrey = Color(0xFFbac8d3)
 val DarkGreen = Color(0xFF147f58)
 val Lime = Color(0xFF98d077)
 val Grey = Color(0xFF657a95)
+val DarkPurple = Color(0xFF800080)
 
 // Component colors
 object BubbleColors {

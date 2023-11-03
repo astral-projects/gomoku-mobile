@@ -7,13 +7,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.home.ui.GAME_NAME
+import gomoku.home.domain.Home.GAME_NAME
+import gomoku.register.components.FooterBubbles
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.components.generic.Form
-import gomoku.ui.components.generic.InputTextEditor
-import gomoku.ui.components.generic.SubmitButton
-import gomoku.ui.components.generic.TextWithFont
+import gomoku.ui.components.Header
+import gomoku.ui.components.Form
+import gomoku.ui.components.InputTextEditor
+import gomoku.ui.components.SubmitButton
 import gomoku.ui.containers.ButtonData
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
@@ -25,10 +26,8 @@ fun RegisterScreen(
 ) {
     GomokuTheme {
         Background(
-            header = { TextWithFont(text = GAME_NAME) },
-            footer = {
-                FooterBubbles()
-            }
+            header = { Header(text = GAME_NAME) },
+            footer = { FooterBubbles() }
         ) {
             Form(
                 title = "Introduce your data",
@@ -39,7 +38,6 @@ fun RegisterScreen(
                     ButtonData("************", R.drawable.lock),
                 ),
                 footer = {
-                    //TOOD(nao esquecer meter as vairaveis globais )
                     val boxWidth = backgroundConfig.screenWidth * 0.6f
                     val boxHeight = backgroundConfig.screenHeight * 0.04f
                     SubmitButton(
