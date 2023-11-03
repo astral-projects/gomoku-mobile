@@ -7,9 +7,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import gomoku.Navigation
 import gomoku.about.ui.AboutActivity
-import gomoku.game.ui.GameActivity
 import gomoku.leaderboard.LeaderboardActivity
 import gomoku.login.LoginActivity
+import gomoku.variant.VariantActivity
 
 class HomeActivity : ComponentActivity() {
 
@@ -25,7 +25,7 @@ class HomeActivity : ComponentActivity() {
         setContent {
             HomeScreen(
                 username = "John Doe",
-                onFindMatch = { GameActivity.navigateTo(this)  },
+                onFindMatch = { VariantActivity.navigateTo(this)  },
                 onLeaderBoard = { LeaderboardActivity.navigateTo(this) },
                 onAbout = { AboutActivity.navigateTo(this) },
                 onLogout = { LoginActivity.navigateTo(this) }

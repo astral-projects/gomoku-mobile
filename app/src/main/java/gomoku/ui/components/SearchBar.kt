@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import gomoku.ui.components.generic.OutlinedTextFieldWithValidation
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
@@ -39,5 +40,6 @@ fun SearchBarPreview() {
             iconId = R.drawable.search,
             onSearch = {}
         )
+
     }
 }

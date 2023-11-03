@@ -1,11 +1,13 @@
 package gomoku.variant
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import gomoku.Navigation
 import gomoku.game.domain.board.BoardSize
+import gomoku.game.ui.GameActivity
 import gomoku.variant.domain.OpeningRule
 import gomoku.variant.domain.Variant
 import gomoku.variant.domain.VariantName
@@ -13,9 +15,8 @@ import gomoku.variant.domain.VariantName
 class VariantActivity : ComponentActivity() {
     companion object : Navigation {
         override fun navigateTo(origin: Activity) {
-            // TODO("Add Variant navigation to VariantActivity.kt")
-            // val intent = Intent(origin, ?::class.java)
-            // origin.startActivity(intent)
+             val intent = Intent(origin, VariantActivity::class.java)
+             origin.startActivity(intent)
         }
     }
 
@@ -24,7 +25,7 @@ class VariantActivity : ComponentActivity() {
         setContent {
             // TODO("Add Variants list")
             VariantScreen(
-                onSubmit = {},
+                onSubmit = {GameActivity.navigateTo(this)},
                 variants = listOf(
                     Variant(
                         name = VariantName.FREESTYLE,

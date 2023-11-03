@@ -14,14 +14,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.components.HeaderLogo
 import gomoku.ui.components.Form
+import gomoku.ui.components.HeaderLogo
 import gomoku.ui.components.HyperLink
 import gomoku.ui.components.InputTextEditor
 import gomoku.ui.components.SubmitButton
 import gomoku.ui.components.TextWithFont
 import gomoku.ui.containers.ButtonData
+import gomoku.ui.theme.EggShell
 import gomoku.ui.theme.GomokuTheme
+import gomoku.ui.theme.Grey
 import pdm.gomoku.R
 
 
@@ -30,6 +32,7 @@ import pdm.gomoku.R
  * @param onSubmit callback to be executed when the submit button is clicked.
  * @param onSignUpClick callback to be executed when the sign-up link is clicked.
  */
+
 @Composable
 fun LoginScreen(
     backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
@@ -47,21 +50,26 @@ fun LoginScreen(
             Form(
                 title = "Welcome",
                 inputFieldsData = listOf(
-                    ButtonData("username", R.drawable.user, validationParameter = { text -> text.length >= 5 && text.length <= 30 }),
-                    ButtonData("************", R.drawable.lock, validationParameter = { text -> text.length >= 8 && text.length <= 40 }),
+                    ButtonData(
+                        "username",
+                        R.drawable.user,
+                        validationParameter = { text -> text.length >= 5 && text.length <= 30 }),
+                    ButtonData(
+                        "************",
+                        R.drawable.lock,
+                        validationParameter = { text -> text.length >= 8 && text.length <= 40 }),
                 ),
-                renderInputField = {
-                        inputFieldData ->
+                renderInputField = { inputFieldData ->
                     InputTextEditor(
                         text = inputFieldData.label,
-                      //  modifier=Modifier.size(1.dp),
-                            //.background(EggShell)
-                            //.border(2.dp, Grey, RectangleShape),
+                        modifier=Modifier
+                            .background(EggShell)
+                            .border(2.dp, Grey, RectangleShape),
                         validateFunctionalInterface = inputFieldData.validationParameter,
                         iconId = inputFieldData.iconId
                     )
                 },
-                footer={
+                footer = {
                     SubmitButton(
                         onButtonText = "Login",
                         onClick = onSubmit,

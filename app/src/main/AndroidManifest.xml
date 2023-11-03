@@ -18,6 +18,9 @@
             android:name="gomoku.register.RegisterActivity"
             android:exported="false" />
         <activity
+            android:name="gomoku.variant.VariantActivity"
+            android:exported="false" />
+        <activity
             android:name="gomoku.home.ui.HomeActivity"
             android:exported="false" />
         <activity
