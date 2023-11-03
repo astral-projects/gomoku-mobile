@@ -10,15 +10,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.home.ui.GAME_NAME
-import androidx.compose.ui.unit.dp
-
+import gomoku.home.domain.Home.GAME_NAME
+import gomoku.register.components.FooterBubbles
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.components.generic.Form
-import gomoku.ui.components.generic.InputTextEditor
-import gomoku.ui.components.generic.SubmitButton
-import gomoku.ui.components.generic.TextWithFont
+import gomoku.ui.components.Header
+import gomoku.ui.components.Form
+import gomoku.ui.components.InputTextEditor
+import gomoku.ui.components.SubmitButton
 import gomoku.ui.containers.ButtonData
 import gomoku.ui.theme.EggShell
 import gomoku.ui.theme.Grey
@@ -31,10 +30,8 @@ fun RegisterScreen(
 ) {
     GomokuTheme{
         Background(
-            header = { TextWithFont(text = GAME_NAME) },
-            footer = {
-                FooterBubbles()
-            }
+            header = { Header(text = GAME_NAME) },
+            footer = { FooterBubbles() }
         ) {
             //TODO(Change validationParameter to viewModel)
             Form(
@@ -70,6 +67,7 @@ fun RegisterScreen(
                         .border(2.dp, Grey, RectangleShape),
                     text = inputFieldData.label,
                     iconId = inputFieldData.iconId,
+                    backgroundConfig = BackgroundConfig(LocalConfiguration.current),
                 )
             }
         }

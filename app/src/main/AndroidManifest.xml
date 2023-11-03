@@ -12,7 +12,7 @@
         android:theme="@style/Theme.Gomoku"
         tools:targetApi="31">
         <activity
-            android:name="gomoku.leaderboard.ui.LeaderBoardActivity"
+            android:name="gomoku.leaderboard.LeaderboardActivity"
             android:exported="false" />
         <activity
             android:name="gomoku.register.RegisterActivity"

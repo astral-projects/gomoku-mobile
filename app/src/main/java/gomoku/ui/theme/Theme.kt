@@ -17,14 +17,15 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    // TODO(Replace with your dark brand colors)
+    // TODO(Replace with dark brand colors later)
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = EggShell,
     onPrimary = Color.White,
+    inversePrimary = Color.Black,
     secondary = DarkOrange,
-    tertiary = LightGrey,
+    tertiary = DarkPurple,
     surface = SilverLakeBlue,
     background = PaynesGrey,
     outline = Color.Black,

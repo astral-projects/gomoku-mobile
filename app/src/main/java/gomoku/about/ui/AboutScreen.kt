@@ -16,11 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import gomoku.about.domain.About
-import gomoku.home.ui.GAME_NAME
+import gomoku.home.domain.Home.GAME_NAME
 import gomoku.ui.background.Background
-import gomoku.ui.components.generic.SmallerHeaderLogo
-import gomoku.ui.components.generic.ExpandableCard
-import gomoku.ui.components.generic.TopNavHeader
+import gomoku.ui.components.SmallerHeaderLogo
+import gomoku.ui.components.ExpandableCard
+import gomoku.ui.components.TopNavHeader
 import gomoku.ui.theme.GomokuTheme
 import gomoku.ui.theme.PaynesGrey
 
