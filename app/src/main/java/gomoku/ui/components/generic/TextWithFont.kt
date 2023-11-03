@@ -13,6 +13,7 @@ import pdm.gomoku.R
 
 
 @Composable
+@Deprecated("Use Text instead")
 fun TextWithFont(text: String, maxLines: Int = 1, maxCharsPerLine: Int = Int.MAX_VALUE, textSize: TextUnit = TextUnit.Unspecified, modifier: Modifier = Modifier,color:Color = Color.Black) {
     val adjustedText = formatText(text, maxCharsPerLine)
     Text(modifier = modifier,

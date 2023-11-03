@@ -16,15 +16,15 @@ import gomoku.ui.components.generic.HyperLink
 import gomoku.ui.components.generic.InputTextEditor
 import gomoku.ui.components.generic.SubmitButton
 import gomoku.ui.components.generic.TextWithFont
-import gomoku.ui.containers.InputFieldData
+import gomoku.ui.containers.ButtonData
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
 
 /**
- * Composable of the Login Screen
- * @param onSubmit - action to be executed when the submit (login) button is clicked
- * @param onSignUpClick - action to be executed when the sign up link is clicked
+ * Main composable of the login screen.
+ * @param onSubmit callback to be executed when the submit button is clicked.
+ * @param onSignUpClick callback to be executed when the sign-up link is clicked.
  */
 @Composable
 fun LoginScreen(
@@ -36,20 +36,19 @@ fun LoginScreen(
         Background(
             header = { HeaderLogo() },
         ) {
-            //TODO(Meter estas variaveis globais porque sao usadas em demasiado sitios)
             val boxWidth = backgroundConfig.screenWidth * 0.6f
             val boxHeight = backgroundConfig.screenHeight * 0.04f
 
             Form(
                 title = "Welcome",
                 inputFieldsData = listOf(
-                    InputFieldData("username", R.drawable.user),
-                    InputFieldData("************", R.drawable.lock),
+                    ButtonData("username", R.drawable.user),
+                    ButtonData("************", R.drawable.lock),
                 ),
                 renderInputField = {
                         inputFieldData ->
                     InputTextEditor(
-                        text = inputFieldData.text,
+                        text = inputFieldData.label,
                         iconId = inputFieldData.iconId,
                         backgroundConfig = BackgroundConfig(LocalConfiguration.current),
                     )

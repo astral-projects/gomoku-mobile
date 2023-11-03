@@ -19,8 +19,8 @@ import gomoku.ui.theme.ChipColors
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
-private val ChipCornerShapeSize = 10.dp
-private val DefaultChipBorderWidth = 2.dp
+private val chipCornerShapeSize = 10.dp
+private val defaultChipBorderWidth = 2.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,14 +28,14 @@ fun CustomIconChip(
     leadingIconId: Int,
     label: String,
     textColor: Color = Color.Black,
-    borderWidth: Dp = DefaultChipBorderWidth,
+    borderWidth: Dp = defaultChipBorderWidth,
     useSecondaryColor: Boolean = false,
     select: Boolean = false,
     trailingIconId: Int? = null
 ) {
     AssistChip(
         onClick = { },
-        shape = RoundedCornerShape(ChipCornerShapeSize),
+        shape = RoundedCornerShape(chipCornerShapeSize),
         label = {
             Text(
                 text = label,
@@ -77,37 +77,31 @@ fun CustomIconChip(
 @Composable
 @Preview
 fun SelectedCustomIconChipPreview() {
-    GomokuTheme {
-        CustomIconChip(
-            label = "01:09",
-            leadingIconId = R.drawable.timer,
-            select = true,
-            trailingIconId = R.drawable.white_circle
-        )
-    }
+    CustomIconChip(
+        label = "01:09",
+        leadingIconId = R.drawable.timer,
+        select = true,
+        trailingIconId = R.drawable.white_circle
+    )
 }
 
 @Composable
 @Preview
 fun UnselectedCustomIconChipPreview() {
-    GomokuTheme {
-        CustomIconChip(
-            label = "01:09",
-            leadingIconId = R.drawable.timer,
-            textColor = Color.White,
-            select = false
-        )
-    }
+    CustomIconChip(
+        label = "01:09",
+        leadingIconId = R.drawable.timer,
+        textColor = Color.White,
+        select = false
+    )
 }
 
 @Composable
 @Preview
-fun CustomChipWithPrimaryOnlyPreview() {
-    GomokuTheme {
-        CustomIconChip(
-            label = "01:09",
-            leadingIconId = R.drawable.timer,
-            useSecondaryColor = true
-        )
-    }
+fun SecondaryColorCustomIconChipPreview() {
+    CustomIconChip(
+        label = "01:09",
+        leadingIconId = R.drawable.timer,
+        useSecondaryColor = true
+    )
 }

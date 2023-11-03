@@ -1,25 +1,28 @@
 package gomoku.ui.theme
 
 import android.app.Activity
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    /**
-     * TODO: Replace with your brand colors.
-     */
+    // TODO(Replace with your dark brand colors)
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = EggShell,
+    onPrimary = Color.White,
     secondary = DarkOrange,
     tertiary = LightGrey,
     surface = SilverLakeBlue,
@@ -37,14 +40,12 @@ fun GomokuTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-
-        // TODO: Preview doesn't work with dynamic color scheme, so it was temporarily disabled
-        /*dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }*/
-        // TODO("always using light theme for now")
-        darkTheme -> LightColorScheme // DarkColorScheme
+        }
+
+        darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
     val view = LocalView.current
@@ -56,7 +57,7 @@ fun GomokuTheme(
         }
     }
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = LightColorScheme, // TODO("always using light theme for now")
         typography = Typography,
         content = content
     )

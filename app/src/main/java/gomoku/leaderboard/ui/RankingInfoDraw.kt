@@ -19,7 +19,7 @@ fun RankingInfoDraw(
         leadingNumber = rankData.rank,
         labelIconId = rankData.playerInfo.iconId,
         label = rankData.playerInfo.name,
-        trailingNumber = rankData.score,
+        trailingNumber = rankData.points,
         trailingIconId = R.drawable.coins,
     )
 }
