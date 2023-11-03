@@ -13,6 +13,7 @@ import pdm.gomoku.R
 
 @Composable
 fun HomeScreen(
+    userName: String = "User",
     onFindMatch: () -> Unit = {},
     onLeaderBoard: () -> Unit = {},
     onAbout: () -> Unit = {},
@@ -23,12 +24,12 @@ fun HomeScreen(
             header = { HeaderLogo() }
         ) {
             Form(
-                title = "Welcome Back User...",
+                title = "Welcome Back $userName...",
                 inputFieldsData = listOf(
-                    InputFieldData("Find a Match", R.drawable.play_button, onFindMatch),
-                    InputFieldData("LeadersBoard", R.drawable.leaderboard, onLeaderBoard),
-                    InputFieldData("About", R.drawable.about, onAbout),
-                    InputFieldData("Logout", R.drawable.door_out, onLogout)
+                    InputFieldData("Find a Match", R.drawable.play_button, onClick = onFindMatch),
+                    InputFieldData("LeadersBoard", R.drawable.leaderboard, onClick = onLeaderBoard),
+                    InputFieldData("About", R.drawable.about, onClick = onAbout),
+                    InputFieldData("Logout", R.drawable.door_out, onClick = onLogout)
                 ),
                 renderInputField = { inputData ->
                     SubmitButtonWithImage(

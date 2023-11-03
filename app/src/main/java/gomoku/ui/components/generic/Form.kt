@@ -86,7 +86,6 @@ fun RegisterFormPreview() {
         InputTextEditor(
             text = inputFieldData.text,
             iconId = inputFieldData.iconId,
-            backgroundConfig = BackgroundConfig(LocalConfiguration.current),
         )
     }
 }

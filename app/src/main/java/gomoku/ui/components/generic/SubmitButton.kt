@@ -57,7 +57,7 @@ fun SubmitButton(
 @Composable
 private fun TestSubmitButton() {
     val boxWidth = BackgroundConfig(LocalConfiguration.current).screenWidth * 0.6f
-    val boxHeight = BackgroundConfig(LocalConfiguration.current).screenHeight * 0.04f
+    val boxHeight = BackgroundConfig(LocalConfiguration.current).screenHeight * 0.06f
     SubmitButton(
         onButtonText = "Login",
         onClick = { /*TODO*/ },

@@ -1,6 +1,7 @@
 package gomoku.ui.components.domain
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -34,6 +35,7 @@ fun Leaderboard(personsRankingInfo: List<RankingInfo>) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .fillMaxHeight()
                             .padding(1.dp)
                             .clip(RoundedCornerShape(10.dp))
                     ) {

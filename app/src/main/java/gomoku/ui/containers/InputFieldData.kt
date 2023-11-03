@@ -1,3 +1,4 @@
 package gomoku.ui.containers
 
-data class InputFieldData(val text: String, val iconId: Int, val onClick: () -> Unit = {})
+//TODO(Be careful with the specified parameter validationParameter function)
+data class InputFieldData(val text: String, val iconId: Int, val onClick: () -> Unit = {} ,val validationParameter: (String)->Boolean ={true},)
