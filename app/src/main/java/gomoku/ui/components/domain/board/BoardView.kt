@@ -31,10 +31,10 @@ import gomoku.domain.moves.move.Piece
 import gomoku.domain.moves.move.Player
 import gomoku.domain.moves.move.Square
 
-val BoardBorderWidth = 1.dp
-val BoardPadding = 2.dp
+// Config
+private val BoardBorderWidth = 1.dp
+private val BoardPadding = 2.dp
 private const val MINUS_ONE = -1
-
 private fun isLastRow(rowIndex: Int, boardSize: Int) = rowIndex == boardSize
 private fun isLastColumn(columnIndex: Int, boardSize: Int) = columnIndex == boardSize
 private fun isFirstRow(rowIndex: Int) = rowIndex == MINUS_ONE
@@ -45,6 +45,13 @@ private fun isCorner(rowIndex: Int, columnIndex: Int, boardSize: Int) =
             (isLastRow(rowIndex, boardSize) && isFirstColumn(columnIndex)) ||
             (isLastRow(rowIndex, boardSize) && isLastColumn(columnIndex, boardSize))
 
+/**
+ * Board view that will be shown in the game screen.
+ * @param board board information.
+ * @param localPlayer local player information.
+ * @param onCellClick callback that will be called when a cell is clicked.
+ * @param maxWidth the maximum width the board can have.
+ */
 @Composable
 fun BoardView(
     board: Board,
@@ -55,7 +62,7 @@ fun BoardView(
     val boardSize = board.size.value
     val lineColor = MaterialTheme.colorScheme.onPrimary
     var selectedCell by remember { mutableStateOf<Square?>(null) }
-    val cellSize = ((maxWidth - BoardBorderWidth * 2 - BoardPadding * 2) / (boardSize ))
+    val cellSize = ((maxWidth - BoardBorderWidth * 2 - BoardPadding * 2) / (boardSize + 1))
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.primary)

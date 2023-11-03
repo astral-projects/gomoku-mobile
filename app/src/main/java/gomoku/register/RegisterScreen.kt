@@ -15,7 +15,7 @@ import gomoku.ui.components.generic.Form
 import gomoku.ui.components.generic.InputTextEditor
 import gomoku.ui.components.generic.SubmitButton
 import gomoku.ui.components.generic.TextWithFont
-import gomoku.ui.containers.InputFieldData
+import gomoku.ui.containers.ButtonData
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
@@ -34,10 +34,10 @@ fun RegisterScreen(
             Form(
                 title = "Introduce your data",
                 inputFieldsData = listOf(
-                    InputFieldData("username", R.drawable.user),
-                    InputFieldData("expl@domain.com", R.drawable.email),
-                    InputFieldData("************", R.drawable.lock),
-                    InputFieldData("************", R.drawable.lock),
+                    ButtonData("username", R.drawable.user),
+                    ButtonData("expl@domain.com", R.drawable.email),
+                    ButtonData("************", R.drawable.lock),
+                    ButtonData("************", R.drawable.lock),
                 ),
                 footer = {
                     //TOOD(nao esquecer meter as vairaveis globais )
@@ -49,12 +49,12 @@ fun RegisterScreen(
                         modifier = Modifier
                             .height(boxHeight)
                             .width(boxWidth),
-                        letterColor = Color.Black
+                        textColor = Color.Black
                     )
                 },
             ) { inputFieldData ->
                 InputTextEditor(
-                    text = inputFieldData.text,
+                    text = inputFieldData.label,
                     iconId = inputFieldData.iconId,
                     backgroundConfig = BackgroundConfig(LocalConfiguration.current),
                 )

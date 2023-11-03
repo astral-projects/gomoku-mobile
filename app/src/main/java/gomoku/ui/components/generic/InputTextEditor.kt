@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.theme.EggShell
-import gomoku.ui.theme.loginComposableBorder
+import gomoku.ui.theme.Grey
 import pdm.gomoku.R
 
 /**
@@ -51,7 +51,7 @@ fun InputTextEditor(
         modifier = modifier
             .height(boxHeight)
             .background(backgroundColor)
-            .border(2.dp, loginComposableBorder, RectangleShape)
+            .border(2.dp, Grey, RectangleShape)
             .width(boxWidth)
     ) {
         // Image

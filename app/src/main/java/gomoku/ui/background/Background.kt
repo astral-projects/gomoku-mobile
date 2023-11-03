@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+// Config
 private val surfaceCornerShapeSize: Dp = 35.dp
 private val headerPaddingHorizontal: Dp = 20.dp
 private val headerPaddingTop: Dp = 20.dp
@@ -35,7 +36,7 @@ private val bodyPaddingVertical: Dp = 15.dp
 private val bodyOffsetIntoHeader: Dp = (-30).dp
 
 /**
- * A background that has a [header], [body], and optional [footer].
+ * A background that has a [header], [body], and an optional [footer].
  * All content is centered and restricted to a maximum width and height.
  * Header can only go up to 2/5 of the screen height.
  * @param config The configuration of the screen.
