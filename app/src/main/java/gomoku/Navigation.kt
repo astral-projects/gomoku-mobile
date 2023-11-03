@@ -3,7 +3,7 @@ package gomoku
 import android.app.Activity
 
 /**
- * Interface for navigation between screens.
+ * Contract centralizes all the navigation logic in the activities that implement it.
  */
 interface Navigation {
     fun navigateTo(origin: Activity)

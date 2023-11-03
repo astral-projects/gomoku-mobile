@@ -1,5 +1,4 @@
-package gomoku.ui.pop_ups
-
+package gomoku.ui.dialogs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,7 +22,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.components.generic.TextWithFont
@@ -31,15 +29,7 @@ import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
 @Composable
-@Preview(showBackground = true)
-fun Pop_Up_WindowResultGame_Preview() {
-    Pop_Up_WindowResultGame(BackgroundConfig(LocalConfiguration.current))
-}
-
-
-@Composable
-fun Pop_Up_WindowResultGame(background: BackgroundConfig) {
-
+fun GameFinishedResultDialog(background: BackgroundConfig) {
     GomokuTheme {
         Surface(
             color = Color.Transparent,
@@ -168,4 +158,9 @@ fun Pop_Up_WindowResultGame(background: BackgroundConfig) {
 
         }
     }
+}
+
+@Composable
+fun GameFinishedResultDialogPreview() {
+    GameFinishedResultDialog(BackgroundConfig(LocalConfiguration.current))
 }

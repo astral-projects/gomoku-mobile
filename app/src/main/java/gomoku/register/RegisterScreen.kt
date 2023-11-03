@@ -7,10 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.ui.FooterBubbles
-import gomoku.ui.GAME_NAME
+import gomoku.home.GAME_NAME
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
+import gomoku.ui.components.generic.FooterBubbles
 import gomoku.ui.components.generic.Form
 import gomoku.ui.components.generic.InputTextEditor
 import gomoku.ui.components.generic.SubmitButton
@@ -45,7 +45,7 @@ fun RegisterScreen(
                     val boxHeight = backgroundConfig.screenHeight * 0.04f
                     SubmitButton(
                         onButtonText = "Register",
-                        onClick = { onSubmit },
+                        onClick =  onSubmit ,
                         modifier = Modifier
                             .height(boxHeight)
                             .width(boxWidth),

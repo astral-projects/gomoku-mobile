@@ -1,4 +1,4 @@
-package gomoku.ui.pop_ups
+package gomoku.ui.dialogs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,9 +28,8 @@ import gomoku.ui.components.generic.TextWithFont
 import gomoku.ui.theme.LightOrange
 import pdm.gomoku.R
 
-
 @Composable
-fun Pop_Up_WindowTimeExceed(background: BackgroundConfig) {
+fun TurnTimeExceedDialog(background: BackgroundConfig) {
     Box(
         modifier = Modifier
             .width(background.screenWidth * 0.8f)
@@ -88,7 +87,7 @@ fun Pop_Up_WindowTimeExceed(background: BackgroundConfig) {
 
 @Composable
 @Preview(showBackground = true)
-fun Pop_Up_WindowTimeExceed_Preview() {
-    Pop_Up_WindowTimeExceed(background = BackgroundConfig(LocalConfiguration.current))
+fun TurnTimeExceedDialogPreview() {
+    TurnTimeExceedDialog(background = BackgroundConfig(LocalConfiguration.current))
 }
 

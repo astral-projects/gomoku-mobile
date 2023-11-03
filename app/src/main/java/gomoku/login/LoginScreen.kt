@@ -12,10 +12,11 @@ import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.components.domain.HeaderLogo
 import gomoku.ui.components.generic.Form
+import gomoku.ui.components.generic.HyperLink
+import gomoku.ui.components.generic.InputTextEditor
 import gomoku.ui.components.generic.SubmitButton
 import gomoku.ui.components.generic.TextWithFont
 import gomoku.ui.containers.InputFieldData
-import gomoku.ui.components.generic.HyperLink
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
@@ -45,13 +46,21 @@ fun LoginScreen(
                     InputFieldData("username", R.drawable.user),
                     InputFieldData("************", R.drawable.lock),
                 ),
-                renderInputField = { //TODO(Here needs to put something to the user put text in the fields)
-                     },
+                renderInputField = {
+                        inputFieldData ->
+                    InputTextEditor(
+                        text = inputFieldData.text,
+                        iconId = inputFieldData.iconId,
+                        backgroundConfig = BackgroundConfig(LocalConfiguration.current),
+                    )
+                },
                 footer={
                     SubmitButton(
                         onButtonText = "Login",
-                        onClick = onSubmit ,
-                        modifier = Modifier.width(boxWidth).height(boxHeight)
+                        onClick = onSubmit,
+                        modifier = Modifier
+                            .width(boxWidth)
+                            .height(boxHeight)
                     )
                 }
             )

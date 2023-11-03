@@ -27,7 +27,7 @@ private val surfaceCornerShapeSize: Dp = 35.dp
 private val headerPaddingHorizontal: Dp = 20.dp
 private val headerPaddingTop: Dp = 20.dp
 private val headerPaddingBottom: Dp = 40.dp
-private val bodySurfacePaddingHorizontal: Dp = 35.dp
+private val bodySurfacePaddingHorizontal: Dp = 15.dp
 private val bodySurfacePaddingVertical: Dp = 10.dp
 private val footerPaddingVertical: Dp = 2.dp
 private val bodyPaddingHorizontal: Dp = 15.dp
@@ -93,6 +93,7 @@ fun Background(
                         horizontal = bodySurfacePaddingHorizontal,
                         vertical = bodySurfacePaddingVertical
                     )
+                    // goes into the header
                     .let { if (useBodySurface) it.offset(y = bodyOffsetIntoHeader) else it }
             ) {
                 Column (

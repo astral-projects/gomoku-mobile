@@ -1,7 +1,6 @@
 package gomoku.ui.components.generic
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,12 +29,12 @@ private val roundedCornerShapeSize = 7.dp
 
 @Composable
 fun SubmitButton(
+    modifier: Modifier = Modifier,
     onButtonText: String,
     onClick: () -> Unit,
-    backgroundColor: Color=MaterialTheme.colorScheme.secondary,
-    letterColor: Color=Color.White,
-    enable: Boolean = true,
-    modifier:Modifier=Modifier
+    backgroundColor: Color = MaterialTheme.colorScheme.secondary,
+    letterColor: Color = Color.White,
+    enable: Boolean = true
 ) {
     Button(
         onClick = onClick,
@@ -59,10 +58,12 @@ fun SubmitButton(
 private fun TestSubmitButton() {
     val boxWidth = BackgroundConfig(LocalConfiguration.current).screenWidth * 0.6f
     val boxHeight = BackgroundConfig(LocalConfiguration.current).screenHeight * 0.04f
-    SubmitButton(onButtonText = "Login",
+    SubmitButton(
+        onButtonText = "Login",
         onClick = { /*TODO*/ },
         modifier = Modifier
             .height(boxHeight)
             .width(boxWidth),
-        letterColor = Color.Black)
+        letterColor = Color.Black
+    )
 }

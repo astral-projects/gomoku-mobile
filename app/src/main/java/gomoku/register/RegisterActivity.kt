@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import gomoku.Navigation
-import gomoku.login.LoginActivity
+import gomoku.home.HomeActivity
 
 class RegisterActivity : ComponentActivity() {
 
@@ -21,7 +21,7 @@ class RegisterActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RegisterScreen(
-                onSubmit = { LoginActivity.navigateTo(this) },
+                onSubmit = { HomeActivity.navigateTo(this) },
             )
         }
     }
