@@ -26,6 +26,7 @@ private val LightColorScheme = lightColorScheme(
     inversePrimary = Color.Black,
     secondary = DarkOrange,
     tertiary = DarkPurple,
+    onSecondary = LightYellow,
     surface = SilverLakeBlue,
     background = PaynesGrey,
     outline = Color.Black,

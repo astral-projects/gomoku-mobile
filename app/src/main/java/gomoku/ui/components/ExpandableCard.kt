@@ -25,7 +25,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -108,7 +107,7 @@ fun ExpandableCard(
                     modifier = Modifier
                         .weight(if (leadingIconId != null) 4f else 6f),
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -132,7 +131,7 @@ fun ExpandableCard(
                 Text(
                     text = description,
                     style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.inversePrimary,
                     maxLines = descriptionMaxLines,
                     textAlign = TextAlign.Left,
                     overflow = TextOverflow.Ellipsis,

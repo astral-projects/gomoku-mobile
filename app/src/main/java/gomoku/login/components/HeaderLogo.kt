@@ -1,6 +1,5 @@
-package gomoku.ui.components
+package gomoku.login.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,8 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -22,7 +19,6 @@ import androidx.compose.ui.unit.sp
 import gomoku.home.domain.Home.GAME_NAME
 import pdm.gomoku.R
 
-private const val LOGO_ROTATION_DEGREES = 45f
 private val logoPadding = 25.dp
 
 @Composable
@@ -34,13 +30,7 @@ fun HeaderLogo() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painterResource(R.drawable.gomoku),
-            contentDescription = null,
-            modifier = Modifier
-                .weight(1f) // fills the entire width
-                .rotate(LOGO_ROTATION_DEGREES)
-        )
+        GomokuLogo()
         Text(
             text = GAME_NAME,
             fontSize = 30.sp,
@@ -67,7 +57,6 @@ fun SmallerHeaderLogo() {
         HeaderLogo()
     }
 }
-
 
 @Preview
 @Composable

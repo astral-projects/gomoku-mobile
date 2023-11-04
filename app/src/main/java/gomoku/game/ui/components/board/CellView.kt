@@ -18,6 +18,14 @@ import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import pdm.gomoku.R
 
+/**
+ * Represents a cell in the board.
+ * @param cellSize The size of the cell to be drawn.
+ * @param lineColor The color of the lines that divide the cell.
+ * @param selectedCell Whether the cell is selected or not.
+ * @param piece The piece that is in the cell.
+ * @param onClick The action to be performed when the cell is clicked.
+ */
 @Composable
 fun CellView(
     cellSize: Dp,
@@ -86,7 +94,7 @@ fun CellView(
 
 @Preview
 @Composable
-fun CellViewPreview() {
+private fun CellViewPreview() {
     CellView(
         cellSize = 50.dp,
         lineColor = Color.Black,

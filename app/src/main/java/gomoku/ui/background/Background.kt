@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -33,10 +32,10 @@ private val headerPaddingBottom: Dp = 40.dp
 private val bodySurfacePaddingHorizontal: Dp = 30.dp
 private val bodySurfacePaddingVertical: Dp = 10.dp
 private val footerPaddingVertical: Dp = 2.dp
-private val bodyPaddingHorizontal: Dp = 15.dp
+private val bodyPaddingHorizontal: Dp = 10.dp
 private val bodyPaddingVertical: Dp = 15.dp
 private val bodyOffsetIntoHeader: Dp = (-30).dp
-private val BodySurfaceBorderWidth: Dp = 2.dp
+private val bodySurfaceBorderWidth: Dp = 2.dp
 
 /**
  * A background that has a [header], [body], and an optional [footer].
@@ -95,30 +94,30 @@ fun Background(
             Column(
                 modifier = Modifier
                     .padding(
-                        horizontal = bodySurfacePaddingHorizontal,
-                        vertical = bodySurfacePaddingVertical
+                        horizontal = bodyPaddingHorizontal,
+                        vertical = bodyPaddingVertical
                     )
                     // goes into the header
                     .let { if (useBodySurface) it.offset(y = bodyOffsetIntoHeader) else it }
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .border(
-                            BodySurfaceBorderWidth,
-                            MaterialTheme.colorScheme.outline,
-                            RoundedCornerShape(surfaceCornerShapeSize)
-                        )
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     if (useBodySurface) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier
                                 .clip(RoundedCornerShape(surfaceCornerShapeSize))
+                                .border(
+                                    width = bodySurfaceBorderWidth,
+                                    color = MaterialTheme.colorScheme.outline,
+                                    shape = RoundedCornerShape(surfaceCornerShapeSize)
+                                )
                                 .background(MaterialTheme.colorScheme.surface)
                                 .padding(
-                                    horizontal = bodyPaddingHorizontal,
-                                    vertical = bodyPaddingVertical
+                                    horizontal = bodySurfacePaddingHorizontal,
+                                    vertical = bodySurfacePaddingVertical
                                 )
                         ) {
                             body()
@@ -143,7 +142,7 @@ fun Background(
 
 @Preview(showBackground = true)
 @Composable
-fun BackgroundWithBodySurfacePreview() {
+private fun BackgroundWithBodySurfacePreview() {
     Background(
         header = {
             repeat(100) {
@@ -172,9 +171,9 @@ fun BackgroundWithBodySurfacePreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun BackgroundWithoutBodySurfacePreview() {
+private fun BackgroundWithoutBodySurfacePreview() {
     Background(
         header = {
             repeat(100) {
@@ -205,7 +204,7 @@ fun BackgroundWithoutBodySurfacePreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun BackgroundWithNavHeaderPreview() {
+private fun BackgroundWithNavHeaderPreview() {
     Background(
         header = {
             repeat(1) {
@@ -235,7 +234,7 @@ fun BackgroundWithNavHeaderPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun BackgroundWithNoFooterPreview() {
+private fun BackgroundWithNoFooterPreview() {
     Background(
         header = {
             repeat(3) {

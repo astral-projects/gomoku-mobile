@@ -3,7 +3,7 @@ package gomoku.game.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,20 +23,35 @@ import gomoku.game.domain.moves.Move
 import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
-import gomoku.ui.background.Background
-import gomoku.ui.background.BackgroundConfig
 import gomoku.game.ui.components.board.BoardView
 import gomoku.game.ui.components.chips.GameInfoChip
 import gomoku.game.ui.components.chips.PlayerInfoChip
 import gomoku.home.domain.Home.GAME_NAME
+import gomoku.ui.background.Background
+import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.components.DismissButton
 import gomoku.ui.components.TopNavHeader
 import gomoku.ui.containers.PlayerInfo
+import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
+// Constants
+private const val DISMISS_BUTTON_TEXT = "Leave game"
+
+/**
+ * Represents the game screen main composable.
+ * @param backgroundConfig the [BackgroundConfig] to be used.
+ * @param localPlayer the [Player] that is playing locally.
+ * @param onBurgerMenuClick the callback to be called when the burger menu is clicked.
+ * @param onLeaveGameRequest the callback to be called when the dismiss button is clicked.
+ * @param onCellClick the callback to be called when a cell is clicked.
+ * @param whitePlayer the [PlayerInfo] of the white player.
+ * @param blackPlayer the [PlayerInfo] of the black player.
+ * @param board the [Board] to be displayed.
+ */
 @Composable
 fun GameScreen(
-    backgroundConfig: BackgroundConfig,
+    backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     localPlayer: Player,
     onBurgerMenuClick: () -> Unit,
     onLeaveGameRequest: () -> Unit,
@@ -45,70 +60,73 @@ fun GameScreen(
     blackPlayer: PlayerInfo,
     board: Board
 ) {
-
-    Background(
-        config = backgroundConfig,
-        header = { TopNavHeader(title = GAME_NAME, onBurgerMenuClick = onBurgerMenuClick) },
-        useBodySurface = false,
-    ) {
-        Column(
-            verticalArrangement = Arrangement.SpaceBetween
+    GomokuTheme {
+        Background(
+            config = backgroundConfig,
+            header = { TopNavHeader(title = GAME_NAME, onBurgerMenuClick = onBurgerMenuClick) },
+            useBodySurface = false,
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start
+            Column(
+                verticalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxSize()
             ) {
-                GameInfoChip(
-                    leadingIconId = R.drawable.timer,
-                    label = "${board.turn.timer}"
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    GameInfoChip(
+                        leadingIconId = R.drawable.timer,
+                        label = "${board.turn.timer}"
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    PlayerInfoChip(
+                        playerInfo = whitePlayer,
+                        trailingIconId = R.drawable.white_circle,
+                        select = board.turn.player == Player.W
+                    )
+                }
+                BoardContainer(
+                    board = board,
+                    localPlayer = localPlayer,
+                    onCellClick = onCellClick
                 )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) {
-                PlayerInfoChip(
-                    playerInfo = whitePlayer,
-                    trailingIconId = R.drawable.white_circle,
-                    select = board.turn.player == Player.W
-                )
-            }
-            BoardContainer(
-                board = board,
-                localPlayer = localPlayer,
-                onCellClick = onCellClick
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                PlayerInfoChip(
-                    playerInfo = blackPlayer,
-                    trailingIconId = R.drawable.black_circle,
-                    select = board.turn.player == Player.B
-                )
-                GameInfoChip(
-                    leadingIconId = R.drawable.directions,
-                    label = "${board.moves.size}"
-                )
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                DismissButton(
-                    onButtonText = "Leave Game",
-                    enable = true,
-                    onDismiss = onLeaveGameRequest
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    PlayerInfoChip(
+                        playerInfo = blackPlayer,
+                        trailingIconId = R.drawable.black_circle,
+                        select = board.turn.player == Player.B
+                    )
+                    GameInfoChip(
+                        leadingIconId = R.drawable.directions,
+                        label = "${board.moves.size}"
+                    )
+                }
+                // Spacer(modifier = Modifier.weight(1f))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    DismissButton(
+                        onButtonText = DISMISS_BUTTON_TEXT,
+                        enable = true,
+                        onDismiss = onLeaveGameRequest
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun BoardContainer(
+private fun BoardContainer(
     board: Board,
     localPlayer: Player,
     onCellClick: (toSquare: Square) -> Unit
@@ -133,7 +151,7 @@ fun BoardContainer(
 
 @Preview
 @Composable
-fun GameScreenPreview() {
+private fun GameScreenPreview() {
     val turn = BoardTurn(
         player = Player.W,
         timer = Timer(0, 55)
@@ -149,7 +167,7 @@ fun GameScreenPreview() {
     val board = Board(
         moves = moves,
         turn = turn,
-        size = BoardSize.FIFTEEN
+        size = BoardSize.NINETEEN
     )
     GameScreen(
         backgroundConfig = BackgroundConfig(LocalConfiguration.current),
@@ -158,7 +176,7 @@ fun GameScreenPreview() {
         onLeaveGameRequest = {},
         onCellClick = {},
         whitePlayer = PlayerInfo("Geralt of Rivia", R.drawable.man),
-        blackPlayer = PlayerInfo("Arthur Morgan", R.drawable.man5),
+        blackPlayer = PlayerInfo("Arthur Morgan".repeat(100), R.drawable.man5),
         board = board
     )
 }

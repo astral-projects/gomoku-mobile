@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import gomoku.Navigation
+import gomoku.about.domain.About
 
 class AboutActivity : ComponentActivity() {
     companion object : Navigation {
@@ -18,7 +19,10 @@ class AboutActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AboutScreen {}
+            AboutScreen(
+                onBurgerMenuClick = {/*TODO*/ },
+                sections = About.sections
+            )
         }
     }
 }

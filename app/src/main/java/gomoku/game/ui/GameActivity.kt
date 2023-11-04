@@ -18,7 +18,7 @@ import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.containers.PlayerInfo
 import pdm.gomoku.R
 
-class GameActivity: ComponentActivity() {
+class GameActivity : ComponentActivity() {
     companion object {
         fun navigateTo(origin: ComponentActivity) {
             val intent = Intent(origin, GameActivity::class.java)
@@ -26,7 +26,6 @@ class GameActivity: ComponentActivity() {
         }
     }
 
-    //Todo(The following code is not working, it is just for the navigation propose)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -37,7 +36,7 @@ class GameActivity: ComponentActivity() {
                 onLeaveGameRequest = { HomeActivity.navigateTo(this) },
                 onCellClick = { /*TODO*/ },
                 whitePlayer = PlayerInfo("Player W", R.drawable.man5),
-                blackPlayer = PlayerInfo("Player B",R.drawable.woman2),
+                blackPlayer = PlayerInfo("Player B", R.drawable.woman2),
                 board = Board(
                     moves = mapOf(
                         Move(Square(1, 'a'), Piece(Player.W)),
@@ -49,7 +48,7 @@ class GameActivity: ComponentActivity() {
                     ),
                     turn = BoardTurn(
                         player = Player.W,
-                        timer = Timer(0, 0,)
+                        timer = Timer(0, 0)
                     ),
                     size = BoardSize.FIFTEEN,
                 )

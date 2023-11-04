@@ -30,26 +30,21 @@ import gomoku.game.domain.board.BoardTurn
 import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
+import gomoku.ui.theme.GomokuTheme
+
+// Constants
+private const val MINUS_ONE = -1
 
 // Config
-private val BoardBorderWidth = 1.dp
-private val BoardPadding = 2.dp
-private const val MINUS_ONE = -1
-private fun isLastRow(rowIndex: Int, boardSize: Int) = rowIndex == boardSize
-private fun isLastColumn(columnIndex: Int, boardSize: Int) = columnIndex == boardSize
-private fun isFirstRow(rowIndex: Int) = rowIndex == MINUS_ONE
-private fun isFirstColumn(columnIndex: Int) = columnIndex == MINUS_ONE
-private fun isCorner(rowIndex: Int, columnIndex: Int, boardSize: Int) =
-    (isFirstRow(rowIndex) && isFirstColumn(columnIndex)) ||
-            (isFirstRow(rowIndex) && isLastColumn(columnIndex, boardSize)) ||
-            (isLastRow(rowIndex, boardSize) && isFirstColumn(columnIndex)) ||
-            (isLastRow(rowIndex, boardSize) && isLastColumn(columnIndex, boardSize))
+private val boardBorderWidth = 2.dp
+private val boardPadding = 2.dp
+private const val LINE_STROKE_WIDTH_FACTOR = 2f
 
 /**
- * Board view that will be shown in the game screen.
- * @param board board information.
- * @param localPlayer local player information.
- * @param onCellClick callback that will be called when a cell is clicked.
+ * Represents the board view.
+ * @param board board to be displayed.
+ * @param localPlayer the local player.
+ * @param onCellClick callback to be called when a cell is clicked.
  * @param maxWidth the maximum width the board can have.
  */
 @Composable
@@ -60,14 +55,14 @@ fun BoardView(
     maxWidth: Dp,
 ) {
     val boardSize = board.size.value
-    val lineColor = MaterialTheme.colorScheme.onPrimary
+    val lineColor = MaterialTheme.colorScheme.surface
     var selectedCell by remember { mutableStateOf<Square?>(null) }
-    val cellSize = ((maxWidth - BoardBorderWidth * 2 - BoardPadding * 2) / (boardSize + 1))
+    val cellSize = ((maxWidth - boardBorderWidth * 2 - boardPadding * 2) / (boardSize + 1))
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.primary)
-            .border(BoardBorderWidth, MaterialTheme.colorScheme.outline)
-            .padding(BoardPadding)
+            .border(boardBorderWidth, MaterialTheme.colorScheme.outline)
+            .padding(boardPadding)
     ) {
         Column {
             for (rowIndex in MINUS_ONE..boardSize)
@@ -135,8 +130,8 @@ fun DrawVerticalLine(
                 drawLine(
                     color = lineColor,
                     start = Offset(size.width / 2, 0f),
-                    end = Offset(size.width / 2, size.width),
-                    strokeWidth = 2f * density
+                    end = Offset(size.width / 2, size.width / 2),
+                    strokeWidth = LINE_STROKE_WIDTH_FACTOR * density
                 )
             }
     )
@@ -156,15 +151,26 @@ fun DrawHorizontalLine(
                     color = lineColor,
                     start = Offset(0f, size.width),
                     end = Offset(size.width, size.width),
-                    strokeWidth = 2f * density
+                    strokeWidth = LINE_STROKE_WIDTH_FACTOR * density
                 )
             }
     )
 }
 
+// Extension functions
+private fun isLastRow(rowIndex: Int, boardSize: Int) = rowIndex == boardSize
+private fun isLastColumn(columnIndex: Int, boardSize: Int) = columnIndex == boardSize
+private fun isFirstRow(rowIndex: Int) = rowIndex == MINUS_ONE
+private fun isFirstColumn(columnIndex: Int) = columnIndex == MINUS_ONE
+private fun isCorner(rowIndex: Int, columnIndex: Int, boardSize: Int) =
+    (isFirstRow(rowIndex) && isFirstColumn(columnIndex)) ||
+            (isFirstRow(rowIndex) && isLastColumn(columnIndex, boardSize)) ||
+            (isLastRow(rowIndex, boardSize) && isFirstColumn(columnIndex)) ||
+            (isLastRow(rowIndex, boardSize) && isLastColumn(columnIndex, boardSize))
+
 @Composable
 @Preview
-fun BoardViewPreview() {
+private fun BoardViewPreview() {
     val moves = mapOf(
         Square(0, 0) to Piece(Player.W),
         Square(0, 1) to Piece(Player.B),
@@ -177,18 +183,24 @@ fun BoardViewPreview() {
         Square(4, 0) to Piece(Player.W),
         Square(4, 1) to Piece(Player.B)
     )
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        BoardView(
-            board = Board(
-                moves = moves,
-                turn = BoardTurn(Player.W, Timer(0, 10)),
-                size = BoardSize.FIFTEEN
-            ),
-            localPlayer = Player.W,
-            onCellClick = {},
-            maxWidth = 380.dp
-        )
+    GomokuTheme {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+            ) {
+                BoardView(
+                    board = Board(
+                        moves = moves,
+                        turn = BoardTurn(Player.W, Timer(0, 10)),
+                        size = BoardSize.FIFTEEN
+                    ),
+                    localPlayer = Player.W,
+                    onCellClick = {},
+                    maxWidth = 300.dp
+                )
+            }
+        }
     }
 }

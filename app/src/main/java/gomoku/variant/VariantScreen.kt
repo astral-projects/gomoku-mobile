@@ -27,8 +27,8 @@ import gomoku.game.domain.board.BoardSize
 import gomoku.home.domain.Home.GAME_NAME
 import gomoku.register.components.FooterBubbles
 import gomoku.ui.background.Background
-import gomoku.ui.components.Header
 import gomoku.ui.components.ExpandableCard
+import gomoku.ui.components.Header
 import gomoku.ui.components.SubmitButton
 import gomoku.ui.theme.GomokuTheme
 import gomoku.variant.domain.OpeningRule
@@ -43,10 +43,11 @@ private const val SUBMIT_TEXT = "Play"
 // Config
 private const val CARD_WEIGHT = 0.85f
 private const val BODY_HEIGHT_FACTOR = 0.6f
-private val VariantHeaderSpacerWidth = 12.dp
-private val VariantBodyVerticalPadding = 12.dp
-private val VariantItemVerticalPadding = 6.dp
-private val RadioButtonVariantItemSpacerWidth = 6.dp
+private val variantHeaderSpacerWidth = 12.dp
+private val variantBodyVerticalPadding = 15.dp
+private val variantSurfaceVerticalPadding = 15.dp
+private val variantItemVerticalPadding = 6.dp
+private val radioButtonVariantItemSpacerWidth = 6.dp
 
 @Composable
 fun VariantScreen(
@@ -60,14 +61,17 @@ fun VariantScreen(
             header = { Header(text = GAME_NAME) },
             footer = { FooterBubbles() }
         ) {
-            Column {
+            Column(
+                modifier = Modifier
+                    .padding(vertical = variantSurfaceVerticalPadding)
+            ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Header(text = HEADER)
-                    Spacer(modifier = Modifier.width(VariantHeaderSpacerWidth))
+                    Spacer(modifier = Modifier.width(variantHeaderSpacerWidth))
                     Image(
                         painter = painterResource(id = R.drawable.book),
                         contentScale = ContentScale.Inside,
@@ -81,7 +85,7 @@ fun VariantScreen(
                         .fillMaxWidth()
                         // used to allow footer to not be pushed to the bottom
                         .fillMaxHeight(BODY_HEIGHT_FACTOR)
-                        .padding(vertical = VariantBodyVerticalPadding)
+                        .padding(vertical = variantBodyVerticalPadding)
                 ) {
                     variants.forEach { variant ->
                         item {
@@ -89,7 +93,7 @@ fun VariantScreen(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = VariantItemVerticalPadding)
+                                    .padding(vertical = variantItemVerticalPadding)
                             ) {
                                 RadioButton(
                                     colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.outline),
@@ -97,7 +101,7 @@ fun VariantScreen(
                                     onClick = { onOptionSelected(variant) },
                                     modifier = Modifier.weight(1f - CARD_WEIGHT)
                                 )
-                                Spacer(modifier = Modifier.width(RadioButtonVariantItemSpacerWidth))
+                                Spacer(modifier = Modifier.width(radioButtonVariantItemSpacerWidth))
                                 val boardSize = variant.boardSize.value
                                 ExpandableCard(
                                     backgroundColor = MaterialTheme.colorScheme.primary,

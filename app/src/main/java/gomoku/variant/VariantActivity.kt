@@ -23,7 +23,6 @@ class VariantActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            // TODO("Add Variants list")
             VariantScreen(
                 onSubmit = {GameActivity.navigateTo(this)},
                 variants = listOf(

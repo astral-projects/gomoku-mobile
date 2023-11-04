@@ -12,10 +12,10 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import gomoku.login.components.HeaderLogo
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.components.Form
-import gomoku.ui.components.HeaderLogo
 import gomoku.ui.components.HyperLink
 import gomoku.ui.components.InputTextEditor
 import gomoku.ui.components.SubmitButton
