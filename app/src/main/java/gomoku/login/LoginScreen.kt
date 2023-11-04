@@ -32,7 +32,6 @@ import pdm.gomoku.R
  * @param onSubmit callback to be executed when the submit button is clicked.
  * @param onSignUpClick callback to be executed when the sign-up link is clicked.
  */
-
 @Composable
 fun LoginScreen(
     backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
@@ -69,6 +68,7 @@ fun LoginScreen(
                         iconId = inputFieldData.iconId
                     )
                 },
+
                 footer = {
                     SubmitButton(
                         onButtonText = "Login",
@@ -94,7 +94,7 @@ fun LoginScreen(
 
 @Composable
 @Preview
-fun LoginScreenPreview() {
+private fun LoginScreenPreview() {
     LoginScreen(
         backgroundConfig = BackgroundConfig(LocalConfiguration.current),
         onSubmit = {},

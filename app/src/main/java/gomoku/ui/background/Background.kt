@@ -29,18 +29,20 @@ private val surfaceCornerShapeSize: Dp = 35.dp
 private val headerPaddingHorizontal: Dp = 20.dp
 private val headerPaddingTop: Dp = 20.dp
 private val headerPaddingBottom: Dp = 40.dp
-private val bodySurfacePaddingHorizontal: Dp = 30.dp
-private val bodySurfacePaddingVertical: Dp = 10.dp
-private val footerPaddingVertical: Dp = 2.dp
+private val surfacePaddingHorizontal: Dp = 35.dp
+private val surfacePaddingVertical: Dp = 10.dp
 private val bodyPaddingHorizontal: Dp = 10.dp
 private val bodyPaddingVertical: Dp = 15.dp
+private val bodySurfacePaddingHorizontal: Dp = 20.dp
+private val bodySurfacePaddingVertical: Dp = 10.dp
 private val bodyOffsetIntoHeader: Dp = (-30).dp
 private val bodySurfaceBorderWidth: Dp = 2.dp
+private val footerPaddingVertical: Dp = 2.dp
 
 /**
  * A background that has a [header], [body], and an optional [footer].
  * All content is centered and restricted to a maximum width and height.
- * Header can only go up to 2/5 of the screen height.
+ * Header can only go down to 2/5 of the screen height.
  * @param config The configuration of the screen.
  * @param header The content of the header.
  * @param useBodySurface Whether to use a surface for the body content.
@@ -94,8 +96,8 @@ fun Background(
             Column(
                 modifier = Modifier
                     .padding(
-                        horizontal = bodyPaddingHorizontal,
-                        vertical = bodyPaddingVertical
+                        horizontal = if (useBodySurface) surfacePaddingHorizontal else bodyPaddingHorizontal,
+                        vertical = if (useBodySurface) surfacePaddingVertical else bodyPaddingVertical
                     )
                     // goes into the header
                     .let { if (useBodySurface) it.offset(y = bodyOffsetIntoHeader) else it }

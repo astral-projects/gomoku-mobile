@@ -11,12 +11,11 @@ import pdm.gomoku.R
 private const val LOGO_ROTATION_DEGREES = 45f
 
 @Composable
-fun GomokuLogo() {
+fun GomokuLogo(modifier: Modifier = Modifier) {
     Image(
         painterResource(R.drawable.gomoku),
         contentDescription = null,
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
             .rotate(LOGO_ROTATION_DEGREES)
     )
 }
