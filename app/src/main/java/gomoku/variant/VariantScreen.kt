@@ -49,11 +49,18 @@ private val variantSurfaceVerticalPadding = 15.dp
 private val variantItemVerticalPadding = 6.dp
 private val radioButtonVariantItemSpacerWidth = 6.dp
 
+/**
+ * Represents the Variant screen main composable.
+ * @param onSubmit the callback to be called when the submit button is clicked.
+ * @param variants the [List] of [Variant]s to be displayed in the body.
+ * @throws IllegalArgumentException if [variants] is empty.
+ */
 @Composable
 fun VariantScreen(
     onSubmit: (Variant) -> Unit,
     variants: List<Variant>
 ) {
+    // TODO("wait for teacher's response on slack about this")
     require(variants.isNotEmpty()) { "variants must not be empty" }
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(variants.first()) }
     GomokuTheme {
@@ -133,7 +140,7 @@ fun VariantScreen(
 
 @Composable
 @Preview
-fun VariantScreenPreview() {
+private fun VariantScreenPreview() {
     VariantScreen(
         onSubmit = {},
         variants = listOf(

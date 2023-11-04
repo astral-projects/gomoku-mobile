@@ -35,9 +35,10 @@ import androidx.wear.compose.material3.ContentAlpha
 import pdm.gomoku.R
 
 // Config
-private val IconTitleSpacerWidth = 10.dp
-private val CardPadding = 10.dp
-private val RounderCornerShapeSize = 15.dp
+private val iconTitleSpacerWidth = 10.dp
+private val cardPadding = 10.dp
+private val rounderCornerShapeSize = 15.dp
+private val descriptionPadding = 10.dp
 
 /**
  * Composes a card that is clickable. When clicked this card reveals the text underneath.
@@ -70,7 +71,7 @@ fun ExpandableCard(
         else 0f,
         label = "Rotation State"
     )
-    val cornerShape = RoundedCornerShape(RounderCornerShapeSize)
+    val cornerShape = RoundedCornerShape(rounderCornerShapeSize)
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -91,7 +92,7 @@ fun ExpandableCard(
                 .fillMaxWidth()
                 .clip(cornerShape)
                 .background(backgroundColor)
-                .padding(CardPadding)
+                .padding(cardPadding)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -101,7 +102,7 @@ fun ExpandableCard(
                         painterResource(id = it),
                         contentDescription = null,
                     )
-                    Spacer(modifier = Modifier.width(IconTitleSpacerWidth))
+                    Spacer(modifier = Modifier.width(iconTitleSpacerWidth))
                 }
                 Text(
                     modifier = Modifier
@@ -129,6 +130,7 @@ fun ExpandableCard(
             }
             if (expandedState) {
                 Text(
+                    modifier = Modifier.padding(descriptionPadding),
                     text = description,
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.inversePrimary,

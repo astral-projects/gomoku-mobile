@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import gomoku.home.domain.Home.GAME_NAME
 import pdm.gomoku.R
 
+// Config
 private val logoPadding = 25.dp
 
 @Composable
@@ -30,7 +32,7 @@ fun HeaderLogo() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        GomokuLogo()
+        GomokuLogo(modifier = Modifier.weight(1f))
         Text(
             text = GAME_NAME,
             fontSize = 30.sp,
@@ -48,7 +50,7 @@ fun HeaderLogo() {
 
 @Preview
 @Composable
-fun SmallerHeaderLogo() {
+private fun SmallerHeaderLogo() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -60,7 +62,7 @@ fun SmallerHeaderLogo() {
 
 @Preview
 @Composable
-fun LargerHeaderLogo() {
+private fun LargerHeaderLogo() {
     Box(
         modifier = Modifier
             .fillMaxWidth()

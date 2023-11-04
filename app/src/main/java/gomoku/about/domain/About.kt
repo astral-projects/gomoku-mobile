@@ -3,7 +3,7 @@ package gomoku.about.domain
 import pdm.gomoku.R
 
 /**
- * Represents section data for the About screen.
+ * Represents data centralization for the about screen.
  */
 object About {
     val sections: List<Section> = listOf(

@@ -25,7 +25,7 @@ class HomeActivity : ComponentActivity() {
         setContent {
             HomeScreen(
                 username = "John Doe",
-                onFindMatch = { VariantActivity.navigateTo(this)  },
+                onFindMatch = { VariantActivity.navigateTo(this) },
                 onLeaderBoard = { LeaderboardActivity.navigateTo(this) },
                 onAbout = { AboutActivity.navigateTo(this) },
                 onLogout = { LoginActivity.navigateTo(this) }

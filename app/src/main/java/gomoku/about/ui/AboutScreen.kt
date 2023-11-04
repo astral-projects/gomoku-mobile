@@ -22,6 +22,11 @@ import gomoku.ui.theme.GomokuTheme
 private val sectionVerticalPadding = 10.dp
 private val sectionPadding = 10.dp
 
+/**
+ * Represents the About screen main composable.
+ * @param onBurgerMenuClick the callback to be called when the burger menu is clicked.
+ * @param sections the [List] of [Section] to be displayed in the body.
+ */
 @Composable
 fun AboutScreen(
     onBurgerMenuClick: () -> Unit,
