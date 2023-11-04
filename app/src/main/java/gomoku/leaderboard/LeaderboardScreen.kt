@@ -95,9 +95,6 @@ fun LeaderBoardScreen(
                     LeaderBoardIcon(iconId = R.drawable.leaderboard, onClick = onLeaderBoardClick)
                 }
             }
-
-
-
         }
     }
 }

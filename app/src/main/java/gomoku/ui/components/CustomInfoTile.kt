@@ -2,11 +2,14 @@ package gomoku.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -26,6 +30,9 @@ private val cornerShapeSize = 30.dp
 private val paddingSize = 3.dp
 private val labelPadding = 20.dp
 private val labelIconAndLabelTextPadding = 5.dp
+private val imageSize = 40.dp
+private val medalSize = 50.dp
+private val rowSize = 50.dp
 
 @Composable
 fun CustomInfoTile(
@@ -37,11 +44,13 @@ fun CustomInfoTile(
     trailingNumber: Int,
     trailingIconId: Int,
 ) {
+
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
+            .clip(RoundedCornerShape(10.dp))
+            .height(rowSize)
             .background(MaterialTheme.colorScheme.primary)
-            .clip(RoundedCornerShape(cornerShapeSize))
             .padding(paddingSize)
             .fillMaxWidth()
     ) {
@@ -50,25 +59,19 @@ fun CustomInfoTile(
             if (leadingIconId != null) {
                 Image(
                     painter = painterResource(leadingIconId),
-                    contentDescription = null
-                )
-                Text(
-                    text = leadingNumber.toString(),
-                    fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Left,
+                    contentDescription = null,
+                    modifier = Modifier.size(medalSize)
                 )
             } else {
+                Spacer(modifier = Modifier.padding(9.dp))
                 // Hidden image to keep the layout
-                Image(
-                    painter = painterResource(R.drawable.coins),
-                    contentDescription = null,
-                    alpha = 0.0f
-                )
                 Text(
                     text = leadingNumber.toString(),
                     fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Left,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleLarge,
                 )
+                Spacer(modifier = Modifier.padding(8.dp))
             }
         }
 
@@ -79,7 +82,8 @@ fun CustomInfoTile(
             // label icon and label
             Image(
                 painter = painterResource(labelIconId),
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier.size(imageSize)
             )
             Spacer(modifier = Modifier.padding(labelIconAndLabelTextPadding))
             Text(
@@ -87,16 +91,18 @@ fun CustomInfoTile(
                 maxLines = 1,
                 fontWeight = FontWeight.SemiBold,
                 overflow = TextOverflow.Ellipsis,
-                color = labelTextColor
+                color = labelTextColor,
+                style = MaterialTheme.typography.titleMedium,
             )
         }
         Row {
             // trailing number and trailing icon
-            Text(trailingNumber.toString())
+            Text(trailingNumber.toString(), style = MaterialTheme.typography.titleMedium)
             Image(
                 painter = painterResource(trailingIconId),
                 contentDescription = null,
-                alpha = 0.9f
+                alpha = 0.9f,
+                modifier = Modifier.size(imageSize)
             )
         }
     }

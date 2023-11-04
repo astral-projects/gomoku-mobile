@@ -1,5 +1,6 @@
 package gomoku.leaderboard.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,19 +29,12 @@ fun Leaderboard(personsRankingInfo: List<RankingInfo>) {
         LazyColumn(
             state = listState,
             modifier = Modifier
-                .padding(bottom = 2.dp)
+                .padding(bottom = 2.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
             personsRankingInfo.forEach {
                 item {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight()
-                            .padding(1.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                    ) {
                         RankingInfoTile(rankData = it)
-                    }
                 }
             }
         }

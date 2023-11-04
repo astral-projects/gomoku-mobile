@@ -20,16 +20,21 @@ fun SearchBar(
     modifier: Modifier = Modifier,
     onSearch: (String) -> Unit,
 ) {
-    OutlinedTextFieldWithValidation(iconId = iconId, placeholderText = text,
-        colors=
-        TextFieldDefaults.outlinedTextFieldColors(
+    OutlinedTextFieldWithValidation(
+        iconId = iconId,
+        placeholderText = text,
+        colors = TextFieldDefaults.outlinedTextFieldColors(
             containerColor = MaterialTheme.colorScheme.secondary,
             focusedLabelColor = MaterialTheme.colorScheme.secondary,
             disabledBorderColor = Color.Transparent,
             errorBorderColor = Color.Transparent
-        )
-        ,modifier=modifier , searchField = onSearch)
+        ),
+        modifier = modifier,
+        searchField = onSearch,
+        validateField = { true }
+    )
 }
+
 
 @Composable
 @Preview(showBackground = true)
