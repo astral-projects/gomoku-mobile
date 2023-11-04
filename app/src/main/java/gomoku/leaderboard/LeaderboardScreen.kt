@@ -63,7 +63,7 @@ fun LeaderBoardScreen(
                 ) {
                     Leaderboard(
                         listOf(
-                            RankingInfo(PlayerInfo("Player 1", R.drawable.man), 1, 10000),
+                            RankingInfo(PlayerInfo("Player 1asdasdadsasd", R.drawable.man), 1, 10000),
                             RankingInfo(PlayerInfo("Player 2", R.drawable.man2), 2, 9000),
                             RankingInfo(PlayerInfo("Player 3", R.drawable.woman), 3, 8000),
                             RankingInfo(PlayerInfo("Player 4", R.drawable.woman2), 4, 7000),

@@ -2,7 +2,6 @@ package gomoku.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,10 +13,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,7 +29,7 @@ private val cornerShapeSize = 30.dp
 private val paddingSize = 3.dp
 private val labelPadding = 20.dp
 private val labelIconAndLabelTextPadding = 5.dp
-private val imageSize = 40.dp
+private val imageSize = 50.dp
 private val medalSize = 50.dp
 private val rowSize = 50.dp
 
@@ -54,40 +53,46 @@ fun CustomInfoTile(
             .padding(paddingSize)
             .fillMaxWidth()
     ) {
-        // leading icon and leading number
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.height(rowSize)
+        ) {
             if (leadingIconId != null) {
                 Image(
                     painter = painterResource(leadingIconId),
                     contentDescription = null,
-                    modifier = Modifier.size(medalSize)
+                    modifier = Modifier.size(imageSize)
                 )
             } else {
                 Spacer(modifier = Modifier.padding(9.dp))
-                // Hidden image to keep the layout
                 Text(
                     text = leadingNumber.toString(),
                     fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
                 )
                 Spacer(modifier = Modifier.padding(8.dp))
             }
         }
 
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(start = labelPadding, end = labelPadding)
         ) {
-            // label icon and label
             Image(
                 painter = painterResource(labelIconId),
                 contentDescription = null,
                 modifier = Modifier.size(imageSize)
             )
             Spacer(modifier = Modifier.padding(labelIconAndLabelTextPadding))
+            //TODO(It is difficult to make the text wrap, so we are limiting the size of the text)
             Text(
-                text = label,
+                text = if (label.length > 8) {
+                    label.substring(0, 8) + "..."
+                } else {
+                    label
+                },
                 maxLines = 1,
                 fontWeight = FontWeight.SemiBold,
                 overflow = TextOverflow.Ellipsis,
@@ -95,8 +100,9 @@ fun CustomInfoTile(
                 style = MaterialTheme.typography.titleMedium,
             )
         }
-        Row {
-            // trailing number and trailing icon
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            ) {
             Text(trailingNumber.toString(), style = MaterialTheme.typography.titleMedium)
             Image(
                 painter = painterResource(trailingIconId),
@@ -115,7 +121,7 @@ fun CustomInfoPreviewWithLeadingIcon() {
         leadingIconId = R.drawable.gold_medal,
         leadingNumber = 1,
         labelIconId = R.drawable.man,
-        label = "Geralt of Rivia",
+        label = "Player 1asdasdadsasd",
         trailingNumber = 5432,
         trailingIconId = R.drawable.coins
     )

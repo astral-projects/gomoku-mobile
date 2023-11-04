@@ -2,7 +2,6 @@ package gomoku.leaderboard.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,7 +29,7 @@ fun Leaderboard(personsRankingInfo: List<RankingInfo>) {
             state = listState,
             modifier = Modifier
                 .padding(bottom = 2.dp),
-            verticalArrangement = Arrangement.spacedBy(5.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             personsRankingInfo.forEach {
                 item {
@@ -47,7 +46,7 @@ fun LeaderBoardPreviewWithFewPeople() {
     GomokuTheme {
         Leaderboard(
             listOf(
-                RankingInfo(PlayerInfo("Player 1", R.drawable.man), 1, 1000),
+                RankingInfo(PlayerInfo("Player 1asdasdadsasd", R.drawable.man), 1, 1000),
                 RankingInfo(PlayerInfo("Player 2", R.drawable.man2), 2, 900),
                 RankingInfo(PlayerInfo("Player 3", R.drawable.woman), 3, 800),
                 RankingInfo(PlayerInfo("Player 4", R.drawable.woman2), 4, 700),
