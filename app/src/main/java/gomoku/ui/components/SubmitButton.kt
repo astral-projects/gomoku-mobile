@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import gomoku.ui.background.BackgroundConfig
 
 // Config
-private val ButtonBorderWidth = 2.dp
-private val RoundedCornerShapeSize = 10.dp
+private val buttonBorderWidth = 2.dp
+private val roundedCornerShapeSize = 10.dp
 private const val BUTTON_WIDTH_FACTOR = 0.7f
 private const val BUTTON_HEIGHT_FACTOR = 0.05f
 
@@ -27,6 +27,7 @@ private const val BUTTON_HEIGHT_FACTOR = 0.05f
  * A generic close button for dismissing content in a popup or a dialog.
  * @param modifier Modifier to be applied to the button.
  * @param onButtonText Text to be placed in the button.
+ * @param backgroundConfig Configuration for the background.
  * @param onClick Callback function to be executed when the button is clicked.
  * @param backgroundColor Color of the button background.
  * @param textColor Color of the button text.
@@ -55,10 +56,10 @@ fun SubmitButton(
             contentColor = textColor
         ),
         border = BorderStroke(
-            width = ButtonBorderWidth,
+            width = buttonBorderWidth,
             color = MaterialTheme.colorScheme.outline
         ),
-        shape = RoundedCornerShape(RoundedCornerShapeSize),
+        shape = RoundedCornerShape(roundedCornerShapeSize),
     ) {
         Text(
             text = onButtonText,

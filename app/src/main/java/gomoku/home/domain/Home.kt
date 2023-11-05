@@ -1,7 +1,7 @@
 package gomoku.home.domain
 
 /**
- * Represents data centralization for the home screen.
+ * Represents data and functionality related to the home screen.
  */
 object Home {
     const val GAME_NAME = "Gomoku Royale"

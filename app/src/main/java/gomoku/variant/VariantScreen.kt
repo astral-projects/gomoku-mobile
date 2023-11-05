@@ -25,10 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.game.domain.board.BoardSize
 import gomoku.home.domain.Home.GAME_NAME
-import gomoku.register.components.FooterBubbles
+import gomoku.register.ui.components.FooterBubbles
 import gomoku.ui.background.Background
 import gomoku.ui.components.ExpandableCard
-import gomoku.ui.components.Header
+import gomoku.ui.components.HeaderText
+import gomoku.ui.components.HeadlineText
 import gomoku.ui.components.SubmitButton
 import gomoku.ui.theme.GomokuTheme
 import gomoku.variant.domain.OpeningRule
@@ -65,7 +66,7 @@ fun VariantScreen(
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(variants.first()) }
     GomokuTheme {
         Background(
-            header = { Header(text = GAME_NAME) },
+            header = { HeadlineText(text = GAME_NAME) },
             footer = { FooterBubbles() }
         ) {
             Column(
@@ -77,7 +78,7 @@ fun VariantScreen(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Header(text = HEADER)
+                    HeaderText(text = HEADER)
                     Spacer(modifier = Modifier.width(variantHeaderSpacerWidth))
                     Image(
                         painter = painterResource(id = R.drawable.book),

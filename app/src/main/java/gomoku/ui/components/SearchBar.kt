@@ -7,10 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.ui.components.generic.OutlinedTextFieldWithValidation
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -21,7 +19,8 @@ fun SearchBar(
     onSearch: (String) -> Unit,
 ) {
     OutlinedTextFieldWithValidation(
-        iconId = iconId,
+        value = text,
+        leadingIconId = iconId,
         placeholderText = text,
         colors = TextFieldDefaults.outlinedTextFieldColors(
             containerColor = MaterialTheme.colorScheme.secondary,
@@ -31,10 +30,8 @@ fun SearchBar(
         ),
         modifier = modifier,
         searchField = onSearch,
-        validateField = { true }
     )
 }
-
 
 @Composable
 @Preview(showBackground = true)

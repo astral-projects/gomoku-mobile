@@ -1,4 +1,4 @@
-package gomoku.register.components
+package gomoku.register.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +21,9 @@ const val SMALL_DARKER_BUBBLE_RADIUS = 15f
 const val BIG_LIGHTER_BUBBLE_RADIUS = 80f
 const val SMALL_LIGHTER_BUBBLE_RADIUS = 40f
 
+/**
+ * A set of [Bubble]s to be used in a screen's footer.
+ */
 @Composable
 @Preview
 fun FooterBubbles() {

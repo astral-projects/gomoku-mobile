@@ -15,7 +15,7 @@
             android:name="gomoku.leaderboard.LeaderboardActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.register.RegisterActivity"
+            android:name="gomoku.register.ui.RegisterActivity"
             android:exported="false" />
         <activity
             android:name="gomoku.variant.VariantActivity"
@@ -30,7 +30,7 @@
             android:name="gomoku.game.ui.GameActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.login.LoginActivity"
+            android:name="gomoku.login.ui.LoginActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

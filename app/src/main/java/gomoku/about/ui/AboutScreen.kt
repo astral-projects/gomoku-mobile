@@ -11,8 +11,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.about.domain.About
 import gomoku.about.domain.Section
+import gomoku.about.ui.components.FooterLogo
 import gomoku.home.domain.Home.GAME_NAME
-import gomoku.login.components.FooterLogo
 import gomoku.ui.background.Background
 import gomoku.ui.components.ExpandableCard
 import gomoku.ui.components.TopNavHeader
