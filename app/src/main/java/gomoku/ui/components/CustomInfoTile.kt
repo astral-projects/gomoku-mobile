@@ -25,13 +25,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pdm.gomoku.R
 
-private val cornerShapeSize = 30.dp
+private val cornerShapeSize = 10.dp
 private val paddingSize = 3.dp
 private val labelPadding = 20.dp
 private val labelIconAndLabelTextPadding = 5.dp
-private val imageSize = 50.dp
-private val medalSize = 50.dp
-private val rowSize = 50.dp
+private val imageSize = 40.dp
+private val rowSize = 60.dp
+private val paddingNumber= 9.dp
+private val paddingNumber2= 8.dp
 
 @Composable
 fun CustomInfoTile(
@@ -47,7 +48,7 @@ fun CustomInfoTile(
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
-            .clip(RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(cornerShapeSize))
             .height(rowSize)
             .background(MaterialTheme.colorScheme.primary)
             .padding(paddingSize)
@@ -64,20 +65,20 @@ fun CustomInfoTile(
                     modifier = Modifier.size(imageSize)
                 )
             } else {
-                Spacer(modifier = Modifier.padding(9.dp))
+                Spacer(modifier = Modifier.padding(paddingNumber))
                 Text(
                     text = leadingNumber.toString(),
                     fontWeight = FontWeight.SemiBold,
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center,
                 )
-                Spacer(modifier = Modifier.padding(8.dp))
+                Spacer(modifier = Modifier.padding(paddingNumber2))
             }
         }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
+            modifier = Modifier.height(rowSize)
                 .padding(start = labelPadding, end = labelPadding)
         ) {
             Image(
@@ -102,6 +103,7 @@ fun CustomInfoTile(
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.height(rowSize)
             ) {
             Text(trailingNumber.toString(), style = MaterialTheme.typography.titleMedium)
             Image(

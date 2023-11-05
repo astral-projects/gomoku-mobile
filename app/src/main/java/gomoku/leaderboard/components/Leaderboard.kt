@@ -3,13 +3,10 @@ package gomoku.leaderboard.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.ui.containers.PlayerInfo
@@ -17,19 +14,18 @@ import gomoku.ui.containers.RankingInfo
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
+private val spaceBetweenRows= 6.dp
+
 @Composable
 fun Leaderboard(personsRankingInfo: List<RankingInfo>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
     ) {
         val listState = rememberLazyListState()
         LazyColumn(
             state = listState,
-            modifier = Modifier
-                .padding(bottom = 2.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(spaceBetweenRows),
         ) {
             personsRankingInfo.forEach {
                 item {
