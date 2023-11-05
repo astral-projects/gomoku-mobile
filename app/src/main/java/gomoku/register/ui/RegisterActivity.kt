@@ -1,4 +1,4 @@
-package gomoku.register
+package gomoku.register.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -21,7 +21,7 @@ class RegisterActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RegisterScreen(
-                onSubmit = { HomeActivity.navigateTo(this) },
+                onSubmit = { _, _, _, _ -> HomeActivity.navigateTo(this) }
             )
         }
     }

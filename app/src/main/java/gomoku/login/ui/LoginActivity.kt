@@ -1,4 +1,4 @@
-package gomoku.login
+package gomoku.login.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -7,7 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import gomoku.Navigation
 import gomoku.home.ui.HomeActivity
-import gomoku.register.RegisterActivity
+import gomoku.register.ui.RegisterActivity
 
 class LoginActivity : ComponentActivity() {
 
@@ -22,8 +22,8 @@ class LoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LoginScreen(
-                onSubmit = { HomeActivity.navigateTo(this) },
-                onSignUpClick = { RegisterActivity.navigateTo(this) }
+                onSubmit = { _, _ -> HomeActivity.navigateTo(this) },
+                onSignUpLinkClick = { RegisterActivity.navigateTo(this) }
             )
         }
     }

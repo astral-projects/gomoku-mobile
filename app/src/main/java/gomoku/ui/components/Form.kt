@@ -2,6 +2,7 @@ package gomoku.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import gomoku.ui.containers.ButtonData
+import gomoku.home.domain.ButtonData
 import pdm.gomoku.R
 
 // Config
@@ -50,19 +51,20 @@ fun <R> Form(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Header(text = title)
+        HeaderText(text = title)
         inputFieldsData.forEach { inputFieldData ->
             Spacer(modifier = Modifier.padding(paddingBetweenInputFields))
             renderInputField(inputFieldData)
         }
         footer.let {
-            Spacer(
-                modifier = Modifier.padding(
-                    top = footerPaddingTop,
-                    bottom = footerPaddingBottom
-                )
-            )
-            it?.invoke()
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = footerPaddingTop, bottom = footerPaddingBottom),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                it?.invoke()
+            }
         }
     }
 }
@@ -85,9 +87,11 @@ private fun RegisterFormPreview() {
             )
         },
     ) { inputFieldData ->
-        InputTextEditor(
-            text = inputFieldData.label,
-            iconId = inputFieldData.iconId,
+        InputTextField(
+            value = "value",
+            label = inputFieldData.label,
+            leadingIconId = inputFieldData.iconId,
+            onValueChange = {},
         )
     }
 }

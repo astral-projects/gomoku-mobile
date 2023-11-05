@@ -65,9 +65,9 @@ fun BoardView(
             .padding(boardPadding)
     ) {
         Column {
-            for (rowIndex in MINUS_ONE..boardSize)
+            for (rowIndex in MINUS_ONE until boardSize)
                 Row {
-                    for (columnIndex in MINUS_ONE..boardSize) {
+                    for (columnIndex in MINUS_ONE until boardSize) {
                         when {
                             isCorner(rowIndex, columnIndex, boardSize) ->
                                 Box(modifier = Modifier.size(cellSize / 2))

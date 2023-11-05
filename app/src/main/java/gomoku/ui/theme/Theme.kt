@@ -16,11 +16,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
+private val darkColorScheme = darkColorScheme(
     // TODO(Replace with dark brand colors later)
 )
 
-private val LightColorScheme = lightColorScheme(
+private val lightColorScheme = lightColorScheme(
     primary = EggShell,
     onPrimary = Color.White,
     inversePrimary = Color.Black,
@@ -31,6 +31,7 @@ private val LightColorScheme = lightColorScheme(
     background = PaynesGrey,
     outline = Color.Black,
     error = DarkRed,
+    onError = Wine,
     errorContainer = Wine
 )
 @Composable
@@ -46,8 +47,8 @@ fun GomokuTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> darkColorScheme
+        else -> lightColorScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -58,7 +59,7 @@ fun GomokuTheme(
         }
     }
     MaterialTheme(
-        colorScheme = LightColorScheme, // TODO("always using light theme for now")
+        colorScheme = lightColorScheme, // TODO("always using light theme for now")
         typography = Typography,
         content = content
     )

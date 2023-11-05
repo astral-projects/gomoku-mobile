@@ -1,4 +1,4 @@
-package gomoku.login.components
+package gomoku.about.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,11 +8,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import gomoku.login.ui.components.GomokuLogo
 
 // Config
 private val logoPadding = 25.dp
 private const val LOGO_WIDTH_FACTOR = 0.5f
 
+/**
+ * The app's logo in the footer.
+ */
 @Composable
 fun FooterLogo() {
     Column(
