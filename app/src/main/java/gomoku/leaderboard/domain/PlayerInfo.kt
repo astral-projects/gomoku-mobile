@@ -1,4 +1,4 @@
-package gomoku.ui.containers
+package gomoku.leaderboard.domain
 
 /**
  * Represents a player's information.

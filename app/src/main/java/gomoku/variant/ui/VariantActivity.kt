@@ -1,4 +1,4 @@
-package gomoku.variant
+package gomoku.variant.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -9,7 +9,7 @@ import gomoku.Navigation
 import gomoku.game.domain.board.BoardSize
 import gomoku.game.ui.GameActivity
 import gomoku.variant.domain.OpeningRule
-import gomoku.variant.domain.Variant
+import gomoku.variant.domain.VariantConfig
 import gomoku.variant.domain.VariantName
 
 class VariantActivity : ComponentActivity() {
@@ -26,27 +26,27 @@ class VariantActivity : ComponentActivity() {
             VariantScreen(
                 onSubmit = {GameActivity.navigateTo(this)},
                 variants = listOf(
-                    Variant(
+                    VariantConfig(
                         name = VariantName.FREESTYLE,
                         boardSize = BoardSize.FIFTEEN,
                         openingRule = OpeningRule.PRO
                     ),
-                    Variant(
+                    VariantConfig(
                         name = VariantName.OMOK,
                         boardSize = BoardSize.NINETEEN,
                         openingRule = OpeningRule.LONG_PRO
                     ),
-                    Variant(
+                    VariantConfig(
                         name = VariantName.PENTE,
                         boardSize = BoardSize.FIFTEEN,
                         openingRule = OpeningRule.PRO
                     ),
-                    Variant(
+                    VariantConfig(
                         name = VariantName.RENJU,
                         boardSize = BoardSize.FIFTEEN,
                         openingRule = OpeningRule.PRO
                     ),
-                    Variant(
+                    VariantConfig(
                         name = VariantName.CARO,
                         boardSize = BoardSize.NINETEEN,
                         openingRule = OpeningRule.PRO

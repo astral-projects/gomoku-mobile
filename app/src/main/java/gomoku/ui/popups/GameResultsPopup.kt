@@ -27,8 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import gomoku.leaderboard.domain.PlayerInfo
 import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.containers.PlayerInfo
 import pdm.gomoku.R
 
 // Constants

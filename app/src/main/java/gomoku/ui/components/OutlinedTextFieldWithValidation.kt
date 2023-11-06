@@ -19,7 +19,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,14 +51,13 @@ private const val UNFOCUSED_SUPPORTING_TEXT_COLOR_OPACITY = 0.3f
  * @param onValueChange The callback to be executed when the text field value changes.
  * @param validateField The validation function to be applied to the text field in order to
  * validate it.
- * @param searchField The search function to be applied to the text field.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OutlinedTextFieldWithValidation(
     modifier: Modifier = Modifier,
     value: String,
-    label: String = "Input",
+    label: String? = null,
     placeholderText: String = "",
     leadingIconId: Int? = null,
     supportingText: String? = null,
@@ -79,43 +78,44 @@ fun OutlinedTextFieldWithValidation(
         focusedSupportingTextColor = MaterialTheme.colorScheme.inversePrimary
     ),
     onValueChange: (String) -> Unit = {},
-    validateField: (text: String) -> Boolean = { true },
-    searchField: (text: String) -> Unit = {}
+    validateField: (text: String) -> Boolean = { true }
 ) {
-    var passwordVisibility by remember { mutableStateOf(false) }
-    var invalidField by remember { mutableStateOf(!validateField(value)) }
+    var passwordVisibility by rememberSaveable { mutableStateOf(false) }
+    var invalidField by rememberSaveable { mutableStateOf(!validateField(value)) }
     OutlinedTextField(
         value = value,
         onValueChange = {
             invalidField = !validateField(value)
-            searchField(it)
             onValueChange(it)
         },
-        supportingText = supportingText?.let { text ->
+        supportingText = supportingText?.let {
             {
                 Text(
-                    text = text,
+                    text = supportingText,
                     style = MaterialTheme.typography.labelSmall
                 )
             }
         },
         visualTransformation = if (enablePasswordVisibility && !passwordVisibility)
             PasswordVisualTransformation() else VisualTransformation.None,
-        leadingIcon = {
-            if (leadingIconId != null)
+        leadingIcon = leadingIconId?.let {
+            {
                 Image(
                     painter = painterResource(id = leadingIconId),
                     contentDescription = "Leading icon",
                     modifier = Modifier.size(iconPadding)
                 )
+            }
         },
-        label = {
-            Text(
-                text = label,
-                color = MaterialTheme.colorScheme.inversePrimary,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.SemiBold
-            )
+        label = label?.let {
+            {
+                Text(
+                    text = label,
+                    color = MaterialTheme.colorScheme.inversePrimary,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
         },
         modifier = modifier.testTag(label),
         placeholder = {

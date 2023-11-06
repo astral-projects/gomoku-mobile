@@ -1,4 +1,4 @@
-package gomoku.leaderboard
+package gomoku.leaderboard.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import gomoku.Navigation
+import gomoku.leaderboard.domain.Leaderboard
 
 class LeaderboardActivity : ComponentActivity() {
     companion object : Navigation {
@@ -18,11 +19,10 @@ class LeaderboardActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LeaderBoardScreen(
-                onSearch = {/*TODO*/},
-                onBurgerMenuClick = {/*TODO*/},
-                onTargetClick = {/*TODO*/},
-                onLeaderBoardClick = {/*TODO*/},
+            LeaderboardScreen(
+                playerInfo = Leaderboard.fakePlayers.first(),
+                playersRankingInfo = Leaderboard.generateFakeRankingInfo(200),
+                onBurgerMenuClick = { /*TODO*/ }
             )
         }
     }

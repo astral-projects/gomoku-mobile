@@ -27,11 +27,11 @@ import gomoku.game.ui.components.board.BoardView
 import gomoku.game.ui.components.chips.GameInfoChip
 import gomoku.game.ui.components.chips.PlayerInfoChip
 import gomoku.home.domain.Home.GAME_NAME
+import gomoku.leaderboard.domain.PlayerInfo
 import gomoku.ui.background.Background
 import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.components.DismissButton
 import gomoku.ui.components.TopNavHeader
-import gomoku.ui.containers.PlayerInfo
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 

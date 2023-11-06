@@ -4,7 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,10 +42,10 @@ fun RegisterScreen(
             header = { HeadlineText(text = GAME_NAME) },
             footer = { FooterBubbles() }
         ) {
-            var username by remember { mutableStateOf("") }
-            var email by remember { mutableStateOf("") }
-            var password by remember { mutableStateOf("") }
-            var confirmPassword by remember { mutableStateOf("") }
+            var username by rememberSaveable { mutableStateOf("") }
+            var email by rememberSaveable { mutableStateOf("") }
+            var password by rememberSaveable { mutableStateOf("") }
+            var confirmPassword by rememberSaveable { mutableStateOf("") }
             Form(
                 footerPaddingTop = footerPaddingTop,
                 footerPaddingBottom = footerPaddingBottom,

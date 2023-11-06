@@ -35,9 +35,14 @@ private val bodyPaddingHorizontal: Dp = 10.dp
 private val bodyPaddingVertical: Dp = 15.dp
 private val bodySurfacePaddingHorizontal: Dp = 20.dp
 private val bodySurfacePaddingVertical: Dp = 10.dp
+private val footerPaddingVertical: Dp = 2.dp
 private val bodyOffsetIntoHeader: Dp = (-30).dp
 private val bodySurfaceBorderWidth: Dp = 2.dp
-private val footerPaddingVertical: Dp = 2.dp
+private val headerBorderWidth: Dp = Dp.Hairline
+private val headerCornerShapeSize = RoundedCornerShape(
+    bottomEnd = surfaceCornerShapeSize,
+    bottomStart = surfaceCornerShapeSize
+)
 
 /**
  * A background that has a [header], [body], and an optional [footer].
@@ -57,7 +62,6 @@ fun Background(
     footer: @Composable (() -> Unit)? = null,
     body: @Composable () -> Unit
 ) {
-    // TODO("up this constants")
     val headerMinHeight = config.screenHeight / 12
     val headerMaxHeight = config.screenHeight / 3 + config.screenHeight / 10
     Box(
@@ -71,13 +75,13 @@ fun Background(
                 modifier = Modifier
                     .heightIn(min = headerMinHeight, max = headerMaxHeight)
                     .fillMaxWidth()
-                    .clip(
-                        RoundedCornerShape(
-                            bottomEnd = surfaceCornerShapeSize,
-                            bottomStart = surfaceCornerShapeSize
-                        )
-                    )
-                    .background(MaterialTheme.colorScheme.primary),
+                    .clip(headerCornerShapeSize)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .border(
+                        width = headerBorderWidth,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = headerCornerShapeSize
+                    ),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
