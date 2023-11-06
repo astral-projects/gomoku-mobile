@@ -13,5 +13,5 @@ interface Validator<R> {
     /**
      * Returns a message that describes the validation rules.
      */
-    fun validationRuleMsg(): String
+    fun validationRuleMsg(): String = "Invalid value"
 }

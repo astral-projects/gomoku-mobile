@@ -33,7 +33,7 @@ import gomoku.game.domain.moves.move.Square
 import gomoku.ui.theme.GomokuTheme
 
 // Constants
-private const val MINUS_ONE = -1
+private const val FIRST_INDEX = -1
 
 // Config
 private val boardBorderWidth = 2.dp
@@ -65,9 +65,9 @@ fun BoardView(
             .padding(boardPadding)
     ) {
         Column {
-            for (rowIndex in MINUS_ONE until boardSize)
+            for (rowIndex in FIRST_INDEX until boardSize)
                 Row {
-                    for (columnIndex in MINUS_ONE until boardSize) {
+                    for (columnIndex in FIRST_INDEX until boardSize) {
                         when {
                             isCorner(rowIndex, columnIndex, boardSize) ->
                                 Box(modifier = Modifier.size(cellSize / 2))
@@ -160,8 +160,8 @@ fun DrawHorizontalLine(
 // Extension functions
 private fun isLastRow(rowIndex: Int, boardSize: Int) = rowIndex == boardSize
 private fun isLastColumn(columnIndex: Int, boardSize: Int) = columnIndex == boardSize
-private fun isFirstRow(rowIndex: Int) = rowIndex == MINUS_ONE
-private fun isFirstColumn(columnIndex: Int) = columnIndex == MINUS_ONE
+private fun isFirstRow(rowIndex: Int) = rowIndex == FIRST_INDEX
+private fun isFirstColumn(columnIndex: Int) = columnIndex == FIRST_INDEX
 private fun isCorner(rowIndex: Int, columnIndex: Int, boardSize: Int) =
     (isFirstRow(rowIndex) && isFirstColumn(columnIndex)) ||
             (isFirstRow(rowIndex) && isLastColumn(columnIndex, boardSize)) ||

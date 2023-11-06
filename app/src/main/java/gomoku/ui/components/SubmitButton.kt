@@ -24,7 +24,7 @@ private const val BUTTON_WIDTH_FACTOR = 0.7f
 private const val BUTTON_HEIGHT_FACTOR = 0.05f
 
 /**
- * A generic close button for dismissing content in a popup or a dialog.
+ * A generic button for submitting content.
  * @param modifier Modifier to be applied to the button.
  * @param onButtonText Text to be placed in the button.
  * @param backgroundConfig Configuration for the background.

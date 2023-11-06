@@ -39,14 +39,6 @@ fun CellView(
         Player.B -> R.drawable.black_circle
         else -> null
     }
-    /*var fill by remember(piece?.player) { mutableFloatStateOf(0.1f) }
-    LaunchedEffect(piece?.player) {
-        if (piece?.player != null) {
-            delay(50)
-            fill *= 2
-        }
-        fill = 1f
-    }*/
     Box(
         contentAlignment = Alignment.Center
     ) {

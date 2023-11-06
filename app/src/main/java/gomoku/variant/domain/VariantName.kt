@@ -1,5 +1,8 @@
 package gomoku.variant.domain
 
+/**
+ * Defines a variant name.
+ */
 enum class VariantName {
     FREESTYLE,
     RENJU,

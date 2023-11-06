@@ -2,6 +2,9 @@ package gomoku.login.domain
 
 import gomoku.register.domain.Email
 
+/**
+ * Validates the registration and login credentials.
+ */
 object AuthValidator {
 
     /**

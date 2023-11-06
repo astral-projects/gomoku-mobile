@@ -15,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import gomoku.leaderboard.domain.Term
 import pdm.gomoku.R
 
 // Config
@@ -27,7 +26,6 @@ private const val SEARCH_BAR_WIDTH_FACTOR = 0.9f
  * @param query The current query.
  * @param placeHolder The placeholder text.
  * @param onQueryChange The callback to be called when the query changes.
- * @param onSearchRequest The callback to be called when the search is requested.
  * @param onClearSearch The callback to be called when the search is cleared.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +35,6 @@ fun LeaderboardSearchBar(
     query: String,
     placeHolder: String?,
     onQueryChange: (String) -> Unit,
-    onSearchRequest: (Term) -> Unit,
     onClearSearch: () -> Unit
 ) = SearchBar(
     colors = SearchBarDefaults.colors(
@@ -50,13 +47,10 @@ fun LeaderboardSearchBar(
         .fillMaxWidth(SEARCH_BAR_WIDTH_FACTOR),
     placeholder = { Text(text = placeHolder ?: "", style = MaterialTheme.typography.bodyLarge) },
     query = query,
-    onQueryChange = { queryChanged ->
-        onQueryChange(queryChanged)
-        Term.toTermOrNull(queryChanged)?.let { onSearchRequest(it) }
-    },
+    onQueryChange = onQueryChange,
     active = false,
     onActiveChange = { },
-    onSearch = { Term.toTermOrNull(query)?.let { onSearchRequest(it) } },
+    onSearch = { },
     leadingIcon = {
         Image(
             painter = painterResource(id = R.drawable.search),

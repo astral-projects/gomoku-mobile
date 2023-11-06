@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 /**
- * A generic close button for dismissing content like dialogs.
+ * A generic close button for dismissing content.
  * @param onButtonText Text to be placed in the button.
  * @param enable Indicates whether the button should be enabled.
  * @param onDismiss Callback function to be executed when the dismiss button is clicked.

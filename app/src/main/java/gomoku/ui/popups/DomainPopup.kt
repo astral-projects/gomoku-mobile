@@ -5,8 +5,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 
-const val PopupWidthFactor = 0.8f
-val PopupRoundCornerShapeSize = 20.dp
+// Config
+const val POPUP_WIDTH_FACTOR = 0.8f
+val popupRoundCornerShapeSize = 20.dp
 
 /**
  * A popup that can be used to display a popup in app's domain.

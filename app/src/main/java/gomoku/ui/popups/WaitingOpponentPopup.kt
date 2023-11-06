@@ -26,13 +26,16 @@ import androidx.compose.ui.unit.dp
 import gomoku.ui.background.BackgroundConfig
 import pdm.gomoku.R
 
-// Constants
-private const val SEARCHING = "Searching for \nopponent..."
-
 // Config
-private val PopupPadding = 8.dp
-private val IconSize = 75.dp
+private val popupPadding = 8.dp
+private val iconSize = 75.dp
 
+/**
+ * Pop up that will be shown when the user is in lobby waiting for an opponent.
+ * @param background configuration of the background.
+ * @param playerIconId id of the player's icon.
+ * @param onDismissRequest callback to be invoked when the user wants to dismiss the popup.
+ */
 @Composable
 fun WaitingOpponentPopup(
     background: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
@@ -45,10 +48,11 @@ fun WaitingOpponentPopup(
         val screenWidth = background.screenWidth
         Box(
             modifier = Modifier
-                .width(screenWidth * PopupWidthFactor)
-                .clip(RoundedCornerShape(PopupRoundCornerShapeSize))
+                .fillMaxWidth()
+                .width(screenWidth * POPUP_WIDTH_FACTOR)
+                .clip(RoundedCornerShape(popupRoundCornerShapeSize))
                 .background(MaterialTheme.colorScheme.primary)
-                .padding(PopupPadding)
+                .padding(popupPadding)
         ) {
             Row(
                 modifier = Modifier
@@ -60,10 +64,12 @@ fun WaitingOpponentPopup(
                 Image(
                     painterResource(id = playerIconId),
                     contentDescription = null,
-                    modifier = Modifier.requiredSize(IconSize)
+                    modifier = Modifier
+                        .requiredSize(iconSize)
                 )
                 Text(
-                    text = SEARCHING,
+                    modifier = Modifier.weight(0.6f),
+                    text = Popup.WaitingOpponent.TITLE,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onPrimary,
                     maxLines = 2,
@@ -73,7 +79,7 @@ fun WaitingOpponentPopup(
                 Image(
                     painterResource(id = R.drawable.ellipsis),
                     contentDescription = null,
-                    modifier = Modifier.requiredSize(IconSize)
+                    modifier = Modifier.requiredSize(iconSize)
                 )
             }
         }

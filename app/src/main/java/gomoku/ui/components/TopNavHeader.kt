@@ -1,20 +1,17 @@
 package gomoku.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import gomoku.ui.theme.GomokuTheme
 
 /**
- * Top navigation header for the app.
+ * A [CenterAlignedTopAppBar] with a burger menu icon.
+ * @param title The title of the header.
+ * @param onBurgerMenuClick The callback to be executed when the burger menu is clicked.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,14 +19,9 @@ fun TopNavHeader(
     title: String,
     onBurgerMenuClick: () -> Unit
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 42.dp),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
+            Row {
                 HeaderText(text = title)
             }
         },

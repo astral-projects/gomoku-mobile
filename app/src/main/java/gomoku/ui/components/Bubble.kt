@@ -34,6 +34,6 @@ fun Bubble(radius: Float, interiorColor: Color, borderColor: Color) {
 
 @Composable
 @Preview(showBackground = true)
-fun BubblePreview() {
+private fun BubblePreview() {
     Bubble(50f, Color.Red, Color.Blue)
 }

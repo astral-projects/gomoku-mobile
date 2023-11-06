@@ -21,6 +21,12 @@ const val SMALL_DARKER_BUBBLE_RADIUS = 15f
 const val BIG_LIGHTER_BUBBLE_RADIUS = 80f
 const val SMALL_LIGHTER_BUBBLE_RADIUS = 40f
 
+// Config
+private val footerBubblesLeftPanelBottomPadding = 20.dp
+private val footerBubblesLeftPanelStartPadding = 20.dp
+private val footerBubblesRightPanelBottomPadding = 75.dp
+private val footerBubblesRightPanelEndPadding = 30.dp
+
 /**
  * A set of [Bubble]s to be used in a screen's footer.
  */
@@ -34,7 +40,10 @@ fun FooterBubbles() {
     ) {
         Column(
             modifier = Modifier
-                .padding(bottom = 20.dp, start = 20.dp),
+                .padding(
+                    start = footerBubblesLeftPanelStartPadding,
+                    bottom = footerBubblesLeftPanelBottomPadding
+                ),
             horizontalAlignment = Alignment.End,
         ) {
             // Small lighter bubble
@@ -58,7 +67,10 @@ fun FooterBubbles() {
         }
         Column(
             modifier = Modifier
-                .padding(bottom = 75.dp, end = 30.dp)
+                .padding(
+                    bottom = footerBubblesRightPanelBottomPadding,
+                    end = footerBubblesRightPanelEndPadding
+                )
         ) {
             // Small darker bubble
             Bubble(

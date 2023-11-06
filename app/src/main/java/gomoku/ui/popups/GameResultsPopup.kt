@@ -37,16 +37,16 @@ private const val BODY_TEXT_TOP = "Winner"
 private const val BODY_TEXT_BOTTOM = "Points"
 
 // Config
-private val HeaderIconSize = 40.dp
-private val PlayerInfoSpacerHeight = 4.dp
-private val IconPointsSpacerWidth = 15.dp
-private val PointsTextSpacerWidth = 5.dp
-private val IconPointsSpacerHeight = 20.dp
-private val HeaderPadding = 8.dp
-private val BottomPadding = 12.dp
-private val BorderWidth = 2.dp
-private val TitleIconSpacerHeight = 8.dp
-private val PlayerTextOffsetPadding = 30.dp
+private val headerIconSize = 40.dp
+private val playerInfoSpacerHeight = 4.dp
+private val iconPointsSpacerWidth = 15.dp
+private val pointsTextSpacerWidth = 5.dp
+private val iconPointsSpacerHeight = 20.dp
+private val headerPadding = 8.dp
+private val bottomPadding = 12.dp
+private val borderWidth = 2.dp
+private val titleIconSpacerHeight = 8.dp
+private val playerTextOffsetPadding = 30.dp
 
 /**
  * Pop up that will be shown when the game is finished with the game results.
@@ -69,12 +69,12 @@ fun GameResultsPopup(
 ) {
     DomainPopup(onDismissRequest = onDismissRequest) {
         val screenWidth = backgroundConfig.screenWidth
-        val cornerShape = RoundedCornerShape(PopupRoundCornerShapeSize)
+        val cornerShape = RoundedCornerShape(popupRoundCornerShapeSize)
         Column(
             modifier = Modifier
                 .clip(cornerShape)
-                .width(screenWidth * PopupWidthFactor)
-                .border(BorderWidth, MaterialTheme.colorScheme.outline, cornerShape)
+                .width(screenWidth * POPUP_WIDTH_FACTOR)
+                .border(borderWidth, MaterialTheme.colorScheme.outline, cornerShape)
                 .background(MaterialTheme.colorScheme.primary),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
@@ -83,8 +83,8 @@ fun GameResultsPopup(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(BorderWidth, MaterialTheme.colorScheme.outline, cornerShape)
-                    .padding(HeaderPadding),
+                    .border(borderWidth, MaterialTheme.colorScheme.outline, cornerShape)
+                    .padding(headerPadding),
                 contentAlignment = Alignment.TopCenter
             ) {
                 Row(
@@ -97,7 +97,7 @@ fun GameResultsPopup(
                         verticalArrangement = Arrangement.SpaceEvenly
                     ) {
                         BodyTitle(text = TITLE)
-                        Spacer(modifier = Modifier.height(TitleIconSpacerHeight))
+                        Spacer(modifier = Modifier.height(titleIconSpacerHeight))
                         Image(
                             painterResource(id = R.drawable.checklist),
                             contentDescription = null
@@ -111,13 +111,13 @@ fun GameResultsPopup(
                 contentAlignment = Alignment.TopCenter,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = BottomPadding)
+                    .padding(bottom = bottomPadding)
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .padding(BottomPadding)
+                        .padding(bottomPadding)
                 ) {
                     // Winner match points
                     DisplayWinnerMatchPoints(points = winnerPoints)
@@ -141,7 +141,7 @@ fun GameResultsPopup(
 
 @Composable
 private fun IconPointsSpacer() =
-    Spacer(modifier = Modifier.width(IconPointsSpacerWidth))
+    Spacer(modifier = Modifier.width(iconPointsSpacerWidth))
 
 @Composable
 private fun BodyTitle(text: String) =
@@ -177,14 +177,14 @@ private fun DisplayPlayerInfo(playerInfo: PlayerInfo) =
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
         // Used to avoid the text to grow indefinitely
-        modifier = Modifier.requiredWidth(HeaderIconSize + PlayerTextOffsetPadding)
+        modifier = Modifier.requiredWidth(headerIconSize + playerTextOffsetPadding)
     ) {
         Image(
             painterResource(id = playerInfo.iconId),
             contentDescription = null,
-            modifier = Modifier.size(HeaderIconSize)
+            modifier = Modifier.size(headerIconSize)
         )
-        Spacer(modifier = Modifier.height(PlayerInfoSpacerHeight))
+        Spacer(modifier = Modifier.height(playerInfoSpacerHeight))
         Text(
             text = playerInfo.name,
             style = MaterialTheme.typography.bodyLarge,
@@ -210,7 +210,7 @@ private fun DisplayMatchPoints(points: Int, isWinner: Boolean) =
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "$points", style = MaterialTheme.typography.bodyLarge)
-            Spacer(modifier = Modifier.width(PointsTextSpacerWidth))
+            Spacer(modifier = Modifier.width(pointsTextSpacerWidth))
             Image(
                 painterResource(id = R.drawable.coins),
                 contentDescription = null
@@ -219,11 +219,7 @@ private fun DisplayMatchPoints(points: Int, isWinner: Boolean) =
     }
 
 @Composable
-private fun IconHeightSpacer() = Spacer(
-    modifier = Modifier.height(
-        IconPointsSpacerHeight
-    )
-)
+private fun IconHeightSpacer() = Spacer(modifier = Modifier.height(iconPointsSpacerHeight))
 
 @Preview(showBackground = true)
 @Composable

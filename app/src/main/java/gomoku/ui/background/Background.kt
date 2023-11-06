@@ -25,6 +25,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 // Config
+const val SCREEN_HEIGHT_FACTOR = 12
+const val HEADER_MAX_DIVISOR = 3
+const val HEADER_MIN_DIVISOR = 10
 private val surfaceCornerShapeSize: Dp = 35.dp
 private val headerPaddingHorizontal: Dp = 20.dp
 private val headerPaddingTop: Dp = 20.dp
@@ -62,8 +65,8 @@ fun Background(
     footer: @Composable (() -> Unit)? = null,
     body: @Composable () -> Unit
 ) {
-    val headerMinHeight = config.screenHeight / 12
-    val headerMaxHeight = config.screenHeight / 3 + config.screenHeight / 10
+    val headerMinHeight = config.screenHeight / HEADER_MIN_DIVISOR
+    val headerMaxHeight = config.screenHeight / HEADER_MAX_DIVISOR + config.screenHeight / HEADER_MIN_DIVISOR
     Box(
         modifier = Modifier
             .fillMaxSize()

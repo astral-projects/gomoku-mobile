@@ -45,9 +45,7 @@ fun VariantTable(
     ) {
         if (variants.isEmpty()) {
             item {
-                ContentNotFound(
-                    text = "No variants are currently available. Please try again later."
-                )
+                ContentNotFound(text = Variant.NOT_VARIANTS_FOUND)
             }
         } else {
             variants.forEach { variant ->
@@ -71,7 +69,7 @@ fun VariantTable(
                             modifier = Modifier.weight(CARD_WEIGHT),
                             title = variant.name.name,
                             description = Variant.getDescriptionFormat(variant),
-                            iconColor = MaterialTheme.colorScheme.tertiary,
+                            arrowColor = MaterialTheme.colorScheme.tertiary,
                         )
                     }
                 }
