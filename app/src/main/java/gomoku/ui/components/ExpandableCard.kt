@@ -22,10 +22,10 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,7 +33,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material3.ContentAlpha
 import pdm.gomoku.R
 
 // Config
@@ -56,6 +55,7 @@ const val test ="testPropose"
  * @param descriptionMaxLines Max lines the [description] can have. Text above this limit
  * will be treated as text overflow.
  * @param titleColor Color of the [title].
+ * @param arrowColor Color of the arrow icon, used to expand the card.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,7 +67,7 @@ fun ExpandableCard(
     description: String,
     descriptionMaxLines: Int = Int.MAX_VALUE,
     titleColor: Color = MaterialTheme.colorScheme.secondary,
-    iconColor: Color = MaterialTheme.colorScheme.secondary,
+    arrowColor: Color = MaterialTheme.colorScheme.secondary,
 ) {
     var expandedState by rememberSaveable { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
@@ -121,7 +121,6 @@ fun ExpandableCard(
                 IconButton(
                     modifier = Modifier
                         .weight(1f)
-                        .alpha(ContentAlpha.medium)
                         .rotate(rotationState)
                         .testTag(title + test),
                     onClick = { expandedState = !expandedState }
@@ -129,7 +128,7 @@ fun ExpandableCard(
                     Icon(
                         imageVector = Icons.Outlined.ArrowDropDown,
                         contentDescription = "Drop-Down Arrow",
-                        tint = iconColor
+                        tint = arrowColor
                     )
                 }
             }

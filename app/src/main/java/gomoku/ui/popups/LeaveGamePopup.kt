@@ -23,17 +23,17 @@ import androidx.compose.ui.unit.dp
 import gomoku.ui.background.BackgroundConfig
 import gomoku.ui.components.SubmitButton
 
-// Constants
-private const val MESSAGE =
-    "Are you sure you want to quit this game? You won't receive any points as a result."
-private const val LEAVE_MSG = "Yes"
-private const val CONTINUE_MSG = "Nevermind"
-
 // Config
-private val PopupPadding = 8.dp
-private val TextSpacerHeight = 8.dp
-private val TextPadding = 8.dp
+private val popupPadding = 8.dp
+private val textSpacerHeight = 8.dp
+private val textPadding = 8.dp
 
+/**
+ * Pop up that will be shown when the user wants to leave the game.
+ * @param backgroundConfig configuration of the background.
+ * @param onContinueRequest callback to be invoked when the user wants to continue the game.
+ * @param onLeaveRequest callback to be invoked when the user wants to leave the game.
+ */
 @Composable
 fun LeaveGamePopup(
     backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
@@ -45,10 +45,10 @@ fun LeaveGamePopup(
     DomainPopup(onDismissRequest = onContinueRequest) {
         Box(
             modifier = Modifier
-                .clip(RoundedCornerShape(PopupRoundCornerShapeSize))
+                .clip(RoundedCornerShape(popupRoundCornerShapeSize))
                 .background(MaterialTheme.colorScheme.primary)
-                .width(screenWidth * PopupWidthFactor)
-                .padding(PopupPadding),
+                .width(screenWidth * POPUP_WIDTH_FACTOR)
+                .padding(popupPadding),
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -56,14 +56,14 @@ fun LeaveGamePopup(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
-                    modifier = Modifier.padding(TextPadding)
+                    modifier = Modifier.padding(textPadding)
                 ) {
                     Text(
-                        text = MESSAGE,
+                        text = Popup.LeaveGame.MESSAGE,
                         style = MaterialTheme.typography.bodyLarge,
                     )
                 }
-                Spacer(modifier = Modifier.height(TextSpacerHeight))
+                Spacer(modifier = Modifier.height(textSpacerHeight))
                 Row(
                     horizontalArrangement = Arrangement.SpaceAround,
                     verticalAlignment = Alignment.CenterVertically,
@@ -72,13 +72,13 @@ fun LeaveGamePopup(
                     SubmitButton(
                         backgroundColor = MaterialTheme.colorScheme.secondary,
                         textColor = textColor,
-                        onButtonText = CONTINUE_MSG,
+                        onButtonText = Popup.LeaveGame.CONTINUE_MSG,
                         onClick = onContinueRequest
                     )
                     SubmitButton(
                         backgroundColor = MaterialTheme.colorScheme.error,
                         textColor = textColor,
-                        onButtonText = LEAVE_MSG,
+                        onButtonText = Popup.LeaveGame.LEAVE_MSG,
                         onClick = onLeaveRequest
                     )
                 }

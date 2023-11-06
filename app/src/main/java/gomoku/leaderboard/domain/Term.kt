@@ -2,15 +2,18 @@ package gomoku.leaderboard.domain
 
 import gomoku.Validator
 
+// Constants
+private const val MIN_TERM_LENGTH = 3
+
 /**
- * Represents a password.
- * @param value The password value.
+ * Represents a search term.
+ * @param value The term value.
  */
 @JvmInline
 value class Term(val value: String) {
 
     init {
-        require(isValid(value)) { "Invalid password" }
+        require(isValid(value)) { "Invalid term value" }
     }
 
     companion object : Validator<String> {
@@ -21,11 +24,9 @@ value class Term(val value: String) {
         override fun isValid(value: String): Boolean {
             if (value.isEmpty()) return false
             if (value.isBlank()) return false
+            if (value.length < MIN_TERM_LENGTH) return false
             return true
         }
-
-        override fun validationRuleMsg() =
-            "Must not be empty or blank"
 
     }
 }

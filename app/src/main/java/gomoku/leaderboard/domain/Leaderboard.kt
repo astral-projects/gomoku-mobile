@@ -4,13 +4,14 @@ import pdm.gomoku.R
 
 /**
  * Represents data and functionality related to the leaderboard screen.
- * Provides a way to generate fake ranking info.
  */
 object Leaderboard {
 
-    const val MAX_POINTS_VALUE = 99999
     const val SEARCH_BAR_PLACEHOLDER = "Search a player..."
     const val TITLE = "Leaderboard"
+    const val MAX_POINTS_VALUE = 99999
+    const val NOT_RESULTS_FOUND = "We searched far and wide. Unfortunately, no results were found."
+    private const val PAGE_SIZE = 20
 
     /**
      * A list of fake players.
@@ -31,16 +32,27 @@ object Leaderboard {
     /**
      * Generates a list of [RankingInfo] with fake data. The list will have [nPlayers] elements,
      * and the **ranking** will be **in ascending order** while the **points** will be **in descending order**.
-     * The function will not return repeated players, unless there are more requested players than
-     * the current number of fake players in [fakePlayers].
      * @param nPlayers The number of players to generate.
      * @return A list of [RankingInfo].
      */
-    fun generateFakeRankingInfo(nPlayers: Int): List<RankingInfo> {
+    fun generateRankingInfo(nPlayers: Int): List<RankingInfo> {
         return (1..nPlayers).fold(listOf()) { rankingInfo, rank ->
             val player = fakePlayers[(rank - 1) % fakePlayers.size]
-            val points = (nPlayers - rank + 1) * 1000
+            val points = (nPlayers - rank + 1) * 100
             rankingInfo + RankingInfo(player, rank, points)
         }
+    }
+
+    /**
+     * Returns a sublist of [list] with [PAGE_SIZE] elements starting at [page] number.
+     * @param list The list to be paginated.
+     * @param page The page number to retrieve.
+     * @return A sublist of [list].
+     */
+    fun paginatedRankingInfo(list: List<RankingInfo>, page: Int): List<RankingInfo> {
+        val start = (page - 1) * PAGE_SIZE
+        val end = start + PAGE_SIZE
+        val actualEnd = end.coerceAtMost(list.size)
+        return list.subList(start.coerceAtMost(actualEnd), actualEnd)
     }
 }

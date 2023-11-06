@@ -49,7 +49,7 @@ fun AboutScreen(
                             .padding(vertical = sectionVerticalPadding)
                     ) {
                         ExpandableCard(
-                            iconColor = MaterialTheme.colorScheme.onSecondary,
+                            arrowColor = MaterialTheme.colorScheme.onSecondary,
                             titleColor = MaterialTheme.colorScheme.onSecondary,
                             leadingIconId = section.iconId,
                             backgroundColor = MaterialTheme.colorScheme.surface,

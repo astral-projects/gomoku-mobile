@@ -49,6 +49,6 @@ fun ContentNotFound(text: String) {
 
 @Composable
 @Preview
-fun ContentNotFound() {
+private fun ContentNotFound() {
     ContentNotFound(text = "No Information Available")
 }

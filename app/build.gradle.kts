@@ -69,7 +69,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.compose.foundation:foundation-layout-android:1.5.4")
-    implementation("androidx.wear.compose:compose-material3:1.0.0-alpha14")
 
     // Extended material icons
     implementation("androidx.compose.material:material-icons-extended-android:1.5.4")

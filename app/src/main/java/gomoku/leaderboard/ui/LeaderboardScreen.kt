@@ -10,11 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,38 +25,75 @@ import androidx.compose.ui.unit.dp
 import gomoku.leaderboard.domain.Leaderboard
 import gomoku.leaderboard.domain.PlayerInfo
 import gomoku.leaderboard.domain.RankingInfo
+import gomoku.leaderboard.domain.Term
 import gomoku.leaderboard.ui.components.LeaderboardSearchBar
 import gomoku.leaderboard.ui.components.LeaderboardTable
 import gomoku.ui.background.Background
 import gomoku.ui.components.ClickableIcon
 import gomoku.ui.components.TopNavHeader
 import gomoku.ui.theme.GomokuTheme
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import pdm.gomoku.R
 
 // Config
 private val footerIconHorizontalPadding = 10.dp
 private val footerIconVerticalPadding = 10.dp
 private const val LEADERBOARD_TABLE_HEIGHT_FACTOR = 0.85f
+private const val SEARCH_DELAY = 300L
+private const val FIRST_PAGE = 1
+private const val LOAD_MORE_THRESHOLD = 5
 
 /**
  * Represents the Leaderboard screen main composable.
  * @param playerInfo the logged in player information.
- * @param playersRankingInfo list of players ranking information.
- * @param onSearchRequest callback to be executed when the search request is made.
+ * @param getItemsFromPage callback to get the items to be displayed in the leaderboard, given a page number.
+ * @param onSearchRequest callback to be executed when a search is requested.
  * @param onBurgerMenuClick callback to be executed when the burger menu is clicked.
  */
 @Composable
 fun LeaderboardScreen(
     playerInfo: PlayerInfo,
-    playersRankingInfo: List<RankingInfo>,
-    onBurgerMenuClick: () -> Unit = {},
+    getItemsFromPage: (page: Int) -> List<RankingInfo>,
+    onSearchRequest: (Term) -> List<RankingInfo>,
+    onBurgerMenuClick: () -> Unit
 ) {
-    val handler = rememberCoroutineScope()
-    val lazyListState = rememberLazyListState()
+    // search
     var query by rememberSaveable { mutableStateOf("") }
-    var filteredPlayersRankingInfo by rememberSaveable { mutableStateOf(playersRankingInfo) }
+    // lazy list
+    val lazyListState = rememberLazyListState()
+    var page by remember { mutableIntStateOf(FIRST_PAGE) }
+    var isLoadingPages by remember { mutableStateOf(false) }
+    // others
     var isSelfPositionEnabled by rememberSaveable { mutableStateOf(false) }
+    var currentItems by remember { mutableStateOf(getItemsFromPage(page)) }
+    LaunchedEffect(key1 = query) {
+        delay(SEARCH_DELAY)
+        val term = Term.toTermOrNull(query)
+        if (term != null) {
+            currentItems = onSearchRequest(term)
+        } else {
+            currentItems = getItemsFromPage(page)
+        }
+    }
+    LaunchedEffect(key1 = page) {
+        isLoadingPages = true
+        // Simulate a network request (when using dummy data)
+        delay(2000)
+        currentItems = getItemsFromPage(page)
+        // Position the list at the top when the page is loaded
+        lazyListState.scrollToItem(0)
+        isLoadingPages = false
+    }
+    // Observe scroll state to load more items
+    LaunchedEffect(key1 = lazyListState) {
+        snapshotFlow { lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+            .collectLatest { itemIndex ->
+                if (!isLoadingPages && itemIndex != null && itemIndex >= currentItems.size - LOAD_MORE_THRESHOLD) {
+                    page++
+                }
+            }
+    }
     GomokuTheme {
         Background(
             header = {
@@ -70,18 +110,7 @@ fun LeaderboardScreen(
                         query = query,
                         placeHolder = Leaderboard.SEARCH_BAR_PLACEHOLDER,
                         onQueryChange = { query = it },
-                        onSearchRequest = { term ->
-                            filteredPlayersRankingInfo = playersRankingInfo
-                                .filter {
-                                    it.playerInfo.name.contains(
-                                        term.value,
-                                        ignoreCase = true
-                                    )
-                                }
-                        },
-                        onClearSearch = {
-                            query = ""; filteredPlayersRankingInfo = playersRankingInfo
-                        },
+                        onClearSearch = { query = "" }
                     )
                 }
             },
@@ -97,8 +126,9 @@ fun LeaderboardScreen(
                         .align(Alignment.TopCenter)
                 ) {
                     LeaderboardTable(
-                        playersRankingInfo = filteredPlayersRankingInfo,
-                        listState = lazyListState
+                        playersRankingInfo = currentItems,
+                        listState = lazyListState,
+                        loading = isLoadingPages
                     )
                 }
                 Row(
@@ -112,18 +142,16 @@ fun LeaderboardScreen(
                         )
                 ) {
                     ToggleSelfPositionIcon(iconId = R.drawable.target, onClick = {
-                        filteredPlayersRankingInfo = if (isSelfPositionEnabled) {
-                            playersRankingInfo
+                        if (isSelfPositionEnabled) {
+                            currentItems = getItemsFromPage(FIRST_PAGE); page = FIRST_PAGE
                         } else {
-                            playersRankingInfo.filter { it.playerInfo == playerInfo }
+                            currentItems = onSearchRequest(Term(playerInfo.name))
                         }
+                        // toggle
                         isSelfPositionEnabled = !isSelfPositionEnabled
                     })
                     BackTopTheTopIcon(iconId = R.drawable.back_to_top, onClick = {
-                        handler.launch {
-                            // Scroll the LazyColumn to the top
-                            lazyListState.animateScrollToItem(index = 0)
-                        }
+                        page = FIRST_PAGE
                     })
                 }
             }
@@ -142,8 +170,19 @@ private fun BackTopTheTopIcon(iconId: Int, onClick: () -> Unit) =
 @Composable
 @Preview(showBackground = true)
 private fun LeaderboardScreenPreview() {
+    val nPlayers = 200
+    val playersRankingInfo = Leaderboard.generateRankingInfo(nPlayers)
     LeaderboardScreen(
         playerInfo = Leaderboard.fakePlayers.first(),
-        playersRankingInfo = Leaderboard.generateFakeRankingInfo(200)
+        getItemsFromPage = { page ->
+            Leaderboard.paginatedRankingInfo(
+                list = playersRankingInfo,
+                page = page
+            )
+        },
+        onSearchRequest = { term ->
+            playersRankingInfo.filter { it.playerInfo.name.contains(term.value, ignoreCase = true) }
+        },
+        onBurgerMenuClick = {}
     )
 }

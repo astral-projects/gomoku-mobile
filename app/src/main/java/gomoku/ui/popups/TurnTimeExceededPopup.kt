@@ -27,17 +27,16 @@ import gomoku.ui.components.SubmitButton
 import gomoku.ui.theme.LightOrange
 import pdm.gomoku.R
 
-// Constants
-private const val TITLE = "Turn Time Exceeded"
-private const val BODY_MSG =
-    "Your strategic moves were on point, but this time, the clock got better of you. Unfortunately, no points can be awarded as a result."
-private const val BUTTON_MSG = "Acknowledge"
-
 // Config
-private val PopupPadding = 8.dp
-private val TitleSpacerWidth = 8.dp
-private val BodyMsgPadding = 8.dp
+private val popupPadding = 8.dp
+private val titleSpacerWidth = 8.dp
+private val bodyMsgPadding = 8.dp
 
+/**
+ * Pop up that will be shown when the user's turn time is exceeded.
+ * @param background configuration of the background.
+ * @param onDismissRequest callback to be invoked when the user wants to dismiss the popup.
+ */
 @Composable
 fun TurnTimeExceedPopup(
     background: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
@@ -47,10 +46,10 @@ fun TurnTimeExceedPopup(
         val screenWidth = background.screenWidth
         Box(
             modifier = Modifier
-                .width(screenWidth * PopupWidthFactor)
-                .clip(RoundedCornerShape(PopupRoundCornerShapeSize))
+                .width(screenWidth * POPUP_WIDTH_FACTOR)
+                .clip(RoundedCornerShape(popupRoundCornerShapeSize))
                 .background(MaterialTheme.colorScheme.primary)
-                .padding(PopupPadding)
+                .padding(popupPadding)
                 .clickable(onClick = onDismissRequest)
         ) {
             Column(
@@ -64,8 +63,11 @@ fun TurnTimeExceedPopup(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = TITLE, style = MaterialTheme.typography.titleMedium)
-                    Spacer(modifier = Modifier.width(TitleSpacerWidth))
+                    Text(
+                        text = Popup.TurnTimeExceed.TITLE,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Spacer(modifier = Modifier.width(titleSpacerWidth))
                     Image(
                         painterResource(id = R.drawable.timer_up),
                         contentDescription = null
@@ -74,17 +76,20 @@ fun TurnTimeExceedPopup(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(BodyMsgPadding),
+                        .padding(bodyMsgPadding),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = BODY_MSG, style = MaterialTheme.typography.bodyMedium)
+                    Text(
+                        text = Popup.TurnTimeExceed.BODY_MSG,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                 }
                 Row {
                     SubmitButton(
                         backgroundColor = LightOrange,
                         textColor = MaterialTheme.colorScheme.onPrimary,
-                        onButtonText = BUTTON_MSG,
+                        onButtonText = Popup.TurnTimeExceed.BUTTON_MSG,
                         onClick = onDismissRequest
                     )
                 }

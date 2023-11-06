@@ -40,7 +40,6 @@ private val variantSurfaceVerticalPadding = 15.dp
  * Represents the Variant screen main composable.
  * @param onSubmit the callback to be called when the submit button is clicked.
  * @param variants the [List] of [VariantConfig]s to be displayed in the body.
- * @throws IllegalArgumentException if [variants] is empty.
  */
 @Composable
 fun VariantScreen(
