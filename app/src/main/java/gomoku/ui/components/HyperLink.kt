@@ -3,6 +3,8 @@ package gomoku.ui.components
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -16,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun HyperLink(text: String, onClick: (Int) -> Unit) =
     ClickableText(
+        modifier= Modifier.testTag(text),
         text = AnnotatedString(text),
         onClick = onClick,
         style = MaterialTheme

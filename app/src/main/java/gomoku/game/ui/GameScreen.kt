@@ -15,6 +15,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
+import gomoku.game.domain.Game
 import gomoku.game.domain.Timer
 import gomoku.game.domain.board.Board
 import gomoku.game.domain.board.BoardSize
@@ -35,8 +36,7 @@ import gomoku.ui.components.TopNavHeader
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
-// Constants
-private const val DISMISS_BUTTON_TEXT = "Leave game"
+
 
 /**
  * Represents the game screen main composable.
@@ -115,7 +115,7 @@ fun GameScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     DismissButton(
-                        onButtonText = DISMISS_BUTTON_TEXT,
+                        onButtonText = Game.DISMISS_BUTTON_TEXT,
                         enable = true,
                         onDismiss = onLeaveGameRequest
                     )

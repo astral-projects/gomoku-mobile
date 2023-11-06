@@ -14,6 +14,7 @@ import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import gomoku.ui.components.ContentNotFound
 import gomoku.ui.components.ExpandableCard
@@ -62,7 +63,7 @@ fun VariantTable(
                             colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.outline),
                             selected = (selectedOption == variant),
                             onClick = { onOptionSelected(variant) },
-                            modifier = Modifier.weight(1f - CARD_WEIGHT)
+                            modifier = Modifier.weight(1f - CARD_WEIGHT).testTag(variant.name.name)
                         )
                         Spacer(modifier = Modifier.width(radioButtonVariantItemSpacerWidth))
                         ExpandableCard(

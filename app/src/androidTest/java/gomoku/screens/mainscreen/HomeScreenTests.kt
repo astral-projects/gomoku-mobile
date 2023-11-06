@@ -3,6 +3,7 @@ package gomoku.screens.mainscreen
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import gomoku.home.domain.Home
 import gomoku.home.ui.HomeScreen
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -30,7 +31,7 @@ class HomeScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag("Find a Match").performClick()
+        composeTestRule.onNodeWithTag(Home.FIND_GAME).performClick()
         // Assert
         assertTrue(findMatchRequested)
         assertFalse(leaderBoardRequested)
@@ -49,7 +50,7 @@ class HomeScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag("Leaderboard").performClick()
+        composeTestRule.onNodeWithTag(Home.LEADERBOARD).performClick()
         // Assert
         assertTrue(leaderBoardRequested)
     }
@@ -68,7 +69,7 @@ class HomeScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag("About").performClick()
+        composeTestRule.onNodeWithTag(Home.ABOUT).performClick()
         // Assert
         assertTrue(onAboutRequested)
     }
@@ -85,7 +86,7 @@ class HomeScreenTests {
                 })
         }
         //Act
-        composeTestRule.onNodeWithTag("Logout").performClick()
+        composeTestRule.onNodeWithTag(Home.LOGOUT).performClick()
         //Assert
         assertTrue(onLogoutRequested)
 

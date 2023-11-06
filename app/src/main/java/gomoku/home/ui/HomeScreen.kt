@@ -40,10 +40,10 @@ fun HomeScreen(
             Form(
                 title = Home.welcome(username),
                 inputFieldsData = listOf(
-                    ButtonData("Find a Match", R.drawable.play_button, onClick = onFindMatch),
-                    ButtonData("Leaderboard", R.drawable.leaderboard, onClick = onLeaderBoard),
-                    ButtonData("About", R.drawable.about, onClick = onAbout),
-                    ButtonData("Logout", R.drawable.door_out, onClick = onLogout)
+                    ButtonData(Home.FIND_GAME, R.drawable.play_button, onClick = onFindMatch),
+                    ButtonData(Home.LEADERBOARD, R.drawable.leaderboard, onClick = onLeaderBoard),
+                    ButtonData(Home.ABOUT, R.drawable.about, onClick = onAbout),
+                    ButtonData(Home.LOGOUT, R.drawable.door_out, onClick = onLogout)
                 ),
                 renderInputField = { inputData ->
                     IconButton(
