@@ -14,8 +14,8 @@ import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
 import gomoku.home.ui.HomeActivity
+import gomoku.leaderboard.domain.PlayerInfo
 import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.containers.PlayerInfo
 import pdm.gomoku.R
 
 class GameActivity : ComponentActivity() {

@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,92 +22,102 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pdm.gomoku.R
 
-private val cornerShapeSize = 10.dp
-private val paddingSize = 3.dp
-private val labelPadding = 20.dp
-private val labelIconAndLabelTextPadding = 5.dp
-private val imageSize = 40.dp
-private val rowSize = 60.dp
-private val paddingNumber= 9.dp
-private val paddingNumber2= 8.dp
+// Config
+private val cornerShapeSize = 15.dp
+private val tilePadding = 10.dp
+private val labelIconSpacerWidth = 5.dp
+private const val LEADING_SECTION_WEIGHT = 0.14f
+private const val LABEL_SECTION_WEIGHT = 0.50f
+private const val SPACER_WEIGHT_BETWEEN_LABEL_AND_TRAILING_SECTION = 0.01f
+private const val TRAILING_SECTION_WEIGHT = 0.35f
 
+/**
+ * A tile with custom information.
+ * @param leadingIconId The id of the leading icon.
+ * @param leadingLabel The label to be displayed in the leading position.
+ * @param labelIconId The id of the label icon.
+ * @param label The label to be displayed.
+ * @param trailingLabel The label to be displayed in the trailing position.
+ * @param trailingIconId The id of the trailing icon.
+ */
 @Composable
 fun CustomInfoTile(
     leadingIconId: Int? = null,
-    leadingNumber: Int,
+    leadingLabel: String,
     labelIconId: Int,
     label: String,
-    labelTextColor: Color = Color.Black,
-    trailingNumber: Int,
+    trailingLabel: String,
     trailingIconId: Int,
 ) {
-
+    val style = MaterialTheme.typography.titleMedium
+    val color = MaterialTheme.colorScheme.inversePrimary
+    val fontWeight = FontWeight.SemiBold
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
-            .clip(RoundedCornerShape(cornerShapeSize))
-            .height(rowSize)
-            .background(MaterialTheme.colorScheme.primary)
-            .padding(paddingSize)
             .fillMaxWidth()
+            .clip(RoundedCornerShape(cornerShapeSize))
+            .background(MaterialTheme.colorScheme.primary)
+            .padding(tilePadding)
     ) {
+        // Leading section
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.height(rowSize)
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.weight(LEADING_SECTION_WEIGHT)
         ) {
             if (leadingIconId != null) {
                 Image(
                     painter = painterResource(leadingIconId),
-                    contentDescription = null,
-                    modifier = Modifier.size(imageSize)
+                    contentDescription = null
                 )
             } else {
-                Spacer(modifier = Modifier.padding(paddingNumber))
                 Text(
-                    text = leadingNumber.toString(),
-                    fontWeight = FontWeight.SemiBold,
-                    style = MaterialTheme.typography.titleLarge,
+                    text = leadingLabel,
+                    style = style,
+                    color = color,
+                    fontWeight = fontWeight,
                     textAlign = TextAlign.Center,
                 )
-                Spacer(modifier = Modifier.padding(paddingNumber2))
             }
         }
-
+        // Label section
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.height(rowSize)
-                .padding(start = labelPadding, end = labelPadding)
+            horizontalArrangement = Arrangement.spacedBy(labelIconSpacerWidth),
+            modifier = Modifier.weight(LABEL_SECTION_WEIGHT)
         ) {
             Image(
                 painter = painterResource(labelIconId),
-                contentDescription = null,
-                modifier = Modifier.size(imageSize)
+                contentDescription = null
             )
-            Spacer(modifier = Modifier.padding(labelIconAndLabelTextPadding))
-            //TODO(It is difficult to make the text wrap, so we are limiting the size of the text)
             Text(
-                text = if (label.length > 8) {
-                    label.substring(0, 8) + "..."
-                } else {
-                    label
-                },
+                text = label,
                 maxLines = 1,
-                fontWeight = FontWeight.SemiBold,
-                overflow = TextOverflow.Ellipsis,
-                color = labelTextColor,
-                style = MaterialTheme.typography.titleMedium,
+                style = style,
+                color = color,
+                fontWeight = fontWeight,
+                overflow = TextOverflow.Ellipsis
             )
         }
+        Spacer(modifier = Modifier.weight(SPACER_WEIGHT_BETWEEN_LABEL_AND_TRAILING_SECTION))
+        // Trailing section
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.height(rowSize)
-            ) {
-            Text(trailingNumber.toString(), style = MaterialTheme.typography.titleMedium)
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.weight(TRAILING_SECTION_WEIGHT)
+        ) {
+            Text(
+                text = trailingLabel,
+                style = style,
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis
+            )
             Image(
                 painter = painterResource(trailingIconId),
-                contentDescription = null,
-                alpha = 0.9f,
-                modifier = Modifier.size(imageSize)
+                contentDescription = null
             )
         }
     }
@@ -118,25 +125,25 @@ fun CustomInfoTile(
 
 @Composable
 @Preview
-fun CustomInfoPreviewWithLeadingIcon() {
+private fun CustomInfoPreviewWithLeadingIcon() {
     CustomInfoTile(
         leadingIconId = R.drawable.gold_medal,
-        leadingNumber = 1,
+        leadingLabel = "1",
         labelIconId = R.drawable.man,
-        label = "Player 1asdasdadsasd",
-        trailingNumber = 5432,
+        label = "Player".repeat(100),
+        trailingLabel = "5432",
         trailingIconId = R.drawable.coins
     )
 }
 
 @Composable
 @Preview
-fun CustomInfoPreviewWithoutLeadingIcon() {
+private fun CustomInfoPreviewWithoutLeadingIcon() {
     CustomInfoTile(
-        leadingNumber = 4,
+        leadingLabel = "4",
         labelIconId = R.drawable.man,
-        label = "Geralt of Rivia",
-        trailingNumber = 100,
+        label = "Player".repeat(100),
+        trailingLabel = "100",
         trailingIconId = R.drawable.coins
     )
 }

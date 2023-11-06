@@ -12,13 +12,13 @@
         android:theme="@style/Theme.Gomoku"
         tools:targetApi="31">
         <activity
-            android:name="gomoku.leaderboard.LeaderboardActivity"
+            android:name="gomoku.leaderboard.ui.LeaderboardActivity"
             android:exported="false" />
         <activity
             android:name="gomoku.register.ui.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.variant.VariantActivity"
+            android:name="gomoku.variant.ui.VariantActivity"
             android:exported="false" />
         <activity
             android:name="gomoku.home.ui.HomeActivity"

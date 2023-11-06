@@ -7,9 +7,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import gomoku.Navigation
 import gomoku.about.ui.AboutActivity
-import gomoku.leaderboard.LeaderboardActivity
+import gomoku.leaderboard.ui.LeaderboardActivity
 import gomoku.login.ui.LoginActivity
-import gomoku.variant.VariantActivity
+import gomoku.variant.ui.VariantActivity
 
 class HomeActivity : ComponentActivity() {
 
