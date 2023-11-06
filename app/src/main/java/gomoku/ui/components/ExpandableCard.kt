@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -118,7 +119,8 @@ fun ExpandableCard(
                     modifier = Modifier
                         .weight(1f)
                         .alpha(ContentAlpha.medium)
-                        .rotate(rotationState),
+                        .rotate(rotationState)
+                        .testTag(title),
                     onClick = { expandedState = !expandedState }
                 ) {
                     Icon(

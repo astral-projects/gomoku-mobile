@@ -15,6 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.ui.theme.GomokuTheme
 
+private val topAppBarPadding = 42.dp
+
 /**
  * Top navigation header for the app.
  */
@@ -29,7 +31,7 @@ fun TopNavHeader(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 42.dp),
+                    .padding(end = topAppBarPadding),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 Text(text = title, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())

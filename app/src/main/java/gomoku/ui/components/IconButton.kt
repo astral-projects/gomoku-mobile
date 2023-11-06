@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +34,7 @@ private val iconSize = 40.dp
 private val iconTextSpacerWidth = 8.dp
 private const val BUTTON_WIDTH_FACTOR = 0.9f
 private const val BUTTON_HEIGHT_FACTOR = 0.07f
+const val NavigateBackTestTag = "NavigateBack"
 
 /**
  * An [OutlinedButton] with an icon and text.
@@ -65,6 +67,7 @@ fun IconButton(
         modifier = Modifier
             .height(boxHeight)
             .width(boxWidth)
+            .testTag(text)
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),

@@ -11,6 +11,12 @@ import gomoku.ui.components.IconButton
 import gomoku.ui.theme.GomokuTheme
 import pdm.gomoku.R
 
+
+private val HomeScreenTestTagFindMatch = "Find a mach"
+private val HomeScreenTestTagLeaderBoard = "Leaderboard"
+private val HomeScreenTestTagAbout = "About"
+private val HomeScreenTestTagLogout = "Logout"
+
 /**
  * Represents the Home screen main composable.
  * @param username username of the logged user.
@@ -43,7 +49,7 @@ fun HomeScreen(
                     IconButton(
                         text = inputData.label,
                         iconId = inputData.iconId,
-                        onClick = inputData.onClick
+                        onClick = inputData.onClick,
                     )
                 }
             )
