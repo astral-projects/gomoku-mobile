@@ -10,10 +10,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import gomoku.ui.components.Bubble
-import gomoku.ui.theme.BubbleColors
-import gomoku.ui.theme.DarkOrange
-import gomoku.ui.theme.LightOrange
+import gomoku.shared.components.Bubble
+import gomoku.shared.theme.BubbleColors
+import gomoku.shared.theme.DarkOrange
+import gomoku.shared.theme.LightOrange
 
 // Constants
 const val BIG_DARKER_BUBBLE_RADIUS = 80f

@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.home.domain.Home.GAME_NAME
-import gomoku.ui.components.HeadlineText
+import gomoku.shared.components.HeadlineText
 
 // Config
 private val logoPadding = 25.dp

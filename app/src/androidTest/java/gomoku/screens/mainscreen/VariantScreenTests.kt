@@ -22,7 +22,6 @@ class VariantScreenTests {
     fun trying_to_click_on_the_navigation_variant_without_any_variant_selected() {
         // Arrange
         var variantRequested = false
-
         composeTestRule.setContent {
             VariantScreen(
                 onSubmit = { _ ->
@@ -54,7 +53,10 @@ class VariantScreenTests {
                         boardSize = BoardSize.NINETEEN,
                         openingRule = OpeningRule.PRO
                     )
-                )
+                ),
+                toLeaderboardScreen = {},
+                toAboutScreen = {},
+                onLogoutRequest = {}
             )
         }
         // Act
@@ -98,12 +100,16 @@ class VariantScreenTests {
                         boardSize = BoardSize.NINETEEN,
                         openingRule = OpeningRule.PRO
                     )
-                )
+                ),
+                toLeaderboardScreen = {},
+                toAboutScreen = {},
+                onLogoutRequest = {}
             )
         }
         // Act
         composeTestRule.onNodeWithTag(VariantName.FREESTYLE.name).performClick()
         composeTestRule.onNodeWithTag(Variant.SUBMIT_BUTTON_TEXT).performClick()
+        // Assert
         assertTrue(variantRequested)
     }
 
@@ -143,7 +149,10 @@ class VariantScreenTests {
                         boardSize = BoardSize.NINETEEN,
                         openingRule = OpeningRule.PRO
                     )
-                )
+                ),
+                toLeaderboardScreen = {},
+                toAboutScreen = {},
+                onLogoutRequest = {}
             )
         }
         // Act
@@ -151,6 +160,4 @@ class VariantScreenTests {
         composeTestRule.onNodeWithTag(Variant.SUBMIT_BUTTON_TEXT).performClick()
         assertTrue(variantRequested)
     }
-
-
 }

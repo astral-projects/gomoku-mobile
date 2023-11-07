@@ -16,12 +16,12 @@ import gomoku.login.domain.Username
 import gomoku.register.domain.Email
 import gomoku.register.domain.Register
 import gomoku.register.ui.components.FooterBubbles
-import gomoku.ui.background.Background
-import gomoku.ui.components.Form
-import gomoku.ui.components.HeadlineText
-import gomoku.ui.components.InputTextField
-import gomoku.ui.components.SubmitButton
-import gomoku.ui.theme.GomokuTheme
+import gomoku.shared.background.Background
+import gomoku.shared.components.Form
+import gomoku.shared.components.HeadlineText
+import gomoku.shared.components.InputTextField
+import gomoku.shared.components.SubmitButton
+import gomoku.shared.theme.GomokuTheme
 import pdm.gomoku.R
 
 // Config

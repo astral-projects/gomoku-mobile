@@ -6,7 +6,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.annotation.ExperimentalTestApi
 import gomoku.about.domain.About
 import gomoku.about.ui.AboutScreen
-import gomoku.ui.components.test
+import gomoku.shared.components.test
 import org.junit.Rule
 import org.junit.Test
 
@@ -21,8 +21,10 @@ class AboutScreenTests {
         // Arrange
         composeTestRule.setContent {
             AboutScreen(
-                onBurgerMenuClick = { /*TODO*/ },
-                sections = About.sections
+                sections = About.sections,
+                toFindGameScreen = {},
+                toLeaderboardScreen = {},
+                onLogoutRequest = {}
             )
         }
         // Act
@@ -34,8 +36,10 @@ class AboutScreenTests {
         // Arrange
         composeTestRule.setContent {
             AboutScreen(
-                onBurgerMenuClick = { /*TODO*/ },
-                sections = About.sections
+                sections = About.sections,
+                toFindGameScreen = {},
+                toLeaderboardScreen = {},
+                onLogoutRequest = {}
             )
         }
         // Act
@@ -47,8 +51,10 @@ fun click_on_about_the_developer_expands_the_Card() {
         // Arrange
         composeTestRule.setContent {
             AboutScreen(
-                onBurgerMenuClick = { /*TODO*/ },
-                sections = About.sections
+                sections = About.sections,
+                toFindGameScreen = {},
+                toLeaderboardScreen = {},
+                onLogoutRequest = {}
             )
         }
         // Act

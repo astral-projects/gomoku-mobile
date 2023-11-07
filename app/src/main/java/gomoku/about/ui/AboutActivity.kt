@@ -7,6 +7,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import gomoku.Navigation
 import gomoku.about.domain.About
+import gomoku.leaderboard.ui.LeaderboardActivity
+import gomoku.login.ui.LoginActivity
+import gomoku.variant.ui.VariantActivity
 
 class AboutActivity : ComponentActivity() {
     companion object : Navigation {
@@ -20,8 +23,10 @@ class AboutActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AboutScreen(
-                onBurgerMenuClick = {/*TODO*/ },
-                sections = About.sections
+                sections = About.sections,
+                toLeaderboardScreen = { LeaderboardActivity.navigateTo(this) },
+                toFindGameScreen = { VariantActivity.navigateTo(this) },
+                onLogoutRequest = { LoginActivity.navigateTo(this) }
             )
         }
     }

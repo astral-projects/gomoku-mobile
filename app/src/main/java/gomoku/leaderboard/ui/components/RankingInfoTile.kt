@@ -3,7 +3,7 @@ package gomoku.leaderboard.ui.components
 import androidx.compose.runtime.Composable
 import gomoku.leaderboard.domain.Leaderboard
 import gomoku.leaderboard.domain.RankingInfo
-import gomoku.ui.components.CustomInfoTile
+import gomoku.shared.components.CustomInfoTile
 import pdm.gomoku.R
 
 /**

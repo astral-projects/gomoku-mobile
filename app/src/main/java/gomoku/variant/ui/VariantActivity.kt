@@ -6,8 +6,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import gomoku.Navigation
+import gomoku.about.ui.AboutActivity
 import gomoku.game.domain.board.BoardSize
 import gomoku.game.ui.GameActivity
+import gomoku.leaderboard.ui.LeaderboardActivity
+import gomoku.login.ui.LoginActivity
 import gomoku.variant.domain.OpeningRule
 import gomoku.variant.domain.VariantConfig
 import gomoku.variant.domain.VariantName
@@ -51,7 +54,10 @@ class VariantActivity : ComponentActivity() {
                         boardSize = BoardSize.NINETEEN,
                         openingRule = OpeningRule.PRO
                     )
-                )
+                ),
+                toLeaderboardScreen = { LeaderboardActivity.navigateTo(this) },
+                toAboutScreen = { AboutActivity.navigateTo(this) },
+                onLogoutRequest = { LoginActivity.navigateTo(this) }
             )
         }
     }

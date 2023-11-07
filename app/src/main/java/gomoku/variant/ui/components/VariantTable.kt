@@ -16,15 +16,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import gomoku.ui.components.ContentNotFound
-import gomoku.ui.components.ExpandableCard
+import gomoku.shared.components.ContentNotFound
+import gomoku.shared.components.ExpandableCard
 import gomoku.variant.domain.Variant
 import gomoku.variant.domain.VariantConfig
 import pdm.gomoku.R
 
 // Config
 private const val CARD_WEIGHT = 0.85f
-private const val BODY_HEIGHT_FACTOR = 0.6f
+private const val BODY_HEIGHT_FACTOR = 0.7f
 private val variantBodyVerticalPadding = 15.dp
 private val variantItemVerticalPadding = 6.dp
 private val radioButtonVariantItemSpacerWidth = 6.dp

@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.leaderboard.domain.Leaderboard
 import gomoku.leaderboard.domain.RankingInfo
-import gomoku.ui.components.ContentNotFound
+import gomoku.shared.components.ContentNotFound
 
 // Config
 private val leaderboardPaddingTop = 10.dp

@@ -6,7 +6,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import gomoku.Navigation
+import gomoku.about.ui.AboutActivity
 import gomoku.leaderboard.domain.Leaderboard
+import gomoku.login.ui.LoginActivity
+import gomoku.variant.ui.VariantActivity
 
 class LeaderboardActivity : ComponentActivity() {
 
@@ -32,7 +35,9 @@ class LeaderboardActivity : ComponentActivity() {
                 onSearchRequest = { term ->
                     list.filter { it.playerInfo.name.contains(term.value, ignoreCase = true) }
                 },
-                onBurgerMenuClick = { /*TODO*/ }
+                toFindGameScreen = { VariantActivity.navigateTo(this) },
+                toAboutScreen = { AboutActivity.navigateTo(this) },
+                onLogoutRequest = { LoginActivity.navigateTo(this) }
             )
         }
     }

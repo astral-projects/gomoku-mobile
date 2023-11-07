@@ -6,8 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import gomoku.leaderboard.domain.PlayerInfo
-import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.components.CustomIconChip
+import gomoku.shared.background.BackgroundConfig
+import gomoku.shared.components.CustomIconChip
 import pdm.gomoku.R
 
 // Config

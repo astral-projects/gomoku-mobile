@@ -30,7 +30,7 @@ import gomoku.game.domain.board.BoardTurn
 import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
-import gomoku.ui.theme.GomokuTheme
+import gomoku.shared.theme.GomokuTheme
 
 // Constants
 private const val FIRST_INDEX = -1

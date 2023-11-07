@@ -23,12 +23,12 @@ import gomoku.login.domain.Login
 import gomoku.login.domain.Password
 import gomoku.login.domain.Username
 import gomoku.login.ui.components.HeaderLogo
-import gomoku.ui.background.Background
-import gomoku.ui.components.Form
-import gomoku.ui.components.HyperLink
-import gomoku.ui.components.InputTextField
-import gomoku.ui.components.SubmitButton
-import gomoku.ui.theme.GomokuTheme
+import gomoku.shared.background.Background
+import gomoku.shared.components.Form
+import gomoku.shared.components.HyperLink
+import gomoku.shared.components.InputTextField
+import gomoku.shared.components.SubmitButton
+import gomoku.shared.theme.GomokuTheme
 import pdm.gomoku.R
 
 // Config

@@ -48,7 +48,6 @@ class GameScreenTests {
         composeTestRule.setContent {
             GameScreen(
                 localPlayer = Player.W,
-                onBurgerMenuClick = {},
                 onLeaveGameRequest = {
                     leaveGameRequested = true
                 },

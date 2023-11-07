@@ -15,7 +15,7 @@ import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
 import gomoku.home.ui.HomeActivity
 import gomoku.leaderboard.domain.PlayerInfo
-import gomoku.ui.background.BackgroundConfig
+import gomoku.shared.background.BackgroundConfig
 import pdm.gomoku.R
 
 class GameActivity : ComponentActivity() {
@@ -32,7 +32,6 @@ class GameActivity : ComponentActivity() {
             GameScreen(
                 backgroundConfig = BackgroundConfig(LocalConfiguration.current),
                 localPlayer = Player.W,
-                onBurgerMenuClick = { /*TODO*/ },
                 onLeaveGameRequest = { HomeActivity.navigateTo(this) },
                 onCellClick = { /*TODO*/ },
                 whitePlayer = PlayerInfo("Player W", R.drawable.man5),

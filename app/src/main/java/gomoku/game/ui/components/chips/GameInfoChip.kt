@@ -3,7 +3,7 @@ package gomoku.game.ui.components.chips
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.ui.components.CustomIconChip
+import gomoku.shared.components.CustomIconChip
 
 /**
  * A [CustomIconChip] that displays game information.

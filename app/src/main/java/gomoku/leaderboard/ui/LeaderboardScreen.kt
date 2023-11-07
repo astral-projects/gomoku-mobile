@@ -9,12 +9,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
@@ -28,61 +31,114 @@ import gomoku.leaderboard.domain.RankingInfo
 import gomoku.leaderboard.domain.Term
 import gomoku.leaderboard.ui.components.LeaderboardSearchBar
 import gomoku.leaderboard.ui.components.LeaderboardTable
-import gomoku.ui.background.Background
-import gomoku.ui.components.ClickableIcon
-import gomoku.ui.components.TopNavHeader
-import gomoku.ui.theme.GomokuTheme
+import gomoku.shared.background.Background
+import gomoku.shared.components.ClickableIcon
+import gomoku.shared.components.TopNavHeader
+import gomoku.shared.components.navigation.NavigationDrawer
+import gomoku.shared.components.navigation.NavigationItem
+import gomoku.shared.components.navigation.NavigationItemGroup
+import gomoku.shared.theme.GomokuTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import pdm.gomoku.R
 
 // Config
 private val footerIconHorizontalPadding = 10.dp
 private val footerIconVerticalPadding = 10.dp
 private const val LEADERBOARD_TABLE_HEIGHT_FACTOR = 0.85f
-private const val SEARCH_DELAY = 300L
+private const val SEARCH_DELAY = 500L
 private const val FIRST_PAGE = 1
-private const val LOAD_MORE_THRESHOLD = 5
+// in terms of visible items, load more when there are x items left
+private const val LOAD_MORE_THRESHOLD = 2
 
 /**
  * Represents the Leaderboard screen main composable.
  * @param playerInfo the logged in player information.
  * @param getItemsFromPage callback to get the items to be displayed in the leaderboard, given a page number.
  * @param onSearchRequest callback to be executed when a search is requested.
- * @param onBurgerMenuClick callback to be executed when the burger menu is clicked.
+ * @param toFindGameScreen callback to be executed when the user clicks on the respective navigation item.
+ * @param toAboutScreen callback to be executed when the user clicks on the respective navigation item.
+ * @param onLogoutRequest callback to be executed when the user clicks on the respective navigation item.
  */
 @Composable
 fun LeaderboardScreen(
     playerInfo: PlayerInfo,
     getItemsFromPage: (page: Int) -> List<RankingInfo>,
     onSearchRequest: (Term) -> List<RankingInfo>,
-    onBurgerMenuClick: () -> Unit
+    toFindGameScreen: () -> Unit,
+    toAboutScreen: () -> Unit,
+    onLogoutRequest: () -> Unit
 ) {
     // search
     var query by rememberSaveable { mutableStateOf("") }
-    // lazy list
+    // list and pagination
     val lazyListState = rememberLazyListState()
     var page by remember { mutableIntStateOf(FIRST_PAGE) }
     var isLoadingPages by remember { mutableStateOf(false) }
-    // others
-    var isSelfPositionEnabled by rememberSaveable { mutableStateOf(false) }
     var currentItems by remember { mutableStateOf(getItemsFromPage(page)) }
+    // others
+    val scope = rememberCoroutineScope()
+    var isSelfPositionEnabled by rememberSaveable { mutableStateOf(false) }
+    var inDarkTheme by remember { mutableStateOf(false) }
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    // data for the navigation drawer
+    val leaderboardItem = NavigationItem(
+        title = "Leaderboard",
+        selectedIconId = R.drawable.nav_leaderboard,
+        onClick = {}
+    )
+    val items = NavigationItemGroup(
+        title = "Screens",
+        items = listOf(
+            NavigationItem(
+                title = "Find Game",
+                selectedIconId = R.drawable.nav_find_game,
+                onClick = toFindGameScreen
+            ),
+            leaderboardItem,
+            NavigationItem(
+                title = "About",
+                selectedIconId = R.drawable.nav_about,
+                onClick = toAboutScreen
+            )
+        )
+    )
+    val settings = NavigationItemGroup(
+        title = "Settings",
+        items = listOf(
+            NavigationItem(
+                title = "Switch Theme",
+                selectedIconId = R.drawable.nav_switch_theme,
+                onClick = { inDarkTheme = !inDarkTheme }
+            ),
+            NavigationItem(
+                title = "Logout",
+                selectedIconId = R.drawable.nav_logout,
+                onClick = onLogoutRequest
+            )
+        )
+    )
+    // launched effects
     LaunchedEffect(key1 = query) {
         delay(SEARCH_DELAY)
         val term = Term.toTermOrNull(query)
-        if (term != null) {
-            currentItems = onSearchRequest(term)
+        currentItems = if (term != null) {
+            onSearchRequest(term)
         } else {
-            currentItems = getItemsFromPage(page)
+            getItemsFromPage(page)
         }
     }
     LaunchedEffect(key1 = page) {
         isLoadingPages = true
         // Simulate a network request (when using dummy data)
         delay(2000)
-        currentItems = getItemsFromPage(page)
-        // Position the list at the top when the page is loaded
-        lazyListState.scrollToItem(0)
+        if (page == FIRST_PAGE) {
+            currentItems = getItemsFromPage(page);
+            // Position the list at the top when the page is loaded
+            lazyListState.scrollToItem(0)
+        } else
+            currentItems += getItemsFromPage(page)
         isLoadingPages = false
     }
     // Observe scroll state to load more items
@@ -94,65 +150,77 @@ fun LeaderboardScreen(
                 }
             }
     }
-    GomokuTheme {
-        Background(
-            header = {
-                TopNavHeader(
-                    title = Leaderboard.TITLE,
-                    onBurgerMenuClick = onBurgerMenuClick
-                )
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    LeaderboardSearchBar(
-                        query = query,
-                        placeHolder = Leaderboard.SEARCH_BAR_PLACEHOLDER,
-                        onQueryChange = { query = it },
-                        onClearSearch = { query = "" }
-                    )
-                }
-            },
+    // UI
+    GomokuTheme(darkTheme = inDarkTheme) {
+        NavigationDrawer(
+            drawerState = drawerState,
+            items = listOf(items, settings),
+            selectedItem = leaderboardItem
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(LEADERBOARD_TABLE_HEIGHT_FACTOR)
-                        .align(Alignment.TopCenter)
-                ) {
-                    LeaderboardTable(
-                        playersRankingInfo = currentItems,
-                        listState = lazyListState,
-                        loading = isLoadingPages
-                    )
-                }
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.BottomCenter)
-                        .padding(
-                            horizontal = footerIconHorizontalPadding,
-                            vertical = footerIconVerticalPadding
-                        )
-                ) {
-                    ToggleSelfPositionIcon(iconId = R.drawable.target, onClick = {
-                        if (isSelfPositionEnabled) {
-                            currentItems = getItemsFromPage(FIRST_PAGE); page = FIRST_PAGE
-                        } else {
-                            currentItems = onSearchRequest(Term(playerInfo.name))
+            Background(
+                header = {
+                    TopNavHeader(
+                        title = Leaderboard.TITLE,
+                        onBurgerMenuClick = {
+                            scope.launch {
+                                drawerState.open()
+                            }
                         }
-                        // toggle
-                        isSelfPositionEnabled = !isSelfPositionEnabled
-                    })
-                    BackTopTheTopIcon(iconId = R.drawable.back_to_top, onClick = {
-                        page = FIRST_PAGE
-                    })
+                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        LeaderboardSearchBar(
+                            query = query,
+                            placeHolder = Leaderboard.SEARCH_BAR_PLACEHOLDER,
+                            onQueryChange = { query = it },
+                            onClearSearch = { query = ""; page = FIRST_PAGE },
+                        )
+                    }
+                },
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(LEADERBOARD_TABLE_HEIGHT_FACTOR)
+                            .align(Alignment.TopCenter)
+                    ) {
+                        LeaderboardTable(
+                            playersRankingInfo = currentItems,
+                            listState = lazyListState,
+                            loading = isLoadingPages
+                        )
+                    }
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.BottomCenter)
+                            .padding(
+                                horizontal = footerIconHorizontalPadding,
+                                vertical = footerIconVerticalPadding
+                            )
+                    ) {
+                        ToggleSelfPositionIcon(iconId = R.drawable.target, onClick = {
+                            if (isSelfPositionEnabled) {
+                                page = FIRST_PAGE
+                                currentItems = getItemsFromPage(FIRST_PAGE)
+                            } else {
+                                currentItems = onSearchRequest(Term(playerInfo.name))
+                            }
+                            // toggle
+                            isSelfPositionEnabled = !isSelfPositionEnabled
+                        })
+                        BackTopTheTopIcon(iconId = R.drawable.back_to_top, onClick = {
+                            page = FIRST_PAGE
+                        })
+                    }
                 }
             }
         }
@@ -181,8 +249,15 @@ private fun LeaderboardScreenPreview() {
             )
         },
         onSearchRequest = { term ->
-            playersRankingInfo.filter { it.playerInfo.name.contains(term.value, ignoreCase = true) }
+            playersRankingInfo.filter {
+                it.playerInfo.name.contains(
+                    term.value,
+                    ignoreCase = true
+                )
+            }
         },
-        onBurgerMenuClick = {}
+        toFindGameScreen = {},
+        toAboutScreen = {},
+        onLogoutRequest = {}
     )
 }

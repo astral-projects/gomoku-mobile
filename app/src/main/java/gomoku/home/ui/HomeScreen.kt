@@ -5,10 +5,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import gomoku.home.domain.ButtonData
 import gomoku.home.domain.Home
 import gomoku.login.ui.components.HeaderLogo
-import gomoku.ui.background.Background
-import gomoku.ui.components.Form
-import gomoku.ui.components.IconButton
-import gomoku.ui.theme.GomokuTheme
+import gomoku.shared.background.Background
+import gomoku.shared.components.Form
+import gomoku.shared.components.IconButton
+import gomoku.shared.theme.GomokuTheme
 import pdm.gomoku.R
 
 

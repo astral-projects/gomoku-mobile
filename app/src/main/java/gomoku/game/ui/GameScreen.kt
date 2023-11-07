@@ -29,20 +29,17 @@ import gomoku.game.ui.components.chips.GameInfoChip
 import gomoku.game.ui.components.chips.PlayerInfoChip
 import gomoku.home.domain.Home.GAME_NAME
 import gomoku.leaderboard.domain.PlayerInfo
-import gomoku.ui.background.Background
-import gomoku.ui.background.BackgroundConfig
-import gomoku.ui.components.DismissButton
-import gomoku.ui.components.TopNavHeader
-import gomoku.ui.theme.GomokuTheme
+import gomoku.shared.background.Background
+import gomoku.shared.background.BackgroundConfig
+import gomoku.shared.components.DismissButton
+import gomoku.shared.components.HeadlineText
+import gomoku.shared.theme.GomokuTheme
 import pdm.gomoku.R
-
-
 
 /**
  * Represents the game screen main composable.
  * @param backgroundConfig the [BackgroundConfig] to be used.
  * @param localPlayer the [Player] that is playing locally.
- * @param onBurgerMenuClick the callback to be called when the burger menu is clicked.
  * @param onLeaveGameRequest the callback to be called when the dismiss button is clicked.
  * @param onCellClick the callback to be called when a cell is clicked.
  * @param whitePlayer the [PlayerInfo] of the white player.
@@ -53,7 +50,6 @@ import pdm.gomoku.R
 fun GameScreen(
     backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     localPlayer: Player,
-    onBurgerMenuClick: () -> Unit,
     onLeaveGameRequest: () -> Unit,
     onCellClick: (toSquare: Square) -> Unit,
     whitePlayer: PlayerInfo,
@@ -63,8 +59,7 @@ fun GameScreen(
     GomokuTheme {
         Background(
             config = backgroundConfig,
-            header = { TopNavHeader(title = GAME_NAME, onBurgerMenuClick = onBurgerMenuClick) },
-            useBodySurface = false,
+            header = { HeadlineText(text = GAME_NAME) },
         ) {
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly,
@@ -172,7 +167,6 @@ private fun GameScreenPreview() {
     GameScreen(
         backgroundConfig = BackgroundConfig(LocalConfiguration.current),
         localPlayer = Player.W,
-        onBurgerMenuClick = {},
         onLeaveGameRequest = {},
         onCellClick = {},
         whitePlayer = PlayerInfo("Geralt of Rivia", R.drawable.man),
