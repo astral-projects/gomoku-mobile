@@ -14,14 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
 import gomoku.game.domain.Game
-import gomoku.game.domain.Timer
+import gomoku.game.domain.GameTag
 import gomoku.game.domain.board.Board
-import gomoku.game.domain.board.BoardSize
-import gomoku.game.domain.board.BoardTurn
-import gomoku.game.domain.moves.Move
-import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
 import gomoku.game.ui.components.board.BoardView
@@ -33,7 +28,6 @@ import gomoku.shared.background.Background
 import gomoku.shared.background.BackgroundConfig
 import gomoku.shared.components.DismissButton
 import gomoku.shared.components.HeaderText
-import gomoku.shared.components.HeadlineText
 import gomoku.shared.theme.GomokuTheme
 import pdm.gomoku.R
 
@@ -53,9 +47,10 @@ fun GameScreen(
     localPlayer: Player,
     onLeaveGameRequest: () -> Unit,
     onCellClick: (toSquare: Square) -> Unit,
-    whitePlayer: PlayerInfo,
-    blackPlayer: PlayerInfo,
-    board: Board
+    game: Game
+   // whitePlayer: PlayerInfo,
+   // blackPlayer: PlayerInfo,
+    //board: Board
 ) {
     GomokuTheme {
         Background(
@@ -74,7 +69,7 @@ fun GameScreen(
                 ) {
                     GameInfoChip(
                         leadingIconId = R.drawable.timer,
-                        label = "${board.turn.timer}"
+                        label = "${game.board.turn.timer}"
                     )
                 }
                 Row(
@@ -82,13 +77,13 @@ fun GameScreen(
                     horizontalArrangement = Arrangement.End
                 ) {
                     PlayerInfoChip(
-                        playerInfo = whitePlayer,
+                        playerInfo = game.whitePlayer,
                         trailingIconId = R.drawable.white_circle,
-                        select = board.turn.player == Player.W
+                        select = game.board.turn.player == Player.W
                     )
                 }
                 BoardContainer(
-                    board = board,
+                    board = game.board,
                     localPlayer = localPlayer,
                     onCellClick = onCellClick
                 )
@@ -97,13 +92,13 @@ fun GameScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     PlayerInfoChip(
-                        playerInfo = blackPlayer,
+                        playerInfo = game.blackPlayer,
                         trailingIconId = R.drawable.black_circle,
-                        select = board.turn.player == Player.B
+                        select = game.board.turn.player == Player.B
                     )
                     GameInfoChip(
                         leadingIconId = R.drawable.directions,
-                        label = "${board.moves.size}"
+                        label = "${game.board.moves.size}"
                     )
                 }
                 // Spacer(modifier = Modifier.weight(1f))
@@ -112,7 +107,7 @@ fun GameScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     DismissButton(
-                        onButtonText = Game.DISMISS_BUTTON_TEXT,
+                        onButtonText = GameTag.DISMISS_BUTTON_TEXT,
                         enable = true,
                         onDismiss = onLeaveGameRequest
                     )
@@ -145,7 +140,7 @@ private fun BoardContainer(
         )
     }
 }
-
+/*
 @Preview
 @Composable
 private fun GameScreenPreview() {
@@ -175,4 +170,4 @@ private fun GameScreenPreview() {
         blackPlayer = PlayerInfo("Arthur Morgan".repeat(100), R.drawable.man5),
         board = board
     )
-}
+}*/
