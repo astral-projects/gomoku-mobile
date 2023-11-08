@@ -14,15 +14,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.about.domain.About
 import gomoku.about.domain.Section
 import gomoku.about.ui.components.FooterLogo
-import gomoku.home.domain.Home.GAME_NAME
+import gomoku.home.domain.Home.gameName
 import gomoku.shared.background.Background
 import gomoku.shared.components.ExpandableCard
-import gomoku.shared.components.TopNavHeader
+import gomoku.shared.components.TopNavBarWithBurgerMenu
 import gomoku.shared.components.navigation.NavigationDrawer
 import gomoku.shared.components.navigation.NavigationItem
 import gomoku.shared.components.navigation.NavigationItemGroup
@@ -54,20 +55,20 @@ fun AboutScreen(
 
     // data for the navigation drawer
     val aboutItem = NavigationItem(
-        title = "About",
+        title = stringResource(id = R.string.nav_item_about),
         selectedIconId = R.drawable.nav_about,
         onClick = {}
     )
     val items = NavigationItemGroup(
-        title = "Screens",
+        title = stringResource(id = R.string.nav_group_items_screens),
         items = listOf(
             NavigationItem(
-                title = "Find Game",
+                title = stringResource(id = R.string.nav_item_find_game),
                 selectedIconId = R.drawable.nav_find_game,
                 onClick = toFindGameScreen
             ),
             NavigationItem(
-                title = "Leaderboard",
+                title = stringResource(id = R.string.nav_item_leaderboard),
                 selectedIconId = R.drawable.nav_leaderboard,
                 onClick = toLeaderboardScreen
             ),
@@ -75,15 +76,15 @@ fun AboutScreen(
         )
     )
     val settings = NavigationItemGroup(
-        title = "Settings",
+        title = stringResource(id = R.string.nav_group_items_settings),
         items = listOf(
             NavigationItem(
-                title = "Switch Theme",
+                title = stringResource(id = R.string.nav_item_switch_theme),
                 selectedIconId = R.drawable.nav_switch_theme,
                 onClick = { inDarkTheme = !inDarkTheme }
             ),
             NavigationItem(
-                title = "Logout",
+                title = stringResource(id = R.string.nav_item_logout),
                 selectedIconId = R.drawable.nav_logout,
                 onClick = onLogoutRequest
             )
@@ -96,11 +97,10 @@ fun AboutScreen(
             items = listOf(items, settings),
             selectedItem = aboutItem
         ) {
-
             Background(
                 header = {
-                    TopNavHeader(
-                        title = GAME_NAME,
+                    TopNavBarWithBurgerMenu(
+                        title = stringResource(gameName),
                         onBurgerMenuClick = {
                             scope.launch { drawerState.open() }
                         })
@@ -123,8 +123,8 @@ fun AboutScreen(
                                 titleColor = MaterialTheme.colorScheme.onSecondary,
                                 leadingIconId = section.iconId,
                                 backgroundColor = MaterialTheme.colorScheme.surface,
-                                title = section.title.value,
-                                description = section.description.value
+                                title = stringResource(section.title.value),
+                                description = stringResource(section.description.value)
                             )
                         }
                     }

@@ -1,6 +1,7 @@
 package gomoku.home.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import gomoku.home.domain.ButtonData
 import gomoku.home.domain.Home
@@ -38,12 +39,12 @@ fun HomeScreen(
             header = { HeaderLogo() }
         ) {
             Form(
-                title = Home.welcome(username),
+                title = stringResource(id = Home.welcome, username),
                 inputFieldsData = listOf(
-                    ButtonData(Home.FIND_GAME, R.drawable.play_button, onClick = onFindMatch),
-                    ButtonData(Home.LEADERBOARD, R.drawable.leaderboard, onClick = onLeaderBoard),
-                    ButtonData(Home.ABOUT, R.drawable.about, onClick = onAbout),
-                    ButtonData(Home.LOGOUT, R.drawable.door_out, onClick = onLogout)
+                    ButtonData(stringResource(Home.findGame), R.drawable.play_button, onClick = onFindMatch),
+                    ButtonData(stringResource(Home.leaderboard), R.drawable.leaderboard, onClick = onLeaderBoard),
+                    ButtonData(stringResource(Home.about), R.drawable.about, onClick = onAbout),
+                    ButtonData(stringResource(Home.logout), R.drawable.door_out, onClick = onLogout)
                 ),
                 renderInputField = { inputData ->
                     IconButton(

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import gomoku.game.domain.Game
 import gomoku.game.domain.GameTag
 import gomoku.game.domain.board.Board
@@ -22,7 +23,7 @@ import gomoku.game.domain.moves.move.Square
 import gomoku.game.ui.components.board.BoardView
 import gomoku.game.ui.components.chips.GameInfoChip
 import gomoku.game.ui.components.chips.PlayerInfoChip
-import gomoku.home.domain.Home.GAME_NAME
+import gomoku.home.domain.Home.gameName
 import gomoku.leaderboard.domain.PlayerInfo
 import gomoku.shared.background.Background
 import gomoku.shared.background.BackgroundConfig
@@ -48,15 +49,12 @@ fun GameScreen(
     onLeaveGameRequest: () -> Unit,
     onCellClick: (toSquare: Square) -> Unit,
     game: Game
-   // whitePlayer: PlayerInfo,
-   // blackPlayer: PlayerInfo,
-    //board: Board
 ) {
     GomokuTheme {
         Background(
             config = backgroundConfig,
             useBodySurface = false,
-            header = { HeaderText(text = GAME_NAME) },
+            header = { HeaderText(text = stringResource(id = gameName)) },
         ) {
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly,
@@ -107,7 +105,7 @@ fun GameScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     DismissButton(
-                        onButtonText = GameTag.DISMISS_BUTTON_TEXT,
+                        onButtonText = stringResource(id = GameTag.gameLeaveButtonText),
                         enable = true,
                         onDismiss = onLeaveGameRequest
                     )

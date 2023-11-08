@@ -60,7 +60,7 @@ class VariantScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Variant.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Variant.submitButtonText).performClick()
         assertFalse(variantRequested)
     }
 
@@ -108,7 +108,7 @@ class VariantScreenTests {
         }
         // Act
         composeTestRule.onNodeWithTag(VariantName.FREESTYLE.name).performClick()
-        composeTestRule.onNodeWithTag(Variant.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Variant.submitButtonText).performClick()
         // Assert
         assertTrue(variantRequested)
     }
@@ -157,7 +157,7 @@ class VariantScreenTests {
         }
         // Act
         composeTestRule.onNodeWithTag(VariantName.RENJU.name).performClick()
-        composeTestRule.onNodeWithTag(Variant.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Variant.submitButtonText).performClick()
         assertTrue(variantRequested)
     }
 }

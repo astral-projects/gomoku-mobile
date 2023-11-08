@@ -23,7 +23,6 @@ import java.io.IOException
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-
 class GomokuGame(
     private val client: OkHttpClient,
     private val gson: Gson

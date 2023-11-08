@@ -56,7 +56,7 @@ fun BoardView(
 ) {
     val boardSize = board.size.value
     val lineColor = MaterialTheme.colorScheme.surface
-    var selectedCell by remember { mutableStateOf<Square?>(null) }
+    var selectedSquare by remember { mutableStateOf<Square?>(null) }
     val cellSize = ((maxWidth - boardBorderWidth * 2 - boardPadding * 2) / (boardSize + 1))
     Column(
         modifier = Modifier
@@ -65,9 +65,9 @@ fun BoardView(
             .padding(boardPadding)
     ) {
         Column {
-            for (rowIndex in FIRST_INDEX until boardSize)
+            for (rowIndex in FIRST_INDEX.. boardSize)
                 Row {
-                    for (columnIndex in FIRST_INDEX until boardSize) {
+                    for (columnIndex in FIRST_INDEX .. boardSize) {
                         when {
                             isCorner(rowIndex, columnIndex, boardSize) ->
                                 Box(modifier = Modifier.size(cellSize / 2))
@@ -94,21 +94,20 @@ fun BoardView(
 
                             else -> {
                                 val square = Square(rowIndex, columnIndex)
-                                val previousSquare = selectedCell
+                                val previousSquare = selectedSquare
                                 CellView(
                                     cellSize = cellSize,
                                     lineColor = lineColor,
-                                    selectedCell = selectedCell == square,
-                                    piece = board.getPiece(square),
-                                    onClick = {
-                                        if (board.isPlayerTurn(localPlayer)) {
-                                            selectedCell = square
-                                            if (previousSquare == selectedCell) {
-                                                onCellClick(square)
-                                            }
+                                    selectedCell = selectedSquare == square,
+                                    piece = board.getPiece(square)
+                                ) {
+                                    if (board.isPlayerTurn(localPlayer)) {
+                                        selectedSquare = square
+                                        if (previousSquare == selectedSquare) {
+                                            onCellClick(square)
                                         }
                                     }
-                                )
+                                }
                             }
                         }
                     }

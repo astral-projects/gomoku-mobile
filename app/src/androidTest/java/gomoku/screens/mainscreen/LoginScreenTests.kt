@@ -30,7 +30,7 @@ class LoginScreenTests {
         }
         // Act
 
-        composeTestRule.onNodeWithTag(Login.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Login.submitButtonText).performClick()
         // Assert
         assertFalse(loginRequested)
     }
@@ -50,8 +50,8 @@ class LoginScreenTests {
         }
 
         // Act
-        composeTestRule.onNodeWithTag(Login.PASSWORD_LABEL).performTextInput(password)
-        composeTestRule.onNodeWithTag(Login.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Login.passwordLabel).performTextInput(password)
+        composeTestRule.onNodeWithTag(Login.submitButtonText).performClick()
         // Assert
         assertFalse(loginRequested)
     }
@@ -71,8 +71,8 @@ class LoginScreenTests {
         }
 
         // Act
-        composeTestRule.onNodeWithTag(Login.USERNAME_LABEL).performTextInput(username)
-        composeTestRule.onNodeWithTag(Login.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Login.usernameLabel).performTextInput(username)
+        composeTestRule.onNodeWithTag(Login.submitButtonText).performClick()
         // Assert
         assertFalse(loginRequested)
     }
@@ -94,9 +94,9 @@ class LoginScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Login.USERNAME_LABEL).performTextInput(username)
-        composeTestRule.onNodeWithTag(Login.PASSWORD_LABEL).performTextInput(password)
-        composeTestRule.onNodeWithTag(Login.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Login.usernameLabel).performTextInput(username)
+        composeTestRule.onNodeWithTag(Login.passwordLabel).performTextInput(password)
+        composeTestRule.onNodeWithTag(Login.submitButtonText).performClick()
         // Assert
         TestCase.assertTrue(loginRequested)
     }
@@ -118,8 +118,8 @@ class LoginScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Login.USERNAME_LABEL).performTextInput(username)
-        composeTestRule.onNodeWithTag(Login.PASSWORD_LABEL).performTextInput(password)
+        composeTestRule.onNodeWithTag(Login.usernameLabel).performTextInput(username)
+        composeTestRule.onNodeWithTag(Login.passwordLabel).performTextInput(password)
         // Assert
        assertFalse(loginRequested)
     }
@@ -136,7 +136,7 @@ class LoginScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Login.SIGN_UP_LINK).performClick()
+        composeTestRule.onNodeWithTag(Login.signUpLinkText).performClick()
         // Assert
         assertTrue(signUpRequested)
     }
@@ -156,9 +156,9 @@ class LoginScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Login.USERNAME_LABEL).performTextInput(username)
-        composeTestRule.onNodeWithTag(Login.PASSWORD_LABEL).performTextInput(password)
-        composeTestRule.onNodeWithTag(Login.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Login.usernameLabel).performTextInput(username)
+        composeTestRule.onNodeWithTag(Login.passwordLabel).performTextInput(password)
+        composeTestRule.onNodeWithTag(Login.submitButtonText).performClick()
         // Assert
         assertFalse(loginRequested)
     }

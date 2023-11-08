@@ -6,9 +6,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import gomoku.home.domain.Home.GAME_NAME
+import gomoku.home.domain.Home.gameName
 import gomoku.login.domain.AuthValidator
 import gomoku.login.domain.InputTextFieldData
 import gomoku.login.domain.Password
@@ -35,11 +36,11 @@ private val footerPaddingBottom = 10.dp
  */
 @Composable
 fun RegisterScreen(
-    onSubmit: (username: String, email: String, password: String, confirmPassword: String) -> Unit = { _, _, _, _ -> }
+    onSubmit: (username: String, email: String, password: String, confirmPassword: String) -> Unit
 ) {
     GomokuTheme {
         Background(
-            header = { HeadlineText(text = GAME_NAME) },
+            header = { HeadlineText(text = stringResource(gameName)) },
             footer = { FooterBubbles() }
         ) {
             var username by rememberSaveable { mutableStateOf("") }
@@ -50,36 +51,44 @@ fun RegisterScreen(
                 footerPaddingTop = footerPaddingTop,
                 footerPaddingBottom = footerPaddingBottom,
                 paddingBetweenInputFields = paddingBetweenInputFields,
-                title = Register.FORM_TITLE,
+                title = stringResource(Register.formTitle),
                 inputFieldsData = listOf(
                     InputTextFieldData(
                         value = username,
-                        label = Register.USERNAME_LABEL,
+                        label = stringResource(Register.usernameLabel),
                         iconId = R.drawable.user,
                         onValueChangeCallback = { username = it },
                         validationCallback = { Username.isValid(it) },
-                        supportingText = Username.validationRuleMsg()
+                        supportingText = stringResource(
+                            id = Username.validationRuleResourceId,
+                            Username.minUsernameLength,
+                            Username.maxUsernameLength
+                        )
                     ),
                     InputTextFieldData(
                         value = email,
-                        label = Register.EMAIL_LABEL,
+                        label = stringResource(Register.emailLabel),
                         iconId = R.drawable.email,
                         onValueChangeCallback = { email = it },
                         validationCallback = { Email.isValid(it) },
-                        supportingText = Email.validationRuleMsg()
+                        supportingText = stringResource(id = Email.validationRuleResourceId)
                     ),
                     InputTextFieldData(
                         value = password,
-                        label = Register.PASSWORD_LABEL,
+                        label = stringResource(Register.passwordLabel),
                         iconId = R.drawable.lock,
                         onValueChangeCallback = { password = it },
                         validationCallback = { Password.isValid(it) },
                         isPassword = true,
-                        supportingText = Password.validationRuleMsg()
+                        supportingText = stringResource(
+                            id = Password.validationRuleResourceId,
+                            Password.minPasswordLength,
+                            Password.maxPasswordLength
+                        )
                     ),
                     InputTextFieldData(
                         value = confirmPassword,
-                        label = Register.CONFIRM_PASSWORD_LABEL,
+                        label = stringResource(Register.confirmPasswordLabel),
                         iconId = R.drawable.lock,
                         onValueChangeCallback = { confirmPassword = it },
                         validationCallback = { Password.isValid(it) },
@@ -94,7 +103,7 @@ fun RegisterScreen(
                             password,
                             confirmPassword
                         ),
-                        onButtonText = Register.SUBMIT_BUTTON_TEXT,
+                        onButtonText = stringResource(Register.submitTextButton),
                         onClick = { onSubmit(username, email, password, confirmPassword) },
                         textColor = MaterialTheme.colorScheme.outline,
                     )
@@ -118,5 +127,7 @@ fun RegisterScreen(
 @Preview
 @Composable
 private fun RegisterScreenPreview() {
-    RegisterScreen()
+    RegisterScreen(
+        onSubmit = { _, _, _, _ -> }
+    )
 }

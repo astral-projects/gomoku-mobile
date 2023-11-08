@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.leaderboard.domain.Leaderboard
@@ -42,7 +43,7 @@ fun LeaderboardTable(
         ) {
             if (playersRankingInfo.isEmpty()) {
                 item {
-                    ContentNotFound(text = Leaderboard.NOT_RESULTS_FOUND)
+                    ContentNotFound(text = stringResource(Leaderboard.noResultsFound))
                 }
             } else {
                 playersRankingInfo.forEach {

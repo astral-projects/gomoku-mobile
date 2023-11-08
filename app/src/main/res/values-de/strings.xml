@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_find_game">Spiel suchen</string>
+    <string name="home_leaderboard">Rangliste</string>
+    <string name="home_about">Über uns</string>
+    <string name="home_logout">Abmelden</string>
+    <string name="about_section_a_title">Spielinformationen</string>
+    <string name="about_section_a_description">Gomoku, auch bekannt als Fünf in einer Reihe, ist ein klassisches Brettspiel, das einfach zu lernen, aber schwer zu meistern ist. Das Ziel ist einfach: Seien Sie der erste Spieler, der fünf seiner Steine horizontal, vertikal oder diagonal auf dem Spielbrett in einer Reihe hat.</string>
+    <string name="about_section_b_title">Feedback und Unterstützung</string>
+    <string name="about_section_b_description">Wir schätzen Ihre Rückmeldung! Wenn Sie Fragen, Vorschläge haben oder Probleme bei der Verwendung unserer App haben, wenden Sie sich bitte an unser Support-Team.</string>
+    <string name="about_section_c_title">Autoren</string>
+    <string name="leaderboard_title">Rangliste</string>
+    <string name="leaderboard_search_bar_hint">Einen Spieler suchen…</string>
+    <string name="leaderboard_no_results_found">Wir haben weit und breit gesucht. Leider wurden keine Ergebnisse gefunden.</string>
+    <string name="login_form_title">Willkommen</string>
+    <string name="login_username_label">Benutzername</string>
+    <string name="login_password_label">Passwort</string>
+    <string name="login_submit_button_text">Anmelden</string>
+    <string name="login_no_account_message">Kein Konto vorhanden?</string>
+    <string name="login_sign_up_link">Registrieren</string>
+    <string name="register_form_title">Geben Sie Ihre Daten ein</string>
+    <string name="register_username_label">Benutzername</string>
+    <string name="register_email_label">E-Mail</string>
+    <string name="register_password_label">Passwort</string>
+    <string name="register_confirm_password_label">Passwort bestätigen</string>
+    <string name="register_submit_button_text">Registrieren</string>
+    <string name="variant_title">Varianten</string>
+    <string name="variant_submit_button_text">Spielen</string>
+    <string name="variant_no_variants_found">Derzeit sind keine Varianten verfügbar. Bitte versuchen Sie es später erneut.</string>
+    <string name="variant_card_board_size">Brettgröße</string>
+    <string name="variant_card_opening_rule">Eröffnungsregel</string>
+    <string name="game_leave_button_text">Spiel verlassen</string>
+    <string name="password_validation_rule_msg">Muss zwischen %1$s-%2$d Zeichen lang sein.</string>
+    <string name="username_validation_rule_msg">Muss zwischen %1$s-%2$d Zeichen lang sein.</string>
+    <string name="home_welcome">Willkommen zurück, %1$s!</string>
+    <string name="nav_item_leaderboard">Bestenliste</string>
+    <string name="nav_item_about">Über</string>
+    <string name="nav_item_switch_theme">Wechselthema</string>
+    <string name="nav_item_logout">"Abmeldung "</string>
+    <string name="nav_item_find_game">"Spiel finden "</string>
+    <string name="nav_group_items_screens">"Bildschirme "</string>
+    <string name="nav_group_items_settings">"Einstellungen "</string>
+</resources>

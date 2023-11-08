@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.leaderboard.domain.Leaderboard
@@ -33,7 +34,7 @@ import gomoku.leaderboard.ui.components.LeaderboardSearchBar
 import gomoku.leaderboard.ui.components.LeaderboardTable
 import gomoku.shared.background.Background
 import gomoku.shared.components.ClickableIcon
-import gomoku.shared.components.TopNavHeader
+import gomoku.shared.components.TopNavBarWithBurgerMenu
 import gomoku.shared.components.navigation.NavigationDrawer
 import gomoku.shared.components.navigation.NavigationItem
 import gomoku.shared.components.navigation.NavigationItemGroup
@@ -49,8 +50,8 @@ private val footerIconVerticalPadding = 10.dp
 private const val LEADERBOARD_TABLE_HEIGHT_FACTOR = 0.85f
 private const val SEARCH_DELAY = 500L
 private const val FIRST_PAGE = 1
-// in terms of visible items, load more when there are x items left
-private const val LOAD_MORE_THRESHOLD = 2
+// in terms of visible items, load more items when there are x items left in the list
+private const val LOAD_MORE_THRESHOLD = 3
 
 /**
  * Represents the Leaderboard screen main composable.
@@ -84,36 +85,36 @@ fun LeaderboardScreen(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     // data for the navigation drawer
     val leaderboardItem = NavigationItem(
-        title = "Leaderboard",
+        title = stringResource(id = R.string.nav_item_leaderboard),
         selectedIconId = R.drawable.nav_leaderboard,
         onClick = {}
     )
     val items = NavigationItemGroup(
-        title = "Screens",
+        title = stringResource(id = R.string.nav_group_items_screens),
         items = listOf(
             NavigationItem(
-                title = "Find Game",
+                title = stringResource(id = R.string.nav_item_find_game),
                 selectedIconId = R.drawable.nav_find_game,
                 onClick = toFindGameScreen
             ),
             leaderboardItem,
             NavigationItem(
-                title = "About",
+                title = stringResource(id = R.string.nav_item_about),
                 selectedIconId = R.drawable.nav_about,
                 onClick = toAboutScreen
             )
         )
     )
     val settings = NavigationItemGroup(
-        title = "Settings",
+        title = stringResource(id = R.string.nav_group_items_settings),
         items = listOf(
             NavigationItem(
-                title = "Switch Theme",
+                title = stringResource(id = R.string.nav_item_switch_theme),
                 selectedIconId = R.drawable.nav_switch_theme,
                 onClick = { inDarkTheme = !inDarkTheme }
             ),
             NavigationItem(
-                title = "Logout",
+                title = stringResource(id = R.string.nav_item_logout),
                 selectedIconId = R.drawable.nav_logout,
                 onClick = onLogoutRequest
             )
@@ -134,11 +135,12 @@ fun LeaderboardScreen(
         // Simulate a network request (when using dummy data)
         delay(2000)
         if (page == FIRST_PAGE) {
-            currentItems = getItemsFromPage(page);
+            currentItems = getItemsFromPage(page)
             // Position the list at the top when the page is loaded
             lazyListState.scrollToItem(0)
-        } else
+        } else {
             currentItems += getItemsFromPage(page)
+        }
         isLoadingPages = false
     }
     // Observe scroll state to load more items
@@ -159,8 +161,8 @@ fun LeaderboardScreen(
         ) {
             Background(
                 header = {
-                    TopNavHeader(
-                        title = Leaderboard.TITLE,
+                    TopNavBarWithBurgerMenu(
+                        title = stringResource(Leaderboard.title),
                         onBurgerMenuClick = {
                             scope.launch {
                                 drawerState.open()
@@ -174,7 +176,7 @@ fun LeaderboardScreen(
                     ) {
                         LeaderboardSearchBar(
                             query = query,
-                            placeHolder = Leaderboard.SEARCH_BAR_PLACEHOLDER,
+                            placeHolder = stringResource(Leaderboard.searchBarPlaceHolder),
                             onQueryChange = { query = it },
                             onClearSearch = { query = ""; page = FIRST_PAGE },
                         )

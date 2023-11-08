@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import gomoku.shared.components.ContentNotFound
 import gomoku.shared.components.ExpandableCard
@@ -46,7 +47,7 @@ fun VariantTable(
     ) {
         if (variants.isEmpty()) {
             item {
-                ContentNotFound(text = Variant.NOT_VARIANTS_FOUND)
+                ContentNotFound(text = stringResource(Variant.noVariantsFound))
             }
         } else {
             variants.forEach { variant ->
@@ -69,7 +70,7 @@ fun VariantTable(
                             leadingIconId = R.drawable.rule,
                             modifier = Modifier.weight(CARD_WEIGHT),
                             title = variant.name.name,
-                            description = Variant.getDescriptionFormat(variant),
+                            description = getCardDescriptionFormat(variant),
                             arrowColor = MaterialTheme.colorScheme.tertiary,
                         )
                     }
@@ -77,4 +78,19 @@ fun VariantTable(
             }
         }
     }
+}
+
+/**
+ * Returns the description format for the given [VariantConfig].
+ * @param variantConfig the [VariantConfig] to get the description format for.
+ */
+@Composable
+private fun getCardDescriptionFormat(variantConfig: VariantConfig): String {
+    val delimiter = ": "
+    val boardSize = stringResource(id = Variant.boardSize)
+    val openingRule = stringResource(id = Variant.openingRule)
+    return listOf(
+        "$boardSize$delimiter${variantConfig.boardSize.value}x${variantConfig.boardSize.value}",
+        "$openingRule$delimiter${variantConfig.openingRule.name}"
+    ).joinToString("\n")
 }
