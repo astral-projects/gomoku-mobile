@@ -5,13 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import gomoku.Navigation
 import gomoku.about.ui.AboutActivity
+import gomoku.leaderboard.LeaderboardScreenViewModel
 import gomoku.leaderboard.domain.Leaderboard
 import gomoku.login.ui.LoginActivity
 import gomoku.variant.ui.VariantActivity
 
 class LeaderboardActivity : ComponentActivity() {
+
+    val viewModel by viewModels<LeaderboardScreenViewModel>()
 
     companion object : Navigation {
         override fun navigateTo(origin: Activity) {

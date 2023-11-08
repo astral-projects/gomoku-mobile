@@ -33,8 +33,6 @@ class FetchGameException(message: String, cause: Throwable? = null) : Exception(
  * Fake implementation of the GameService. It will replaced by a real implementation
  * in a future lecture.
  */
-
-
 class FakeGameService : GameService {
 
     val turn = BoardTurn(
