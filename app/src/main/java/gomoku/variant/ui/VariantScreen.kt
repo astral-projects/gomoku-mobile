@@ -20,15 +20,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.game.domain.board.BoardSize
-import gomoku.home.domain.Home.GAME_NAME
+import gomoku.home.domain.Home.gameName
 import gomoku.register.ui.components.FooterBubbles
 import gomoku.shared.background.Background
 import gomoku.shared.components.HeaderText
 import gomoku.shared.components.SubmitButton
-import gomoku.shared.components.TopNavHeader
+import gomoku.shared.components.TopNavBarWithBurgerMenu
 import gomoku.shared.components.navigation.NavigationDrawer
 import gomoku.shared.components.navigation.NavigationItem
 import gomoku.shared.components.navigation.NavigationItemGroup
@@ -67,36 +68,36 @@ fun VariantScreen(
     var inDarkTheme by remember { mutableStateOf(false) }
     // data for the navigation drawer
     val findGameItem = NavigationItem(
-        title = "Find Game",
+        title = stringResource(id = R.string.nav_item_find_game),
         selectedIconId = R.drawable.nav_find_game,
         onClick = {}
     )
     val items = NavigationItemGroup(
-        title = "Screens",
+        title = stringResource(id = R.string.nav_group_items_screens),
         items = listOf(
             findGameItem,
             NavigationItem(
-                title = "Leaderboard",
+                title = stringResource(id = R.string.nav_item_leaderboard),
                 selectedIconId = R.drawable.nav_leaderboard,
                 onClick = toLeaderboardScreen
             ),
             NavigationItem(
-                title = "About",
+                title = stringResource(id = R.string.nav_item_about),
                 selectedIconId = R.drawable.nav_about,
                 onClick = toAboutScreen
             )
         )
     )
     val settings = NavigationItemGroup(
-        title = "Settings",
+        title = stringResource(id = R.string.nav_group_items_settings),
         items = listOf(
             NavigationItem(
-                title = "Switch Theme",
+                title = stringResource(id = R.string.nav_item_switch_theme),
                 selectedIconId = R.drawable.nav_switch_theme,
                 onClick = { inDarkTheme = !inDarkTheme }
             ),
             NavigationItem(
-                title = "Logout",
+                title = stringResource(id = R.string.nav_item_logout),
                 selectedIconId = R.drawable.nav_logout,
                 onClick = onLogoutRequest
             )
@@ -111,8 +112,8 @@ fun VariantScreen(
         ) {
             Background(
                 header = {
-                    TopNavHeader(
-                        title = GAME_NAME,
+                    TopNavBarWithBurgerMenu(
+                        title = stringResource(gameName),
                         onBurgerMenuClick = {
                             scope.launch {
                                 drawerState.open()
@@ -131,7 +132,7 @@ fun VariantScreen(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        HeaderText(text = Variant.TITLE)
+                        HeaderText(text = stringResource(id = Variant.title))
                         Spacer(modifier = Modifier.width(variantHeaderSpacerWidth))
                         Image(
                             painter = painterResource(id = R.drawable.book),
@@ -150,7 +151,7 @@ fun VariantScreen(
                     ) {
                         SubmitButton(
                             enable = selectedOption != null,
-                            onButtonText = Variant.SUBMIT_BUTTON_TEXT,
+                            onButtonText = stringResource(Variant.submitButtonText),
                             onClick = { selectedOption?.let { onSubmit(it) } }
                         )
                     }

@@ -1,6 +1,7 @@
 package gomoku.login.domain
 
 import gomoku.Validator
+import pdm.gomoku.R
 
 // Constants
 private const val MIN_USERNAME_LENGTH = 5
@@ -25,7 +26,9 @@ value class Username(val value: String) {
             return true
         }
 
-        override fun validationRuleMsg() =
-            "Must be between $MIN_USERNAME_LENGTH-$MAX_USERNAME_LENGTH characters long."
+        override val validationRuleResourceId = R.string.username_validation_rule_msg
+
+        const val minUsernameLength = MIN_USERNAME_LENGTH
+        const val maxUsernameLength = MAX_USERNAME_LENGTH
     }
 }

@@ -1,12 +1,12 @@
 package gomoku.shared.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.shared.theme.GomokuTheme
+import pdm.gomoku.R
 
 /**
  * A [CenterAlignedTopAppBar] with a burger menu icon.
@@ -15,7 +15,7 @@ import gomoku.shared.theme.GomokuTheme
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavHeader(
+fun TopNavBarWithBurgerMenu(
     title: String,
     onBurgerMenuClick: () -> Unit
 ) {
@@ -27,8 +27,8 @@ fun TopNavHeader(
         },
         navigationIcon = {
             IconButton(onClick = { onBurgerMenuClick() }) {
-                Icon(
-                    imageVector = Icons.Default.Menu,
+                Image(
+                    painter = painterResource(id = R.drawable.burger_bar),
                     contentDescription = null
                 )
             }
@@ -41,8 +41,6 @@ fun TopNavHeader(
 
 @Composable
 @Preview(showBackground = true)
-fun TopNavHeaderPreview() {
-    GomokuTheme {
-        TopNavHeader(title = "Gomoku Royale", onBurgerMenuClick = {})
-    }
+private fun TopNavHeaderPreview() {
+    TopNavBarWithBurgerMenu(title = "Gomoku Royale", onBurgerMenuClick = {})
 }

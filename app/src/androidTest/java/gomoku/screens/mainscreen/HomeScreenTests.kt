@@ -31,7 +31,7 @@ class HomeScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Home.FIND_GAME).performClick()
+        composeTestRule.onNodeWithTag(Home.findGame).performClick()
         // Assert
         assertTrue(findMatchRequested)
         assertFalse(leaderBoardRequested)
@@ -50,7 +50,7 @@ class HomeScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Home.LEADERBOARD).performClick()
+        composeTestRule.onNodeWithTag(Home.leaderboard).performClick()
         // Assert
         assertTrue(leaderBoardRequested)
     }
@@ -69,7 +69,7 @@ class HomeScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Home.ABOUT).performClick()
+        composeTestRule.onNodeWithTag(Home.about).performClick()
         // Assert
         assertTrue(onAboutRequested)
     }
@@ -86,7 +86,7 @@ class HomeScreenTests {
                 })
         }
         //Act
-        composeTestRule.onNodeWithTag(Home.LOGOUT).performClick()
+        composeTestRule.onNodeWithTag(Home.logout).performClick()
         //Assert
         assertTrue(onLogoutRequested)
 

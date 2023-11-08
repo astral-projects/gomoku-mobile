@@ -14,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -52,23 +53,31 @@ fun LoginScreen(
             var username by rememberSaveable { mutableStateOf("") }
             var password by rememberSaveable { mutableStateOf("") }
             Form(
-                title = Login.FORM_TITLE,
+                title = stringResource(Login.formTitle),
                 inputFieldsData = listOf(
                     InputTextFieldData(
                         value = username,
-                        label = Login.USERNAME_LABEL,
+                        label = stringResource(Login.usernameLabel),
                         iconId = R.drawable.user,
                         onValueChangeCallback = { username = it },
                         validationCallback = { Username.isValid(it) },
-                        supportingText = Username.validationRuleMsg()
+                        supportingText = stringResource(
+                            id = Username.validationRuleResourceId,
+                            Username.minUsernameLength,
+                            Username.maxUsernameLength
+                        ),
                     ),
                     InputTextFieldData(
                         value = password,
-                        label = Login.PASSWORD_LABEL,
+                        label = stringResource(Login.passwordLabel),
                         iconId = R.drawable.lock,
                         onValueChangeCallback = { password = it },
                         validationCallback = { Password.isValid(it) },
-                        supportingText = Password.validationRuleMsg(),
+                        supportingText = stringResource(
+                            id = Password.validationRuleResourceId,
+                            Password.minPasswordLength,
+                            Password.maxPasswordLength
+                        ),
                         isPassword = true
                     )
                 ),
@@ -89,7 +98,7 @@ fun LoginScreen(
                     ) {
                         SubmitButton(
                             enable = AuthValidator.areLoginCredentialsValid(username, password),
-                            onButtonText = Login.SUBMIT_BUTTON_TEXT,
+                            onButtonText = stringResource(Login.submitButtonText),
                             onClick = {
                                 onSubmit(username, password)
                             }
@@ -112,14 +121,14 @@ private fun SignUpLink(onSignUpLinkClick: (Int) -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = Login.NO_ACCOUNT_MESSAGE,
+            text = stringResource(Login.noAccountMessage),
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.inversePrimary,
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.width(signUpSpacerWidth))
         HyperLink(
-            text = Login.SIGN_UP_LINK,
+            text = stringResource(Login.signUpLinkText),
             onClick = onSignUpLinkClick
         )
     }

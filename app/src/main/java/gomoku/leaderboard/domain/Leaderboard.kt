@@ -7,10 +7,10 @@ import pdm.gomoku.R
  */
 object Leaderboard {
 
-    const val SEARCH_BAR_PLACEHOLDER = "Search a player..."
-    const val TITLE = "Leaderboard"
+    val searchBarPlaceHolder = R.string.leaderboard_search_bar_hint
+    val title = R.string.leaderboard_title
+    val noResultsFound = R.string.leaderboard_no_results_found
     const val MAX_POINTS_VALUE = 99999
-    const val NOT_RESULTS_FOUND = "We searched far and wide. Unfortunately, no results were found."
     private const val PAGE_SIZE = 20
 
     /**

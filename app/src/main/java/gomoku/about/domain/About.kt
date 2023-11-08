@@ -8,30 +8,18 @@ import pdm.gomoku.R
 object About {
     val sections: List<Section> = listOf(
         Section(
-            title = Title("Game Information"),
-            description = Description(
-                "Gomoku, also known as Five in a Row, is a classic board game that's easy to learn but challenging to master. The goal is simple: be the first player to get five of your stones in a row horizontally, vertically, or diagonally on the game board."
-            ),
-            // TODO("can domain know about iconIds?")
+            title = Title(R.string.about_section_a_title),
+            description = Description(R.string.about_section_a_description),
             iconId = R.drawable.swords
         ),
         Section(
-            title = Title("Feedback and Support"),
-            description = Description(
-                "We value your input! If you have questions, suggestions, or run into any issues while using our app, please don't hesitate to reach out to our support team."
-            ),
+            title = Title(R.string.about_section_b_title),
+            description = Description(R.string.about_section_b_description),
             iconId = R.drawable.feedback
         ),
         Section(
-            title = Title("Authors"),
-            description = Description(
-                listOf(
-                    // TODO("add github url link")
-                    Author(49513, "Diogo Rodrigues"),
-                    Author(48666, "Tiago Frazao"),
-                    Author(49428, "Francisco Engenheiro")
-                ).joinToString("\n")
-            ),
+            title = Title(R.string.about_section_c_title),
+            description = Description(R.string.about_section_c_description),
             iconId = R.drawable.authors
         )
     )

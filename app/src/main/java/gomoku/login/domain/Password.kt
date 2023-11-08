@@ -1,6 +1,8 @@
 package gomoku.login.domain
 
 import gomoku.Validator
+import pdm.gomoku.R
+
 
 // Constants
 private const val MIN_PASSWORD_LENGTH = 8
@@ -25,8 +27,9 @@ value class Password(val value: String) {
             return true
         }
 
-        override fun validationRuleMsg() =
-            "Must be between $MIN_PASSWORD_LENGTH-$MAX_PASSWORD_LENGTH characters long."
+        override val validationRuleResourceId = R.string.password_validation_rule_msg
 
+        const val minPasswordLength = MIN_PASSWORD_LENGTH
+        const val maxPasswordLength = MAX_PASSWORD_LENGTH
     }
 }

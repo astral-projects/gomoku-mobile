@@ -1,6 +1,7 @@
 package gomoku.leaderboard.domain
 
 import gomoku.Validator
+import pdm.gomoku.R
 
 // Constants
 private const val MIN_TERM_LENGTH = 3
@@ -27,6 +28,9 @@ value class Term(val value: String) {
             if (value.length < MIN_TERM_LENGTH) return false
             return true
         }
+
+        override val validationRuleResourceId: Int
+            get() = R.string.term_validation_rule_msg
 
     }
 }

@@ -1,6 +1,7 @@
 package gomoku.register.domain
 
 import gomoku.Validator
+import pdm.gomoku.R
 
 // Constants
 private const val REGEX_PATTERN = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\$"
@@ -19,7 +20,6 @@ value class Email(val value: String) {
         override fun isValid(value: String): Boolean =
             value.matches(Regex(REGEX_PATTERN))
 
-        override fun validationRuleMsg(): String =
-            "Example: john.doe@domain.com"
+        override val validationRuleResourceId = R.string.email_validation_rule_msg
     }
 }

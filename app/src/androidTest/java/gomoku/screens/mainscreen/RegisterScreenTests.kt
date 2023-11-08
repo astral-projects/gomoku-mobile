@@ -28,7 +28,7 @@ class RegisterScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Register.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Register.submitTextButton).performClick()
         assertFalse(registerRequested)
     }
 
@@ -47,10 +47,10 @@ class RegisterScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Register.EMAIL_LABEL).performTextInput(email)
-        composeTestRule.onNodeWithTag(Register.PASSWORD_LABEL).performTextInput(password)
-        composeTestRule.onNodeWithTag(Register.CONFIRM_PASSWORD_LABEL).performTextInput(confirmPassword)
-        composeTestRule.onNodeWithTag(Register.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Register.emailLabel).performTextInput(email)
+        composeTestRule.onNodeWithTag(Register.passwordLabel).performTextInput(password)
+        composeTestRule.onNodeWithTag(Register.confirmPasswordLabel).performTextInput(confirmPassword)
+        composeTestRule.onNodeWithTag(Register.submitTextButton).performClick()
         // Assert
         assertFalse(registerRequested)
     }
@@ -71,10 +71,10 @@ class RegisterScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Register.USERNAME_LABEL).performTextInput(username)
-        composeTestRule.onNodeWithTag(Register.PASSWORD_LABEL).performTextInput(password)
-        composeTestRule.onNodeWithTag(Register.CONFIRM_PASSWORD_LABEL).performTextInput(confirmPassword)
-        composeTestRule.onNodeWithTag(Register.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Register.usernameLabel).performTextInput(username)
+        composeTestRule.onNodeWithTag(Register.passwordLabel).performTextInput(password)
+        composeTestRule.onNodeWithTag(Register.confirmPasswordLabel).performTextInput(confirmPassword)
+        composeTestRule.onNodeWithTag(Register.submitTextButton).performClick()
         // Assert
         assertFalse(registerRequested)
     }
@@ -95,10 +95,10 @@ class RegisterScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Register.USERNAME_LABEL).performTextInput(username)
-        composeTestRule.onNodeWithTag(Register.EMAIL_LABEL).performTextInput(email)
-        composeTestRule.onNodeWithTag(Register.CONFIRM_PASSWORD_LABEL).performTextInput(confirmPassword)
-        composeTestRule.onNodeWithTag(Register.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Register.usernameLabel).performTextInput(username)
+        composeTestRule.onNodeWithTag(Register.emailLabel).performTextInput(email)
+        composeTestRule.onNodeWithTag(Register.confirmPasswordLabel).performTextInput(confirmPassword)
+        composeTestRule.onNodeWithTag(Register.submitTextButton).performClick()
         // Assert
         assertFalse(registerRequested)
     }
@@ -118,10 +118,10 @@ class RegisterScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Register.USERNAME_LABEL).performTextInput(username)
-        composeTestRule.onNodeWithTag(Register.EMAIL_LABEL).performTextInput(email)
-        composeTestRule.onNodeWithTag(Register.PASSWORD_LABEL).performTextInput(password)
-        composeTestRule.onNodeWithTag(Register.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Register.usernameLabel).performTextInput(username)
+        composeTestRule.onNodeWithTag(Register.emailLabel).performTextInput(email)
+        composeTestRule.onNodeWithTag(Register.passwordLabel).performTextInput(password)
+        composeTestRule.onNodeWithTag(Register.submitTextButton).performClick()
         // Assert
         assertFalse(registerRequested)
     }
@@ -142,11 +142,11 @@ class RegisterScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Register.USERNAME_LABEL).performTextInput(username)
-        composeTestRule.onNodeWithTag(Register.EMAIL_LABEL).performTextInput(email)
-        composeTestRule.onNodeWithTag(Register.PASSWORD_LABEL).performTextInput(password)
-        composeTestRule.onNodeWithTag(Register.CONFIRM_PASSWORD_LABEL).performTextInput(confirmPassword)
-        composeTestRule.onNodeWithTag(Register.SUBMIT_BUTTON_TEXT).performClick()
+        composeTestRule.onNodeWithTag(Register.usernameLabel).performTextInput(username)
+        composeTestRule.onNodeWithTag(Register.emailLabel).performTextInput(email)
+        composeTestRule.onNodeWithTag(Register.passwordLabel).performTextInput(password)
+        composeTestRule.onNodeWithTag(Register.confirmPasswordLabel).performTextInput(confirmPassword)
+        composeTestRule.onNodeWithTag(Register.submitTextButton).performClick()
         // Assert
         assertTrue(registerRequested)
     }

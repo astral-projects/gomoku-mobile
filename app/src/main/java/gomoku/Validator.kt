@@ -11,7 +11,7 @@ interface Validator<R> {
     fun isValid(value: R): Boolean
 
     /**
-     * Returns a message that describes the validation rules.
+     * Returns the validation rule message resource id.
      */
-    fun validationRuleMsg(): String = "Invalid value"
+    val validationRuleResourceId: Int
 }
