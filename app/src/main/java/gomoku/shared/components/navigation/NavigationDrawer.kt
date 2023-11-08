@@ -1,6 +1,8 @@
 package gomoku.shared.components.navigation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
@@ -15,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,6 +31,7 @@ import pdm.gomoku.R
 
 // Config
 private val mainTitlePadding = 10.dp
+private val mainTitleGoBackIconPadding = 8.dp
 private val horizontalItemPadding = 5.dp
 private val verticalItemPadding = 2.dp
 
@@ -57,8 +61,20 @@ fun NavigationDrawer(
                 drawerContentColor = MaterialTheme.colorScheme.background
             ) {
                 Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(mainTitleGoBackIconPadding),
                     modifier = Modifier.padding(mainTitlePadding),
                 ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.close_drawer),
+                        contentDescription = "Close Drawer",
+                        modifier = Modifier
+                            .clickable(onClick = {
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            })
+                    )
                     HeaderText(text = GAME_NAME)
                 }
                 Divider()

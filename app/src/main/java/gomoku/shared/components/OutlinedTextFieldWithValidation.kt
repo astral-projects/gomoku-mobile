@@ -37,8 +37,6 @@ private val iconPadding = 30.dp
 private const val UNFOCUSED_BORDER_COLOR_OPACITY = 0.1f
 private const val UNFOCUSED_SUPPORTING_TEXT_COLOR_OPACITY = 0.3f
 
-
-//TODO(The label on the function OutlinedTextFieldWithValidation can not be null , because its important to the test to not be null)
 /**
  * Composes an outlined text field that includes a placeholder, text validation
  * and icons that change, according to the current text value.
@@ -75,7 +73,7 @@ fun OutlinedTextFieldWithValidation(
         errorTrailingIconColor = MaterialTheme.colorScheme.onError,
         errorBorderColor = MaterialTheme.colorScheme.inversePrimary,
         unfocusedSupportingTextColor = MaterialTheme.colorScheme.inversePrimary
-           .copy(alpha = UNFOCUSED_SUPPORTING_TEXT_COLOR_OPACITY),
+            .copy(alpha = UNFOCUSED_SUPPORTING_TEXT_COLOR_OPACITY),
         errorSupportingTextColor = MaterialTheme.colorScheme.inversePrimary,
         focusedSupportingTextColor = MaterialTheme.colorScheme.inversePrimary
     ),
@@ -109,15 +107,13 @@ fun OutlinedTextFieldWithValidation(
                 )
             }
         },
-        label = label?.let {
-            {
-                Text(
-                    text = label,
-                    color = MaterialTheme.colorScheme.inversePrimary,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
+        label = {
+            Text(
+                text = label,
+                color = MaterialTheme.colorScheme.inversePrimary,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.SemiBold
+            )
         },
         modifier = modifier.testTag(label),
         placeholder = {
@@ -150,12 +146,12 @@ fun OutlinedTextFieldWithValidation(
                         if (invalidField) {
                             Icon(
                                 Icons.Filled.Lock,
-                                "Invalid Input",
+                                "Invalid Input"
                             )
                         } else {
                             Icon(
                                 Icons.Filled.Done,
-                                "Valid Input",
+                                "Valid Input"
                             )
                         }
                     }

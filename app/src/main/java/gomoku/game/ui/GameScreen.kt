@@ -32,6 +32,7 @@ import gomoku.leaderboard.domain.PlayerInfo
 import gomoku.shared.background.Background
 import gomoku.shared.background.BackgroundConfig
 import gomoku.shared.components.DismissButton
+import gomoku.shared.components.HeaderText
 import gomoku.shared.components.HeadlineText
 import gomoku.shared.theme.GomokuTheme
 import pdm.gomoku.R
@@ -59,7 +60,8 @@ fun GameScreen(
     GomokuTheme {
         Background(
             config = backgroundConfig,
-            header = { HeadlineText(text = GAME_NAME) },
+            useBodySurface = false,
+            header = { HeaderText(text = GAME_NAME) },
         ) {
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly,

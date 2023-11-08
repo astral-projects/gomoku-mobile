@@ -36,7 +36,7 @@ private val surfacePaddingHorizontal: Dp = 35.dp
 private val surfacePaddingVertical: Dp = 10.dp
 private val bodyPaddingHorizontal: Dp = 10.dp
 private val bodyPaddingVertical: Dp = 15.dp
-private val bodySurfacePaddingHorizontal: Dp = 20.dp
+private val bodySurfacePaddingHorizontal: Dp = 15.dp
 private val bodySurfacePaddingVertical: Dp = 10.dp
 private val footerPaddingVertical: Dp = 2.dp
 private val bodyOffsetIntoHeader: Dp = (-30).dp
@@ -65,7 +65,7 @@ fun Background(
     footer: @Composable (() -> Unit)? = null,
     body: @Composable () -> Unit
 ) {
-    val headerMinHeight = config.screenHeight / HEADER_MIN_DIVISOR
+    val headerMinHeight = config.screenHeight / SCREEN_HEIGHT_FACTOR
     val headerMaxHeight = config.screenHeight / HEADER_MAX_DIVISOR + config.screenHeight / HEADER_MIN_DIVISOR
     Box(
         modifier = Modifier

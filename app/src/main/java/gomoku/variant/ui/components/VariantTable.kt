@@ -24,7 +24,7 @@ import pdm.gomoku.R
 
 // Config
 private const val CARD_WEIGHT = 0.85f
-private const val BODY_HEIGHT_FACTOR = 0.7f
+private const val BODY_HEIGHT_FACTOR = 0.55f
 private val variantBodyVerticalPadding = 15.dp
 private val variantItemVerticalPadding = 6.dp
 private val radioButtonVariantItemSpacerWidth = 6.dp
