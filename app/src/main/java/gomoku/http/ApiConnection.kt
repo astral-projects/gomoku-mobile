@@ -1,8 +1,8 @@
 package gomoku.http
 
 import com.google.gson.Gson
-import gomoku.FetchGameException
-import gomoku.GameService
+import gomoku.game.FetchGameException
+import gomoku.game.GameService
 import gomoku.game.domain.Game
 import gomoku.game.domain.Timer
 import gomoku.game.domain.board.Board

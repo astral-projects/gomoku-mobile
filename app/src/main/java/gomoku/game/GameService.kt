@@ -1,4 +1,4 @@
-package gomoku
+package gomoku.game
 
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -65,7 +65,7 @@ class FakeGameService : GameService {
             PlayerInfo("Player B", R.drawable.woman2),
     ),
         Game(
-            "I got nothing23",
+            "I got nothing46",
             "https://www.example.com",
             "FREESTYLE",
             board,
@@ -88,10 +88,10 @@ class FakeGameService : GameService {
     )
 
     override suspend fun fetchGame(): Game {
-        Log.v(TAG, "fetching joke...")
+        Log.v(TAG, "fetching game...")
         delay(3000)
         val index = Random.nextInt(from = 0, until = games.size)
-        Log.v(TAG, "joke fetched")
+        Log.v(TAG, "game fetched")
         return games[index]
     }
 
