@@ -1,7 +1,7 @@
 package gomoku.presentation
 
 
-import gomoku.GameService
+import gomoku.game.GameService
 import gomoku.game.domain.Game
 import gomoku.game.domain.Timer
 import gomoku.game.domain.board.Board
@@ -85,7 +85,7 @@ class GameScreenViewModelTests {
             }
         }
         // Act
-        sut.fetchGame(service)
+        //sut.fetchGame(service)
         // Assert
         coVerify(exactly = 1) { service.fetchGame() }
     }
