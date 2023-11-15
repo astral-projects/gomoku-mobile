@@ -6,7 +6,7 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 
 // Config
-const val POPUP_WIDTH_FACTOR = 0.8f
+const val POPUP_WIDTH_FACTOR = 0.6f
 val popupRoundCornerShapeSize = 20.dp
 
 /**

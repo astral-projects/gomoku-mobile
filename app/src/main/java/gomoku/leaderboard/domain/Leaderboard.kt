@@ -39,7 +39,12 @@ object Leaderboard {
         return (1..nPlayers).fold(listOf()) { rankingInfo, rank ->
             val player = fakePlayers[(rank - 1) % fakePlayers.size]
             val points = (nPlayers - rank + 1) * 100
-            rankingInfo + RankingInfo(player, rank, points)
+            val playedGames = (nPlayers - rank + 1) * 20
+            val wins = playedGames / 2
+            val losses = playedGames - wins
+            val draws = losses / 2
+
+            rankingInfo + RankingInfo(player, rank, points, playedGames, wins, draws, losses)
         }
     }
 

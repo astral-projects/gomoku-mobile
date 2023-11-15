@@ -38,6 +38,7 @@ import gomoku.shared.components.TopNavBarWithBurgerMenu
 import gomoku.shared.components.navigation.NavigationDrawer
 import gomoku.shared.components.navigation.NavigationItem
 import gomoku.shared.components.navigation.NavigationItemGroup
+import gomoku.shared.dialogs.ProfileDialog
 import gomoku.shared.theme.GomokuTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -50,12 +51,13 @@ private val footerIconVerticalPadding = 10.dp
 private const val LEADERBOARD_TABLE_HEIGHT_FACTOR = 0.85f
 private const val SEARCH_DELAY = 500L
 private const val FIRST_PAGE = 1
+
 // in terms of visible items, load more items when there are x items left in the list
 private const val LOAD_MORE_THRESHOLD = 3
 
 /**
  * Represents the Leaderboard screen main composable.
- * @param playerInfo the logged in player information.
+ * @param rankingInfo the logged in player full ranking info.
  * @param getItemsFromPage callback to get the items to be displayed in the leaderboard, given a page number.
  * @param onSearchRequest callback to be executed when a search is requested.
  * @param toFindGameScreen callback to be executed when the user clicks on the respective navigation item.
@@ -64,7 +66,7 @@ private const val LOAD_MORE_THRESHOLD = 3
  */
 @Composable
 fun LeaderboardScreen(
-    playerInfo: PlayerInfo,
+    rankingInfo: RankingInfo,
     getItemsFromPage: (page: Int) -> List<RankingInfo>,
     onSearchRequest: (Term) -> List<RankingInfo>,
     toFindGameScreen: () -> Unit,
@@ -78,6 +80,22 @@ fun LeaderboardScreen(
     var page by remember { mutableIntStateOf(FIRST_PAGE) }
     var isLoadingPages by remember { mutableStateOf(false) }
     var currentItems by remember { mutableStateOf(getItemsFromPage(page)) }
+    // profile dialog
+    var isProfileDialogOpen by rememberSaveable { mutableStateOf(false) }
+    // user info to be displayed in the profile dialog
+    var userInfo by remember {
+        mutableStateOf(
+            RankingInfo(
+                PlayerInfo("", 0),
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            )
+        )
+    }
     // others
     val scope = rememberCoroutineScope()
     var isSelfPositionEnabled by rememberSaveable { mutableStateOf(false) }
@@ -152,8 +170,18 @@ fun LeaderboardScreen(
                 }
             }
     }
+
     // UI
     GomokuTheme(darkTheme = inDarkTheme) {
+
+        // Evaluate if the profile dialog should be displayed
+        if (isProfileDialogOpen) {
+            ProfileDialog(
+                rankingInfo = userInfo,
+                onDismissRequest = { isProfileDialogOpen = false }
+            )
+        }
+
         NavigationDrawer(
             drawerState = drawerState,
             items = listOf(items, settings),
@@ -196,7 +224,11 @@ fun LeaderboardScreen(
                         LeaderboardTable(
                             playersRankingInfo = currentItems,
                             listState = lazyListState,
-                            loading = isLoadingPages
+                            loading = isLoadingPages,
+                            onClick = {
+                                userInfo = it
+                                isProfileDialogOpen = true
+                            }
                         )
                     }
                     Row(
@@ -214,7 +246,7 @@ fun LeaderboardScreen(
                                 page = FIRST_PAGE
                                 currentItems = getItemsFromPage(FIRST_PAGE)
                             } else {
-                                currentItems = onSearchRequest(Term(playerInfo.name))
+                                currentItems = onSearchRequest(Term(rankingInfo.playerInfo.name))
                             }
                             // toggle
                             isSelfPositionEnabled = !isSelfPositionEnabled
@@ -237,13 +269,14 @@ private fun ToggleSelfPositionIcon(iconId: Int, onClick: () -> Unit) =
 private fun BackTopTheTopIcon(iconId: Int, onClick: () -> Unit) =
     ClickableIcon(iconId = iconId, onClick = onClick)
 
+
 @Composable
 @Preview(showBackground = true)
 private fun LeaderboardScreenPreview() {
     val nPlayers = 200
     val playersRankingInfo = Leaderboard.generateRankingInfo(nPlayers)
     LeaderboardScreen(
-        playerInfo = Leaderboard.fakePlayers.first(),
+        rankingInfo = playersRankingInfo.first(),
         getItemsFromPage = { page ->
             Leaderboard.paginatedRankingInfo(
                 list = playersRankingInfo,

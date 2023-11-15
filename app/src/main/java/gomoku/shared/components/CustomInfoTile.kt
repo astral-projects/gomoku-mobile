@@ -2,6 +2,7 @@ package gomoku.shared.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -41,13 +42,16 @@ private const val TRAILING_SECTION_WEIGHT = 0.35f
  * @param trailingIconId The id of the trailing icon.
  */
 @Composable
-fun CustomInfoTile(
+fun <T> CustomInfoTile(
+    data: T,
     leadingIconId: Int? = null,
     leadingLabel: String,
     labelIconId: Int,
     label: String,
     trailingLabel: String,
     trailingIconId: Int,
+    // onClick receives a parameter of some type T and returns a Unit.
+    onClick: (T) -> Unit
 ) {
     val style = MaterialTheme.typography.titleMedium
     val color = MaterialTheme.colorScheme.inversePrimary
@@ -59,6 +63,7 @@ fun CustomInfoTile(
             .clip(RoundedCornerShape(cornerShapeSize))
             .background(MaterialTheme.colorScheme.primary)
             .padding(tilePadding)
+            .clickable { onClick(data) }
     ) {
         // Leading section
         Row(
@@ -127,12 +132,14 @@ fun CustomInfoTile(
 @Preview
 private fun CustomInfoPreviewWithLeadingIcon() {
     CustomInfoTile(
+        data = "",
         leadingIconId = R.drawable.gold_medal,
         leadingLabel = "1",
         labelIconId = R.drawable.man,
         label = "Player".repeat(100),
         trailingLabel = "5432",
-        trailingIconId = R.drawable.coins
+        trailingIconId = R.drawable.coins,
+        onClick = {}
     )
 }
 
@@ -140,10 +147,12 @@ private fun CustomInfoPreviewWithLeadingIcon() {
 @Preview
 private fun CustomInfoPreviewWithoutLeadingIcon() {
     CustomInfoTile(
+        data = "",
         leadingLabel = "4",
         labelIconId = R.drawable.man,
         label = "Player".repeat(100),
         trailingLabel = "100",
-        trailingIconId = R.drawable.coins
+        trailingIconId = R.drawable.coins,
+        onClick = {}
     )
 }

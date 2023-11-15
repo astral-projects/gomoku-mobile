@@ -25,25 +25,97 @@ class FakeUsersServices: UsersServices {
     )
 
     private val usersStats = listOf(
-        RankingInfo(PlayerInfo("John Doe", R.drawable.man5), 1, 999999),
-        RankingInfo(PlayerInfo("Mary Jane", R.drawable.woman2), 2, 999998),
-        RankingInfo(PlayerInfo("Peter Parker", R.drawable.man3), 3, 999997),
-        RankingInfo(PlayerInfo("Jane Doe", R.drawable.woman4), 4, 999996),
-        RankingInfo(PlayerInfo("John Smith", R.drawable.man2), 5, 999995),
-        RankingInfo(PlayerInfo("Mary Smith", R.drawable.woman2), 6, 999994),
-        RankingInfo(PlayerInfo("Peter Doe", R.drawable.man2), 7, 999993),
-        RankingInfo(PlayerInfo("Jane Parker", R.drawable.woman3), 8, 999992),
-        RankingInfo(PlayerInfo("John Smith", R.drawable.man4), 9, 999991),
-        RankingInfo(PlayerInfo("Mary Smith", R.drawable.woman5), 10, 999990),
-        RankingInfo(PlayerInfo("Peter Doe", R.drawable.man2), 11, 999989),
-        RankingInfo(PlayerInfo("John Doe", R.drawable.man5), 12, 999988),
-        RankingInfo(PlayerInfo("Mary Jane", R.drawable.woman2), 13, 999987),
-        RankingInfo(PlayerInfo("Peter Parker", R.drawable.man3), 14, 999986),
-        RankingInfo(PlayerInfo("Jane Doe", R.drawable.woman4), 15, 999985),
-        RankingInfo(PlayerInfo("John Smith", R.drawable.man2), 16, 999984),
+        RankingInfo(PlayerInfo("John Doe", R.drawable.man5), 1, 999999, 999, 999, 999, 999),
+        RankingInfo(
+            PlayerInfo("Mary Jane", R.drawable.woman2),
+            2,
+            999998,
+            999998,
+            999998,
+            999998,
+            999
+        ),
+        RankingInfo(
+            PlayerInfo("Peter Parker", R.drawable.man3),
+            3,
+            999997,
+            999997,
+            999997,
+            999997,
+            999
+        ),
+        RankingInfo(PlayerInfo("Jane Doe", R.drawable.woman4), 4, 999996, 999996, 999996, 999, 999),
+        RankingInfo(PlayerInfo("John Smith", R.drawable.man2), 5, 999995, 999995, 999995, 999, 999),
+        RankingInfo(
+            PlayerInfo("Mary Smith", R.drawable.woman2),
+            6,
+            999994,
+            999994,
+            999994,
+            999,
+            999
+        ),
+        RankingInfo(PlayerInfo("Peter Doe", R.drawable.man2), 7, 999993, 999993, 999993, 999, 999),
+        RankingInfo(
+            PlayerInfo("Jane Parker", R.drawable.woman3),
+            8,
+            999992,
+            999992,
+            999992,
+            999,
+            999
+        ),
+        RankingInfo(PlayerInfo("John Smith", R.drawable.man4), 9, 999991, 999991, 999991, 999, 999),
+        RankingInfo(
+            PlayerInfo("Mary Smith", R.drawable.woman5),
+            10,
+            999990,
+            999990,
+            999990,
+            999,
+            999
+        ),
+        RankingInfo(PlayerInfo("Peter Doe", R.drawable.man2), 11, 999989, 999989, 999989, 999, 999),
+        RankingInfo(PlayerInfo("John Doe", R.drawable.man5), 12, 999988, 999988, 999988, 999, 999),
+        RankingInfo(
+            PlayerInfo("Mary Jane", R.drawable.woman2),
+            13,
+            999987,
+            999987,
+            999987,
+            999,
+            999
+        ),
+        RankingInfo(
+            PlayerInfo("Peter Parker", R.drawable.man3),
+            14,
+            999986,
+            999986,
+            999986,
+            999,
+            999
+        ),
+        RankingInfo(
+            PlayerInfo("Jane Doe", R.drawable.woman4),
+            15,
+            999985,
+            999985,
+            999985,
+            999,
+            999
+        ),
+        RankingInfo(
+            PlayerInfo("John Smith", R.drawable.man2),
+            16,
+            999984,
+            999984,
+            999984,
+            999,
+            999
+        ),
 
 
-    )
+        )
 
     override suspend fun fetchUsers(): List<PlayerInfo> {
         Log.v(TAG, "fetching users...")

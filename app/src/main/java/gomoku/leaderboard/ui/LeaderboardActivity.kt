@@ -29,7 +29,7 @@ class LeaderboardActivity : ComponentActivity() {
         setContent {
             val list = Leaderboard.generateRankingInfo(200)
             LeaderboardScreen(
-                playerInfo = Leaderboard.fakePlayers.first(),
+                rankingInfo = list.first(),
                 getItemsFromPage = { page ->
                     Leaderboard.paginatedRankingInfo(
                         list = list,

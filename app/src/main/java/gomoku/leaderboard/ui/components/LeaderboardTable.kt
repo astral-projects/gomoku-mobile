@@ -30,8 +30,10 @@ private const val PROGRESS_INDICATOR_TRACK_COLOR_OPACITY = 0.5f
 fun LeaderboardTable(
     playersRankingInfo: List<RankingInfo>,
     listState: LazyListState = rememberLazyListState(),
-    loading: Boolean = false
+    loading: Boolean = false,
+    onClick: (RankingInfo) -> Unit
 ) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,7 +50,7 @@ fun LeaderboardTable(
             } else {
                 playersRankingInfo.forEach {
                     item {
-                        RankingInfoTile(rankData = it)
+                        RankingInfoTile(rankData = it, onClick = onClick)
                     }
                 }
                 if (loading) {
@@ -74,17 +76,10 @@ fun LeaderboardTable(
 
 @Composable
 @Preview
-fun LeaderBoardPreviewWithFewPeople() {
-    LeaderboardTable(
-        playersRankingInfo = Leaderboard.generateRankingInfo(4)
-    )
-}
-
-@Composable
-@Preview
 fun LeaderBoardPreviewWithMorePeople() {
     LeaderboardTable(
-        playersRankingInfo = Leaderboard.generateRankingInfo(20)
+        playersRankingInfo = Leaderboard.generateRankingInfo(20),
+        onClick = {}
     )
 }
 
@@ -93,6 +88,7 @@ fun LeaderBoardPreviewWithMorePeople() {
 fun LeaderBoardPreviewLoading() {
     LeaderboardTable(
         playersRankingInfo = Leaderboard.generateRankingInfo(20),
-        loading = true
+        loading = true,
+        onClick = {}
     )
 }

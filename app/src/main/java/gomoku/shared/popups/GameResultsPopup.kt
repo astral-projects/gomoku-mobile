@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.leaderboard.domain.PlayerInfo
 import gomoku.shared.background.BackgroundConfig
+import gomoku.shared.theme.GomokuTheme
 import pdm.gomoku.R
 
 // Constants
@@ -45,7 +46,7 @@ private val iconPointsSpacerHeight = 20.dp
 private val headerPadding = 8.dp
 private val bottomPadding = 12.dp
 private val borderWidth = 2.dp
-private val titleIconSpacerHeight = 8.dp
+val titleIconSpacerHeight = 8.dp
 private val playerTextOffsetPadding = 30.dp
 
 /**
@@ -144,8 +145,8 @@ private fun IconPointsSpacer() =
     Spacer(modifier = Modifier.width(iconPointsSpacerWidth))
 
 @Composable
-private fun BodyTitle(text: String) =
-    Text(text = text, style = MaterialTheme.typography.titleMedium)
+fun BodyTitle(text: String, modifier: Modifier = Modifier) =
+    Text(text = text, style = MaterialTheme.typography.titleMedium, modifier = modifier)
 
 @Composable
 private fun DisplayWinnerMatchPoints(points: Int) =
@@ -172,19 +173,19 @@ private fun DisplayMatchPointsContainer(points: Int, isWinner: Boolean) {
 }
 
 @Composable
-private fun DisplayPlayerInfo(playerInfo: PlayerInfo) =
+fun DisplayPlayerInfo(playerInfo: PlayerInfo, modifier: Modifier = Modifier) =
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
         // Used to avoid the text to grow indefinitely
-        modifier = Modifier.requiredWidth(headerIconSize + playerTextOffsetPadding)
+        modifier = modifier.requiredWidth(headerIconSize + playerTextOffsetPadding)
     ) {
         Image(
             painterResource(id = playerInfo.iconId),
             contentDescription = null,
-            modifier = Modifier.size(headerIconSize)
+            modifier = modifier.size(headerIconSize)
         )
-        Spacer(modifier = Modifier.height(playerInfoSpacerHeight))
+        Spacer(modifier = modifier.height(playerInfoSpacerHeight))
         Text(
             text = playerInfo.name,
             style = MaterialTheme.typography.bodyLarge,
@@ -224,11 +225,13 @@ private fun IconHeightSpacer() = Spacer(modifier = Modifier.height(iconPointsSpa
 @Preview(showBackground = true)
 @Composable
 fun GameResultsPopup() {
-    GameResultsPopup(
-        winnerInfo = PlayerInfo("Host Player", R.drawable.man),
-        loserInfo = PlayerInfo("Guest Player", R.drawable.woman),
-        winnerPoints = 250,
-        loserPoints = 100,
-        onDismissRequest = {}
-    )
+    GomokuTheme {
+        GameResultsPopup(
+            winnerInfo = PlayerInfo("Host Player", R.drawable.man),
+            loserInfo = PlayerInfo("Guest Player", R.drawable.woman),
+            winnerPoints = 250,
+            loserPoints = 100,
+            onDismissRequest = {}
+        )
+    }
 }

@@ -10,6 +10,7 @@ import gomoku.services.FakeUsersServices
 import kotlinx.coroutines.launch
 
 class LeaderboardScreenViewModel : ViewModel() {
+
     var usersStats: List<RankingInfo> by mutableStateOf(emptyList())
         private set
 

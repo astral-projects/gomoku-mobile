@@ -6,5 +6,9 @@ package gomoku.leaderboard.domain
 data class RankingInfo (
     val playerInfo: PlayerInfo,
     val rank: Int,
-    val points: Int
+    val points: Int,
+    val wins: Int,
+    val losses: Int,
+    val draws: Int,
+    val playedGames: Int
 )
