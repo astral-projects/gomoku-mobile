@@ -38,14 +38,14 @@ import java.text.DecimalFormat
 
 const val DIALOG_WIDTH_FACTOR = 0.9f
 const val DIALOG_HEIGHT_FACTOR = 0.55f
-const val DIALOG_INTERIOR_WIDTH_FACTOR = 0.8f
-const val DIALOG_INTERIOR_HEIGHT_FACTOR = 0.9f
+const val DIALOG_INTERIOR_WIDTH_FACTOR = 0.85f
+const val DIALOG_INTERIOR_HEIGHT_FACTOR = 0.92f
 private val borderSize = 2.dp
 private val spaceBetweenTexts = (-7).dp
 private val dialogCornerShapeSize = 70.dp
-private val dialogInteriorCornerShape = 50.dp
+private val dialogInteriorCornerShape = 55.dp
 private val iconProfileSize = 100.dp
-private val leftRightPadding = 20.dp
+private val leftRightPadding = 15.dp
 private val topPadding = 40.dp
 private val bottomPadding = 30.dp
 private val topTextPadding = 10.dp

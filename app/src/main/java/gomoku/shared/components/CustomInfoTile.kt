@@ -51,11 +51,12 @@ fun <T> CustomInfoTile(
     trailingLabel: String,
     trailingIconId: Int,
     // onClick receives a parameter of some type T and returns a Unit.
-    onClick: (T) -> Unit
+    onClick: (T) -> Unit,
 ) {
     val style = MaterialTheme.typography.titleMedium
     val color = MaterialTheme.colorScheme.inversePrimary
     val fontWeight = FontWeight.SemiBold
+
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
