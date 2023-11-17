@@ -31,7 +31,7 @@ class GameScreenViewModel(private val service: GameService) : ViewModel() {
         viewModelScope.launch {
             Log.v(TAG, "entoru no fetchgame")
             game = loading()
-            val result = kotlin.runCatching { service.fetchGame() }
+            val result = runCatching { service.fetchGame() }
             Log.v(TAG, "saiu da corrotina no fetchgame")
             game = loaded(result)
         }

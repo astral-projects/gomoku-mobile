@@ -5,10 +5,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,9 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import gomoku.game.domain.board.BoardSize
+import gomoku.LoadState
+import gomoku.Loaded
 import gomoku.home.domain.Home.gameName
 import gomoku.register.ui.components.FooterBubbles
 import gomoku.shared.background.Background
@@ -34,10 +37,8 @@ import gomoku.shared.components.navigation.NavigationDrawer
 import gomoku.shared.components.navigation.NavigationItem
 import gomoku.shared.components.navigation.NavigationItemGroup
 import gomoku.shared.theme.GomokuTheme
-import gomoku.variant.domain.OpeningRule
 import gomoku.variant.domain.Variant
 import gomoku.variant.domain.VariantConfig
-import gomoku.variant.domain.VariantName
 import gomoku.variant.ui.components.VariantTable
 import kotlinx.coroutines.launch
 import pdm.gomoku.R
@@ -56,8 +57,9 @@ private val variantSurfaceVerticalPadding = 15.dp
  */
 @Composable
 fun VariantScreen(
-    onSubmit: (VariantConfig) -> Unit,
-    variants: List<VariantConfig>,
+    onFetchVariants: () -> Unit,
+    onSubmit: (variantConfig: VariantConfig) -> Unit,
+    variantsState: LoadState<List<VariantConfig>>,
     toLeaderboardScreen: () -> Unit,
     toAboutScreen: () -> Unit,
     onLogoutRequest: () -> Unit
@@ -140,11 +142,23 @@ fun VariantScreen(
                             contentDescription = null
                         )
                     }
-                    VariantTable(
-                        variants = variants,
-                        selectedOption = selectedOption,
-                        onOptionSelected = onOptionSelected
-                    )
+                    if (variantsState is Loaded && variantsState.value.isSuccess) {
+                        VariantTable(
+                            variants = variantsState.value.getOrThrow(),
+                            selectedOption = selectedOption,
+                            onOptionSelected = onOptionSelected
+                        )
+                    } else {
+                        // Loading component
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .fillMaxHeight(0.5f)
+                                .align(Alignment.CenterHorizontally),
+                            color = MaterialTheme.colorScheme.secondary,
+                            trackColor = MaterialTheme.colorScheme.inversePrimary.copy(alpha = 0.8f)
+                        )
+                        onFetchVariants()
+                    }
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth()
@@ -161,37 +175,12 @@ fun VariantScreen(
     }
 }
 
+/*
 @Composable
 @Preview
 private fun VariantScreenPreview() {
     VariantScreen(
-        variants = listOf(
-            VariantConfig(
-                name = VariantName.FREESTYLE,
-                boardSize = BoardSize.FIFTEEN,
-                openingRule = OpeningRule.PRO
-            ),
-            VariantConfig(
-                name = VariantName.OMOK,
-                boardSize = BoardSize.NINETEEN,
-                openingRule = OpeningRule.LONG_PRO
-            ),
-            VariantConfig(
-                name = VariantName.PENTE,
-                boardSize = BoardSize.FIFTEEN,
-                openingRule = OpeningRule.PRO
-            ),
-            VariantConfig(
-                name = VariantName.RENJU,
-                boardSize = BoardSize.FIFTEEN,
-                openingRule = OpeningRule.PRO
-            ),
-            VariantConfig(
-                name = VariantName.CARO,
-                boardSize = BoardSize.NINETEEN,
-                openingRule = OpeningRule.PRO
-            ),
-        ),
+        variantsState = ,
         onSubmit = {},
         toLeaderboardScreen = {},
         toAboutScreen = {},
@@ -209,4 +198,4 @@ private fun VariantScreenEmptyPreview() {
         toAboutScreen = {},
         onLogoutRequest = {}
     )
-}
+}*/

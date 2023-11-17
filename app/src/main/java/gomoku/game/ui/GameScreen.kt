@@ -14,8 +14,6 @@ import gomoku.shared.background.BackgroundConfig
 import gomoku.shared.components.HeaderText
 import gomoku.shared.theme.GomokuTheme
 
-///Fazer um funcao o composoble que receba um composabel e transforme em um composabler skeleton
-
 /**
  * Represents the game screen main composable.
  * @param backgroundConfig the [BackgroundConfig] to be used.

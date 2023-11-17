@@ -8,7 +8,7 @@ import gomoku.game.domain.Game
  * set of remote joke providers.
  * @param providers The list of joke providers
  */
-class GomokuServiceImpl(
+class GameServiceImplementation(
     private val providers: List<GameService>
 ) : GameService {
 
@@ -16,9 +16,5 @@ class GomokuServiceImpl(
         val index = providers.indices.random()
         return providers[index].fetchGame()
     }
-    /*
-        override suspend fun searchJokes(term: Term): List<Game> {
-            val index = providers.indices.random()
-            return providers[index].searchJokes(term)
-        }*/
+
 }

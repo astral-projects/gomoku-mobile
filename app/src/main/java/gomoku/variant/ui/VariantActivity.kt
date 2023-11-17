@@ -5,21 +5,26 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import gomoku.GomokuDependencyProvider
 import gomoku.Navigation
 import gomoku.about.ui.AboutActivity
-import gomoku.game.domain.board.BoardSize
 import gomoku.game.ui.GameActivity
 import gomoku.leaderboard.ui.LeaderboardActivity
 import gomoku.login.ui.LoginActivity
-import gomoku.variant.domain.OpeningRule
-import gomoku.variant.domain.VariantConfig
-import gomoku.variant.domain.VariantName
 
 class VariantActivity : ComponentActivity() {
+
+    private val dependencies by lazy { application as GomokuDependencyProvider }
+
+    private val viewModel by viewModels<VariantScreenViewModel> {
+        VariantScreenViewModel.factory(dependencies.variantService)
+    }
+
     companion object : Navigation {
         override fun navigateTo(origin: Activity) {
-             val intent = Intent(origin, VariantActivity::class.java)
-             origin.startActivity(intent)
+            val intent = Intent(origin, VariantActivity::class.java)
+            origin.startActivity(intent)
         }
     }
 
@@ -27,37 +32,12 @@ class VariantActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             VariantScreen(
-                onSubmit = {GameActivity.navigateTo(this)},
-                variants = listOf(
-                    VariantConfig(
-                        name = VariantName.FREESTYLE,
-                        boardSize = BoardSize.FIFTEEN,
-                        openingRule = OpeningRule.PRO
-                    ),
-                    VariantConfig(
-                        name = VariantName.OMOK,
-                        boardSize = BoardSize.NINETEEN,
-                        openingRule = OpeningRule.LONG_PRO
-                    ),
-                    VariantConfig(
-                        name = VariantName.PENTE,
-                        boardSize = BoardSize.FIFTEEN,
-                        openingRule = OpeningRule.PRO
-                    ),
-                    VariantConfig(
-                        name = VariantName.RENJU,
-                        boardSize = BoardSize.FIFTEEN,
-                        openingRule = OpeningRule.PRO
-                    ),
-                    VariantConfig(
-                        name = VariantName.CARO,
-                        boardSize = BoardSize.NINETEEN,
-                        openingRule = OpeningRule.PRO
-                    )
-                ),
+                onSubmit = { GameActivity.navigateTo(this) },
                 toLeaderboardScreen = { LeaderboardActivity.navigateTo(this) },
                 toAboutScreen = { AboutActivity.navigateTo(this) },
-                onLogoutRequest = { LoginActivity.navigateTo(this) }
+                onLogoutRequest = { LoginActivity.navigateTo(this) },
+                variantsState = viewModel.variants,
+                onFetchVariants = { viewModel.fetchVariants() },
             )
         }
     }

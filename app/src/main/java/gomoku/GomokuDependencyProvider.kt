@@ -2,9 +2,12 @@ package gomoku
 
 import android.app.Application
 import com.google.gson.Gson
+import gomoku.game.FakeGameService
 import gomoku.game.GameService
-import gomoku.http.GomokuGame
-import gomoku.http.GomokuServiceImpl
+import gomoku.http.GameServiceImplementation
+import gomoku.http.VariantServiceImplementation
+import gomoku.variant.FakeVariantService
+import gomoku.variant.VariantService
 import okhttp3.OkHttpClient
 
 /**
@@ -28,9 +31,14 @@ interface GomokuDependencyProvider {
     val gson: Gson
 
     /**
-     * The service used to fetch jokes
+     * The service used to fetch games
      */
     val gameService: GameService
+
+    /**
+     * The service used to fetch variants
+     */
+    val variantService: VariantService
 }
 
 /**
@@ -55,10 +63,17 @@ class GomokuApplication : Application(), GomokuDependencyProvider {
      * The service used to fetch jokes
      */
     override val gameService: GameService =
-        GomokuServiceImpl(
+        GameServiceImplementation(
             listOf(
-                // FakeGameService(),
-                GomokuGame(httpClient, gson),
+                FakeGameService(),
+                //GomokuGame(httpClient, gson),
+            )
+        )
+
+    override val variantService: VariantService =
+        VariantServiceImplementation(
+            listOf(
+                FakeVariantService()
             )
         )
 }

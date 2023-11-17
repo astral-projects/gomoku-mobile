@@ -12,8 +12,8 @@ import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
 import gomoku.game.ui.GameScreenViewModel
+import gomoku.http.GameServiceImplementation
 import gomoku.http.GomokuGame
-import gomoku.http.GomokuServiceImpl
 import gomoku.leaderboard.domain.PlayerInfo
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -30,7 +30,7 @@ import pdm.gomoku.R
 class GameScreenViewModelTests {
 
     private val sut = GameScreenViewModel(
-        GomokuServiceImpl(
+        GameServiceImplementation(
             listOf(
                 GomokuGame(
                     OkHttpClient.Builder()
