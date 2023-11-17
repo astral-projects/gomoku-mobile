@@ -32,13 +32,13 @@ import gomoku.leaderboard.domain.RankingInfo
 import gomoku.leaderboard.domain.Term
 import gomoku.leaderboard.ui.components.LeaderboardSearchBar
 import gomoku.leaderboard.ui.components.LeaderboardTable
+import gomoku.leaderboard.user.ui.UserDialog
 import gomoku.shared.background.Background
 import gomoku.shared.components.ClickableIcon
 import gomoku.shared.components.TopNavBarWithBurgerMenu
 import gomoku.shared.components.navigation.NavigationDrawer
 import gomoku.shared.components.navigation.NavigationItem
 import gomoku.shared.components.navigation.NavigationItemGroup
-import gomoku.shared.dialogs.ProfileDialog
 import gomoku.shared.theme.GomokuTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -176,7 +176,7 @@ fun LeaderboardScreen(
 
         // Evaluate if the profile dialog should be displayed
         if (isProfileDialogOpen) {
-            ProfileDialog(
+            UserDialog(
                 rankingInfo = userInfo,
                 onDismissRequest = { isProfileDialogOpen = false }
             )

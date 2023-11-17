@@ -6,6 +6,4 @@ package gomoku.leaderboard.domain
 data class PlayerInfo(
     val name: String,
     val iconId: Int
-){
-
-}
+)

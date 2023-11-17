@@ -6,16 +6,21 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import gomoku.GomokuDependencyProvider
 import gomoku.Navigation
 import gomoku.about.ui.AboutActivity
-import gomoku.leaderboard.LeaderboardScreenViewModel
 import gomoku.leaderboard.domain.Leaderboard
 import gomoku.login.ui.LoginActivity
 import gomoku.variant.ui.VariantActivity
 
 class LeaderboardActivity : ComponentActivity() {
 
-    val viewModel by viewModels<LeaderboardScreenViewModel>()
+    private val dependencies by lazy { application as GomokuDependencyProvider }
+
+
+    private val viewModel by viewModels<LeaderboardScreenViewModel> {
+        LeaderboardScreenViewModel.factory(dependencies.userService)
+    }
 
     companion object : Navigation {
         override fun navigateTo(origin: Activity) {

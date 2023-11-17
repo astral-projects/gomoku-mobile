@@ -18,6 +18,7 @@ import gomoku.loading
 import kotlinx.coroutines.launch
 
 class GameScreenViewModel(private val service: GameService) : ViewModel() {
+
     companion object {
         fun factory(service: GameService) = viewModelFactory {
             initializer { GameScreenViewModel(service) }

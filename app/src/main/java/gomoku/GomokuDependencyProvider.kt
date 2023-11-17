@@ -5,7 +5,10 @@ import com.google.gson.Gson
 import gomoku.game.FakeGameService
 import gomoku.game.GameService
 import gomoku.http.GameServiceImplementation
+import gomoku.http.UserServiceImplementation
 import gomoku.http.VariantServiceImplementation
+import gomoku.leaderboard.user.FakeUserServices
+import gomoku.leaderboard.user.UserService
 import gomoku.variant.FakeVariantService
 import gomoku.variant.VariantService
 import okhttp3.OkHttpClient
@@ -39,6 +42,11 @@ interface GomokuDependencyProvider {
      * The service used to fetch variants
      */
     val variantService: VariantService
+
+    /**
+     * The service used to fetch users
+     */
+    val userService: UserService
 }
 
 /**
@@ -74,6 +82,12 @@ class GomokuApplication : Application(), GomokuDependencyProvider {
         VariantServiceImplementation(
             listOf(
                 FakeVariantService()
+            )
+        )
+    override val userService: UserService =
+        UserServiceImplementation(
+            listOf(
+                FakeUserServices()
             )
         )
 }

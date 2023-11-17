@@ -1,4 +1,4 @@
-package gomoku.shared.dialogs
+package gomoku.leaderboard.user.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -52,12 +52,11 @@ private val topTextPadding = 10.dp
 private val bottomSymbolPadding = 10.dp
 
 @Composable
-fun ProfileDialog(
+fun UserDialog(
     background: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     rankingInfo: RankingInfo,
     onDismissRequest: () -> Unit,
-
-    ) {
+) {
     Dialog(onDismissRequest = onDismissRequest) {
 
         val screenWidth = background.screenWidth
@@ -221,7 +220,7 @@ private fun numberFormat(num: String): String {
 @Composable
 fun ProfileDialogPreview() {
     GomokuTheme {
-        ProfileDialog(
+        UserDialog(
             rankingInfo = RankingInfo(
                 playerInfo = PlayerInfo(
                     name = "Geralt of Rivia",
@@ -243,7 +242,7 @@ fun ProfileDialogPreview() {
 @Composable
 fun ProfileDialogPreviewWithALotOfGames() {
     GomokuTheme {
-        ProfileDialog(
+        UserDialog(
             rankingInfo = RankingInfo(
                 playerInfo = PlayerInfo(
                     name = "Geralt of Rivia and more text so we see that is working correctly",
