@@ -3,12 +3,16 @@ package gomoku.screens.mainscreen
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import gomoku.home.domain.Home
 import gomoku.home.ui.HomeScreen
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import org.junit.Rule
 import org.junit.Test
+
+const val homeFindGameLabel = "Find a Match"
+const val homeLeaderboardLabel = "Leaderboard"
+const val homeAboutLabel = "About"
+const val homeLogoutLabel = "Logout"
 
 class HomeScreenTests {
     @get:Rule
@@ -31,7 +35,7 @@ class HomeScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Home.findGame).performClick()
+        composeTestRule.onNodeWithTag(homeFindGameLabel).performClick()
         // Assert
         assertTrue(findMatchRequested)
         assertFalse(leaderBoardRequested)
@@ -50,7 +54,7 @@ class HomeScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Home.leaderboard).performClick()
+        composeTestRule.onNodeWithTag(homeLeaderboardLabel).performClick()
         // Assert
         assertTrue(leaderBoardRequested)
     }
@@ -69,7 +73,7 @@ class HomeScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Home.about).performClick()
+        composeTestRule.onNodeWithTag(homeAboutLabel).performClick()
         // Assert
         assertTrue(onAboutRequested)
     }
@@ -86,7 +90,7 @@ class HomeScreenTests {
                 })
         }
         //Act
-        composeTestRule.onNodeWithTag(Home.logout).performClick()
+        composeTestRule.onNodeWithTag(homeLogoutLabel).performClick()
         //Assert
         assertTrue(onLogoutRequested)
 

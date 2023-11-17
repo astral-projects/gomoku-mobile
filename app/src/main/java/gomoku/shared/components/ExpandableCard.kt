@@ -40,10 +40,15 @@ private val cardPadding = 10.dp
 private val rounderCornerShapeSize = 15.dp
 private val descriptionPadding = 10.dp
 private const val ANIMATION_DURATION = 300
-// TODO("check this")
+
+//TAGS
 //This value is used to tests , because i need to differentiate this tag for the test of the usange of the VariantScreen
 //and i can´t use the same tag for the two test because the test will be overwritten
-const val test ="testPropose"
+const val test = "testPropose"
+const val GameInformationLabel = "Game Information$test"
+const val FeedbackAndSupportLabel = "Feedback and Support$test"
+const val AboutTheDeveloperLabel = "Authors$test"
+
 /**
  * Composes a card that is clickable. When clicked this card reveals the text underneath.
  * To produce that effect this composable uses an animation.
@@ -133,6 +138,7 @@ fun ExpandableCard(
                     )
                 }
             }
+            //TODO(MAYBE HERE ADED ANOTER TESTTAG JUST TO VERIFY THAT THE DESCRI+TION APPEARED)
             if (expandedState) {
                 Text(
                     modifier = Modifier.padding(descriptionPadding),

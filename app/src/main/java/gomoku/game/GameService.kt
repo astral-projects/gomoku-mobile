@@ -48,7 +48,7 @@ class FakeGameService : GameService {
         Move(Square(3, 'f'), Piece(Player.B)),
     )
     val board = Board(
-        moves = moves,
+        moves = emptyMap(),
         turn = turn,
         size = BoardSize.NINETEEN
     )
@@ -89,7 +89,7 @@ class FakeGameService : GameService {
 
     override suspend fun fetchGame(): Game {
         Log.v(TAG, "fetching game...")
-        delay(3000)
+        delay(8000)
         val index = Random.nextInt(from = 0, until = games.size)
         Log.v(TAG, "game fetched")
         return games[index]

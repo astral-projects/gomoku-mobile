@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,6 +48,7 @@ const val NavigateBackTestTag = "NavigateBack"
 fun IconButton(
     text: String,
     iconId: Int,
+    modifier: Modifier = Modifier,
     interiorColor: Color = MaterialTheme.colorScheme.primary,
     borderColor: Color = MaterialTheme.colorScheme.outline,
     backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
@@ -64,10 +64,9 @@ fun IconButton(
             width = borderWidth,
             color = borderColor
         ),
-        modifier = Modifier
+        modifier = modifier
             .height(boxHeight)
             .width(boxWidth)
-            .testTag(text)
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),

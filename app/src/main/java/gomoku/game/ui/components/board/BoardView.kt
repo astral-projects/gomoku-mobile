@@ -30,6 +30,7 @@ import gomoku.game.domain.board.BoardTurn
 import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
+import gomoku.shared.components.shimmerEffect
 import gomoku.shared.theme.GomokuTheme
 
 // Constants
@@ -49,6 +50,7 @@ private const val LINE_STROKE_WIDTH_FACTOR = 2f
  */
 @Composable
 fun BoardView(
+    modifier: Modifier = Modifier,
     board: Board,
     localPlayer: Player,
     onCellClick: (toSquare: Square) -> Unit,
@@ -56,38 +58,43 @@ fun BoardView(
 ) {
     val boardSize = board.size.value
     val lineColor = MaterialTheme.colorScheme.surface
+
     var selectedSquare by remember { mutableStateOf<Square?>(null) }
     val cellSize = ((maxWidth - boardBorderWidth * 2 - boardPadding * 2) / (boardSize + 1))
     Column(
-        modifier = Modifier
+        modifier = modifier
             .background(MaterialTheme.colorScheme.primary)
             .border(boardBorderWidth, MaterialTheme.colorScheme.outline)
             .padding(boardPadding)
     ) {
         Column {
-            for (rowIndex in FIRST_INDEX.. boardSize)
+            for (rowIndex in FIRST_INDEX..boardSize)
                 Row {
-                    for (columnIndex in FIRST_INDEX .. boardSize) {
+                    for (columnIndex in FIRST_INDEX..boardSize) {
                         when {
                             isCorner(rowIndex, columnIndex, boardSize) ->
-                                Box(modifier = Modifier.size(cellSize / 2))
+                                Box(modifier = modifier.size(cellSize / 2))
 
                             isFirstRow(rowIndex) -> DrawVerticalLine(
+                                modifier = modifier,
                                 lineColor = lineColor,
                                 cellSize = cellSize
                             )
 
                             isLastRow(rowIndex, boardSize) -> DrawVerticalLine(
+                                modifier = modifier,
                                 lineColor = lineColor,
                                 cellSize = cellSize
                             )
 
                             isFirstColumn(columnIndex) -> DrawHorizontalLine(
+                                modifier = modifier,
                                 lineColor = lineColor,
                                 cellSize = cellSize
                             )
 
                             isLastColumn(columnIndex, boardSize) -> DrawHorizontalLine(
+                                modifier = modifier,
                                 lineColor = lineColor,
                                 cellSize = cellSize
                             )
@@ -96,6 +103,7 @@ fun BoardView(
                                 val square = Square(rowIndex, columnIndex)
                                 val previousSquare = selectedSquare
                                 CellView(
+                                    modifier = modifier,
                                     cellSize = cellSize,
                                     lineColor = lineColor,
                                     selectedCell = selectedSquare == square,
@@ -118,11 +126,12 @@ fun BoardView(
 
 @Composable
 fun DrawVerticalLine(
+    modifier: Modifier = Modifier,
     lineColor: Color,
     cellSize: Dp
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .height(cellSize / 2)
             .width(cellSize)
             .drawBehind {
@@ -138,11 +147,12 @@ fun DrawVerticalLine(
 
 @Composable
 fun DrawHorizontalLine(
+    modifier: Modifier = Modifier,
     lineColor: Color,
     cellSize: Dp
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .height(cellSize)
             .width(cellSize / 2)
             .drawBehind {
@@ -190,6 +200,7 @@ private fun BoardViewPreview() {
                     .padding(20.dp),
             ) {
                 BoardView(
+                    Modifier.shimmerEffect(),
                     board = Board(
                         moves = moves,
                         turn = BoardTurn(Player.W, Timer(0, 10)),

@@ -4,9 +4,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import pdm.gomoku.R
+
+
+const val BurgerMenuButton = "BurgerMenuButton"
 
 /**
  * A [CenterAlignedTopAppBar] with a burger menu icon.
@@ -26,7 +31,9 @@ fun TopNavBarWithBurgerMenu(
             }
         },
         navigationIcon = {
-            IconButton(onClick = { onBurgerMenuClick() }) {
+            IconButton(
+                modifier = Modifier.testTag(BurgerMenuButton),
+                onClick = { onBurgerMenuClick() }) {
                 Image(
                     painter = painterResource(id = R.drawable.burger_bar),
                     contentDescription = null

@@ -1,6 +1,8 @@
 package gomoku.shared.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AssistChip
@@ -18,6 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import gomoku.shared.background.BackgroundConfig
 import gomoku.shared.theme.ChipColors
 import pdm.gomoku.R
@@ -75,6 +78,7 @@ fun CustomIconChip(
         },
         leadingIcon = {
             Image(
+                modifier = modifier,
                 painter = painterResource(leadingIconId),
                 contentDescription = null
             )
@@ -82,6 +86,7 @@ fun CustomIconChip(
         trailingIcon = {
             trailingIconId?.let {
                 Image(
+                    modifier = modifier,
                     painter = painterResource(trailingIconId),
                     contentDescription = null
                 )
@@ -111,6 +116,31 @@ private fun SelectedCustomIconChipPreview() {
         select = true,
         trailingIconId = R.drawable.white_circle
     )
+}
+
+@Composable
+@Preview
+private fun SelectedCustomIconChipPreview2() {
+    val chipheight = BackgroundConfig(LocalConfiguration.current).screenHeight * CHIP_HEIGHT_FACTOR
+    Box(
+        modifier = Modifier.shimmerEffect()
+    ) {
+        Box(
+            modifier = Modifier
+                .height(chipheight + 20.dp)
+                .zIndex(1f)
+                .background(Color.Blue)
+        ) {
+            CustomIconChip(
+                label = "01:09",
+                leadingIconId = R.drawable.timer,
+                select = true,
+                trailingIconId = R.drawable.white_circle,
+            )
+
+        }
+
+    }
 }
 
 @Composable

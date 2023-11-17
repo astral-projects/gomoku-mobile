@@ -4,12 +4,17 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import gomoku.register.domain.Register
 import gomoku.register.ui.RegisterScreen
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import org.junit.Rule
 import org.junit.Test
+
+const val RegisterSubmitLabelButton = "Register"
+const val RegisterUserNameLabel = "Username"
+const val RegisterEmailLabel = "Email"
+const val RegisterPasswordLabel = "Password"
+const val RegisterConfirmPasswordLabel = "Confirm Password"
 
 class RegisterScreenTests {
     @get:Rule
@@ -22,13 +27,13 @@ class RegisterScreenTests {
 
         composeTestRule.setContent {
             RegisterScreen(
-                onSubmit = { _,_,_,_ ->
+                onSubmit = { _, _, _, _ ->
                     registerRequested = true
                 },
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Register.submitTextButton).performClick()
+        composeTestRule.onNodeWithTag(RegisterSubmitLabelButton).performClick()
         assertFalse(registerRequested)
     }
 
@@ -47,10 +52,11 @@ class RegisterScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Register.emailLabel).performTextInput(email)
-        composeTestRule.onNodeWithTag(Register.passwordLabel).performTextInput(password)
-        composeTestRule.onNodeWithTag(Register.confirmPasswordLabel).performTextInput(confirmPassword)
-        composeTestRule.onNodeWithTag(Register.submitTextButton).performClick()
+        composeTestRule.onNodeWithTag(RegisterEmailLabel).performTextInput(email)
+        composeTestRule.onNodeWithTag(RegisterPasswordLabel).performTextInput(password)
+        composeTestRule.onNodeWithTag(RegisterConfirmPasswordLabel)
+            .performTextInput(confirmPassword)
+        composeTestRule.onNodeWithTag(RegisterSubmitLabelButton).performClick()
         // Assert
         assertFalse(registerRequested)
     }
@@ -71,10 +77,11 @@ class RegisterScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Register.usernameLabel).performTextInput(username)
-        composeTestRule.onNodeWithTag(Register.passwordLabel).performTextInput(password)
-        composeTestRule.onNodeWithTag(Register.confirmPasswordLabel).performTextInput(confirmPassword)
-        composeTestRule.onNodeWithTag(Register.submitTextButton).performClick()
+        composeTestRule.onNodeWithTag(RegisterUserNameLabel).performTextInput(username)
+        composeTestRule.onNodeWithTag(RegisterPasswordLabel).performTextInput(password)
+        composeTestRule.onNodeWithTag(RegisterConfirmPasswordLabel)
+            .performTextInput(confirmPassword)
+        composeTestRule.onNodeWithTag(RegisterSubmitLabelButton).performClick()
         // Assert
         assertFalse(registerRequested)
     }
@@ -95,10 +102,11 @@ class RegisterScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Register.usernameLabel).performTextInput(username)
-        composeTestRule.onNodeWithTag(Register.emailLabel).performTextInput(email)
-        composeTestRule.onNodeWithTag(Register.confirmPasswordLabel).performTextInput(confirmPassword)
-        composeTestRule.onNodeWithTag(Register.submitTextButton).performClick()
+        composeTestRule.onNodeWithTag(RegisterUserNameLabel).performTextInput(username)
+        composeTestRule.onNodeWithTag(RegisterEmailLabel).performTextInput(email)
+        composeTestRule.onNodeWithTag(RegisterConfirmPasswordLabel)
+            .performTextInput(confirmPassword)
+        composeTestRule.onNodeWithTag(RegisterSubmitLabelButton).performClick()
         // Assert
         assertFalse(registerRequested)
     }
@@ -118,10 +126,10 @@ class RegisterScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Register.usernameLabel).performTextInput(username)
-        composeTestRule.onNodeWithTag(Register.emailLabel).performTextInput(email)
-        composeTestRule.onNodeWithTag(Register.passwordLabel).performTextInput(password)
-        composeTestRule.onNodeWithTag(Register.submitTextButton).performClick()
+        composeTestRule.onNodeWithTag(RegisterUserNameLabel).performTextInput(username)
+        composeTestRule.onNodeWithTag(RegisterEmailLabel).performTextInput(email)
+        composeTestRule.onNodeWithTag(RegisterPasswordLabel).performTextInput(password)
+        composeTestRule.onNodeWithTag(RegisterSubmitLabelButton).performClick()
         // Assert
         assertFalse(registerRequested)
     }
@@ -142,13 +150,65 @@ class RegisterScreenTests {
             )
         }
         // Act
-        composeTestRule.onNodeWithTag(Register.usernameLabel).performTextInput(username)
-        composeTestRule.onNodeWithTag(Register.emailLabel).performTextInput(email)
-        composeTestRule.onNodeWithTag(Register.passwordLabel).performTextInput(password)
-        composeTestRule.onNodeWithTag(Register.confirmPasswordLabel).performTextInput(confirmPassword)
-        composeTestRule.onNodeWithTag(Register.submitTextButton).performClick()
+        composeTestRule.onNodeWithTag(RegisterUserNameLabel).performTextInput(username)
+        composeTestRule.onNodeWithTag(RegisterEmailLabel).performTextInput(email)
+        composeTestRule.onNodeWithTag(RegisterPasswordLabel).performTextInput(password)
+        composeTestRule.onNodeWithTag(RegisterConfirmPasswordLabel)
+            .performTextInput(confirmPassword)
+        composeTestRule.onNodeWithTag(RegisterSubmitLabelButton).performClick()
         // Assert
         assertTrue(registerRequested)
     }
 
+    @Test
+    fun input_for_username_exists() {
+        //Arrange
+        composeTestRule.setContent {
+            RegisterScreen(
+                onSubmit = { _, _, _, _ ->
+                },
+            )
+        }
+        //Act
+        composeTestRule.onNodeWithTag(RegisterUserNameLabel).assertExists()
+    }
+
+    @Test
+    fun input_for_email_exists() {
+        //Arrange
+        composeTestRule.setContent {
+            RegisterScreen(
+                onSubmit = { _, _, _, _ ->
+                },
+            )
+        }
+        //Act
+        composeTestRule.onNodeWithTag(RegisterEmailLabel).assertExists()
+    }
+
+    @Test
+    fun input_for_password_exists() {
+        //Arrange
+        composeTestRule.setContent {
+            RegisterScreen(
+                onSubmit = { _, _, _, _ ->
+                },
+            )
+        }
+        //Act
+        composeTestRule.onNodeWithTag(RegisterPasswordLabel).assertExists()
+    }
+
+    @Test
+    fun input_for_confirm_password_exists() {
+        //Arrange
+        composeTestRule.setContent {
+            RegisterScreen(
+                onSubmit = { _, _, _, _ ->
+                },
+            )
+        }
+        //Act
+        composeTestRule.onNodeWithTag(RegisterConfirmPasswordLabel).assertExists()
+    }
 }

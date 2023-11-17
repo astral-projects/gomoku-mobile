@@ -15,6 +15,7 @@ private const val CHIP_HEIGHT_FACTOR = 0.3f
 
 /**
  * A [CustomIconChip] that displays player information.
+ * @param modifier The modifier to be applied to the chip.
  * @param backgroundConfig The background configuration to be used.
  * @param playerInfo The [PlayerInfo] to display.
  * @param trailingIconId The id of the trailing icon.
@@ -22,13 +23,14 @@ private const val CHIP_HEIGHT_FACTOR = 0.3f
  */
 @Composable
 fun PlayerInfoChip(
+    modifier: Modifier = Modifier,
     backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     playerInfo: PlayerInfo,
     trailingIconId: Int,
     select: Boolean
 ) {
     CustomIconChip(
-        textModifier = Modifier.width(backgroundConfig.screenWidth * CHIP_HEIGHT_FACTOR),
+        textModifier = modifier.width(backgroundConfig.screenWidth * CHIP_HEIGHT_FACTOR),
         label = playerInfo.name,
         select = select,
         leadingIconId = playerInfo.iconId,

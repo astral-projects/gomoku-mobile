@@ -35,6 +35,7 @@ import pdm.gomoku.R
 private val sectionVerticalPadding = 10.dp
 private val sectionPadding = 10.dp
 
+
 /**
  * Represents the About screen main composable.
  * @param sections the [List] of [Section] to be displayed in the body.

@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +36,16 @@ private val mainTitlePadding = 10.dp
 private val mainTitleGoBackIconPadding = 8.dp
 private val horizontalItemPadding = 5.dp
 private val verticalItemPadding = 2.dp
+
+//TODO(Tag used on the test of the about screen)
+const val BurgerMenu = "BurgerMenu"
+const val BurgerMenuFindGameButton = "Find game $BurgerMenu"
+const val BurgerMenuLeaderboardButton = "Leaderboard $BurgerMenu"
+const val BurgerMenuAboutButton = "About $BurgerMenu"
+const val BurgerMenuLogoutButton = "Logout $BurgerMenu"
+const val BurgerMenuSwitchThemeButton = "Switch theme $BurgerMenu"
+
+const val BurgerMenuButtonClose = "BurgerMenuButtonClose"
 
 /**
  * A [ModalNavigationDrawer] that displays a list of [NavigationItem]s.
@@ -68,8 +79,9 @@ fun NavigationDrawer(
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.close_drawer),
-                        contentDescription = "Close Drawer",
+                        contentDescription = ("Close Drawer"),
                         modifier = Modifier
+                            .testTag(BurgerMenuButtonClose)
                             .clickable(onClick = {
                                 scope.launch {
                                     drawerState.close()
@@ -90,10 +102,12 @@ fun NavigationDrawer(
                     }
                     itemGroup.items.forEach { item ->
                         NavigationDrawerItem(
-                            modifier = Modifier.padding(
-                                horizontal = horizontalItemPadding,
-                                vertical = verticalItemPadding
-                            ),
+                            modifier = Modifier
+                                .padding(
+                                    horizontal = horizontalItemPadding,
+                                    vertical = verticalItemPadding
+                                )
+                                .testTag(item.title + " $BurgerMenu"),
                             icon = {
                                 Image(
                                     painter = painterResource(id = item.selectedIconId),
