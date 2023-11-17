@@ -28,6 +28,7 @@ import pdm.gomoku.R
  */
 @Composable
 fun CellView(
+    modifier: Modifier = Modifier,
     cellSize: Dp,
     lineColor: Color,
     selectedCell: Boolean,
@@ -43,7 +44,7 @@ fun CellView(
         contentAlignment = Alignment.Center
     ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .size(cellSize)
                 .drawBehind {
                     drawLine(
@@ -62,7 +63,7 @@ fun CellView(
                 }
         ) {
             Box(
-                modifier = Modifier
+                modifier = modifier
                     .clickable(onClick = onClick)
                     .align(Alignment.Center)
             ) {

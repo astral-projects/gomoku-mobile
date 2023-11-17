@@ -15,18 +15,20 @@ import androidx.compose.ui.unit.dp
 
 /**
  * A generic close button for dismissing content.
+ * @param modifier The modifier to be applied to the button.
  * @param onButtonText Text to be placed in the button.
  * @param enable Indicates whether the button should be enabled.
  * @param onDismiss Callback function to be executed when the dismiss button is clicked.
  */
 @Composable
 fun DismissButton(
+    modifier: Modifier = Modifier,
     onButtonText: String,
     enable: Boolean,
     onDismiss: () -> Unit
 ) {
     OutlinedButton(
-        modifier = Modifier.testTag(onButtonText),
+        modifier = modifier.testTag(onButtonText),
         onClick = onDismiss,
         enabled = enable,
         colors = ButtonDefaults.buttonColors(
@@ -47,6 +49,7 @@ private fun TestDismissButton() {
     DismissButton(
         onButtonText = "Is this a test?",
         enable = true,
-        onDismiss = {}
+        onDismiss = {},
+        modifier = Modifier.shimmerEffect()
     )
 }

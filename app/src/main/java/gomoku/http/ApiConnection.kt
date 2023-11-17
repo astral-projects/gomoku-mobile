@@ -30,16 +30,23 @@ class GomokuGame(
     //TODO(This file is not being used yet but it will be used in the future, and first of all i want to use the FakeGameService)
     private val request: Request by lazy {
         Request.Builder()
-            .url("https://icanhazdadjoke.com/")
+            .url("http://localhost:8080/games/1")
             .addHeader("accept", "application/json")
+            //.addHeader("Authorization", "Bearer ImqQMeRr4Tldc2cy3zCoVjSA7n14SHTrf9Nc2YxEGaU=")
             .build()
     }
 
     override suspend fun fetchGame(): Game =
         suspendCoroutine {
             client.newCall(request).enqueue(object : Callback {
+
                 override fun onFailure(call: Call, e: IOException) {
-                    it.resumeWithException(FetchGameException("Could not fetch joke", e))
+                    it.resumeWithException(
+                        FetchGameException(
+                            "Could not fetch joke ${e.message} ",
+                            e
+                        )
+                    )
                 }
 
                 override fun onResponse(call: Call, response: Response) {

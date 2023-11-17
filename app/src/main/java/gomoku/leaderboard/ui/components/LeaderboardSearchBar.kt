@@ -14,11 +14,15 @@ import androidx.compose.material3.SearchBarDefaults.inputFieldColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import pdm.gomoku.R
 
 // Config
 private const val SEARCH_BAR_WIDTH_FACTOR = 0.9f
+
+const val SearchBarInputText = "Search a player…Leaderboardfdsdfsdfsdf"
+const val SearchBarButton = "SearchBarButton"
 
 /**
  * A [SearchBar] that represents the search field in the leaderboard.
@@ -45,7 +49,13 @@ fun LeaderboardSearchBar(
     ),
     modifier = modifier
         .fillMaxWidth(SEARCH_BAR_WIDTH_FACTOR),
-    placeholder = { Text(text = placeHolder ?: "", style = MaterialTheme.typography.bodyLarge) },
+    placeholder = {
+        Text(
+            modifier = modifier.testTag(SearchBarInputText),
+            text = placeHolder ?: "",
+            style = MaterialTheme.typography.bodyLarge
+        )
+    },
     query = query,
     onQueryChange = onQueryChange,
     active = false,
@@ -62,7 +72,9 @@ fun LeaderboardSearchBar(
         Icon(
             Icons.Default.Close,
             contentDescription = null,
-            modifier = Modifier.clickable { onClearSearch() }
+            modifier = Modifier
+                .testTag(SearchBarButton)
+                .clickable { onClearSearch() }
         )
     },
     content = { }

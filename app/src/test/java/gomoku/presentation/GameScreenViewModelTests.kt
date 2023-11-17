@@ -1,7 +1,7 @@
 package gomoku.presentation
 
 
-import gomoku.game.GameService
+import com.google.gson.Gson
 import gomoku.game.domain.Game
 import gomoku.game.domain.Timer
 import gomoku.game.domain.board.Board
@@ -12,12 +12,15 @@ import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
 import gomoku.game.ui.GameScreenViewModel
+import gomoku.http.GomokuGame
+import gomoku.http.GomokuServiceImpl
 import gomoku.leaderboard.domain.PlayerInfo
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import okhttp3.OkHttpClient
 import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
@@ -26,10 +29,21 @@ import pdm.gomoku.R
 @OptIn(ExperimentalCoroutinesApi::class)
 class GameScreenViewModelTests {
 
-    private val sut = GameScreenViewModel()
+    private val sut = GameScreenViewModel(
+        GomokuServiceImpl(
+            listOf(
+                GomokuGame(
+                    OkHttpClient.Builder()
+                        .callTimeout(10, java.util.concurrent.TimeUnit.SECONDS)
+                        .build(), Gson()
+                )
+            )
+        )
+    )
 
     @get:Rule
     val rule = MockMainDispatcherRule(UnconfinedTestDispatcher())
+
     //TODO(TO Run this tests you need to have the JAVA_VERSION_11 ON THE build gradle file because of the dependency mock)
     @Test
     fun `initially the joke is null`() {
@@ -70,7 +84,7 @@ class GameScreenViewModelTests {
             size = BoardSize.NINETEEN
         )
         // Arrange
-        val service = mockk<GameService> {
+        val service = mockk<GomokuGame> {
             coEvery { fetchGame() } coAnswers {
                 Game(
                     "I got nothing",
