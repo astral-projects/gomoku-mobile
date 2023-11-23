@@ -8,4 +8,9 @@ import gomoku.game.domain.board.BoardSize
  * @param openingRule The opening rule of the variant.
  * @param boardSize The board size of the variant.
  */
-data class VariantConfig(val name: VariantName, val openingRule: OpeningRule, val boardSize: BoardSize)
+data class VariantConfig(
+    val id: Int,
+    val name: VariantName,
+    val openingRule: OpeningRule,
+    val boardSize: BoardSize
+)

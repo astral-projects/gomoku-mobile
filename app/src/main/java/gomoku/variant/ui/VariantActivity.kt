@@ -1,44 +1,110 @@
 package gomoku.variant.ui
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.lifecycleScope
 import gomoku.GomokuDependencyProvider
-import gomoku.Navigation
+import gomoku.Idle
+import gomoku.Loaded
+import gomoku.USER_EXTRA
+import gomoku.UserExtra
 import gomoku.about.ui.AboutActivity
+import gomoku.game.domain.Game
 import gomoku.game.ui.GameActivity
+import gomoku.idle
 import gomoku.leaderboard.ui.LeaderboardActivity
+import gomoku.login.User
 import gomoku.login.ui.LoginActivity
+import gomoku.toUserInfo
+import kotlinx.coroutines.launch
 
 class VariantActivity : ComponentActivity() {
 
     private val dependencies by lazy { application as GomokuDependencyProvider }
 
     private val viewModel by viewModels<VariantScreenViewModel> {
-        VariantScreenViewModel.factory(dependencies.variantService)
+        VariantScreenViewModel.factory(dependencies.variantService, dependencies.gameService)
     }
 
-    companion object : Navigation {
-        override fun navigateTo(origin: Activity) {
-            val intent = Intent(origin, VariantActivity::class.java)
-            origin.startActivity(intent)
+    companion object {
+        fun navigateTo(ctx: Context, user: User? = null) {
+            ctx.startActivity(createIntent(ctx, user))
+        }
+
+        /**
+         * Builds the intent that navigates to the [UserPreferencesActivity] activity.
+         * @param ctx the context to be used.
+         */
+        fun createIntent(ctx: Context, userInfo: User? = null): Intent {
+            val intent = Intent(ctx, VariantActivity::class.java)
+            userInfo?.let { intent.putExtra(USER_EXTRA, UserExtra(it)) }
+            return intent
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            viewModel.game.collect {
+                if (it is Loaded && it.value.isSuccess) {
+                    doNavigation(it.value.getOrNull(), userInfo!!)
+                    viewModel.resetToIdle()
+                } else if (it is Loaded && it.value.getOrNull() == null) {
+                    viewModel.resetToIdle()
+                }
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.variants.collect {
+                if (it is Idle) {
+                    viewModel.fetchVariants()
+                }
+            }
+        }
         setContent {
+            val stateVariants by viewModel.variants.collectAsState(idle())
+            val stateFindGame by viewModel.game.collectAsState(initial = idle())
             VariantScreen(
-                onSubmit = { GameActivity.navigateTo(this) },
+                onSubmit = { variantConfig ->
+                    viewModel.findGame(variantConfig, userInfo!!)
+                },
+                gameMatchState = stateFindGame,
                 toLeaderboardScreen = { LeaderboardActivity.navigateTo(this) },
                 toAboutScreen = { AboutActivity.navigateTo(this) },
                 onLogoutRequest = { LoginActivity.navigateTo(this) },
-                variantsState = viewModel.variants,
-                onFetchVariants = { viewModel.fetchVariants() },
+                variantsState = stateVariants,
             )
         }
     }
+
+    /**
+     * Helper method to get the user extra from the intent.
+     */
+    val userInfo: User? by lazy { getUserInfoExtra()?.toUserInfo() }
+
+    @Suppress("DEPRECATION")
+    private fun getUserInfoExtra(): UserExtra? =
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU)
+            intent?.getParcelableExtra(USER_EXTRA, UserExtra::class.java)
+        else
+            intent?.getParcelableExtra(USER_EXTRA)
+
+
+    /**
+     * Navigates to the appropriate activity, depending on whether the
+     * user information has already been provided or not.
+     * @param game the user information.
+     */
+    private fun doNavigation(game: Game?, user: User?) {
+        if (game != null && user != null)
+            GameActivity.navigateTo(this@VariantActivity, user)
+    }
+
 }

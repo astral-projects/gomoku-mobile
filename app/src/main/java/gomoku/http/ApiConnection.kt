@@ -1,6 +1,7 @@
 package gomoku.http
 
 import com.google.gson.Gson
+import gomoku.Lobby.Lobby
 import gomoku.game.FetchGameException
 import gomoku.game.GameService
 import gomoku.game.domain.Game
@@ -13,6 +14,8 @@ import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
 import gomoku.leaderboard.domain.PlayerInfo
+import gomoku.login.User
+import gomoku.variant.domain.VariantConfig
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -60,6 +63,23 @@ class GomokuGame(
                 }
             })
         }
+
+    override suspend fun fetchGameById(id: String): Game? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun createGame(variant: VariantConfig, lobby: Lobby, user: User): Game {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun findGame(variant: VariantConfig, user: User): Game? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun makeMove(gameId: Int, moVe: Move): Game {
+        TODO("Not yet implemented")
+    }
+
 
     //TODO(CHANGE THIS CLASS CAN NOT STAY LIKE THIS)
     private data class GameDto(

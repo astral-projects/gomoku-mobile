@@ -1,141 +1,47 @@
 package gomoku.login.ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import gomoku.login.domain.AuthValidator
-import gomoku.login.domain.InputTextFieldData
-import gomoku.login.domain.Login
-import gomoku.login.domain.Password
-import gomoku.login.domain.Username
+import gomoku.LoadState
+import gomoku.Loaded
+import gomoku.login.User
 import gomoku.login.ui.components.HeaderLogo
 import gomoku.shared.background.Background
-import gomoku.shared.components.Form
-import gomoku.shared.components.HyperLink
-import gomoku.shared.components.InputTextField
-import gomoku.shared.components.SubmitButton
 import gomoku.shared.theme.GomokuTheme
-import pdm.gomoku.R
 
-// Config
-private val signUpSpacerWidth = 1.dp
-private val signUpSpacerHeight = 10.dp
 
 /**
  * Represents the login screen main composable.
+ * @param authenticatedUser indicates whether the user is authenticated.
  * @param onSubmit callback to be executed when the submit button is clicked.
  * @param onSignUpLinkClick callback to be executed when the sign-up link is clicked.
  */
 @Composable
 fun LoginScreen(
-    onSubmit: (username: String, password: String) -> Unit = { _, _ -> },
+    authenticatedUser: LoadState<User>,
+    onSubmit: (username: String, password: String) -> Unit,
     onSignUpLinkClick: (Int) -> Unit = {}
 ) {
     GomokuTheme {
         Background(
             header = { HeaderLogo() },
         ) {
-            var username by rememberSaveable { mutableStateOf("") }
-            var password by rememberSaveable { mutableStateOf("") }
-            Form(
-                title = stringResource(Login.formTitle),
-                inputFieldsData = listOf(
-                    InputTextFieldData(
-                        value = username,
-                        label = stringResource(Login.usernameLabel),
-                        iconId = R.drawable.user,
-                        onValueChangeCallback = { username = it },
-                        validationCallback = { Username.isValid(it) },
-                        supportingText = stringResource(
-                            id = Username.validationRuleResourceId,
-                            Username.minUsernameLength,
-                            Username.maxUsernameLength
-                        ),
-                    ),
-                    InputTextFieldData(
-                        value = password,
-                        label = stringResource(Login.passwordLabel),
-                        iconId = R.drawable.lock,
-                        onValueChangeCallback = { password = it },
-                        validationCallback = { Password.isValid(it) },
-                        supportingText = stringResource(
-                            id = Password.validationRuleResourceId,
-                            Password.minPasswordLength,
-                            Password.maxPasswordLength
-                        ),
-                        isPassword = true
-                    )
-                ),
-                renderInputField = { inputFieldData ->
-                    InputTextField(
-                        value = inputFieldData.value,
-                        label = inputFieldData.label,
-                        onValueChange = inputFieldData.onValueChangeCallback,
-                        validateField = inputFieldData.validationCallback,
-                        leadingIconId = inputFieldData.iconId,
-                        supportingText = inputFieldData.supportingText,
-                        enablePasswordVisibility = inputFieldData.isPassword
-                    )
-                },
-                footer = {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        SubmitButton(
-                            enable = AuthValidator.areLoginCredentialsValid(username, password),
-                            onButtonText = stringResource(Login.submitButtonText),
-                            onClick = {
-                                onSubmit(username, password)
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(signUpSpacerHeight))
-                        SignUpLink(onSignUpLinkClick)
-                    }
-                }
+
+
+            LoginView(
+                screenState = authenticatedUser.toLoginScreenState(),
+                onSubmit = onSubmit,
+                onSignUpLinkClick = onSignUpLinkClick
             )
         }
     }
 }
 
-/**
- * Reminds the user that he can sign up.
- */
-@Composable
-private fun SignUpLink(onSignUpLinkClick: (Int) -> Unit) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = stringResource(Login.noAccountMessage),
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.inversePrimary,
-            style = MaterialTheme.typography.bodyMedium
-        )
-        Spacer(modifier = Modifier.width(signUpSpacerWidth))
-        HyperLink(
-            text = stringResource(Login.signUpLinkText),
-            onClick = onSignUpLinkClick
-        )
-    }
-}
 
 @Composable
 @Preview
 private fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen(
+        Loaded(Result.success(User(1, "John", "123", "dqwdqw@.com"))),
+        onSubmit = { _, _ -> User(1, "John", "123", "dfqwdew@.com") })
 }

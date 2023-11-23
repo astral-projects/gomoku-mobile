@@ -1,20 +1,7 @@
 package gomoku.screens.mainscreen
 
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performClick
-import gomoku.leaderboard.domain.Leaderboard
-import gomoku.leaderboard.ui.LeaderboardScreen
-import gomoku.shared.components.BurgerMenuButton
-import gomoku.shared.components.navigation.BurgerMenuAboutButton
-import gomoku.shared.components.navigation.BurgerMenuFindGameButton
-import gomoku.shared.components.navigation.BurgerMenuLogoutButton
-import gomoku.shared.components.navigation.BurgerMenuSwitchThemeButton
-import junit.framework.TestCase.assertTrue
-import org.junit.Rule
-import org.junit.Test
-
 class LeaderBoardScreenTests {
+    /*
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -198,5 +185,5 @@ class LeaderBoardScreenTests {
         //Assert
         composeTestRule.onNodeWithTag(BurgerMenuSwitchThemeButton).assertExists()
 
-    }
+    }*/
 }

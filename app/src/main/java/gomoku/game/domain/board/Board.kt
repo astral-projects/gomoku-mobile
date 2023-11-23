@@ -12,7 +12,7 @@ import gomoku.game.domain.moves.move.Square
  * @param size the size of the board.
  */
 data class Board(
-    val moves: Moves,
+    var moves: Moves,
     val turn: BoardTurn,
     val size: BoardSize
 ) {

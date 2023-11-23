@@ -15,6 +15,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import gomoku.SkeletonLoaderGeneric
 import gomoku.game.domain.Game
 import gomoku.game.domain.GameTag
 import gomoku.game.domain.Timer
@@ -33,18 +34,21 @@ import gomoku.shared.components.DismissButton
 import pdm.gomoku.R
 
 /**
- * Represents the game view composable.
- * @param localPlayer the [Player] that is playing locally.
- * @param onLeaveGameRequest the callback to be called when the dismiss button is clicked.
- * @param onCellClick the callback to be called when a cell is clicked.
- * @param game the [Game] to be displayed.
+ * Represents the game view.
+ * @param localPlayer the local player.
+ * @param onLeaveGameRequest callback to be called when the user wants to leave the game.
+ * @param onCellClick callback to be called when a cell is clicked.
+ * @param game the game to be displayed.
+ * @param isLoading if the game is loading.
  */
 @Composable
 fun GameView(
+    playerInfo: PlayerInfo,
     localPlayer: Player,
     onLeaveGameRequest: () -> Unit,
     onCellClick: (toSquare: Square) -> Unit,
-    game: Game
+    game: Game,
+    isLoading: Boolean = false
 ) {
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -55,58 +59,78 @@ fun GameView(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start
         ) {
-            GameInfoChip(
-                leadingIconId = R.drawable.timer,
-                label = "${game.board.turn.timer}"
-            )
+            SkeletonLoaderGeneric(loading = isLoading) {
+                GameInfoChip(
+                    leadingIconId = R.drawable.timer,
+                    label = "${game.board.turn.timer}"
+                )
+            }
 
         }
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            PlayerInfoChip(
-                playerInfo = game.whitePlayer,
-                trailingIconId = R.drawable.white_circle,
-                select = game.board.turn.player == Player.W
-            )
+            SkeletonLoaderGeneric(loading = isLoading) {
+                PlayerInfoChip(
+                    playerInfo = playerInfo,
+                    trailingIconId = R.drawable.white_circle,
+                    select = game.board.turn.player == Player.W
+                )
+            }
         }
 
-        BoardContainer(
-            board = game.board,
-            localPlayer = localPlayer,
-            onCellClick = onCellClick,
-        )
+        SkeletonLoaderGeneric(loading = isLoading) {
+            BoardContainer(
+                board = game.board,
+                localPlayer = localPlayer,
+                onCellClick = onCellClick,
+            )
+        }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            PlayerInfoChip(
-                playerInfo = game.blackPlayer,
-                trailingIconId = R.drawable.black_circle,
-                select = game.board.turn.player == Player.B
-            )
-            GameInfoChip(
-                leadingIconId = R.drawable.directions,
-                label = "${game.board.moves.size}"
-            )
+            SkeletonLoaderGeneric(loading = isLoading) {
+                PlayerInfoChip(
+                    playerInfo = game.blackPlayer,
+                    trailingIconId = R.drawable.black_circle,
+                    select = game.board.turn.player == Player.B
+                )
+            }
+            SkeletonLoaderGeneric(loading = isLoading) {
+                GameInfoChip(
+                    leadingIconId = R.drawable.directions,
+                    label = "${game.board.moves.size}"
+                )
+            }
         }
-        // Spacer(modifier = Modifier.weight(1f))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            DismissButton(
-                onButtonText = stringResource(id = GameTag.gameLeaveButtonText),
-                enable = true,
-                onDismiss = onLeaveGameRequest
-            )
+            SkeletonLoaderGeneric(loading = isLoading) {
+                DismissButton(
+                    onButtonText = stringResource(id = GameTag.gameLeaveButtonText),
+                    enable = !isLoading,
+                    onDismiss = onLeaveGameRequest
+                )
+            }
         }
     }
 }
 
 
+/**
+ * Represents the board container.
+ * @param modifier the modifier to be applied to the container.
+ * @param board board to be displayed.
+ * @param localPlayer the local player.
+ * @param onCellClick callback to be called when a cell is clicked.
+ */
 @Composable
 private fun BoardContainer(
     modifier: Modifier = Modifier,
@@ -154,8 +178,8 @@ val board = Board(
 @Preview
 @Composable
 private fun GameViewPreview() {
-
     GameView(
+        playerInfo = PlayerInfo("Player W", R.drawable.man5),
         localPlayer = Player.W,
         onLeaveGameRequest = {},
         onCellClick = {},

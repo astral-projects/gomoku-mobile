@@ -3,16 +3,26 @@ package gomoku.game.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import gomoku.LoadState
 import gomoku.Loaded
 import gomoku.game.domain.Game
+import gomoku.game.domain.Timer
+import gomoku.game.domain.board.Board
+import gomoku.game.domain.board.BoardSize
+import gomoku.game.domain.board.BoardTurn
+import gomoku.game.domain.moves.Move
+import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
+import gomoku.getOrNull
 import gomoku.home.domain.Home.gameName
+import gomoku.leaderboard.domain.PlayerInfo
 import gomoku.shared.background.Background
 import gomoku.shared.background.BackgroundConfig
 import gomoku.shared.components.HeaderText
 import gomoku.shared.theme.GomokuTheme
+import pdm.gomoku.R
 
 /**
  * Represents the game screen main composable.
@@ -25,36 +35,46 @@ import gomoku.shared.theme.GomokuTheme
 @Composable
 fun GameScreen(
     backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
-    localPlayer: Player,
+    localPlayer: PlayerInfo,
     onLeaveGameRequest: () -> Unit,
     onCellClick: (toSquare: Square) -> Unit,
-    gameState: LoadState<Game>,
-    onFetchGame: () -> Unit
+    gameState: LoadState<Game?>,
 ) {
     GomokuTheme {
         Background(
             config = backgroundConfig,
             useBodySurface = false,
-            header = { HeaderText(text = stringResource(id = gameName)) },
+            header = {
+                HeaderText(text = stringResource(id = gameName))
+            },
         ) {
-            if (gameState is Loaded && gameState.value.isSuccess) {
-                val game = gameState.value.getOrThrow()
-                GameView(
-                    localPlayer = localPlayer,
-                    onLeaveGameRequest = onLeaveGameRequest,
-                    onCellClick = onCellClick,
-                    game = game
-                )
-            } else {
-                GameSkeletonLoader()
-                onFetchGame()
-            }
+
+            val g = gameState.getOrNull() ?: Game(
+                "I got nothing",
+                "https://www.example.com",
+                "FREESTYLE",
+                Board(emptyMap(), BoardTurn(Player.W, Timer(0, 0)), BoardSize.NINETEEN),
+                "DSSDSDDS",
+                "WEQEWQWEWQE",
+                PlayerInfo("Player W", R.drawable.man5),
+                PlayerInfo("Player B", R.drawable.woman2)
+            )
+            //TODO(BACAREUFL WITH LLOGCU LocalPlayer)
+            GameView(
+                playerInfo = localPlayer,
+                localPlayer = Player.W,
+                onLeaveGameRequest = onLeaveGameRequest,
+                onCellClick = onCellClick,
+                game = g,
+                isLoading = gameState.toGameStateScreen()
+                    .isLoading() || gameState.toGameStateScreen().isIdle(),
+            )
         }
     }
 }
 
 
-/*
+//TODO(The Preview is not working because of the launch effect)
 @Preview
 @Composable
 private fun GameScreenPreview() {
@@ -77,11 +97,24 @@ private fun GameScreenPreview() {
     )
     GameScreen(
         backgroundConfig = BackgroundConfig(LocalConfiguration.current),
-        localPlayer = Player.W,
+        localPlayer = PlayerInfo("Player W", R.drawable.man5),
         onLeaveGameRequest = {},
         onCellClick = {},
-        gameState = LoadState(Game("I got nothing", "https://www.example.com", "FREESTYLE", board, "DSSDSDDS", "WEQEWQWEWQE", PlayerInfo("Player W", R.drawable.man5), PlayerInfo("Player B", R.drawable.woman2))),
-        onFetchGame = {},
-    )
-}*/
+        gameState = Loaded(
+            Result.success(
+                Game(
+                    "I got nothing",
+                    "https://www.example.com",
+                    "FREESTYLE",
+                    board,
+                    "DSSDSDDS",
+                    "WEQEWQWEWQE",
+                    PlayerInfo("Player W", R.drawable.man5),
+                    PlayerInfo("Player B", R.drawable.woman2)
+                )
+            )
+        ),
+
+        )
+}
 

@@ -25,6 +25,13 @@ fun GameInfoChip(
     useSecondaryColor = true
 )
 
+/*
+fun gameionfoshipsELEIT (){
+    SkeletonLoaderGeneric(loadinG = ) {
+       GameInfoChip(leadingIconId = , label = )
+    }
+}
+*/
 @Composable
 @Preview
 private fun GameInfoChipPreview() {

@@ -16,31 +16,37 @@ class FetchVariantsException(message: String, cause: Throwable? = null) : Except
 class FakeVariantService : VariantService {
     private val variants = listOf(
         VariantConfig(
+            1,
             VariantName.FREESTYLE,
             OpeningRule.PRO,
             BoardSize.FIFTEEN
         ),
         VariantConfig(
+            2,
             VariantName.RENJU,
             OpeningRule.PRO,
             BoardSize.FIFTEEN
         ),
         VariantConfig(
+            3,
             VariantName.CARO,
             OpeningRule.PRO,
             BoardSize.FIFTEEN
         ),
         VariantConfig(
+            4,
             VariantName.OMOK,
             OpeningRule.PRO,
             BoardSize.FIFTEEN
         ),
         VariantConfig(
+            5,
             VariantName.NINUKI_RENJU,
             OpeningRule.PRO,
             BoardSize.FIFTEEN
         ),
         VariantConfig(
+            6,
             VariantName.PENTE,
             OpeningRule.PRO,
             BoardSize.FIFTEEN

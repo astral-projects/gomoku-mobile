@@ -43,7 +43,7 @@ interface GomokuDependencyProvider {
      */
     val variantService: VariantService
 
-    /**
+        /**
      * The service used to fetch users
      */
     val userService: UserService

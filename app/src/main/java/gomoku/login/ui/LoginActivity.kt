@@ -5,9 +5,19 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.lifecycleScope
+import gomoku.GomokuDependencyProvider
+import gomoku.Loaded
 import gomoku.Navigation
+import gomoku.getOrNull
 import gomoku.home.ui.HomeActivity
+import gomoku.idle
+import gomoku.login.User
 import gomoku.register.ui.RegisterActivity
+import kotlinx.coroutines.launch
 
 class LoginActivity : ComponentActivity() {
 
@@ -18,13 +28,50 @@ class LoginActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * The application's dependency provider.
+     */
+    private val dependencies by lazy { application as GomokuDependencyProvider }
+
+
+    private val viewModel by viewModels<LoginViewModel> {
+        LoginViewModel.factory(dependencies.userService)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            viewModel.user.collect {
+                if (it is Loaded && it.value.isSuccess) {
+                    doNavigation(userInfo = it.getOrNull())
+                    viewModel.resetToIdle()
+                } else if (it is Loaded && it.value.isFailure) {
+                    viewModel.resetToIdle()
+                }
+            }
+        }
+
         setContent {
+            val state by viewModel.user.collectAsState(initial = idle())
             LoginScreen(
-                onSubmit = { _, _ -> HomeActivity.navigateTo(this) },
+                authenticatedUser = state,
+                onSubmit = { username, password ->
+                    viewModel.fetchLogin(username, password)
+                },
                 onSignUpLinkClick = { RegisterActivity.navigateTo(this) }
             )
         }
     }
+
+    /**
+     * Navigates to the appropriate activity, depending on whether the
+     * user information has already been provided or not.
+     * @param userInfo the user information.
+     */
+    private fun doNavigation(userInfo: User?) {
+        if (userInfo != null)
+            HomeActivity.navigateTo(this@LoginActivity, userInfo)
+    }
+
 }
