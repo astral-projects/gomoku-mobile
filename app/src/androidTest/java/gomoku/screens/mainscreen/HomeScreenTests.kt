@@ -25,6 +25,7 @@ class HomeScreenTests {
         var leaderBoardRequested = false
         composeTestRule.setContent {
             HomeScreen(
+                inDarkTheme = false,
                 username = "test",
                 onFindMatch = {
                     findMatchRequested = true
@@ -47,6 +48,7 @@ class HomeScreenTests {
         var leaderBoardRequested = false
         composeTestRule.setContent {
             HomeScreen(
+                inDarkTheme = false,
                 username = "test",
                 onLeaderBoard = {
                     leaderBoardRequested = true
@@ -65,12 +67,13 @@ class HomeScreenTests {
         var onAboutRequested = false
         composeTestRule.setContent {
             HomeScreen(
+                inDarkTheme = false,
                 username = "test",
                 onAbout = {
                     onAboutRequested = true
                 },
 
-            )
+                )
         }
         // Act
         composeTestRule.onNodeWithTag(homeAboutLabel).performClick()
@@ -84,9 +87,10 @@ class HomeScreenTests {
         var onLogoutRequested = false
         composeTestRule.setContent {
             HomeScreen(
+                inDarkTheme = false,
                 username = "test",
                 onLogout = {
-                    onLogoutRequested= true
+                    onLogoutRequested = true
                 })
         }
         //Act

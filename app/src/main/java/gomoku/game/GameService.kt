@@ -13,7 +13,7 @@ import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
 import gomoku.leaderboard.domain.PlayerInfo
-import gomoku.login.User
+import gomoku.login.UserInfo
 import gomoku.variant.domain.VariantConfig
 import kotlinx.coroutines.delay
 import pdm.gomoku.R
@@ -31,8 +31,8 @@ interface GameService {
 
     suspend fun fetchGameById(id: String): Game?
 
-    suspend fun createGame(variant: VariantConfig, lobby: Lobby, user: User): Game
-    suspend fun findGame(variant: VariantConfig, user: User): Game?
+    suspend fun createGame(variant: VariantConfig, lobby: Lobby, userInfo: UserInfo): Game
+    suspend fun findGame(variant: VariantConfig, userInfo: UserInfo): Game?
 
     suspend fun makeMove(gameId: Int, moVe: Move): Game
 
@@ -111,7 +111,11 @@ class FakeGameService : GameService {
         return games[0]
     }
 
-    override suspend fun createGame(variant: VariantConfig, lobby: Lobby, user: User): Game {
+    override suspend fun createGame(
+        variant: VariantConfig,
+        lobby: Lobby,
+        userInfo: UserInfo
+    ): Game {
         Log.v(TAG, "creating game...")
         delay(5000)
         val g = Game(
@@ -134,12 +138,12 @@ class FakeGameService : GameService {
         return games.firstOrNull { it.id == id }
     }
 
-    override suspend fun findGame(variant: VariantConfig, user: User): Game? {
+    override suspend fun findGame(variant: VariantConfig, userInfo: UserInfo): Game? {
         Log.v(TAG, "finding game...")
         delay(5000)
         val foundedGame = lobby.firstOrNull { it.variantId == variant.id }
         if (foundedGame != null) {
-            return createGame(variant, foundedGame, user)
+            return createGame(variant, foundedGame, userInfo)
         }
         Log.v(TAG, "game found")
         return Game(

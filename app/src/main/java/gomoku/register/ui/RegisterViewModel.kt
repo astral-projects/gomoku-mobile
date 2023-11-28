@@ -10,29 +10,34 @@ import gomoku.Fail
 import gomoku.Idle
 import gomoku.LoadState
 import gomoku.Loaded
+import gomoku.UserInfoRepository
 import gomoku.fail
 import gomoku.idle
 import gomoku.leaderboard.user.UserService
 import gomoku.loaded
 import gomoku.loading
-import gomoku.login.User
+import gomoku.login.UserInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class RegisterViewModel(private val service: UserService) : ViewModel() {
+class RegisterViewModel(
+    private val service: UserService,
+    private val userRepo: UserInfoRepository
+) : ViewModel() {
 
     companion object {
-        fun factory(service: UserService) = viewModelFactory {
-            initializer { RegisterViewModel(service) }
+        fun factory(service: UserService, userRepo: UserInfoRepository) = viewModelFactory {
+            initializer { RegisterViewModel(service, userRepo) }
         }
     }
 
-    val user: Flow<LoadState<User>>
-        get() = _createUserFlow.asStateFlow()
+    val userInfo: Flow<LoadState<UserInfo>>
+        get() = _createUserFlowInfo.asStateFlow()
 
-    private val _createUserFlow: MutableStateFlow<LoadState<User>> = MutableStateFlow(idle())
+    private val _createUserFlowInfo: MutableStateFlow<LoadState<UserInfo>> =
+        MutableStateFlow(idle())
 
     fun fetchCreateUser(
         username: String,
@@ -40,18 +45,19 @@ class RegisterViewModel(private val service: UserService) : ViewModel() {
         password: String,
         confirmPassword: String
     ) {
-        if (_createUserFlow.value !is Idle && _createUserFlow.value !is Fail)
+        if (_createUserFlowInfo.value !is Idle && _createUserFlowInfo.value !is Fail)
             throw IllegalStateException("The view model is not in the idle state.")
-        _createUserFlow.value = loading()
+        _createUserFlowInfo.value = loading()
         viewModelScope.launch {
             Log.v(ContentValues.TAG, "fetch for createUser...")
             val result =
                 runCatching { service.fetchCreateUser(username, email, password, confirmPassword) }
             Log.v(ContentValues.TAG, "fetch for createUser exit")
             if (result.isFailure) {
-                _createUserFlow.value = fail()
+                _createUserFlowInfo.value = fail()
             } else {
-                _createUserFlow.value = loaded(result)
+                userRepo.updateUserInfo(result.getOrThrow())
+                _createUserFlowInfo.value = loaded(result)
             }
         }
     }
@@ -61,9 +67,9 @@ class RegisterViewModel(private val service: UserService) : ViewModel() {
      * can be fetched again.
      */
     fun resetToIdle() {
-        if (_createUserFlow.value !is Loaded)
+        if (_createUserFlowInfo.value !is Loaded)
             throw IllegalStateException("The view model is not in the idle state.")
-        _createUserFlow.value = idle()
+        _createUserFlowInfo.value = idle()
     }
 
 }

@@ -19,7 +19,7 @@ import gomoku.game.domain.Game
 import gomoku.game.ui.GameActivity
 import gomoku.idle
 import gomoku.leaderboard.ui.LeaderboardActivity
-import gomoku.login.User
+import gomoku.login.UserInfo
 import gomoku.login.ui.LoginActivity
 import gomoku.toUserInfo
 import kotlinx.coroutines.launch
@@ -29,19 +29,25 @@ class VariantActivity : ComponentActivity() {
     private val dependencies by lazy { application as GomokuDependencyProvider }
 
     private val viewModel by viewModels<VariantScreenViewModel> {
-        VariantScreenViewModel.factory(dependencies.variantService, dependencies.gameService)
+        VariantScreenViewModel.factory(
+            dependencies.variantService,
+            dependencies.gameService,
+            dependencies.userInfoRepository,
+            dependencies.variantsInfoRepository,
+            dependencies.themeRepository
+        )
     }
 
     companion object {
-        fun navigateTo(ctx: Context, user: User? = null) {
-            ctx.startActivity(createIntent(ctx, user))
+        fun navigateTo(ctx: Context, userInfo: UserInfo? = null) {
+            ctx.startActivity(createIntent(ctx, userInfo))
         }
 
         /**
-         * Builds the intent that navigates to the [UserPreferencesActivity] activity.
+         * Builds the intent that navigates to the [GameActivity] activity.
          * @param ctx the context to be used.
          */
-        fun createIntent(ctx: Context, userInfo: User? = null): Intent {
+        fun createIntent(ctx: Context, userInfo: UserInfo? = null): Intent {
             val intent = Intent(ctx, VariantActivity::class.java)
             userInfo?.let { intent.putExtra(USER_EXTRA, UserExtra(it)) }
             return intent
@@ -54,7 +60,7 @@ class VariantActivity : ComponentActivity() {
         lifecycleScope.launch {
             viewModel.game.collect {
                 if (it is Loaded && it.value.isSuccess) {
-                    doNavigation(it.value.getOrNull(), userInfo!!)
+                    doNavigation(it.value.getOrNull()!!)
                     viewModel.resetToIdle()
                 } else if (it is Loaded && it.value.getOrNull() == null) {
                     viewModel.resetToIdle()
@@ -68,18 +74,32 @@ class VariantActivity : ComponentActivity() {
                 }
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.isDarkTheme.collect {
+                if (it == null) {
+                    viewModel.isDarkTheme()
+                }
+            }
+        }
+
         setContent {
             val stateVariants by viewModel.variants.collectAsState(idle())
             val stateFindGame by viewModel.game.collectAsState(initial = idle())
+            val stateIsDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             VariantScreen(
                 onSubmit = { variantConfig ->
-                    viewModel.findGame(variantConfig, userInfo!!)
+                    viewModel.findGame(variantConfig)
                 },
                 gameMatchState = stateFindGame,
                 toLeaderboardScreen = { LeaderboardActivity.navigateTo(this) },
                 toAboutScreen = { AboutActivity.navigateTo(this) },
                 onLogoutRequest = { LoginActivity.navigateTo(this) },
                 variantsState = stateVariants,
+                isDarkTheme = stateIsDarkTheme,
+                setDarkTheme = { isDarkTheme ->
+                    viewModel.setDarkTheme(isDarkTheme)
+                }
             )
         }
     }
@@ -87,7 +107,7 @@ class VariantActivity : ComponentActivity() {
     /**
      * Helper method to get the user extra from the intent.
      */
-    val userInfo: User? by lazy { getUserInfoExtra()?.toUserInfo() }
+    val userInfo: UserInfo? by lazy { getUserInfoExtra()?.toUserInfo() }
 
     @Suppress("DEPRECATION")
     private fun getUserInfoExtra(): UserExtra? =
@@ -102,9 +122,8 @@ class VariantActivity : ComponentActivity() {
      * user information has already been provided or not.
      * @param game the user information.
      */
-    private fun doNavigation(game: Game?, user: User?) {
-        if (game != null && user != null)
-            GameActivity.navigateTo(this@VariantActivity, user)
+    private fun doNavigation(game: Game) {
+        GameActivity.navigateTo(this@VariantActivity, game.id, userInfo!!)
     }
 
 }

@@ -2,7 +2,7 @@ package gomoku.http
 
 import gomoku.leaderboard.user.UserService
 import gomoku.leaderboard.user.domain.UserStats
-import gomoku.login.User
+import gomoku.login.UserInfo
 
 class UserServiceImplementation(
     private val provider: List<UserService>
@@ -27,7 +27,7 @@ class UserServiceImplementation(
         return provider[index].fetchUsers()
     }
 
-    override suspend fun fetchLogin(username: String, password: String): User {
+    override suspend fun fetchLogin(username: String, password: String): UserInfo {
         val index = provider.indices.random()
         return provider[index].fetchLogin(username, password)
     }
@@ -37,7 +37,7 @@ class UserServiceImplementation(
         email: String,
         password: String,
         confirmPassword: String
-    ): User {
+    ): UserInfo {
         val index = provider.indices.random()
         return provider[index].fetchCreateUser(username, email, password, confirmPassword)
     }

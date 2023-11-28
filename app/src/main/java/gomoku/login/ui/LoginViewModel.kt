@@ -10,42 +10,67 @@ import gomoku.Fail
 import gomoku.Idle
 import gomoku.LoadState
 import gomoku.Loaded
+import gomoku.ThemeRepository
+import gomoku.UserInfoRepository
 import gomoku.fail
 import gomoku.idle
 import gomoku.leaderboard.user.UserService
 import gomoku.loaded
 import gomoku.loading
-import gomoku.login.User
+import gomoku.login.UserInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val service: UserService) : ViewModel() {
+class LoginViewModel(
+    private val service: UserService,
+    private val userRepo: UserInfoRepository,
+    private val themeRepo: ThemeRepository
+) : ViewModel() {
 
     companion object {
-        fun factory(service: UserService) = viewModelFactory {
-            initializer { LoginViewModel(service) }
+        fun factory(
+            service: UserService,
+            userRepo: UserInfoRepository,
+            themeRepo: ThemeRepository
+        ) = viewModelFactory {
+            initializer { LoginViewModel(service, userRepo, themeRepo) }
         }
     }
 
-    val user: Flow<LoadState<User>>
-        get() = _userInfoFlow.asStateFlow()
+    val userInfo: Flow<LoadState<UserInfo>>
+        get() = _userInfoInfoFlow.asStateFlow()
 
-    private val _userInfoFlow: MutableStateFlow<LoadState<User>> = MutableStateFlow(idle())
+    private val _userInfoInfoFlow: MutableStateFlow<LoadState<UserInfo>> = MutableStateFlow(idle())
+
+    val isDarkTheme: Flow<Boolean?>
+        get() = _isDarkThemeFlow.asStateFlow()
+
+    private val _isDarkThemeFlow: MutableStateFlow<Boolean?> =
+        MutableStateFlow(null)
+
+    fun isDarkTheme() {
+        viewModelScope.launch {
+            _isDarkThemeFlow.value = themeRepo.getIsDarkTheme()
+        }
+    }
 
     fun fetchLogin(username: String, password: String) {
-        if (_userInfoFlow.value !is Idle && _userInfoFlow.value !is Fail)
+        if (_userInfoInfoFlow.value !is Idle && _userInfoInfoFlow.value !is Fail)
             throw IllegalStateException("The view model is not in the idle state or in fail state.")
-        _userInfoFlow.value = loading()
+        _userInfoInfoFlow.value = loading()
+        //if (userRepo.getUserInfo())
         viewModelScope.launch {
             Log.v(ContentValues.TAG, "fetching for login....")
             val result = runCatching { service.fetchLogin(username, password) }
             Log.v(ContentValues.TAG, "fetched done....")
             if (result.isFailure) {
-                _userInfoFlow.value = fail()
+                _userInfoInfoFlow.value = fail()
             } else {
-                _userInfoFlow.value = loaded(result)
+                userRepo.updateUserInfo(result.getOrThrow())
+                userRepo.getUserInfo()
+                _userInfoInfoFlow.value = loaded(result)
             }
         }
     }
@@ -55,9 +80,10 @@ class LoginViewModel(private val service: UserService) : ViewModel() {
      * can be fetched again.
      */
     fun resetToIdle() {
-        if (_userInfoFlow.value !is Loaded)
+        if (_userInfoInfoFlow.value !is Loaded)
             throw IllegalStateException("The view model is not in the idle state.")
-        _userInfoFlow.value = idle()
+        _userInfoInfoFlow.value = idle()
+        _isDarkThemeFlow.value = null
     }
 
 }

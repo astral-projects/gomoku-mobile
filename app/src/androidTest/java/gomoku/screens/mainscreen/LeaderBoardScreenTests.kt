@@ -1,7 +1,22 @@
 package gomoku.screens.mainscreen
 
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import gomoku.Loaded
+import gomoku.leaderboard.domain.Leaderboard
+import gomoku.leaderboard.ui.LeaderboardScreen
+import gomoku.shared.components.BurgerMenuButton
+import gomoku.shared.components.navigation.BurgerMenuAboutButton
+import gomoku.shared.components.navigation.BurgerMenuFindGameButton
+import gomoku.shared.components.navigation.BurgerMenuLogoutButton
+import gomoku.shared.components.navigation.BurgerMenuSwitchThemeButton
+import junit.framework.TestCase.assertTrue
+import org.junit.Rule
+import org.junit.Test
+
 class LeaderBoardScreenTests {
-    /*
+
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -14,22 +29,10 @@ class LeaderBoardScreenTests {
             val nPlayers = 200
             val playersRankingInfo = Leaderboard.generateRankingInfo(nPlayers)
             LeaderboardScreen(
-                rankingInfo = playersRankingInfo.first(),
-                getItemsFromPage = { page ->
-                    Leaderboard.paginatedRankingInfo(
-                        list = playersRankingInfo,
-                        page = page
-                    )
-                },
-                onSearchRequest = { term ->
-                    playersRankingInfo.filter {
-                        it.playerInfo.name.contains(
-                            term.value,
-                            ignoreCase = true
-                        )
-                    }
-                },
+                inDarkTheme = false,
+                listLeaderboard = Loaded(Result.success(emptyList())),
                 toFindGameScreen = {},
+                setDarkTheme = {},
                 toAboutScreen = {},
                 onLogoutRequest = {}
             )
@@ -48,21 +51,9 @@ class LeaderBoardScreenTests {
             val nPlayers = 200
             val playersRankingInfo = Leaderboard.generateRankingInfo(nPlayers)
             LeaderboardScreen(
-                rankingInfo = playersRankingInfo.first(),
-                getItemsFromPage = { page ->
-                    Leaderboard.paginatedRankingInfo(
-                        list = playersRankingInfo,
-                        page = page
-                    )
-                },
-                onSearchRequest = { term ->
-                    playersRankingInfo.filter {
-                        it.playerInfo.name.contains(
-                            term.value,
-                            ignoreCase = true
-                        )
-                    }
-                },
+                inDarkTheme = false,
+                listLeaderboard = Loaded(Result.success(emptyList())),
+                setDarkTheme = {},
                 toFindGameScreen = { findGameWasCalled = true },
                 toAboutScreen = {},
                 onLogoutRequest = {}
@@ -84,21 +75,9 @@ class LeaderBoardScreenTests {
             val nPlayers = 200
             val playersRankingInfo = Leaderboard.generateRankingInfo(nPlayers)
             LeaderboardScreen(
-                rankingInfo = playersRankingInfo.first(),
-                getItemsFromPage = { page ->
-                    Leaderboard.paginatedRankingInfo(
-                        list = playersRankingInfo,
-                        page = page
-                    )
-                },
-                onSearchRequest = { term ->
-                    playersRankingInfo.filter {
-                        it.playerInfo.name.contains(
-                            term.value,
-                            ignoreCase = true
-                        )
-                    }
-                },
+                inDarkTheme = false,
+                listLeaderboard = Loaded(Result.success(emptyList())),
+                setDarkTheme = {},
                 toFindGameScreen = {},
                 toAboutScreen = { aboutWasCalled = true },
                 onLogoutRequest = {}
@@ -121,21 +100,9 @@ class LeaderBoardScreenTests {
             val nPlayers = 200
             val playersRankingInfo = Leaderboard.generateRankingInfo(nPlayers)
             LeaderboardScreen(
-                rankingInfo = playersRankingInfo.first(),
-                getItemsFromPage = { page ->
-                    Leaderboard.paginatedRankingInfo(
-                        list = playersRankingInfo,
-                        page = page
-                    )
-                },
-                onSearchRequest = { term ->
-                    playersRankingInfo.filter {
-                        it.playerInfo.name.contains(
-                            term.value,
-                            ignoreCase = true
-                        )
-                    }
-                },
+                inDarkTheme = false,
+                listLeaderboard = Loaded(Result.success(emptyList())),
+                setDarkTheme = {},
                 toFindGameScreen = {},
                 toAboutScreen = {},
                 onLogoutRequest = { logoutWasCalled = true }
@@ -157,21 +124,9 @@ class LeaderBoardScreenTests {
             val nPlayers = 200
             val playersRankingInfo = Leaderboard.generateRankingInfo(nPlayers)
             LeaderboardScreen(
-                rankingInfo = playersRankingInfo.first(),
-                getItemsFromPage = { page ->
-                    Leaderboard.paginatedRankingInfo(
-                        list = playersRankingInfo,
-                        page = page
-                    )
-                },
-                onSearchRequest = { term ->
-                    playersRankingInfo.filter {
-                        it.playerInfo.name.contains(
-                            term.value,
-                            ignoreCase = true
-                        )
-                    }
-                },
+                inDarkTheme = false,
+                Loaded(Result.success(emptyList())),
+                setDarkTheme = {},
                 toFindGameScreen = {},
                 toAboutScreen = {},
                 onLogoutRequest = {}
@@ -185,5 +140,5 @@ class LeaderBoardScreenTests {
         //Assert
         composeTestRule.onNodeWithTag(BurgerMenuSwitchThemeButton).assertExists()
 
-    }*/
+    }
 }

@@ -2,7 +2,8 @@ package gomoku
 
 import android.os.Parcelable
 import gomoku.home.ui.HomeActivity
-import gomoku.login.User
+import gomoku.login.UserInfo
+import gomoku.login.domain.Username
 import kotlinx.parcelize.Parcelize
 
 const val USER_EXTRA = "User"
@@ -13,15 +14,15 @@ const val USER_EXTRA = "User"
  * parcelable and we do not want to make it parcelable because it's a domain class.
  */
 @Parcelize
-data class UserExtra(val id: Int, val username: String, val token: String, val email: String) :
+data class UserExtra(val id: Int, val username: String, val email: String, val token: String) :
     Parcelable {
-    constructor(userInfo: User) : this(
+    constructor(userInfo: UserInfo) : this(
         userInfo.id,
-        userInfo.username,
-        userInfo.token,
-        userInfo.email
+        userInfo.username.value,
+        userInfo.email,
+        userInfo.token
     )
 }
 
-fun UserExtra.toUserInfo() = User(id, username, token, email)
+fun UserExtra.toUserInfo() = UserInfo(id, Username(username), email, token)
 

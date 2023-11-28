@@ -6,7 +6,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import gomoku.LoadState
 import gomoku.Loaded
 import gomoku.home.domain.Home.gameName
-import gomoku.login.User
+import gomoku.login.UserInfo
+import gomoku.login.domain.Username
 import gomoku.register.ui.components.FooterBubbles
 import gomoku.shared.background.Background
 import gomoku.shared.components.HeadlineText
@@ -20,7 +21,7 @@ import gomoku.shared.theme.GomokuTheme
  */
 @Composable
 fun RegisterScreen(
-    registerState: LoadState<User>,
+    registerState: LoadState<UserInfo>,
     onCreateUser: (username: String, email: String, password: String, confirmPassword: String) -> Unit,
 ) {
     GomokuTheme {
@@ -37,7 +38,7 @@ fun RegisterScreen(
 @Composable
 private fun RegisterScreenPreview2() {
     RegisterScreen(
-        Loaded(Result.success(User(1, "email", "password", "confirmPassword"))),
+        Loaded(Result.success(UserInfo(1, Username("email"), "password", "confirmPassword"))),
         { _, _, _, _ -> })
 }
 

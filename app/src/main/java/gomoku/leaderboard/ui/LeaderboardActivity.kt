@@ -24,7 +24,7 @@ class LeaderboardActivity : ComponentActivity() {
 
 
     private val viewModel by viewModels<LeaderboardViewModel> {
-        LeaderboardViewModel.factory(dependencies.userService)
+        LeaderboardViewModel.factory(dependencies.userService, dependencies.themeRepository)
     }
 
     companion object : Navigation {
@@ -44,11 +44,23 @@ class LeaderboardActivity : ComponentActivity() {
                 }
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.isDarkTheme.collect {
+                if (it == null) {
+                    viewModel.isDarkTheme()
+                }
+            }
+        }
         setContent {
             val state by viewModel.usersStats.collectAsState(initial = idle())
-
+            val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             LeaderboardScreen(
+                inDarkTheme = isDarkTheme,
                 listLeaderboard = state,
+                setDarkTheme = { switchTheme ->
+                    viewModel.setDarkTheme(switchTheme)
+                },
                 toFindGameScreen = { VariantActivity.navigateTo(this) },
                 toAboutScreen = { AboutActivity.navigateTo(this) },
                 onLogoutRequest = { LoginActivity.navigateTo(this) },

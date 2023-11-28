@@ -21,6 +21,7 @@ object Fail : LoadState<Nothing>()
  */
 object Loading : LoadState<Nothing>()
 
+
 /**
  * The saving state, i.e. the state while the save operation is in progress.
  */

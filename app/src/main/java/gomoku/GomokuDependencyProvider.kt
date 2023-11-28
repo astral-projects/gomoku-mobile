@@ -1,6 +1,9 @@
 package gomoku
 
 import android.app.Application
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
 import gomoku.game.FakeGameService
 import gomoku.game.GameService
@@ -11,6 +14,7 @@ import gomoku.leaderboard.user.FakeUserServices
 import gomoku.leaderboard.user.UserService
 import gomoku.variant.FakeVariantService
 import gomoku.variant.VariantService
+import gomoku.variant.VariantsInfoRepositroy
 import okhttp3.OkHttpClient
 
 /**
@@ -43,17 +47,37 @@ interface GomokuDependencyProvider {
      */
     val variantService: VariantService
 
-        /**
+    /**
      * The service used to fetch users
      */
     val userService: UserService
+
+    val userInfoRepository: UserInfoRepository
+
+    val variantsInfoRepository: VariantsInfoRepositroy
+
+    val themeRepository: ThemeRepository
 }
 
+//TODO(Separate this class)
 /**
  * The application's class used to resolve dependencies, acting as a Service Locator.
  * Dependencies are then injected manually by each Android Component (e.g Activity, Service, etc.).
  */
 class GomokuApplication : Application(), GomokuDependencyProvider {
+
+    private val dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_info")
+
+
+    override val userInfoRepository: UserInfoRepository
+        get() = UserInfoDataStore(dataStore)
+
+    override val variantsInfoRepository: VariantsInfoRepositroy
+        get() = VariantDataStore(dataStore)
+
+    override val themeRepository: ThemeRepository
+        get() = ThemeDataStore(dataStore)
+
     /**
      * The HTTP client used to perform HTTP requests
      */

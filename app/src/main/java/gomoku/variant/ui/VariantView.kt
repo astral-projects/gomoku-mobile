@@ -14,11 +14,9 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -56,9 +54,11 @@ private val variantSurfaceVerticalPadding = 15.dp
  */
 @Composable
 fun VariantView(
+    inDarkTheme: Boolean,
     variantScreenState: VariantScreenState,
     onSubmit: (variantConfig: VariantConfig) -> Unit,
     variants: List<VariantConfig>,
+    setDarkTheme: (Boolean) -> Unit,
     toLeaderboardScreen: () -> Unit,
     toAboutScreen: () -> Unit,
     onLogoutRequest: () -> Unit
@@ -66,7 +66,6 @@ fun VariantView(
     val (selectedOption, onOptionSelected) = remember { mutableStateOf<VariantConfig?>(null) }
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    var inDarkTheme by remember { mutableStateOf(false) }
     // data for the navigation drawer
     val findGameItem = NavigationItem(
         title = stringResource(id = R.string.nav_item_find_game),
@@ -95,7 +94,7 @@ fun VariantView(
             NavigationItem(
                 title = stringResource(id = R.string.nav_item_switch_theme),
                 selectedIconId = R.drawable.nav_switch_theme,
-                onClick = { inDarkTheme = !inDarkTheme }
+                onClick = { setDarkTheme(!inDarkTheme) }
             ),
             NavigationItem(
                 title = stringResource(id = R.string.nav_item_logout),

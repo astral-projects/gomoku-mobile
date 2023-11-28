@@ -2,11 +2,12 @@ package gomoku.leaderboard.user
 
 import android.util.Log
 import gomoku.leaderboard.user.domain.UserStats
-import gomoku.login.User
+import gomoku.login.UserInfo
+import gomoku.login.domain.Username
 import kotlinx.coroutines.delay
 
 interface UserService {
-    suspend fun fetchLogin(username: String, password: String): User
+    suspend fun fetchLogin(username: String, password: String): UserInfo
     suspend fun fetchUsers(): List<UserStats>
     suspend fun fetchUser(userId: Int): UserStats
     suspend fun fetchUsersStats(userId: Int): List<UserStats>
@@ -17,7 +18,7 @@ interface UserService {
         email: String,
         password: String,
         confirmPassword: String
-    ): User
+    ): UserInfo
 }
 
 class FetchUserException(message: String, cause: Throwable? = null) : Exception(message, cause)
@@ -34,14 +35,19 @@ class FakeUserServices : UserService {
         UserStats(7, "Neymar Chorão", 1, 1, 1, 1, 1, 1),
     )
 
-    private var usersToken = mutableListOf(
-        User(1, "John Loa", "qweqweqwewqeeqw", "john@example.com"),
-        User(2, "Wick Main", "qweqweqwEGGREGER", "wick@example.com"),
-        User(3, "Peter Pan", "fweqg345212", "peter@example.com"),
-        User(4, "Jeffery Dahmer", "IeatY@example.com", "IeatY@gaymail.com"),
-        User(5, "Walter White", "qweqweq213632tfreqw", "bestCleaner@gmail.com"),
-        User(6, "William Carvalho", "qw34265436eqwewqeeqw", "fasterThanFlash@gamil.com"),
-        User(7, "Neymar Chorão", "4352tr", "juniir@example.com"),
+    private var usersTokens = mutableListOf(
+        UserInfo(1, Username("John Loa"), "qweqweqwewqeeqw", "john@example.com"),
+        UserInfo(2, Username("Wick Main"), "qweqweqwEGGREGER", "wick@example.com"),
+        UserInfo(3, Username("Peter Pan"), "fweqg345212", "peter@example.com"),
+        UserInfo(4, Username("Jeffery Dahmer"), "IeatY@example.com", "IeatY@gaymail.com"),
+        UserInfo(5, Username("Walter White"), "qweqweq213632tfreqw", "bestCleaner@gmail.com"),
+        UserInfo(
+            6,
+            Username("William Carvalho"),
+            "qw34265436eqwewqeeqw",
+            "fasterThanFlash@gamil.com"
+        ),
+        UserInfo(7, Username("Neymar Chorão"), "4352tr", "juniir@example.com"),
 
         )
 
@@ -84,11 +90,11 @@ class FakeUserServices : UserService {
     }
 
     //TODO(Password is not being checked)
-    override suspend fun fetchLogin(username: String, password: String): User {
+    override suspend fun fetchLogin(username: String, password: String): UserInfo {
         Log.v("User", "logging in...")
         delay(4000)
         Log.v("User", "logged in")
-        return usersToken.first { it.username == username }
+        return usersTokens.first { it.username.value == username }
     }
 
     override suspend fun fetchCreateUser(
@@ -96,16 +102,16 @@ class FakeUserServices : UserService {
         email: String,
         password: String,
         confirmPassword: String
-    ): User {
+    ): UserInfo {
         Log.v("User", "creating user...")
         delay(4000)
         Log.v("User", "created user")
         val newId = users.last().id + 1
         users.add(UserStats(newId, username, 0, 0, 0, 0, 0, 0))
         val token = password.hashCode().toString()
-        usersToken.add(User(newId, username, token, email))
+        usersTokens.add(UserInfo(newId, Username(username), token, email))
         if (username == "Joao Andre") throw FetchUserException("User already exists")
-        return User(newId, username, token, email)
+        return UserInfo(newId, Username(username), token, email)
     }
 
 }

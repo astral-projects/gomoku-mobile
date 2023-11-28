@@ -15,7 +15,7 @@ import gomoku.Navigation
 import gomoku.getOrNull
 import gomoku.home.ui.HomeActivity
 import gomoku.idle
-import gomoku.login.User
+import gomoku.login.UserInfo
 import gomoku.register.ui.RegisterActivity
 import kotlinx.coroutines.launch
 
@@ -35,14 +35,18 @@ class LoginActivity : ComponentActivity() {
 
 
     private val viewModel by viewModels<LoginViewModel> {
-        LoginViewModel.factory(dependencies.userService)
+        LoginViewModel.factory(
+            dependencies.userService,
+            dependencies.userInfoRepository,
+            dependencies.themeRepository
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            viewModel.user.collect {
+            viewModel.userInfo.collect {
                 if (it is Loaded && it.value.isSuccess) {
                     doNavigation(userInfo = it.getOrNull())
                     viewModel.resetToIdle()
@@ -52,10 +56,18 @@ class LoginActivity : ComponentActivity() {
             }
         }
 
+        lifecycleScope.launch {
+            viewModel.isDarkTheme.collect {
+                viewModel.isDarkTheme()
+            }
+        }
+
         setContent {
-            val state by viewModel.user.collectAsState(initial = idle())
+            val state by viewModel.userInfo.collectAsState(initial = idle())
+            val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             LoginScreen(
-                authenticatedUser = state,
+                inDarkTheme = isDarkTheme,
+                authenticatedUserInfo = state,
                 onSubmit = { username, password ->
                     viewModel.fetchLogin(username, password)
                 },
@@ -69,7 +81,7 @@ class LoginActivity : ComponentActivity() {
      * user information has already been provided or not.
      * @param userInfo the user information.
      */
-    private fun doNavigation(userInfo: User?) {
+    private fun doNavigation(userInfo: UserInfo?) {
         if (userInfo != null)
             HomeActivity.navigateTo(this@LoginActivity, userInfo)
     }

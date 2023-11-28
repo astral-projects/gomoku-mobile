@@ -19,17 +19,21 @@ import gomoku.variant.domain.VariantConfig
 @Composable
 fun VariantScreen(
     gameMatchState: LoadState<Game?>,
+    isDarkTheme: Boolean? = false,
     variantsState: LoadState<List<VariantConfig>?>,
     onSubmit: (variantConfig: VariantConfig) -> Unit,
+    setDarkTheme: (Boolean) -> Unit,
     toLeaderboardScreen: () -> Unit,
     toAboutScreen: () -> Unit,
     onLogoutRequest: () -> Unit
 ) {
 
     VariantView(
+        inDarkTheme = isDarkTheme ?: false,
         variantScreenState = variantScreenState(variantsState, gameMatchState),
         onSubmit = onSubmit,
         variants = variantsState.getOrNull() ?: emptyList(),
+        setDarkTheme = setDarkTheme,
         toLeaderboardScreen = toLeaderboardScreen,
         toAboutScreen = toAboutScreen,
         onLogoutRequest = onLogoutRequest

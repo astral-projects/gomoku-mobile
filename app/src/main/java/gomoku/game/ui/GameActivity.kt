@@ -1,10 +1,8 @@
 package gomoku.game.ui
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -16,27 +14,24 @@ import gomoku.GomokuDependencyProvider
 import gomoku.Idle
 import gomoku.USER_EXTRA
 import gomoku.UserExtra
-import gomoku.VARIANT_EXTRA
-import gomoku.VariantExtra
 import gomoku.game.domain.moves.Move
 import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.home.ui.HomeActivity
 import gomoku.idle
 import gomoku.leaderboard.domain.PlayerInfo
-import gomoku.login.User
+import gomoku.login.UserInfo
 import gomoku.shared.background.BackgroundConfig
 import gomoku.toUserInfo
-import gomoku.toVariantInfo
-import gomoku.variant.domain.VariantConfig
 import kotlinx.coroutines.launch
 import pdm.gomoku.R
 
+private const val GAME_ID_EXTRA = "gameId"
 class GameActivity : ComponentActivity() {
 
     companion object {
-        fun navigateTo(ctx: Context, user: User? = null, variant: VariantConfig? = null) {
-            ctx.startActivity(createIntent(ctx, user, variant))
+        fun navigateTo(ctx: Context, gameId: String, userInfo: UserInfo? = null) {
+            ctx.startActivity(createIntent(ctx, userInfo, gameId))
         }
 
         /**
@@ -45,12 +40,12 @@ class GameActivity : ComponentActivity() {
          */
         fun createIntent(
             ctx: Context,
-            userInfo: User? = null,
-            variant: VariantConfig? = null
+            userInfo: UserInfo? = null,
+            gameId: String
         ): Intent {
             val intent = Intent(ctx, GameActivity::class.java)
             userInfo?.let { intent.putExtra(USER_EXTRA, UserExtra(it)) }
-            variant?.let { intent.putExtra(VARIANT_EXTRA, VariantExtra(it)) }
+            intent.putExtra(GAME_ID_EXTRA, gameId)
             return intent
         }
     }
@@ -61,8 +56,12 @@ class GameActivity : ComponentActivity() {
     private val dependencies by lazy { application as GomokuDependencyProvider }
 
 
-    private val viewModel by viewModels<GameScreenViewModel> {
-        GameScreenViewModel.factory(dependencies.gameService)
+    private val viewModel by viewModels<GameViewModel> {
+        GameViewModel.factory(
+            dependencies.gameService,
+            dependencies.userInfoRepository,
+            dependencies.themeRepository
+        )
     }
 
 
@@ -71,45 +70,39 @@ class GameActivity : ComponentActivity() {
         lifecycleScope.launch {
             viewModel.game.collect {
                 if (it is Idle) {
-                    viewModel.fetchGame()
+                    viewModel.fetchGame(gameId!!)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.isDarkTheme.collect {
+                if (it == null) {
+                    viewModel.isDarkTheme()
                 }
             }
         }
         //todo(improve the makeAMove)
         setContent {
             val gameState by viewModel.game.collectAsState(initial = idle())
+            val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             GameScreen(
+                isDarkTheme = isDarkTheme,
                 backgroundConfig = BackgroundConfig(LocalConfiguration.current),
-                localPlayer = PlayerInfo(userInfo!!.username, R.drawable.man),
+                localPlayer = PlayerInfo(userInfo!!.username.value, R.drawable.man),
                 onLeaveGameRequest = { HomeActivity.navigateTo(this) },
                 onCellClick = { square -> viewModel.makeMove(Move(square, Piece(Player.W))) },
                 gameState = gameState,
             )
-
-
         }
     }
-
-    override fun onStart() {
-        super.onStart()
-        Log.v(TAG, "onStart() called")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.v(TAG, "onStop() called")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.v(TAG, "onDestroy() called")
-    }
-
 
     /**
      * Helper method to get the user extra from the intent.
      */
-    val userInfo: User? by lazy { getUserInfoExtra()?.toUserInfo() }
+    val userInfo: UserInfo? by lazy { getUserInfoExtra()?.toUserInfo() }
+
+    val gameId: String? by lazy { intent?.getStringExtra(GAME_ID_EXTRA) }
 
     @Suppress("DEPRECATION")
     private fun getUserInfoExtra(): UserExtra? =
@@ -118,12 +111,5 @@ class GameActivity : ComponentActivity() {
         else
             intent?.getParcelableExtra(USER_EXTRA)
 
-    val variant: VariantConfig? by lazy { getVariantExtra()?.toVariantInfo() }
 
-    @Suppress("DEPRECATION")
-    private fun getVariantExtra(): VariantExtra? =
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU)
-            intent?.getParcelableExtra(VARIANT_EXTRA, VariantExtra::class.java)
-        else
-            intent?.getParcelableExtra(VARIANT_EXTRA)
 }

@@ -8,11 +8,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,14 +41,15 @@ private val sectionPadding = 10.dp
  */
 @Composable
 fun AboutScreen(
+    inDarkTheme: Boolean = false,
     sections: List<Section>,
+    setDarkTheme: (Boolean) -> Unit = {},
     toFindGameScreen: () -> Unit,
     toLeaderboardScreen: () -> Unit,
     onLogoutRequest: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    var inDarkTheme by remember { mutableStateOf(false) }
 
     // data for the navigation drawer
     val aboutItem = NavigationItem(
@@ -82,7 +79,7 @@ fun AboutScreen(
             NavigationItem(
                 title = stringResource(id = R.string.nav_item_switch_theme),
                 selectedIconId = R.drawable.nav_switch_theme,
-                onClick = { inDarkTheme = !inDarkTheme }
+                onClick = { setDarkTheme(!inDarkTheme) }
             ),
             NavigationItem(
                 title = stringResource(id = R.string.nav_item_logout),

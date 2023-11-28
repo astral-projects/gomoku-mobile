@@ -4,7 +4,7 @@ import gomoku.Lobby.Lobby
 import gomoku.game.GameService
 import gomoku.game.domain.Game
 import gomoku.game.domain.moves.Move
-import gomoku.login.User
+import gomoku.login.UserInfo
 import gomoku.variant.domain.VariantConfig
 
 /**
@@ -26,13 +26,17 @@ class GameServiceImplementation(
         return providers[index].fetchGameById(id)
     }
 
-    override suspend fun createGame(variant: VariantConfig, lobby: Lobby, user: User): Game {
+    override suspend fun createGame(
+        variant: VariantConfig,
+        lobby: Lobby,
+        userInfo: UserInfo
+    ): Game {
         TODO("Not yet implemented")
     }
 
-    override suspend fun findGame(variant: VariantConfig, user: User): Game? {
+    override suspend fun findGame(variant: VariantConfig, userInfo: UserInfo): Game? {
         val index = providers.indices.random()
-        return providers[index].findGame(variant, user)
+        return providers[index].findGame(variant, userInfo)
     }
 
     override suspend fun makeMove(gameId: Int, moVe: Move): Game {

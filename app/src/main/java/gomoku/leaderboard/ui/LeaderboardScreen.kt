@@ -23,7 +23,9 @@ import pdm.gomoku.R
  */
 @Composable
 fun LeaderboardScreen(
+    inDarkTheme: Boolean?,
     listLeaderboard: LoadState<List<UserStats>?>,
+    setDarkTheme: (Boolean) -> Unit,
     toFindGameScreen: () -> Unit,
     toAboutScreen: () -> Unit,
     onLogoutRequest: () -> Unit,
@@ -31,6 +33,8 @@ fun LeaderboardScreen(
     val list = listLeaderboard.getOrNull()?.map { it.toRankingInfo() } ?: emptyList<RankingInfo>()
 
     LeaderboardView(
+        inDarkTheme = inDarkTheme ?: false,
+        setDarkTheme = setDarkTheme,
         searchingLeaderboard = listLeaderboard is Loading,
         rankingInfo = list.firstOrNull() ?: RankingInfo(
             PlayerInfo("dasdas", R.drawable.man),

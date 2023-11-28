@@ -14,7 +14,7 @@ import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
 import gomoku.leaderboard.domain.PlayerInfo
-import gomoku.login.User
+import gomoku.login.UserInfo
 import gomoku.variant.domain.VariantConfig
 import okhttp3.Call
 import okhttp3.Callback
@@ -68,11 +68,15 @@ class GomokuGame(
         TODO("Not yet implemented")
     }
 
-    override suspend fun createGame(variant: VariantConfig, lobby: Lobby, user: User): Game {
+    override suspend fun createGame(
+        variant: VariantConfig,
+        lobby: Lobby,
+        userInfo: UserInfo
+    ): Game {
         TODO("Not yet implemented")
     }
 
-    override suspend fun findGame(variant: VariantConfig, user: User): Game? {
+    override suspend fun findGame(variant: VariantConfig, userInfo: UserInfo): Game? {
         TODO("Not yet implemented")
     }
 

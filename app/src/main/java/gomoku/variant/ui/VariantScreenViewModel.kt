@@ -8,14 +8,16 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import gomoku.Idle
 import gomoku.LoadState
 import gomoku.Loaded
+import gomoku.ThemeRepository
+import gomoku.UserInfoRepository
 import gomoku.game.GameService
 import gomoku.game.domain.Game
 import gomoku.idle
 import gomoku.loaded
 import gomoku.loading
-import gomoku.login.User
 import gomoku.saved
 import gomoku.variant.VariantService
+import gomoku.variant.VariantsInfoRepositroy
 import gomoku.variant.domain.VariantConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,12 +26,29 @@ import kotlinx.coroutines.launch
 
 class VariantScreenViewModel(
     private val service: VariantService,
-    private val gameService: GameService
+    private val gameService: GameService,
+    private val userRepo: UserInfoRepository,
+    private val variantsInfoRepo: VariantsInfoRepositroy,
+    private val themeRepo: ThemeRepository
 ) : ViewModel() {
 
     companion object {
-        fun factory(serviceVariant: VariantService, gameService: GameService) = viewModelFactory {
-            initializer { VariantScreenViewModel(serviceVariant, gameService) }
+        fun factory(
+            serviceVariant: VariantService,
+            gameService: GameService,
+            userRepo: UserInfoRepository,
+            variantsRepo: VariantsInfoRepositroy,
+            themeRepo: ThemeRepository
+        ) = viewModelFactory {
+            initializer {
+                VariantScreenViewModel(
+                    serviceVariant,
+                    gameService,
+                    userRepo,
+                    variantsRepo,
+                    themeRepo
+                )
+            }
         }
     }
 
@@ -45,30 +64,56 @@ class VariantScreenViewModel(
     private val _gameFlow: MutableStateFlow<LoadState<Game?>> =
         MutableStateFlow(idle())
 
+    val isDarkTheme: Flow<Boolean?>
+        get() = _isDarkThemeFlow.asStateFlow()
+
+    private val _isDarkThemeFlow: MutableStateFlow<Boolean?> =
+        MutableStateFlow(null)
+
 
     fun fetchVariants() {
         if (_variantsFlow.value !is Idle)
             throw IllegalStateException("The view model is not in the idle state.")
         _variantsFlow.value = loading()
+
         viewModelScope.launch {
             Log.v("ViewModelVariants", "fetching variants in view model...")
-            val result: Result<List<VariantConfig>> = runCatching { service.fetchVariants() }
-            Log.v("ViewModelVariants", "fetched variants in view model")
-            _variantsFlow.value = saved(result)
-            _variantsFlow.value = loaded(result)
+            if (variantsInfoRepo.getVariantsInfo() != null) {
+                _variantsFlow.value = loaded(Result.success(variantsInfoRepo.getVariantsInfo()!!))
+            } else {
+                val result: Result<List<VariantConfig>> = runCatching { service.fetchVariants() }
+                Log.v("ViewModelVariants", "fetched variants in view model")
+                variantsInfoRepo.updateVariantsInfo(result.getOrNull()!!)
+                _variantsFlow.value = saved(result)
+                _variantsFlow.value = loaded(result)
+            }
         }
     }
 
-    fun findGame(variantConfig: VariantConfig, user: User) {
+    fun findGame(variantConfig: VariantConfig) {
         if (_gameFlow.value !is Idle) {
             throw IllegalStateException("The view model is not in the idle state.")
         }
         _gameFlow.value = loading()
         viewModelScope.launch {
             Log.v("ViewModelVariants", "finding game in view model...")
-            val result: Result<Game?> = runCatching { gameService.findGame(variantConfig, user) }
+            val result: Result<Game?> =
+                runCatching { gameService.findGame(variantConfig, userRepo.getUserInfo()!!) }
             Log.v("ViewModelVariants", "found game in view model")
             _gameFlow.value = loaded(result)
+        }
+    }
+
+    fun isDarkTheme() {
+        viewModelScope.launch {
+            _isDarkThemeFlow.value = themeRepo.getIsDarkTheme()
+        }
+    }
+
+    fun setDarkTheme(isDarkTheme: Boolean) {
+        viewModelScope.launch {
+            themeRepo.setDarkTheme(isDarkTheme)
+            _isDarkThemeFlow.value = isDarkTheme
         }
     }
 
@@ -85,33 +130,3 @@ class VariantScreenViewModel(
 
 }
 
-
-/*
- val user: Flow<LoadState<User?>>
-        get() = _userInfoFlow.asStateFlow()
-
-    private val _userInfoFlow: MutableStateFlow<LoadState<User?>> = MutableStateFlow(idle())
-
-    fun fetchLogin(username: String, password: String) {
-        if (_userInfoFlow.value !is Idle)
-            throw IllegalStateException("The view model is not in the idle state.")
-        _userInfoFlow.value = loading()
-        viewModelScope.launch {
-            Log.v(ContentValues.TAG, "fetching for login....")
-            val result = runCatching { service.fetchLogin(username, password) }
-            Log.v(ContentValues.TAG, "fetched done....")
-            _userInfoFlow.value = loaded(result)
-        }
-    }
-
-    /**
-     * Resets the view model to the idle state. From the idle state, the user information
-     * can be fetched again.
-     */
-    fun resetToIdle() {
-        if (_userInfoFlow.value !is Loaded)
-            throw IllegalStateException("The view model is not in the idle state.")
-        _userInfoFlow.value = idle()
-    }
-
- */

@@ -12,10 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import gomoku.GomokuDependencyProvider
 import gomoku.Loaded
 import gomoku.Navigation
-import gomoku.getOrThrow
-import gomoku.home.ui.HomeActivity
 import gomoku.idle
-import gomoku.login.User
+import gomoku.login.ui.LoginActivity
 import kotlinx.coroutines.launch
 
 class RegisterActivity : ComponentActivity() {
@@ -34,7 +32,7 @@ class RegisterActivity : ComponentActivity() {
 
 
     private val viewModel by viewModels<RegisterViewModel> {
-        RegisterViewModel.factory(dependencies.userService)
+        RegisterViewModel.factory(dependencies.userService, dependencies.userInfoRepository)
     }
 
 
@@ -42,15 +40,15 @@ class RegisterActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            viewModel.user.collect {
+            viewModel.userInfo.collect {
                 if (it is Loaded) {
-                    doNavigation(userInfo = it.getOrThrow())
+                    LoginActivity.navigateTo(this@RegisterActivity)
                     viewModel.resetToIdle()
                 }
             }
         }
         setContent {
-            val state by viewModel.user.collectAsState(initial = idle())
+            val state by viewModel.userInfo.collectAsState(initial = idle())
             RegisterScreen(
                 state,
                 onCreateUser = { username, email, password, confirmPassword ->
@@ -63,15 +61,5 @@ class RegisterActivity : ComponentActivity() {
                 },
             )
         }
-    }
-
-    /**
-     * Navigates to the appropriate activity, depending on whether the
-     * user information has already been provided or not.
-     * @param userInfo the user information.
-     */
-    private fun doNavigation(userInfo: User?) {
-        if (userInfo != null)
-            HomeActivity.navigateTo(this@RegisterActivity, userInfo)
     }
 }

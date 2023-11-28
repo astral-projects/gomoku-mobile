@@ -9,6 +9,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import gomoku.Idle
 import gomoku.LoadState
 import gomoku.Loaded
+import gomoku.ThemeRepository
+import gomoku.UserInfoRepository
 import gomoku.game.GameService
 import gomoku.game.domain.Game
 import gomoku.game.domain.moves.Move
@@ -17,45 +19,62 @@ import gomoku.loaded
 import gomoku.loading
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class GameScreenViewModel(private val service: GameService) : ViewModel() {
+class GameViewModel(
+    private val service: GameService,
+    private val userRepo: UserInfoRepository,
+    private val themeRepository: ThemeRepository
+) : ViewModel() {
 
     companion object {
-        fun factory(service: GameService) = viewModelFactory {
-            initializer { GameScreenViewModel(service) }
+        fun factory(
+            service: GameService,
+            userRepo: UserInfoRepository,
+            themeRepo: ThemeRepository
+        ) = viewModelFactory {
+            initializer { GameViewModel(service, userRepo, themeRepo) }
         }
     }
+
+
+    val isDarkTheme: Flow<Boolean?>
+        get() = _isDarkThemeFlow.asStateFlow()
+
+    private val _isDarkThemeFlow: MutableStateFlow<Boolean?> =
+        MutableStateFlow(null)
+
+    fun isDarkTheme() {
+        viewModelScope.launch {
+            _isDarkThemeFlow.value = themeRepository.getIsDarkTheme()
+        }
+    }
+
 
     val game: Flow<LoadState<Game?>>
         get() = _gameFlow
 
     private val _gameFlow: MutableStateFlow<LoadState<Game?>> = MutableStateFlow(idle())
-    fun fetchGame() {
+
+    //TODO(This route is not implement just a simple simulation , waiting for the backend)
+    fun fetchGame(gameId: String) {
         if (_gameFlow.value !is Idle)
             throw IllegalStateException("The view model is not in the idle state.")
         Log.v(TAG, "goes to LoadingState")
         _gameFlow.value = loading()
         viewModelScope.launch {
             Log.v(TAG, "fetch game")
+            Log.v(TAG, userRepo.getUserInfo().toString())
             val result = runCatching { service.fetchGame() }
             Log.v(TAG, "exit fetch game")
             _gameFlow.value = loaded(result)
         }
     }
 
+
     fun makeMove(move: Move) {
-        /*if (_gameFlow.value !is Loaded)
-            throw IllegalStateException("The view model is not in the loaded state.Is not possible to make a move")
-        viewModelScope.launch {
-            val result = runCatching { service.makeMove(move) }
-            if(result.isSuccess){
-                _gameFlow.value = loaded(result)
-            }else{
-                _gameFlow.value = _gameFlow.value
-                Log.v(TAG, "Error making move")
-            }
-        }*/
+
     }
 
     /**

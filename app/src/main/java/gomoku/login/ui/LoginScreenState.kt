@@ -3,7 +3,7 @@ package gomoku.login.ui
 import gomoku.Fail
 import gomoku.LoadState
 import gomoku.Loading
-import gomoku.login.User
+import gomoku.login.UserInfo
 
 /**
  * Represents the login screen state.
@@ -24,7 +24,7 @@ fun LoginScreenState.isError() = this == LoginScreenState.Error
 /**
  * Returns the screen state based on the user authentication state.
  */
-fun LoadState<User>.toLoginScreenState(): LoginScreenState = when (this) {
+fun LoadState<UserInfo>.toLoginScreenState(): LoginScreenState = when (this) {
     is Loading -> LoginScreenState.Loading
     is Fail -> LoginScreenState.FailedLogin
     is Error -> LoginScreenState.Error

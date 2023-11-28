@@ -26,6 +26,7 @@ import pdm.gomoku.R
 
 /**
  * Represents the game screen main composable.
+ * @param isDarkTheme the [Boolean] that represents if the theme is dark or not.
  * @param backgroundConfig the [BackgroundConfig] to be used.
  * @param localPlayer the [Player] that is playing locally.
  * @param onLeaveGameRequest the callback to be called when the dismiss button is clicked.
@@ -34,13 +35,14 @@ import pdm.gomoku.R
  */
 @Composable
 fun GameScreen(
+    isDarkTheme: Boolean?,
     backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     localPlayer: PlayerInfo,
     onLeaveGameRequest: () -> Unit,
     onCellClick: (toSquare: Square) -> Unit,
     gameState: LoadState<Game?>,
 ) {
-    GomokuTheme {
+    GomokuTheme(darkTheme = isDarkTheme ?: false) {
         Background(
             config = backgroundConfig,
             useBodySurface = false,
@@ -74,7 +76,6 @@ fun GameScreen(
 }
 
 
-//TODO(The Preview is not working because of the launch effect)
 @Preview
 @Composable
 private fun GameScreenPreview() {
@@ -96,6 +97,7 @@ private fun GameScreenPreview() {
         size = BoardSize.NINETEEN
     )
     GameScreen(
+        isDarkTheme = false,
         backgroundConfig = BackgroundConfig(LocalConfiguration.current),
         localPlayer = PlayerInfo("Player W", R.drawable.man5),
         onLeaveGameRequest = {},

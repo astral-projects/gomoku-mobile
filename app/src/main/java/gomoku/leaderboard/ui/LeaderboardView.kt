@@ -69,8 +69,10 @@ private const val LOAD_MORE_THRESHOLD = 3
  */
 @Composable
 fun LeaderboardView(
+    inDarkTheme: Boolean,
     searchingLeaderboard: Boolean,
     rankingInfo: RankingInfo,
+    setDarkTheme: (Boolean) -> Unit,
     getItemsFromPage: (page: Int) -> List<RankingInfo>,
     onSearchRequest: (Term) -> List<RankingInfo>,
     toFindGameScreen: () -> Unit,
@@ -104,7 +106,6 @@ fun LeaderboardView(
     // others
     val scope = rememberCoroutineScope()
     var isSelfPositionEnabled by rememberSaveable { mutableStateOf(false) }
-    var inDarkTheme by remember { mutableStateOf(false) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     // data for the navigation drawer
     val leaderboardItem = NavigationItem(
@@ -134,7 +135,7 @@ fun LeaderboardView(
             NavigationItem(
                 title = stringResource(id = R.string.nav_item_switch_theme),
                 selectedIconId = R.drawable.nav_switch_theme,
-                onClick = { inDarkTheme = !inDarkTheme }
+                onClick = { setDarkTheme(!inDarkTheme) }
             ),
             NavigationItem(
                 title = stringResource(id = R.string.nav_item_logout),

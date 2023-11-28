@@ -43,7 +43,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     packaging {
         resources {
@@ -73,6 +73,8 @@ dependencies {
 
     // Extended material icons
     implementation("androidx.compose.material:material-icons-extended-android:1.5.4")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
 
     // for Junit tests with coroutines and mockk
     testImplementation("junit:junit:4.13.2")

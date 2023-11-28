@@ -4,7 +4,7 @@ import gomoku.Fail
 import gomoku.Idle
 import gomoku.LoadState
 import gomoku.Loading
-import gomoku.login.User
+import gomoku.login.UserInfo
 
 /**
  * Represents the register screen state.
@@ -39,7 +39,7 @@ fun RegisterScreenState.isFail() = this == RegisterScreenState.Fail
 /**
  * Returns the screen state based on the user authentication state.
  */
-fun LoadState<User>.toRegisterScreenState(): RegisterScreenState = when (this) {
+fun LoadState<UserInfo>.toRegisterScreenState(): RegisterScreenState = when (this) {
     is Idle -> RegisterScreenState.Idle
     is Loading -> RegisterScreenState.Loading
     is Fail -> RegisterScreenState.Fail

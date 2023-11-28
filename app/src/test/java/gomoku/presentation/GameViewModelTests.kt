@@ -1,7 +1,6 @@
 package gomoku.presentation
 
 
-import com.google.gson.Gson
 import gomoku.game.domain.Game
 import gomoku.game.domain.Timer
 import gomoku.game.domain.board.Board
@@ -11,8 +10,6 @@ import gomoku.game.domain.moves.Move
 import gomoku.game.domain.moves.move.Piece
 import gomoku.game.domain.moves.move.Player
 import gomoku.game.domain.moves.move.Square
-import gomoku.game.ui.GameScreenViewModel
-import gomoku.http.GameServiceImplementation
 import gomoku.http.GomokuGame
 import gomoku.leaderboard.domain.PlayerInfo
 import io.mockk.coEvery
@@ -20,15 +17,14 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import okhttp3.OkHttpClient
 import org.junit.Rule
 import org.junit.Test
 import pdm.gomoku.R
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class GameScreenViewModelTests {
+class GameViewModelTests {
 
-    private val sut = GameScreenViewModel(
+    /*private val sut = GameViewModel(
         GameServiceImplementation(
             listOf(
                 GomokuGame(
@@ -38,7 +34,7 @@ class GameScreenViewModelTests {
                 )
             )
         )
-    )
+    )*/
 
     @get:Rule
     val rule = MockMainDispatcherRule(UnconfinedTestDispatcher())

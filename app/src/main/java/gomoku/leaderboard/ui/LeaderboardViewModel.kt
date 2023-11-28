@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import gomoku.Idle
 import gomoku.LoadState
+import gomoku.ThemeRepository
 import gomoku.idle
 import gomoku.leaderboard.user.UserService
 import gomoku.leaderboard.user.domain.UserStats
@@ -18,12 +19,32 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LeaderboardViewModel(
-    private val userService: UserService
+    private val userService: UserService,
+    private val themeRepo: ThemeRepository
 ) : ViewModel() {
 
     companion object {
-        fun factory(service: UserService) = viewModelFactory {
-            initializer { LeaderboardViewModel(service) }
+        fun factory(service: UserService, themeRepo: ThemeRepository) = viewModelFactory {
+            initializer { LeaderboardViewModel(service, themeRepo) }
+        }
+    }
+
+    val isDarkTheme: Flow<Boolean?>
+        get() = _isDarkThemeFlow.asStateFlow()
+
+    private val _isDarkThemeFlow: MutableStateFlow<Boolean?> =
+        MutableStateFlow(null)
+
+    fun isDarkTheme() {
+        viewModelScope.launch {
+            _isDarkThemeFlow.value = themeRepo.getIsDarkTheme()
+        }
+    }
+
+    fun setDarkTheme(isDarkTheme: Boolean) {
+        viewModelScope.launch {
+            themeRepo.setDarkTheme(isDarkTheme)
+            _isDarkThemeFlow.value = isDarkTheme
         }
     }
 
