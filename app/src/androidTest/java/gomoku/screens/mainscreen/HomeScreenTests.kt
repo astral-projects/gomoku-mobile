@@ -3,7 +3,7 @@ package gomoku.screens.mainscreen
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import gomoku.home.ui.HomeScreen
+import gomoku.ui.home.HomeScreen
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import org.junit.Rule
@@ -15,6 +15,7 @@ const val homeAboutLabel = "About"
 const val homeLogoutLabel = "Logout"
 
 class HomeScreenTests {
+
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -99,6 +100,4 @@ class HomeScreenTests {
         assertTrue(onLogoutRequested)
 
     }
-
-
 }

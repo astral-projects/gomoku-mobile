@@ -1,17 +1,16 @@
 package gomoku.presentation
 
-
-import gomoku.game.domain.Game
-import gomoku.game.domain.Timer
-import gomoku.game.domain.board.Board
-import gomoku.game.domain.board.BoardSize
-import gomoku.game.domain.board.BoardTurn
-import gomoku.game.domain.moves.Move
-import gomoku.game.domain.moves.move.Piece
-import gomoku.game.domain.moves.move.Player
-import gomoku.game.domain.moves.move.Square
+import gomoku.domain.game.Game
+import gomoku.domain.game.Timer
+import gomoku.domain.game.board.Board
+import gomoku.domain.game.board.BoardSize
+import gomoku.domain.game.board.BoardTurn
+import gomoku.domain.game.moves.Move
+import gomoku.domain.game.moves.move.Piece
+import gomoku.domain.game.moves.move.Player
+import gomoku.domain.game.moves.move.Square
+import gomoku.domain.leaderboard.PlayerInfo
 import gomoku.http.GomokuGame
-import gomoku.leaderboard.domain.PlayerInfo
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

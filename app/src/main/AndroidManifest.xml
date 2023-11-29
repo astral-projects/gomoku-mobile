@@ -13,25 +13,25 @@
         android:theme="@style/Theme.Gomoku"
         tools:targetApi="31">
         <activity
-            android:name="gomoku.leaderboard.ui.LeaderboardActivity"
+            android:name="gomoku.ui.leaderboard.LeaderboardActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.register.ui.RegisterActivity"
+            android:name="gomoku.ui.register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.variant.ui.VariantActivity"
+            android:name="gomoku.ui.variant.VariantActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.home.ui.HomeActivity"
+            android:name="gomoku.ui.home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.about.ui.AboutActivity"
+            android:name="gomoku.ui.about.AboutActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.game.ui.GameActivity"
+            android:name="gomoku.ui.game.GameActivity"
             android:exported="false" />
         <activity
-            android:name="gomoku.login.ui.LoginActivity"
+            android:name="gomoku.ui.login.LoginActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
