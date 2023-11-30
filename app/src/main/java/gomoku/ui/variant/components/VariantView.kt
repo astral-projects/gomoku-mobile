@@ -5,13 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +27,7 @@ import gomoku.ui.register.components.FooterBubbles
 import gomoku.ui.shared.background.Background
 import gomoku.ui.shared.components.HeaderText
 import gomoku.ui.shared.components.SubmitButton
+import gomoku.ui.shared.components.ThemedCircularProgressIndicator
 import gomoku.ui.shared.components.TopNavBarWithBurgerMenu
 import gomoku.ui.shared.components.navigationDrawer.NavigationDrawer
 import gomoku.ui.shared.components.navigationDrawer.NavigationItem
@@ -141,14 +139,7 @@ fun VariantView(
                         )
                     }
                     if (variantScreenState == VariantScreenState.LoadingVariants) {
-                        // Loading component
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .fillMaxHeight(0.5f)
-                                .align(Alignment.CenterHorizontally),
-                            color = MaterialTheme.colorScheme.secondary,
-                            trackColor = MaterialTheme.colorScheme.inversePrimary.copy(alpha = 0.8f)
-                        )
+                        ThemedCircularProgressIndicator()
                     } else {
                         VariantTable(
                             variants = variants,
@@ -161,13 +152,7 @@ fun VariantView(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         if (variantScreenState == VariantScreenState.LoadingGameMatch) {
-                            CircularProgressIndicator(
-                                modifier = Modifier
-                                    .fillMaxHeight(0.5f)
-                                    .align(Alignment.CenterVertically),
-                                color = MaterialTheme.colorScheme.secondary,
-                                trackColor = MaterialTheme.colorScheme.inversePrimary.copy(alpha = 0.8f)
-                            )
+                            ThemedCircularProgressIndicator()
                         } else {
                             SubmitButton(
                                 enable = selectedOption != null,

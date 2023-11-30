@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import gomoku.domain.Fail
+import gomoku.domain.IOState
 import gomoku.domain.Idle
-import gomoku.domain.LoadState
 import gomoku.domain.Loaded
 import gomoku.domain.fail
 import gomoku.domain.idle
@@ -32,10 +32,10 @@ class RegisterViewModel(
         }
     }
 
-    val userId: Flow<LoadState<Int>>
+    val userId: Flow<IOState<Int>>
         get() = _createUserIdFlowInfo.asStateFlow()
 
-    private val _createUserIdFlowInfo: MutableStateFlow<LoadState<Int>> =
+    private val _createUserIdFlowInfo: MutableStateFlow<IOState<Int>> =
         MutableStateFlow(idle())
 
     fun register(

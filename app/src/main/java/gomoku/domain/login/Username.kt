@@ -22,7 +22,7 @@ value class Username(val value: String) {
         override fun isValid(value: String): Boolean {
             if (value.isEmpty()) return false
             if (value.isBlank()) return false
-            if (value.length !in MIN_USERNAME_LENGTH..MAX_USERNAME_LENGTH) return false
+            if (value.length !in MIN_USERNAME_LENGTH - 1..<MAX_USERNAME_LENGTH) return false
             return true
         }
 

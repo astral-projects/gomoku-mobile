@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import gomoku.domain.IOState
 import gomoku.domain.Idle
-import gomoku.domain.LoadState
 import gomoku.domain.game.Game
 import gomoku.domain.game.moves.Move
 import gomoku.domain.idle
@@ -46,10 +46,10 @@ class GameViewModel(
         }
     }
 
-    val game: Flow<LoadState<Game?>>
+    val game: Flow<IOState<Game?>>
         get() = _gameFlow
 
-    private val _gameFlow: MutableStateFlow<LoadState<Game?>> = MutableStateFlow(idle())
+    private val _gameFlow: MutableStateFlow<IOState<Game?>> = MutableStateFlow(idle())
 
     fun fetchGame(gameId: String) {
         if (_gameFlow.value !is Idle)

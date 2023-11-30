@@ -1,7 +1,7 @@
 package gomoku.ui.variant
 
+import gomoku.domain.IOState
 import gomoku.domain.Idle
-import gomoku.domain.LoadState
 import gomoku.domain.Loading
 import gomoku.domain.game.Game
 import gomoku.domain.variant.VariantConfig
@@ -17,11 +17,11 @@ enum class VariantScreenState {
 }
 
 /**
- * Returns the [VariantScreenState] based on the [LoadState]s of the variants and the game match.
+ * Returns the [VariantScreenState] based on the [IOState]s of the variants and the game match.
  */
 fun variantScreenState(
-    variantsState: LoadState<List<VariantConfig>?>,
-    gameMatchState: LoadState<Game?>
+    variantsState: IOState<List<VariantConfig>?>,
+    gameMatchState: IOState<Game?>
 ): VariantScreenState {
     return when {
         variantsState is Loading || variantsState is Idle -> VariantScreenState.LoadingVariants

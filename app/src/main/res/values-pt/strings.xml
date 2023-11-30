@@ -40,4 +40,6 @@
     <string name="nav_item_find_game">Encontrar um jogo</string>
     <string name="nav_group_items_screens">Secções</string>
     <string name="nav_group_items_settings">Definições</string>
+    <string name="register_invalid_credentials">Credenciais inválidas</string>
+    <string name="login_failed_message">Credenciais inválidas</string>
 </resources>

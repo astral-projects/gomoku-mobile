@@ -12,4 +12,5 @@ object Login {
     val submitButtonText = R.string.login_submit_button_text
     val noAccountMessage = R.string.login_no_account_message
     val formTitle = R.string.login_form_title
+    val loginFailedMessage = R.string.login_failed_message
 }

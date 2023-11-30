@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import gomoku.domain.leaderboard.NumberFormatter
 import pdm.gomoku.R
 
 // Config
@@ -28,9 +29,10 @@ private val cornerShapeSize = 15.dp
 private val tilePadding = 10.dp
 private val labelIconSpacerWidth = 5.dp
 private const val LEADING_SECTION_WEIGHT = 0.14f
-private const val LABEL_SECTION_WEIGHT = 0.50f
+private const val LABEL_SECTION_WEIGHT = 0.6f
 private const val SPACER_WEIGHT_BETWEEN_LABEL_AND_TRAILING_SECTION = 0.01f
-private const val TRAILING_SECTION_WEIGHT = 0.35f
+private const val TRAILING_SECTION_WEIGHT =
+    1f - LEADING_SECTION_WEIGHT - LABEL_SECTION_WEIGHT - SPACER_WEIGHT_BETWEEN_LABEL_AND_TRAILING_SECTION
 
 /**
  * A tile with custom information.
@@ -40,6 +42,7 @@ private const val TRAILING_SECTION_WEIGHT = 0.35f
  * @param label The label to be displayed.
  * @param trailingLabel The label to be displayed in the trailing position.
  * @param trailingIconId The id of the trailing icon.
+ * @param onClick The callback to be called when the tile is clicked.
  */
 @Composable
 fun <T> CustomInfoTile(
@@ -50,13 +53,11 @@ fun <T> CustomInfoTile(
     label: String,
     trailingLabel: String,
     trailingIconId: Int,
-    // onClick receives a parameter of some type T and returns a Unit.
     onClick: (T) -> Unit,
 ) {
     val style = MaterialTheme.typography.titleMedium
     val color = MaterialTheme.colorScheme.inversePrimary
     val fontWeight = FontWeight.SemiBold
-
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
@@ -110,7 +111,7 @@ fun <T> CustomInfoTile(
         // Trailing section
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.spacedBy(labelIconSpacerWidth),
             modifier = Modifier.weight(TRAILING_SECTION_WEIGHT)
         ) {
             Text(
@@ -138,7 +139,7 @@ private fun CustomInfoPreviewWithLeadingIcon() {
         leadingLabel = "1",
         labelIconId = R.drawable.man,
         label = "Player".repeat(100),
-        trailingLabel = "5432",
+        trailingLabel = NumberFormatter.format("100000"),
         trailingIconId = R.drawable.coins,
         onClick = {}
     )

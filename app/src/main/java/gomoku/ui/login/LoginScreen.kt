@@ -2,7 +2,7 @@ package gomoku.ui.login
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.domain.LoadState
+import gomoku.domain.IOState
 import gomoku.domain.Loaded
 import gomoku.domain.login.UserInfo
 import gomoku.ui.login.components.HeaderLogo
@@ -19,7 +19,7 @@ import gomoku.ui.shared.theme.GomokuTheme
 @Composable
 fun LoginScreen(
     inDarkTheme: Boolean? = false,
-    authenticatedUserInfo: LoadState<UserInfo>,
+    authenticatedUserInfo: IOState<UserInfo>,
     onSubmit: (username: String, password: String) -> Unit,
     onSignUpLinkClick: (Int) -> Unit = {}
 ) {

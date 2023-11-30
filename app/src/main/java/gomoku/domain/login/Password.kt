@@ -3,7 +3,6 @@ package gomoku.domain.login
 import gomoku.domain.Validator
 import pdm.gomoku.R
 
-
 // Constants
 private const val MIN_PASSWORD_LENGTH = 8
 private const val MAX_PASSWORD_LENGTH = 40
@@ -23,7 +22,7 @@ value class Password(val value: String) {
         override fun isValid(value: String): Boolean {
             if (value.isEmpty()) return false
             if (value.isBlank()) return false
-            if (value.length !in MIN_PASSWORD_LENGTH..MAX_PASSWORD_LENGTH) return false
+            if (value.length !in MIN_PASSWORD_LENGTH - 1..<MAX_PASSWORD_LENGTH) return false
             return true
         }
 

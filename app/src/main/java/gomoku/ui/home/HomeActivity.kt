@@ -24,11 +24,7 @@ class HomeActivity : ComponentActivity() {
             ctx.startActivity(createIntent(ctx, userInfo))
         }
 
-        /**
-         * Builds the intent that navigates to the [UserPreferencesActivity] activity.
-         * @param ctx the context to be used.
-         */
-        fun createIntent(ctx: Context, userInfo: UserInfo? = null): Intent {
+        private fun createIntent(ctx: Context, userInfo: UserInfo? = null): Intent {
             val intent = Intent(ctx, HomeActivity::class.java)
             userInfo?.let { intent.putExtra(USER_EXTRA, UserExtra(it)) }
             return intent

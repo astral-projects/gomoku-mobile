@@ -3,14 +3,11 @@ package gomoku.ui.leaderboard.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,12 +18,12 @@ import gomoku.domain.leaderboard.Leaderboard
 import gomoku.domain.leaderboard.PlayerInfo
 import gomoku.domain.leaderboard.RankingInfo
 import gomoku.ui.shared.components.ContentNotFound
+import gomoku.ui.shared.components.ThemedCircularProgressIndicator
 import pdm.gomoku.R
 
 // Config
 private val leaderboardPaddingTop = 10.dp
 private val spaceBetweenRows = 5.dp
-private const val PROGRESS_INDICATOR_TRACK_COLOR_OPACITY = 0.5f
 
 @Composable
 fun LeaderboardTable(
@@ -35,7 +32,6 @@ fun LeaderboardTable(
     loading: Boolean = false,
     onClick: (RankingInfo) -> Unit
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -63,11 +59,7 @@ fun LeaderboardTable(
                                 .padding(10.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.fillMaxHeight(),
-                                color = MaterialTheme.colorScheme.secondary,
-                                trackColor = MaterialTheme.colorScheme.inversePrimary.copy(alpha = PROGRESS_INDICATOR_TRACK_COLOR_OPACITY)
-                            )
+                            ThemedCircularProgressIndicator()
                         }
                     }
                 }
@@ -89,7 +81,7 @@ fun LeaderBoardPreviewWithMorePeople() {
 @Preview
 fun LeaderBoardPreviewLoading() {
     LeaderboardTable(
-        playersRankingInfo = generateRankingInfo(20),
+        playersRankingInfo = generateRankingInfo(40),
         loading = true,
         onClick = {}
     )

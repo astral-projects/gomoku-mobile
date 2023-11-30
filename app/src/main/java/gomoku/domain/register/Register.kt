@@ -12,4 +12,5 @@ object Register {
     val passwordLabel = R.string.register_password_label
     val confirmPasswordLabel = R.string.register_confirm_password_label
     val submitTextButton = R.string.register_submit_button_text
+    val invalidCredentials = R.string.register_invalid_credentials
 }

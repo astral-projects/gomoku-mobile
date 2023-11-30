@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import gomoku.domain.IOState
 import gomoku.domain.Idle
-import gomoku.domain.LoadState
 import gomoku.domain.Loaded
 import gomoku.domain.game.Game
 import gomoku.domain.idle
@@ -44,16 +44,16 @@ class VariantScreenViewModel(
         }
     }
 
-    val variants: Flow<LoadState<List<VariantConfig>?>>
+    val variants: Flow<IOState<List<VariantConfig>?>>
         get() = _variantsFlow.asStateFlow()
 
-    private val _variantsFlow: MutableStateFlow<LoadState<List<VariantConfig>?>> =
+    private val _variantsFlow: MutableStateFlow<IOState<List<VariantConfig>?>> =
         MutableStateFlow(idle())
 
-    val game: Flow<LoadState<Game?>>
+    val game: Flow<IOState<Game?>>
         get() = _gameFlow.asStateFlow()
 
-    private val _gameFlow: MutableStateFlow<LoadState<Game?>> =
+    private val _gameFlow: MutableStateFlow<IOState<Game?>> =
         MutableStateFlow(idle())
 
     val isDarkTheme: Flow<Boolean?>

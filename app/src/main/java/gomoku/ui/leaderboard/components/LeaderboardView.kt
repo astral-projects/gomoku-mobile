@@ -1,6 +1,5 @@
 package gomoku.ui.leaderboard.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,9 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,24 +20,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import gomoku.domain.LoadState
+import gomoku.domain.IOState
 import gomoku.domain.Loading
+import gomoku.domain.getOrNull
 import gomoku.domain.leaderboard.Leaderboard
-import gomoku.domain.leaderboard.RankingInfo
 import gomoku.domain.leaderboard.Term
 import gomoku.domain.leaderboard.UserStats
 import gomoku.domain.login.UserInfo
 import gomoku.ui.shared.background.Background
 import gomoku.ui.shared.components.ClickableIcon
+import gomoku.ui.shared.components.ThemedCircularProgressIndicator
 import gomoku.ui.shared.components.TopNavBarWithBurgerMenu
 import gomoku.ui.shared.components.navigationDrawer.NavigationDrawer
 import gomoku.ui.shared.components.navigationDrawer.NavigationItem
 import gomoku.ui.shared.components.navigationDrawer.NavigationItemGroup
 import gomoku.ui.shared.theme.GomokuTheme
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import pdm.gomoku.R
 
@@ -49,8 +49,8 @@ private val footerIconHorizontalPadding = 10.dp
 private val footerIconVerticalPadding = 10.dp
 private const val LEADERBOARD_TABLE_HEIGHT_FACTOR = 0.85f
 private const val FIRST_PAGE = 1
-private const val MINIMUM_NR_OF_ITEMS_IN_A_PAGE = 15
 private const val LOAD_MORE_ITEMS_THRESHOLD = 3
+private const val PAGE_SIZE = 20
 private const val LEADERBOARD_VIEW_TAG = "LeaderboardView"
 
 /**
@@ -69,8 +69,7 @@ private const val LEADERBOARD_VIEW_TAG = "LeaderboardView"
 fun LeaderboardView(
     inDarkTheme: Boolean,
     setDarkTheme: (Boolean) -> Unit,
-    state: LoadState<List<UserStats>>,
-    usersRankingInfo: List<RankingInfo>,
+    state: IOState<List<UserStats>>,
     getUserStats: (id: Int) -> Unit,
     getItemsFromPage: (page: Int) -> Unit,
     onSearchRequest: (term: Term) -> Unit,
@@ -78,6 +77,11 @@ fun LeaderboardView(
     toAboutScreen: () -> Unit,
     onLogoutRequest: () -> Unit,
 ) {
+    val usersRankingInfo = state
+        .getOrNull()
+        ?.map { it.toRankingInfo() }
+        ?: emptyList()
+    println("usersRankingInfo: $usersRankingInfo")
     // logged user user // TODO("should retrieve from datastore")
     val loggedUser = UserInfo(1, "Hello", "token", "email")
     // search
@@ -85,8 +89,6 @@ fun LeaderboardView(
     // list and pagination
     val lazyListState = rememberLazyListState()
     var page by remember { mutableIntStateOf(FIRST_PAGE) }
-    var backToFirstPage by remember { mutableStateOf(false) }
-    var currentItems by remember { mutableStateOf(usersRankingInfo) }
     val scope = rememberCoroutineScope()
     // profile dialog
     var showUserProfileDialog by rememberSaveable { mutableStateOf(false) }
@@ -136,53 +138,25 @@ fun LeaderboardView(
         val term = Term.toTermOrNull(query)
         if (term != null) {
             onSearchRequest(term)
-            currentItems = usersRankingInfo
         } else if (query == "") {
-            if (page == FIRST_PAGE) {
-                backToFirstPage = true
-            } else {
-                page = FIRST_PAGE
-            }
+            page = FIRST_PAGE
+            getItemsFromPage(page)
+            lazyListState.scrollToItem(0)
         }
     }
-    LaunchedEffect(key1 = page, key2 = backToFirstPage) {
-        if (!backToFirstPage) {
-            return@LaunchedEffect
-        }
-        Log.v(
-            LEADERBOARD_VIEW_TAG,
-            "page called with value: $page and: currentItems size: ${currentItems.size} " +
-                    "and usersRankingInfo size: ${usersRankingInfo.size}"
-        )
-        getItemsFromPage(page)
-        if (page == FIRST_PAGE) {
-            currentItems = usersRankingInfo
-        } else {
-            currentItems += usersRankingInfo
-        }
-        // Position the list at the top when the page is loaded
-        lazyListState.scrollToItem(0)
-        backToFirstPage = false
-    }
-    /*// Observe scroll state to load more items
+    // Observe scroll state to load more items
     LaunchedEffect(key1 = lazyListState) {
         snapshotFlow { lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collectLatest { itemIndex ->
-                val thirdBoolean = usersRankingInfo.size
-                val fourthBoolean = currentItems.size
-                Log.v(LEADERBOARD_VIEW_TAG, "usersRankingInfo size: $thirdBoolean")
-                Log.v(LEADERBOARD_VIEW_TAG, "currentItems size: $fourthBoolean")
                 if (
                     state !is Loading
                     && itemIndex != null
-                    && usersRankingInfo.size > MINIMUM_NR_OF_ITEMS_IN_A_PAGE
-                    && itemIndex >= (usersRankingInfo.size - LOAD_MORE_ITEMS_THRESHOLD)
+                    && itemIndex >= page * PAGE_SIZE - LOAD_MORE_ITEMS_THRESHOLD
                 ) {
-                    Log.v(LEADERBOARD_VIEW_TAG, "inside snapshot flow")
-                    page++
+                    getItemsFromPage(++page)
                 }
             }
-    }*/
+    }
     // UI
     GomokuTheme(darkTheme = inDarkTheme) {
         // Evaluate if the profile dialog should be displayed
@@ -219,10 +193,10 @@ fun LeaderboardView(
                             onClearSearch = {
                                 if (query != "") {
                                     query = ""
-                                    if (page == FIRST_PAGE) {
-                                        backToFirstPage = true
-                                    } else {
-                                        page = FIRST_PAGE
+                                    page = FIRST_PAGE
+                                    getItemsFromPage(page)
+                                    scope.launch {
+                                        lazyListState.scrollToItem(0)
                                     }
                                 }
                             },
@@ -241,16 +215,10 @@ fun LeaderboardView(
                             .align(Alignment.TopCenter)
                     ) {
                         if (state is Loading && page == FIRST_PAGE) {
-                            CircularProgressIndicator(
-                                modifier = Modifier
-                                    .fillMaxHeight(0.5f)
-                                    .align(Alignment.CenterHorizontally),
-                                color = MaterialTheme.colorScheme.secondary,
-                                trackColor = MaterialTheme.colorScheme.inversePrimary.copy(alpha = 0.8f)
-                            )
+                            ThemedCircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally))
                         } else {
                             LeaderboardTable(
-                                playersRankingInfo = currentItems.sortedBy { it.rank },
+                                playersRankingInfo = usersRankingInfo,
                                 listState = lazyListState,
                                 loading = state is Loading
                             ) {
@@ -271,23 +239,22 @@ fun LeaderboardView(
                     ) {
                         ToggleSelfPositionIcon(iconId = R.drawable.target) {
                             if (isSelfPositionEnabled) {
-                                if (page == FIRST_PAGE) {
-                                    backToFirstPage = true
-                                } else {
-                                    page = FIRST_PAGE
+                                page = FIRST_PAGE
+                                getItemsFromPage(page)
+                                scope.launch {
+                                    lazyListState.scrollToItem(0)
                                 }
                             } else {
                                 getUserStats(loggedUser.id)
-                                currentItems = usersRankingInfo
                             }
                             // toggle
                             isSelfPositionEnabled = !isSelfPositionEnabled
                         }
                         BackTopTheTopIcon(iconId = R.drawable.back_to_top) {
-                            if (page == FIRST_PAGE) {
-                                backToFirstPage = true
-                            } else {
-                                page = FIRST_PAGE
+                            page = FIRST_PAGE
+                            getItemsFromPage(page)
+                            scope.launch {
+                                lazyListState.scrollToItem(0)
                             }
                         }
                     }

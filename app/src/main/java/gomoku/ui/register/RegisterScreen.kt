@@ -3,7 +3,7 @@ package gomoku.ui.register
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.domain.LoadState
+import gomoku.domain.IOState
 import gomoku.domain.Loaded
 import gomoku.domain.home.Home.gameName
 import gomoku.ui.register.components.FooterBubbles
@@ -19,7 +19,7 @@ import gomoku.ui.shared.theme.GomokuTheme
  */
 @Composable
 fun RegisterScreen(
-    registerState: LoadState<Int>,
+    registerState: IOState<Int>,
     onCreateUser: (username: String, email: String, password: String) -> Unit,
 ) {
     GomokuTheme {

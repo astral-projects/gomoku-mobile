@@ -29,22 +29,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import gomoku.domain.leaderboard.NumberFormatter
 import gomoku.domain.leaderboard.PlayerInfo
 import gomoku.domain.leaderboard.RankingInfo
 import gomoku.ui.shared.background.BackgroundConfig
 import gomoku.ui.shared.theme.GomokuTheme
 import pdm.gomoku.R
-import java.text.DecimalFormat
 
+// Config
 const val DIALOG_WIDTH_FACTOR = 0.9f
 const val DIALOG_HEIGHT_FACTOR = 0.55f
-const val DIALOG_INTERIOR_WIDTH_FACTOR = 0.85f
-const val DIALOG_INTERIOR_HEIGHT_FACTOR = 0.92f
 private val borderSize = 2.dp
 private val spaceBetweenTexts = (-7).dp
-private val dialogCornerShapeSize = 70.dp
-private val dialogInteriorCornerShape = 55.dp
-private val iconProfileSize = 100.dp
+private val dialogCornerShapeSize = 55.dp
+private val iconProfileSize = 150.dp
 private val leftRightPadding = 15.dp
 private val topPadding = 40.dp
 private val bottomPadding = 30.dp
@@ -57,14 +55,12 @@ fun UserDialog(
     userRankingInfo: RankingInfo,
     onDismissRequest: () -> Unit,
 ) {
+    val screenWidth = background.screenWidth
+    val screenHeight = background.screenHeight
+    val cornerShape = RoundedCornerShape(dialogCornerShapeSize)
+    val externalDialogWidth = screenWidth * DIALOG_WIDTH_FACTOR
+    val externalDialogHeight = screenHeight * DIALOG_HEIGHT_FACTOR
     Dialog(onDismissRequest = onDismissRequest) {
-        val screenWidth = background.screenWidth
-        val screenHeight = background.screenHeight
-        val cornerShape = RoundedCornerShape(dialogCornerShapeSize)
-        val interiorCornerShape = RoundedCornerShape(dialogInteriorCornerShape)
-        val externalDialogWidth = screenWidth * DIALOG_WIDTH_FACTOR
-        val externalDialogHeight = screenHeight * DIALOG_HEIGHT_FACTOR
-
         Column(
             modifier = Modifier
                 .width(externalDialogWidth)
@@ -79,10 +75,8 @@ fun UserDialog(
             // Interior section
             Box(
                 modifier = Modifier
-                    .width(externalDialogWidth * DIALOG_INTERIOR_WIDTH_FACTOR)
-                    .height(externalDialogHeight * DIALOG_INTERIOR_HEIGHT_FACTOR)
-                    .clip(interiorCornerShape)
-                    .border(borderSize, MaterialTheme.colorScheme.outline, interiorCornerShape)
+                    .padding(all = 5.dp)
+                    .border(borderSize, MaterialTheme.colorScheme.outline, cornerShape)
                     .background(MaterialTheme.colorScheme.primary),
             ) {
                 Column(
@@ -194,25 +188,12 @@ fun TextTitle(text: String, value: String) {
         verticalArrangement = Arrangement.spacedBy(spaceBetweenTexts)
     ) {
         Text(
-            text = numberFormat(text),
+            text = NumberFormatter.format(text),
             fontWeight = FontWeight.SemiBold,
             fontSize = MaterialTheme.typography.headlineMedium.fontSize,
         )
         Text(text = value)
     }
-}
-
-private fun numberFormat(num: String): String {
-    val number = num.toInt()
-    val decimalFormat = DecimalFormat("#.##")
-
-    return when {
-        number >= 1000000 -> "${decimalFormat.format(number / 1000000)}M"
-        number >= 1000 -> "${decimalFormat.format(number / 1000)}k"
-        else -> num
-    }
-
-
 }
 
 @Preview(showBackground = true)

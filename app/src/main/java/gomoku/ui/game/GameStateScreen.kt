@@ -1,7 +1,7 @@
 package gomoku.ui.game
 
+import gomoku.domain.IOState
 import gomoku.domain.Idle
-import gomoku.domain.LoadState
 import gomoku.domain.Loading
 import gomoku.domain.game.Game
 
@@ -36,9 +36,9 @@ fun GameStateScreen.isLoaded() = this == GameStateScreen.LOADED
 fun GameStateScreen.isError() = this == GameStateScreen.ERROR
 
 /**
- * Converts a [LoadState] to a [GameStateScreen].
+ * Converts a [IOState] to a [GameStateScreen].
  */
-fun LoadState<Game?>.toGameStateScreen(): GameStateScreen {
+fun IOState<Game?>.toGameStateScreen(): GameStateScreen {
     return when (this) {
         is Idle -> GameStateScreen.IDLE
         is Loading -> GameStateScreen.LOADING

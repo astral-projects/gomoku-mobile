@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.domain.LoadState
+import gomoku.domain.IOState
 import gomoku.domain.Loaded
 import gomoku.domain.game.Game
 import gomoku.domain.game.Timer
@@ -32,7 +32,7 @@ import pdm.gomoku.R
  * @param localPlayer the [Player] that is playing locally.
  * @param onLeaveGameRequest the callback to be called when the dismiss button is clicked.
  * @param onCellClick the callback to be called when a cell is clicked.
- * @param gameState the [LoadState] of the [Game] to be displayed.
+ * @param gameState the [IOState] of the [Game] to be displayed.
  */
 @Composable
 fun GameScreen(
@@ -41,7 +41,7 @@ fun GameScreen(
     localPlayer: PlayerInfo,
     onLeaveGameRequest: () -> Unit,
     onCellClick: (toSquare: Square) -> Unit,
-    gameState: LoadState<Game?>,
+    gameState: IOState<Game?>,
 ) {
     GomokuTheme(darkTheme = isDarkTheme ?: false) {
         Background(

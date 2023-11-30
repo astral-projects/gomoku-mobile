@@ -1,9 +1,7 @@
 package gomoku.ui.leaderboard
 
-import android.util.Log
 import androidx.compose.runtime.Composable
-import gomoku.domain.LoadState
-import gomoku.domain.getOrNull
+import gomoku.domain.IOState
 import gomoku.domain.leaderboard.Term
 import gomoku.domain.leaderboard.UserStats
 import gomoku.ui.leaderboard.components.LeaderboardView
@@ -20,7 +18,7 @@ import gomoku.ui.leaderboard.components.LeaderboardView
  */
 @Composable
 fun LeaderboardScreen(
-    state: LoadState<List<UserStats>>,
+    state: IOState<List<UserStats>>,
     onSearchRequest: (term: Term) -> Unit,
     getUserStats: (id: Int) -> Unit,
     getItemsFromPage: (page: Int) -> Unit,
@@ -28,14 +26,8 @@ fun LeaderboardScreen(
     toAboutScreen: () -> Unit,
     onLogoutRequest: () -> Unit,
 ) {
-    val usersRankingInfo = state
-        .getOrNull()
-        ?.map { it.toRankingInfo() }
-        ?: emptyList()
-    Log.v("LeaderboardScreen", "usersRankingInfo: $usersRankingInfo")
     LeaderboardView(
         state = state,
-        usersRankingInfo = usersRankingInfo,
         getUserStats = getUserStats,
         getItemsFromPage = getItemsFromPage,
         onSearchRequest = onSearchRequest,

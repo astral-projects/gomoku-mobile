@@ -43,4 +43,6 @@
     <string name="nav_group_items_settings">Settings</string>
     <string name="nav_item_switch_theme">Switch theme</string>
     <string name="nav_item_logout">Logout</string>
+    <string name="register_invalid_credentials">Invalid credentials</string>
+    <string name="login_failed_message">Invalid credentials</string>
 </resources>

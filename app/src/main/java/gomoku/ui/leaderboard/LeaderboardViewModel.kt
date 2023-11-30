@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import gomoku.domain.LoadState
+import gomoku.domain.IOState
+import gomoku.domain.getOrNull
 import gomoku.domain.idle
 import gomoku.domain.leaderboard.Term
 import gomoku.domain.leaderboard.UserStats
@@ -27,6 +28,8 @@ class LeaderboardViewModel(
             viewModelFactory {
                 initializer { LeaderboardViewModel(service, preferences) }
             }
+
+        private const val FIRST_PAGE = 1
     }
 
     val isDarkTheme: Flow<Boolean?>
@@ -48,10 +51,10 @@ class LeaderboardViewModel(
         }
     }
 
-    val usersStats: Flow<LoadState<List<UserStats>>>
+    val usersStats: Flow<IOState<List<UserStats>>>
         get() = _usersStatsFlow.asStateFlow()
 
-    private val _usersStatsFlow: MutableStateFlow<LoadState<List<UserStats>>> =
+    private val _usersStatsFlow: MutableStateFlow<IOState<List<UserStats>>> =
         MutableStateFlow(idle())
 
     fun fetchUserStats(userId: Int) {
@@ -62,11 +65,19 @@ class LeaderboardViewModel(
         }
     }
 
-    fun fetchUsersStats(page: Int = 1) {
-        _usersStatsFlow.value = loading()
+    fun fetchUsersStats(page: Int = FIRST_PAGE) {
+        val previousList: List<UserStats>? = _usersStatsFlow.value.getOrNull()
+        _usersStatsFlow.value = loading(previousList)
         viewModelScope.launch {
             val result = runCatching { userService.fetchUsersStats(page) }
-            _usersStatsFlow.value = loaded(result)
+            if (page == FIRST_PAGE) {
+                _usersStatsFlow.value = loaded(result)
+            } else {
+                val newList: List<UserStats>? = result.getOrNull()
+                val mergedList = previousList.orEmpty() + newList.orEmpty()
+                val sortedList = mergedList.sortedBy { it.rank }
+                _usersStatsFlow.value = loaded(Result.success(sortedList))
+            }
         }
     }
 
@@ -77,9 +88,7 @@ class LeaderboardViewModel(
     fun searchUsers(term: Term) {
         _usersStatsFlow.value = loading()
         viewModelScope.launch {
-            val result = runCatching {
-                userService.searchUsers(term)
-            }
+            val result = runCatching { userService.searchUsers(term) }
             _usersStatsFlow.value = loaded(result)
         }
     }

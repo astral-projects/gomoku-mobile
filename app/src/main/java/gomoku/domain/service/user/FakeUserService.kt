@@ -81,9 +81,9 @@ class FakeUserService : UserService {
     }
 
     companion object {
-        private const val FETCH_DELAY = 1000L
+        private const val FETCH_DELAY = 3000L
         private const val PAGE_SIZE = 20
-        private const val NR_PLAYERS = 200
+        private const val NR_PLAYERS = 300
 
         /**
          * A list of fake players.

@@ -2,7 +2,7 @@ package gomoku.ui.leaderboard.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.domain.leaderboard.Leaderboard
+import gomoku.domain.leaderboard.NumberFormatter
 import gomoku.domain.leaderboard.PlayerInfo
 import gomoku.domain.leaderboard.RankingInfo
 import gomoku.ui.shared.components.CustomInfoTile
@@ -11,6 +11,7 @@ import pdm.gomoku.R
 /**
  * A [CustomInfoTile] that displays the ranking information of a player.
  * @param rankData The ranking information of a player.
+ * @param onClick The callback to be called when the tile is clicked.
  */
 @Composable
 fun RankingInfoTile(
@@ -28,7 +29,7 @@ fun RankingInfoTile(
         leadingLabel = rankData.rank.toString(),
         labelIconId = rankData.playerInfo.iconId,
         label = rankData.playerInfo.name,
-        trailingLabel = if (rankData.points > Leaderboard.MAX_POINTS_VALUE) ">${Leaderboard.MAX_POINTS_VALUE}" else rankData.points.toString(),
+        trailingLabel = NumberFormatter.format(rankData.points.toString()),
         trailingIconId = R.drawable.coins,
         onClick = onClick
     )

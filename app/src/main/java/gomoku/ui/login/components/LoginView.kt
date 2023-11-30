@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,8 +29,8 @@ import gomoku.ui.shared.components.Form
 import gomoku.ui.shared.components.HyperLink
 import gomoku.ui.shared.components.InputTextField
 import gomoku.ui.shared.components.SubmitButton
+import gomoku.ui.shared.components.ThemedCircularProgressIndicator
 import pdm.gomoku.R
-
 
 // Config
 private val signUpSpacerWidth = 1.dp
@@ -96,7 +95,7 @@ fun LoginView(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if (screenState.isLoading()) {
-                    CircularProgressIndicator()
+                    ThemedCircularProgressIndicator()
                 } else {
                     SubmitButton(
                         enable = AuthValidator.areLoginCredentialsValid(username, password),
@@ -108,7 +107,7 @@ fun LoginView(
                     Spacer(modifier = Modifier.height(signUpSpacerHeight))
                     if (screenState.isFailedLogin()) {
                         Text(
-                            text = "Invalid credentials",
+                            text = stringResource(Login.loginFailedMessage),
                             color = MaterialTheme.colorScheme.error
                         )
                     }

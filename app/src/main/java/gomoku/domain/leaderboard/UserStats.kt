@@ -41,10 +41,23 @@ class UserStats(
         losses = 0
     )
 
+    private val availableIcons = listOf(
+        R.drawable.man,
+        R.drawable.man2,
+        R.drawable.man3,
+        R.drawable.man4,
+        R.drawable.man5,
+        R.drawable.woman,
+        R.drawable.woman2,
+        R.drawable.woman3,
+        R.drawable.woman4,
+        R.drawable.woman5
+    )
+
     fun toRankingInfo(): RankingInfo {
         return RankingInfo(
             id = id,
-            playerInfo = PlayerInfo(username, R.drawable.man),
+            playerInfo = PlayerInfo(username, availableIcons[id % availableIcons.size]),
             rank = rank,
             points = points,
             playedGames = gamesPlayed,

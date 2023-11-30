@@ -1,8 +1,8 @@
 package gomoku.ui.register
 
 import gomoku.domain.Fail
+import gomoku.domain.IOState
 import gomoku.domain.Idle
-import gomoku.domain.LoadState
 import gomoku.domain.Loading
 
 /**
@@ -38,7 +38,7 @@ fun RegisterScreenState.isFail() = this == RegisterScreenState.Fail
 /**
  * Returns the screen state based on the user authentication state.
  */
-fun LoadState<Int>.toRegisterScreenState(): RegisterScreenState = when (this) {
+fun IOState<Int>.toRegisterScreenState(): RegisterScreenState = when (this) {
     is Idle -> RegisterScreenState.Idle
     is Loading -> RegisterScreenState.Loading
     is Fail -> RegisterScreenState.Fail

@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import gomoku.domain.Fail
+import gomoku.domain.IOState
 import gomoku.domain.Idle
-import gomoku.domain.LoadState
 import gomoku.domain.Loaded
 import gomoku.domain.fail
 import gomoku.domain.idle
@@ -36,10 +36,10 @@ class LoginViewModel(
         }
     }
 
-    val userInfo: Flow<LoadState<UserInfo>>
+    val userInfo: Flow<IOState<UserInfo>>
         get() = _userInfoInfoFlow.asStateFlow()
 
-    private val _userInfoInfoFlow: MutableStateFlow<LoadState<UserInfo>> = MutableStateFlow(idle())
+    private val _userInfoInfoFlow: MutableStateFlow<IOState<UserInfo>> = MutableStateFlow(idle())
 
     val isDarkTheme: Flow<Boolean?>
         get() = _isDarkThemeFlow.asStateFlow()

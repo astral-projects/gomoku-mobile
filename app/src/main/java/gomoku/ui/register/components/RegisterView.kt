@@ -1,7 +1,6 @@
 package gomoku.ui.register.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +24,7 @@ import gomoku.ui.register.isLoading
 import gomoku.ui.shared.components.Form
 import gomoku.ui.shared.components.InputTextField
 import gomoku.ui.shared.components.SubmitButton
+import gomoku.ui.shared.components.ThemedCircularProgressIndicator
 import pdm.gomoku.R
 
 // Config
@@ -95,10 +95,9 @@ fun RegisterView(
             )
         ),
         footer = {
-            //Todo: I dont like the column here but I dont know how to do it better
             Column {
                 if (registerScreenState.isLoading()) {
-                    CircularProgressIndicator()
+                    ThemedCircularProgressIndicator()
                 } else {
                     SubmitButton(
                         enable = AuthValidator.areRegistrationCredentialsValid(
@@ -119,10 +118,9 @@ fun RegisterView(
                     )
                     if (registerScreenState.isFail()) {
                         Text(
-                            text = "Invalid credentials",
+                            text = stringResource(Register.invalidCredentials),
                             color = MaterialTheme.colorScheme.error,
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally)
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
                     }
                 }
