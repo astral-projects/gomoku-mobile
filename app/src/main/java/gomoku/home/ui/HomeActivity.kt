@@ -8,7 +8,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import gomoku.GomokuDependencyProvider
 import gomoku.USER_EXTRA
 import gomoku.UserExtra
@@ -52,11 +54,14 @@ class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            viewModel.isDarkTheme.collect {
-                if (it == null) {
-                    viewModel.isDarkTheme()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isDarkTheme.collect {
+                    if (it == null) {
+                        viewModel.isDarkTheme()
+                    }
                 }
             }
+
         }
         setContent {
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
