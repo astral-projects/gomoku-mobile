@@ -40,4 +40,6 @@
     <string name="nav_item_find_game">"Spiel finden "</string>
     <string name="nav_group_items_screens">"Bildschirme "</string>
     <string name="nav_group_items_settings">"Einstellungen "</string>
+    <string name="register_invalid_credentials">Ungültige Zugangsdaten</string>
+    <string name="login_failed_message">Ungültige Zugangsdaten</string>
 </resources>
