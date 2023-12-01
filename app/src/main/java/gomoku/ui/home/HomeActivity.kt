@@ -12,23 +12,24 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import gomoku.GomokuDependencyProvider
-import gomoku.domain.login.UserInfo
 import gomoku.ui.about.AboutActivity
 import gomoku.ui.leaderboard.LeaderboardActivity
 import gomoku.ui.login.LoginActivity
 import gomoku.ui.variant.VariantActivity
 import kotlinx.coroutines.launch
 
+const val USERNAME_EXTRA = "Username"
+
 class HomeActivity : ComponentActivity() {
 
     companion object {
-        fun navigateTo(ctx: Context, userInfo: UserInfo? = null) {
-            ctx.startActivity(createIntent(ctx, userInfo))
+        fun navigateTo(ctx: Context, username: String) {
+            ctx.startActivity(createIntent(ctx, username))
         }
 
-        private fun createIntent(ctx: Context, userInfo: UserInfo? = null): Intent {
+        private fun createIntent(ctx: Context, username: String): Intent {
             val intent = Intent(ctx, HomeActivity::class.java)
-            userInfo?.let { intent.putExtra(USER_EXTRA, UserExtra(it)) }
+            intent.putExtra(USERNAME_EXTRA, username)
             return intent
         }
     }
@@ -47,9 +48,7 @@ class HomeActivity : ComponentActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isDarkTheme.collect {
-                    if (it == null) {
                         viewModel.isDarkTheme()
-                    }
                 }
             }
 
@@ -58,8 +57,8 @@ class HomeActivity : ComponentActivity() {
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             HomeScreen(
                 inDarkTheme = isDarkTheme,
-                username = userInfo!!.username,
-                onFindMatch = { VariantActivity.navigateTo(this@HomeActivity, userInfo) },
+                username = username ?: "",
+                onFindMatch = { VariantActivity.navigateTo(this@HomeActivity, username) },
                 onLeaderBoard = { LeaderboardActivity.navigateTo(this) },
                 onAbout = { AboutActivity.navigateTo(this) },
                 onLogout = { LoginActivity.navigateTo(this) }
@@ -67,17 +66,13 @@ class HomeActivity : ComponentActivity() {
         }
     }
 
-    /**
-     * Helper method to get the user extra from the intent.
-     */
-    val userInfo: UserInfo? by lazy { getUserInfoExtra()?.toUserInfo() }
+    val username: String by lazy {
+        getUsernameExtra() ?: throw IllegalArgumentException("Username must be provided")
+    }
 
-    @Suppress("DEPRECATION")
-    private fun getUserInfoExtra(): UserExtra? =
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU)
-            intent?.getParcelableExtra(USER_EXTRA, UserExtra::class.java)
-        else
-        // provides compatibility with older versions of Android
-            intent?.getParcelableExtra(USER_EXTRA)
+    private fun getUsernameExtra(): String? =
+        intent?.getStringExtra(USERNAME_EXTRA)
+
+
 }
 

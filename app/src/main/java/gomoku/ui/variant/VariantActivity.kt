@@ -8,18 +8,17 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import gomoku.GomokuDependencyProvider
 import gomoku.domain.Idle
 import gomoku.domain.Loaded
 import gomoku.domain.game.Game
 import gomoku.domain.idle
-import gomoku.domain.login.UserInfo
 import gomoku.ui.about.AboutActivity
 import gomoku.ui.game.GameActivity
-import gomoku.ui.home.USER_EXTRA
-import gomoku.ui.home.UserExtra
-import gomoku.ui.home.toUserInfo
+import gomoku.ui.home.USERNAME_EXTRA
 import gomoku.ui.leaderboard.LeaderboardActivity
 import gomoku.ui.login.LoginActivity
 import kotlinx.coroutines.launch
@@ -37,17 +36,17 @@ class VariantActivity : ComponentActivity() {
     }
 
     companion object {
-        fun navigateTo(ctx: Context, userInfo: UserInfo? = null) {
-            ctx.startActivity(createIntent(ctx, userInfo))
+        fun navigateTo(ctx: Context, username: String) {
+            ctx.startActivity(createIntent(ctx, username))
         }
 
         /**
          * Builds the intent that navigates to the [GameActivity] activity.
          * @param ctx the context to be used.
          */
-        fun createIntent(ctx: Context, userInfo: UserInfo? = null): Intent {
+        private fun createIntent(ctx: Context, username: String): Intent {
             val intent = Intent(ctx, VariantActivity::class.java)
-            userInfo?.let { intent.putExtra(USER_EXTRA, UserExtra(it)) }
+            intent.putExtra(USERNAME_EXTRA, username)
             return intent
         }
     }
@@ -74,8 +73,8 @@ class VariantActivity : ComponentActivity() {
         }
 
         lifecycleScope.launch {
-            viewModel.isDarkTheme.collect {
-                if (it == null) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isDarkTheme.collect {
                     viewModel.isDarkTheme()
                 }
             }
@@ -104,23 +103,17 @@ class VariantActivity : ComponentActivity() {
 
 
     /**
-     * Helper method to get the user extra from the intent.
-     */
-    val userInfo: UserInfo? by lazy { getUserInfoExtra()?.toUserInfo() }
-
-    @Suppress("DEPRECATION")
-    private fun getUserInfoExtra(): UserExtra? =
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU)
-            intent?.getParcelableExtra(USER_EXTRA, UserExtra::class.java)
-        else
-            intent?.getParcelableExtra(USER_EXTRA)
-
-    /**
      * Navigates to the appropriate activity, depending on whether the
      * user information has already been provided or not.
      * @param game the user information.
      */
     private fun doNavigation(game: Game) {
-        GameActivity.navigateTo(this@VariantActivity, game.id, userInfo!!)
+        GameActivity.navigateTo(this@VariantActivity, game.id, username)
     }
+
+    val username: String by lazy {
+        intent?.getStringExtra(USERNAME_EXTRA)
+            ?: throw IllegalArgumentException("Username must be provided")
+    }
+
 }

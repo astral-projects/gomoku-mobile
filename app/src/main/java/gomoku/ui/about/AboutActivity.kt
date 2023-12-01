@@ -8,10 +8,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import gomoku.GomokuDependencyProvider
 import gomoku.domain.about.About
 import gomoku.ui.Navigation
+import gomoku.ui.home.USERNAME_EXTRA
 import gomoku.ui.leaderboard.LeaderboardActivity
 import gomoku.ui.login.LoginActivity
 import gomoku.ui.variant.VariantActivity
@@ -37,11 +40,12 @@ class AboutActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            viewModel.isDarkTheme.collect {
-                if (it == null) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isDarkTheme.collect {
                     viewModel.isDarkTheme()
                 }
             }
+
         }
 
         setContent {
@@ -51,9 +55,17 @@ class AboutActivity : ComponentActivity() {
                 sections = About.sections,
                 setDarkTheme = { viewModel.setDarkTheme(it) },
                 toLeaderboardScreen = { LeaderboardActivity.navigateTo(this) },
-                toFindGameScreen = { VariantActivity.navigateTo(this) },
+                toFindGameScreen = { VariantActivity.navigateTo(this, username) },
                 onLogoutRequest = { LoginActivity.navigateTo(this) }
             )
         }
+
+
     }
+
+    val username: String by lazy {
+        intent?.getStringExtra(USERNAME_EXTRA)
+            ?: throw IllegalArgumentException("Username must be provided")
+    }
+
 }

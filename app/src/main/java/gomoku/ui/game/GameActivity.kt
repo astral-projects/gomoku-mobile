@@ -9,7 +9,9 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import gomoku.GomokuDependencyProvider
 import gomoku.domain.Idle
 import gomoku.domain.game.moves.Move
@@ -18,11 +20,8 @@ import gomoku.domain.game.moves.move.Player
 import gomoku.domain.game.moves.move.Square
 import gomoku.domain.idle
 import gomoku.domain.leaderboard.PlayerInfo
-import gomoku.domain.login.UserInfo
 import gomoku.ui.home.HomeActivity
-import gomoku.ui.home.USER_EXTRA
-import gomoku.ui.home.UserExtra
-import gomoku.ui.home.toUserInfo
+import gomoku.ui.home.USERNAME_EXTRA
 import gomoku.ui.shared.background.BackgroundConfig
 import kotlinx.coroutines.launch
 import pdm.gomoku.R
@@ -32,12 +31,12 @@ private const val GAME_ID_EXTRA = "gameId"
 class GameActivity : ComponentActivity() {
 
     companion object {
-        fun navigateTo(ctx: Context, gameId: String, userInfo: UserInfo? = null) {
+        fun navigateTo(ctx: Context, gameId: String, username: String) {
             ctx.startActivity(
                 createIntent(
                     ctx,
-                    userInfo,
-                    gameId
+                    gameId,
+                    username
                 )
             )
         }
@@ -48,12 +47,12 @@ class GameActivity : ComponentActivity() {
          */
         fun createIntent(
             ctx: Context,
-            userInfo: UserInfo? = null,
-            gameId: String
+            gameId: String,
+            username: String
         ): Intent {
             val intent = Intent(ctx, GameActivity::class.java)
-            userInfo?.let { intent.putExtra(USER_EXTRA, UserExtra(it)) }
             intent.putExtra(GAME_ID_EXTRA, gameId)
+            intent.putExtra(USERNAME_EXTRA, username)
             return intent
         }
     }
@@ -81,11 +80,12 @@ class GameActivity : ComponentActivity() {
         }
 
         lifecycleScope.launch {
-            viewModel.isDarkTheme.collect {
-                if (it == null) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isDarkTheme.collect {
                     viewModel.isDarkTheme()
                 }
             }
+
         }
         //todo(improve the makeAMove)
         setContent {
@@ -94,8 +94,8 @@ class GameActivity : ComponentActivity() {
             GameScreen(
                 isDarkTheme = isDarkTheme,
                 backgroundConfig = BackgroundConfig(LocalConfiguration.current),
-                localPlayer = PlayerInfo(userInfo!!.username, R.drawable.man),
-                onLeaveGameRequest = { HomeActivity.navigateTo(this) },
+                localPlayer = PlayerInfo(username, R.drawable.man),
+                onLeaveGameRequest = { HomeActivity.navigateTo(this, username) },
                 onCellClick = { square: Square ->
                     viewModel.makeMove(
                         Move(
@@ -112,16 +112,15 @@ class GameActivity : ComponentActivity() {
     /**
      * Helper method to get the user extra from the intent.
      */
-    val userInfo: UserInfo? by lazy { getUserInfoExtra()?.toUserInfo() }
+    val username: String by lazy {
+        intent?.getStringExtra(USERNAME_EXTRA)
+            ?: throw IllegalArgumentException("Username must be provided")
+    }
 
-    val gameId: String? by lazy { intent?.getStringExtra(GAME_ID_EXTRA) }
-
-    @Suppress("DEPRECATION")
-    private fun getUserInfoExtra(): UserExtra? =
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU)
-            intent?.getParcelableExtra(USER_EXTRA, UserExtra::class.java)
-        else
-            intent?.getParcelableExtra(USER_EXTRA)
+    val gameId: String by lazy {
+        intent?.getStringExtra(GAME_ID_EXTRA)
+            ?: throw IllegalArgumentException("GameId must be provided")
+    }
 
 
 }

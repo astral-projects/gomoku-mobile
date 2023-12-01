@@ -8,6 +8,7 @@ import gomoku.ui.leaderboard.components.LeaderboardView
 
 /**
  * Represents the Leaderboard screen main composable.
+ * @param inDarkTheme whether the screen is in dark theme.
  * @param state the state of the screen.
  * @param onSearchRequest callback to be executed when the user types on the search bar.
  * @param getUserStats callback to be executed when the user clicks on a user.
@@ -15,9 +16,11 @@ import gomoku.ui.leaderboard.components.LeaderboardView
  * @param toFindGameScreen callback to be executed when the user clicks on the respective navigation item.
  * @param toAboutScreen callback to be executed when the user clicks on the respective navigation item.
  * @param onLogoutRequest callback to be executed when the user clicks on the respective navigation item.
+ * @param setDarkTheme callback to be executed when the user toggles the dark theme switch.
  */
 @Composable
 fun LeaderboardScreen(
+    inDarkTheme: Boolean,
     state: IOState<List<UserStats>>,
     onSearchRequest: (term: Term) -> Unit,
     getUserStats: (id: Int) -> Unit,
@@ -25,6 +28,7 @@ fun LeaderboardScreen(
     toFindGameScreen: () -> Unit,
     toAboutScreen: () -> Unit,
     onLogoutRequest: () -> Unit,
+    setDarkTheme: (isDarkTheme: Boolean) -> Unit,
 ) {
     LeaderboardView(
         state = state,
@@ -34,7 +38,7 @@ fun LeaderboardScreen(
         toFindGameScreen = toFindGameScreen,
         toAboutScreen = toAboutScreen,
         onLogoutRequest = onLogoutRequest,
-        inDarkTheme = false,
-        setDarkTheme = { },
+        inDarkTheme = inDarkTheme,
+        setDarkTheme = setDarkTheme,
     )
 }

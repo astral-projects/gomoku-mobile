@@ -20,9 +20,10 @@ import gomoku.ui.shared.theme.GomokuTheme
 @Composable
 fun RegisterScreen(
     registerState: IOState<Int>,
+    inDarkTheme: Boolean?,
     onCreateUser: (username: String, email: String, password: String) -> Unit,
 ) {
-    GomokuTheme {
+    GomokuTheme(darkTheme = inDarkTheme ?: false) {
         Background(
             header = { HeadlineText(text = stringResource(gameName)) },
             footer = { FooterBubbles() }
@@ -37,6 +38,7 @@ fun RegisterScreen(
 private fun RegisterScreenPreview2() {
     RegisterScreen(
         registerState = Loaded(Result.success(1)),
+        inDarkTheme = false,
         onCreateUser = { _, _, _ -> }
     )
 }

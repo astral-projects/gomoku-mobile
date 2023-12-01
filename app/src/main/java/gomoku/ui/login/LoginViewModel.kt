@@ -2,7 +2,6 @@ package gomoku.ui.login
 
 import android.content.ContentValues
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -17,6 +16,7 @@ import gomoku.domain.loading
 import gomoku.domain.login.UserInfo
 import gomoku.domain.service.user.UserService
 import gomoku.domain.storage.PreferencesRepository
+import gomoku.ui.shared.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,8 +24,8 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val service: UserService,
-    private val preferences: PreferencesRepository,
-) : ViewModel() {
+    preferences: PreferencesRepository,
+) : BaseViewModel(preferences) {
 
     companion object {
         fun factory(
@@ -41,17 +41,7 @@ class LoginViewModel(
 
     private val _userInfoInfoFlow: MutableStateFlow<IOState<UserInfo>> = MutableStateFlow(idle())
 
-    val isDarkTheme: Flow<Boolean?>
-        get() = _isDarkThemeFlow.asStateFlow()
 
-    private val _isDarkThemeFlow: MutableStateFlow<Boolean?> =
-        MutableStateFlow(null)
-
-    fun isDarkTheme() {
-        viewModelScope.launch {
-            _isDarkThemeFlow.value = preferences.isInDarkMode()
-        }
-    }
 
     fun login(username: String, password: String) {
         if (_userInfoInfoFlow.value !is Idle && _userInfoInfoFlow.value !is Fail)
@@ -78,7 +68,6 @@ class LoginViewModel(
         if (_userInfoInfoFlow.value !is Loaded)
             throw IllegalStateException("The view model is not in the idle state.")
         _userInfoInfoFlow.value = idle()
-        _isDarkThemeFlow.value = null
     }
 
 }

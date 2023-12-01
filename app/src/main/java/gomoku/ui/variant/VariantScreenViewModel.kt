@@ -1,7 +1,6 @@
 package gomoku.ui.variant
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -17,16 +16,18 @@ import gomoku.domain.service.game.GameService
 import gomoku.domain.service.variant.VariantService
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.domain.variant.VariantConfig
+import gomoku.ui.shared.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+//TODO(Ask to the engineer if its okay to change preferences to be a mandatory parameter in the constructor)
 class VariantScreenViewModel(
     private val service: VariantService,
     private val gameService: GameService,
-    private val preferences: PreferencesRepository,
-) : ViewModel() {
+    preferences: PreferencesRepository,
+) : BaseViewModel(preferences) {
 
     companion object {
         fun factory(
@@ -56,11 +57,6 @@ class VariantScreenViewModel(
     private val _gameFlow: MutableStateFlow<IOState<Game?>> =
         MutableStateFlow(idle())
 
-    val isDarkTheme: Flow<Boolean?>
-        get() = _isDarkThemeFlow.asStateFlow()
-
-    private val _isDarkThemeFlow: MutableStateFlow<Boolean?> =
-        MutableStateFlow(null)
 
     fun fetchVariants() {
         if (_variantsFlow.value !is Idle)
@@ -95,18 +91,6 @@ class VariantScreenViewModel(
         }
     }
 
-    fun isDarkTheme() {
-        viewModelScope.launch {
-            _isDarkThemeFlow.value = preferences.isInDarkMode()
-        }
-    }
-
-    fun setDarkTheme(isInDarkTheme: Boolean) {
-        viewModelScope.launch {
-            preferences.setDarkMode(isInDarkTheme)
-            _isDarkThemeFlow.value = isInDarkTheme
-        }
-    }
 
     /**
      * Resets the view model to the idle state. From the idle state, the user information

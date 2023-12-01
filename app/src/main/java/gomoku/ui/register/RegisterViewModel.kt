@@ -1,6 +1,5 @@
 package gomoku.ui.register
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -14,6 +13,7 @@ import gomoku.domain.loaded
 import gomoku.domain.loading
 import gomoku.domain.service.user.UserService
 import gomoku.domain.storage.PreferencesRepository
+import gomoku.ui.shared.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,8 +21,8 @@ import kotlinx.coroutines.launch
 
 class RegisterViewModel(
     private val service: UserService,
-    private val preferences: PreferencesRepository
-) : ViewModel() {
+    preferences: PreferencesRepository
+) : BaseViewModel(preferences) {
 
     companion object {
         fun factory(
@@ -34,6 +34,7 @@ class RegisterViewModel(
 
     val userId: Flow<IOState<Int>>
         get() = _createUserIdFlowInfo.asStateFlow()
+
 
     private val _createUserIdFlowInfo: MutableStateFlow<IOState<Int>> =
         MutableStateFlow(idle())

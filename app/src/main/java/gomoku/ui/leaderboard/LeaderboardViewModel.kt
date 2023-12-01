@@ -1,6 +1,5 @@
 package gomoku.ui.leaderboard
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -13,6 +12,7 @@ import gomoku.domain.loaded
 import gomoku.domain.loading
 import gomoku.domain.service.user.UserService
 import gomoku.domain.storage.PreferencesRepository
+import gomoku.ui.shared.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 
 class LeaderboardViewModel(
     private val userService: UserService,
-    private val preferences: PreferencesRepository
-) : ViewModel() {
+    preferences: PreferencesRepository
+) : BaseViewModel(preferences) {
 
     companion object {
         fun factory(service: UserService, preferences: PreferencesRepository) =
@@ -32,24 +32,6 @@ class LeaderboardViewModel(
         private const val FIRST_PAGE = 1
     }
 
-    val isDarkTheme: Flow<Boolean?>
-        get() = _isDarkThemeFlow.asStateFlow()
-
-    private val _isDarkThemeFlow: MutableStateFlow<Boolean?> =
-        MutableStateFlow(null)
-
-    fun isDarkTheme() {
-        viewModelScope.launch {
-            _isDarkThemeFlow.value = preferences.isInDarkMode()
-        }
-    }
-
-    fun setDarkTheme(isDarkTheme: Boolean) {
-        viewModelScope.launch {
-            preferences.setDarkMode(isDarkTheme)
-            _isDarkThemeFlow.value = isDarkTheme
-        }
-    }
 
     val usersStats: Flow<IOState<List<UserStats>>>
         get() = _usersStatsFlow.asStateFlow()

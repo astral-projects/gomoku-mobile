@@ -15,6 +15,7 @@ import gomoku.domain.Idle
 import gomoku.domain.idle
 import gomoku.ui.Navigation
 import gomoku.ui.about.AboutActivity
+import gomoku.ui.home.USERNAME_EXTRA
 import gomoku.ui.login.LoginActivity
 import gomoku.ui.variant.VariantActivity
 import kotlinx.coroutines.launch
@@ -56,14 +57,22 @@ class LeaderboardActivity : ComponentActivity() {
             val state by viewModel.usersStats.collectAsState(initial = idle())
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             LeaderboardScreen(
+                inDarkTheme = isDarkTheme ?: false,
                 state = state,
+                setDarkTheme = { viewModel.setDarkTheme(it) },
                 getUserStats = { id -> viewModel.fetchUserStats(id) },
                 onSearchRequest = { term -> viewModel.searchUsers(term) },
                 getItemsFromPage = { page -> viewModel.fetchUsersStats(page) },
-                toFindGameScreen = { VariantActivity.navigateTo(this) },
+                toFindGameScreen = { VariantActivity.navigateTo(this, username) },
                 toAboutScreen = { AboutActivity.navigateTo(this) },
                 onLogoutRequest = { LoginActivity.navigateTo(this) },
             )
         }
     }
+
+    val username: String by lazy {
+        intent?.getStringExtra(USERNAME_EXTRA)
+            ?: throw IllegalArgumentException("Username must be provided")
+    }
+
 }

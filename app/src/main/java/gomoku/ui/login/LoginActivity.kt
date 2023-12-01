@@ -8,12 +8,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import gomoku.GomokuDependencyProvider
 import gomoku.domain.Loaded
-import gomoku.domain.getOrNull
+import gomoku.domain.getOrThrow
 import gomoku.domain.idle
-import gomoku.domain.login.UserInfo
 import gomoku.ui.Navigation
 import gomoku.ui.home.HomeActivity
 import gomoku.ui.register.RegisterActivity
@@ -45,7 +46,7 @@ class LoginActivity : ComponentActivity() {
         lifecycleScope.launch {
             viewModel.userInfo.collect {
                 if (it is Loaded && it.value.isSuccess) {
-                    doNavigation(userInfo = it.getOrNull())
+                    doNavigation(userName = it.getOrThrow().username)
                     viewModel.resetToIdle()
                 } else if (it is Loaded && it.value.isFailure) {
                     viewModel.resetToIdle()
@@ -54,11 +55,13 @@ class LoginActivity : ComponentActivity() {
         }
 
         lifecycleScope.launch {
-            viewModel.isDarkTheme.collect {
-                viewModel.isDarkTheme()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isDarkTheme.collect {
+                    viewModel.isDarkTheme()
+                }
             }
-        }
 
+        }
         setContent {
             val state by viewModel.userInfo.collectAsState(initial = idle())
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
@@ -76,11 +79,10 @@ class LoginActivity : ComponentActivity() {
     /**
      * Navigates to the appropriate activity, depending on whether the
      * user information has already been provided or not.
-     * @param userInfo the user information.
+     * @param userName the user information.
      */
-    private fun doNavigation(userInfo: UserInfo?) {
-        if (userInfo != null)
-            HomeActivity.navigateTo(this@LoginActivity, userInfo)
+    private fun doNavigation(userName: String) {
+        HomeActivity.navigateTo(this@LoginActivity, userName)
     }
 
 }

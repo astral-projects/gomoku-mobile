@@ -8,7 +8,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import gomoku.GomokuDependencyProvider
 import gomoku.domain.Loaded
 import gomoku.domain.idle
@@ -45,10 +47,22 @@ class RegisterActivity : ComponentActivity() {
                 }
             }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isDarkTheme.collect {
+                    viewModel.isDarkTheme()
+                }
+            }
+
+        }
+
         setContent {
             val state by viewModel.userId.collectAsState(initial = idle())
+            val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             RegisterScreen(
-                state,
+                registerState = state,
+                inDarkTheme = isDarkTheme,
                 onCreateUser = { username, email, password ->
                     viewModel.register(
                         username,

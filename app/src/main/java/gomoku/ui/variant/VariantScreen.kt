@@ -16,6 +16,8 @@ import gomoku.ui.variant.components.VariantView
  * @param toAboutScreen callback to be executed when the user clicks on the respective navigation item.
  * @param onLogoutRequest callback to be executed when the user clicks on the respective navigation item.
  */
+
+//TODO(Decide if we pass Boolean or Boolean? as parameter uin dartheme, i think its more correct to pass Boolean? but we need to check)
 @Composable
 fun VariantScreen(
     gameMatchState: IOState<Game?>,
