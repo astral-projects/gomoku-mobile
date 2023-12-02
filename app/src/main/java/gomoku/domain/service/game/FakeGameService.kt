@@ -11,6 +11,7 @@ import gomoku.domain.game.moves.move.Player
 import gomoku.domain.login.UserInfo
 import gomoku.domain.service.AbstractFakeService
 import gomoku.domain.service.game.errors.FetchGameException
+import gomoku.domain.service.game.errors.FetchLobbyException
 import gomoku.domain.variant.VariantConfig
 import java.util.UUID
 
@@ -27,7 +28,7 @@ object FakeGameService : GameService, AbstractFakeService() {
     )
 
     override suspend fun fetchGameById(id: String): Game =
-        games.findOrThrow { it.id == id }
+        games.findOrThrow(FetchGameException()) { it.id == id }
 
     override suspend fun findGame(variant: VariantConfig, userInfo: UserInfo): Match {
         val lobby: Lobby? = lobbies.find {
@@ -60,7 +61,7 @@ object FakeGameService : GameService, AbstractFakeService() {
     }
 
     override suspend fun makeMove(gameId: String, move: Move): Game {
-        val game = games.findOrThrow { it.id == gameId }
+        val game = games.findOrThrow(FetchGameException()) { it.id == gameId }
         val newBoard = game.board.copy(
             moves = game.board.moves + move,
             turn = BoardTurn(game.board.turn.other(), turnTimer)
@@ -68,19 +69,13 @@ object FakeGameService : GameService, AbstractFakeService() {
         return game.copy(board = newBoard)
     }
 
+    override suspend fun exitLobby(lobbyId: String, userInfo: UserInfo) {
+        val lobby = lobbies.findOrThrow(FetchLobbyException()) { it.id == lobbyId }
+        lobbies.remove(lobby)
+    }
+
     /**
      * Generates a random UUID to be used as an id.
      */
     private fun generateRandomId(): String = UUID.randomUUID().toString()
-
-    /**
-     * Returns the first element matching the given [predicate].
-     * @param predicate The predicate to be matched.
-     * @throws FetchGameException If no element matches the predicate.
-     */
-    @Throws(FetchGameException::class)
-    private inline fun <T> Iterable<T>.findOrThrow(predicate: (T) -> Boolean): T {
-        for (element in this) if (predicate(element)) return element
-        throw FetchGameException("Game not found")
-    }
 }

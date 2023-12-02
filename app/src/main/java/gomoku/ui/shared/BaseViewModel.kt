@@ -2,7 +2,10 @@ package gomoku.ui.shared
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import gomoku.domain.login.UserInfo
 import gomoku.domain.storage.PreferencesRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,4 +36,9 @@ abstract class BaseViewModel(
             _isDarkThemeFlow.value = isInDarkTheme
         }
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getUserInfo(): UserInfo = viewModelScope.async {
+        preferences.getUserInfo()
+    }.getCompleted() ?: throw IllegalStateException("User info is null.")
 }

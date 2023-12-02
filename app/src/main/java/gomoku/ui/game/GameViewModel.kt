@@ -12,12 +12,9 @@ import gomoku.domain.game.moves.Move
 import gomoku.domain.idle
 import gomoku.domain.loaded
 import gomoku.domain.loading
-import gomoku.domain.login.UserInfo
 import gomoku.domain.service.game.GameService
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.ui.shared.BaseViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -62,12 +59,4 @@ class GameViewModel(
             _gameFlow.value = loaded(result)
         }
     }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Throws(IllegalStateException::class)
-    fun getLocalPlayer(): UserInfo =
-        viewModelScope.async {
-            preferences.getUserInfo()
-                ?: throw IllegalStateException("The user info is not set.")
-        }.getCompleted()
 }

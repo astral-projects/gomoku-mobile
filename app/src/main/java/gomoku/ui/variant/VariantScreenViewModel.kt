@@ -7,7 +7,9 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import gomoku.domain.IOState
 import gomoku.domain.Idle
 import gomoku.domain.Loaded
+import gomoku.domain.game.match.Lobby
 import gomoku.domain.game.match.Match
+import gomoku.domain.getOrThrow
 import gomoku.domain.idle
 import gomoku.domain.loaded
 import gomoku.domain.loading
@@ -89,6 +91,16 @@ class VariantScreenViewModel(
         }
     }
 
+    fun exitLobby() {
+        check(_matchFlow.value is Loaded) { "The view model is not in a loaded state." }
+        viewModelScope.launch {
+            val lobbyId = (_matchFlow.value.getOrThrow() as Lobby).id
+            Log.v("ViewModelVariants", "leaving lobby in view model...")
+            runCatching { gameService.exitLobby(lobbyId, getUserInfo()) }
+            Log.v("ViewModelVariants", "left lobby in view model")
+            resetToIdle()
+        }
+    }
 
     /**
      * Resets the view model to the idle state.

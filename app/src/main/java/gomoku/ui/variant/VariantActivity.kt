@@ -87,7 +87,9 @@ class VariantActivity : ComponentActivity() {
             val stateFindGame by viewModel.match.collectAsState(initial = idle())
             val stateIsInDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             VariantScreen(
+                userInfo = viewModel.getUserInfo(),
                 onPlayRequest = { variantConfig -> viewModel.findGame(variantConfig) },
+                onLobbyExitRequest = { viewModel.exitLobby() },
                 gameMatchState = stateFindGame,
                 toLeaderboardScreen = { LeaderboardActivity.navigateTo(this) },
                 toAboutScreen = { AboutActivity.navigateTo(this) },

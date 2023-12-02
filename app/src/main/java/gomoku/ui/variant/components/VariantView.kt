@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import gomoku.domain.home.Home
+import gomoku.domain.login.UserInfo
 import gomoku.domain.variant.Variant
 import gomoku.domain.variant.VariantConfig
 import gomoku.ui.register.components.FooterBubbles
@@ -32,6 +33,7 @@ import gomoku.ui.shared.components.TopNavBarWithBurgerMenu
 import gomoku.ui.shared.components.navigationDrawer.NavigationDrawer
 import gomoku.ui.shared.components.navigationDrawer.NavigationItem
 import gomoku.ui.shared.components.navigationDrawer.NavigationItemGroup
+import gomoku.ui.shared.popups.WaitingOpponentPopup
 import gomoku.ui.shared.theme.GomokuTheme
 import gomoku.ui.variant.VariantScreenState
 import kotlinx.coroutines.launch
@@ -40,11 +42,15 @@ import pdm.gomoku.R
 // Config
 private val variantHeaderSpacerWidth = 12.dp
 private val variantSurfaceVerticalPadding = 15.dp
-
+private val ThemedCircularProgressIndicatorPadding = 5.dp
 
 /**
  * Represents the Variant screen main composable.
- * @param onSubmit the callback to be called when the submit button is clicked.
+ * @param userInfo the [UserInfo] of the logged-in user.
+ * @param inDarkTheme whether the app is in dark theme or not.
+ * @param variantScreenState the [VariantScreenState] of the screen.
+ * @param onPlayRequest the callback to be called when the submit button is clicked.
+ * @param onLobbyExitRequest the callback to be called when the user wants to leave the lobby.
  * @param variants the [List] of [VariantConfig]s to be displayed in the body.
  * @param toLeaderboardScreen callback to be executed when the user clicks on the respective navigation item.
  * @param toAboutScreen callback to be executed when the user clicks on the respective navigation item.
@@ -52,9 +58,11 @@ private val variantSurfaceVerticalPadding = 15.dp
  */
 @Composable
 fun VariantView(
+    userInfo: UserInfo,
     inDarkTheme: Boolean,
     variantScreenState: VariantScreenState,
-    onSubmit: (variantConfig: VariantConfig) -> Unit,
+    onPlayRequest: (variantConfig: VariantConfig) -> Unit,
+    onLobbyExitRequest: () -> Unit,
     variants: List<VariantConfig>,
     setDarkTheme: (Boolean) -> Unit,
     toLeaderboardScreen: () -> Unit,
@@ -139,7 +147,11 @@ fun VariantView(
                         )
                     }
                     if (variantScreenState == VariantScreenState.LoadingVariants) {
-                        ThemedCircularProgressIndicator()
+                        ThemedCircularProgressIndicator(
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(ThemedCircularProgressIndicatorPadding)
+                        )
                     } else {
                         VariantTable(
                             variants = variants,
@@ -151,14 +163,25 @@ fun VariantView(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        if (variantScreenState == VariantScreenState.LoadingGameMatch) {
-                            ThemedCircularProgressIndicator()
-                        } else {
-                            SubmitButton(
-                                enable = selectedOption != null,
-                                onButtonText = stringResource(Variant.submitButtonText),
-                                onClick = { selectedOption?.let { onSubmit(it) } }
-                            )
+                        when (variantScreenState) {
+                            VariantScreenState.LoadingGameMatch -> {
+                                ThemedCircularProgressIndicator()
+                            }
+
+                            VariantScreenState.WaitingInLobby -> {
+                                WaitingOpponentPopup(
+                                    playerIconId = userInfo.iconId,
+                                    onDismissRequest = onLobbyExitRequest
+                                )
+                            }
+
+                            else -> {
+                                SubmitButton(
+                                    enable = selectedOption != null,
+                                    onButtonText = stringResource(Variant.submitButtonText),
+                                    onClick = { selectedOption?.let { onPlayRequest(it) } }
+                                )
+                            }
                         }
                     }
                 }

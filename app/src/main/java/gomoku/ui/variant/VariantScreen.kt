@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import gomoku.domain.IOState
 import gomoku.domain.game.match.Match
 import gomoku.domain.getOrNull
+import gomoku.domain.login.UserInfo
 import gomoku.domain.variant.VariantConfig
 import gomoku.ui.variant.components.VariantView
 
@@ -16,27 +17,29 @@ import gomoku.ui.variant.components.VariantView
  * @param toAboutScreen callback to be executed when the user clicks on the respective navigation item.
  * @param onLogoutRequest callback to be executed when the user clicks on the respective navigation item.
  */
-
-//TODO(Decide if we pass Boolean or Boolean? as parameter uin dartheme, i think its more correct to pass Boolean? but we need to check)
 @Composable
 fun VariantScreen(
+    userInfo: UserInfo,
     gameMatchState: IOState<Match>,
     isDarkTheme: Boolean? = false,
     setDarkTheme: (Boolean) -> Unit,
     variantsState: IOState<List<VariantConfig>>,
     onPlayRequest: (variantConfig: VariantConfig) -> Unit,
+    onLobbyExitRequest: () -> Unit,
     toLeaderboardScreen: () -> Unit,
     toAboutScreen: () -> Unit,
     onLogoutRequest: () -> Unit
 ) {
     VariantView(
+        userInfo = userInfo,
         inDarkTheme = isDarkTheme ?: false,
         variantScreenState = variantScreenState(variantsState, gameMatchState),
-        onSubmit = onPlayRequest,
+        onPlayRequest = onPlayRequest,
+        onLobbyExitRequest = onLobbyExitRequest,
         variants = variantsState.getOrNull() ?: emptyList(),
         setDarkTheme = setDarkTheme,
         toLeaderboardScreen = toLeaderboardScreen,
         toAboutScreen = toAboutScreen,
-        onLogoutRequest = onLogoutRequest
+        onLogoutRequest = onLogoutRequest,
     )
 }

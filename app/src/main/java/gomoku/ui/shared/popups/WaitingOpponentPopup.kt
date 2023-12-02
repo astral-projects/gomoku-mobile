@@ -40,7 +40,7 @@ private val iconSize = 75.dp
 fun WaitingOpponentPopup(
     background: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     playerIconId: Int,
-    onDismissRequest: () -> Unit = {}
+    onDismissRequest: () -> Unit
 ) {
     DomainPopup(
         onDismissRequest = onDismissRequest,
@@ -91,6 +91,7 @@ fun WaitingOpponentPopup(
 @Preview(showBackground = true)
 private fun WaitingOpponentPopupPreview() {
     WaitingOpponentPopup(
-        playerIconId = R.drawable.man5
+        playerIconId = R.drawable.man5,
+        onDismissRequest = {}
     )
 }

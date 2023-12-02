@@ -5,6 +5,7 @@ import gomoku.domain.game.match.Match
 import gomoku.domain.game.moves.Move
 import gomoku.domain.login.UserInfo
 import gomoku.domain.service.game.errors.FetchGameException
+import gomoku.domain.service.game.errors.FetchLobbyException
 import gomoku.domain.variant.VariantConfig
 
 /**
@@ -40,4 +41,13 @@ interface GameService {
      */
     @Throws(FetchGameException::class)
     suspend fun makeMove(gameId: String, move: Move): Game
+
+    /**
+     * Attempts to exit the lobby with the specified id.
+     * @param lobbyId The id of the lobby to exit.
+     * @param userInfo The user information for the player exiting the lobby.
+     * @throws FetchLobbyException If the lobby with the given id cannot be found.
+     */
+    @Throws(FetchLobbyException::class)
+    suspend fun exitLobby(lobbyId: String, userInfo: UserInfo)
 }

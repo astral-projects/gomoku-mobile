@@ -89,7 +89,7 @@ class GameActivity : ComponentActivity() {
             GameScreen(
                 gameState = gameState,
                 isDarkTheme = isDarkTheme,
-                localPlayer = viewModel.getLocalPlayer().toPlayerInfo(),
+                localPlayer = viewModel.getUserInfo().toPlayerInfo(),
                 onLeaveGameRequest = { HomeActivity.navigateTo(this, username) },
                 onCellClick = { square: Square ->
                     viewModel.makeMove(

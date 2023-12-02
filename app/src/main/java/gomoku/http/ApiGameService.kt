@@ -37,6 +37,10 @@ class GomokuGame(
         TODO("Not yet implemented")
     }
 
+    override suspend fun exitLobby(lobbyId: String, userInfo: UserInfo) {
+        TODO("Not yet implemented")
+    }
+
     private data class GameDto(
         val id: String,
         val state: String,

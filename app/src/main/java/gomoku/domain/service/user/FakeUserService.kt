@@ -51,7 +51,7 @@ class FakeUserService : UserService, AbstractFakeService() {
         password: String
     ): UserInfo {
         delay(fetchDelay)
-        return users.findOrThrow { it.username == username }
+        return users.findOrThrow(FetchUserException()) { it.username == username }
     }
 
     override suspend fun register(
@@ -83,7 +83,7 @@ class FakeUserService : UserService, AbstractFakeService() {
 
     override suspend fun fetchUserStats(userId: Int): UserStats {
         delay(fetchDelay)
-        return userStats.findOrThrow { it.id == userId }
+        return userStats.findOrThrow(FetchUserException()) { it.id == userId }
     }
 
     override suspend fun fetchUsersStats(page: Int): List<UserStats> {
@@ -109,17 +109,6 @@ class FakeUserService : UserService, AbstractFakeService() {
             val end = start + PAGE_SIZE
             val actualEnd = end.coerceAtMost(list.size)
             return list.subList(start.coerceAtMost(actualEnd), actualEnd)
-        }
-
-        /**
-         * Returns the first element matching the given [predicate].
-         * @param predicate The predicate to be matched.
-         * @throws FetchUserException If no element matches the predicate.
-         */
-        @Throws(FetchUserException::class)
-        private inline fun <T> Iterable<T>.findOrThrow(predicate: (T) -> Boolean): T {
-            for (element in this) if (predicate(element)) return element
-            throw FetchUserException("User not found")
         }
     }
 }

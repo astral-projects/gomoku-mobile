@@ -16,7 +16,7 @@ enum class VariantScreenState {
     LoadingVariants,
     LoadingGameMatch,
     WaitingInLobby,
-    Loaded,
+    FoundGame,
     Error
 }
 
@@ -30,8 +30,8 @@ fun variantScreenState(
     return when {
         variantsState is Loading || variantsState is Idle -> VariantScreenState.LoadingVariants
         gameMatchState is Loading -> VariantScreenState.LoadingGameMatch
-        gameMatchState is Loaded && gameMatchState.value.getOrNull() is Lobby -> VariantScreenState.WaitingInLobby
-        gameMatchState is Loaded && gameMatchState.value.getOrNull() is Game -> VariantScreenState.Loaded
+        variantsState is Loaded && gameMatchState is Loaded && gameMatchState.value.getOrNull() is Game -> VariantScreenState.FoundGame
+        variantsState is Loaded && gameMatchState is Loaded && gameMatchState.value.getOrNull() is Lobby -> VariantScreenState.WaitingInLobby
         else -> VariantScreenState.Error
     }
 }

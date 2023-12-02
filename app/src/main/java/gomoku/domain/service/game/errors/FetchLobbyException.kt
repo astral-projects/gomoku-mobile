@@ -1,6 +1,6 @@
 package gomoku.domain.service.game.errors
 
-class FetchGameException(
-    message: String = "Could not fetch game",
+class FetchLobbyException(
+    message: String = "Could not fetch lobby",
     cause: Throwable? = null
 ) : Exception(message, cause)

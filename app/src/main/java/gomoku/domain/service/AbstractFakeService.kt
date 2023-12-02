@@ -113,4 +113,17 @@ abstract class AbstractFakeService {
             BoardSize.FIFTEEN
         )
     )
+
+    /**
+     * Finds the first element matching the given [predicate],
+     * or throws the given [ex] if no such element was found.
+     * @param ex The exception to throw if no element was found.
+     * @param predicate The predicate to test elements against.
+     * @return The first element matching the given [predicate].
+     */
+    @Throws(Exception::class)
+    inline fun <T> Iterable<T>.findOrThrow(ex: Exception, predicate: (T) -> Boolean): T {
+        for (element in this) if (predicate(element)) return element
+        throw ex
+    }
 }
