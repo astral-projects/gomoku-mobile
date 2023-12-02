@@ -33,7 +33,7 @@ import gomoku.ui.shared.components.TopNavBarWithBurgerMenu
 import gomoku.ui.shared.components.navigationDrawer.NavigationDrawer
 import gomoku.ui.shared.components.navigationDrawer.NavigationItem
 import gomoku.ui.shared.components.navigationDrawer.NavigationItemGroup
-import gomoku.ui.shared.popups.WaitingOpponentPopup
+import gomoku.ui.shared.dialogs.WaitingOpponentDialog
 import gomoku.ui.shared.theme.GomokuTheme
 import gomoku.ui.variant.VariantScreenState
 import kotlinx.coroutines.launch
@@ -169,7 +169,7 @@ fun VariantView(
                             }
 
                             VariantScreenState.WaitingInLobby -> {
-                                WaitingOpponentPopup(
+                                WaitingOpponentDialog(
                                     playerIconId = userInfo.iconId,
                                     onDismissRequest = onLobbyExitRequest
                                 )

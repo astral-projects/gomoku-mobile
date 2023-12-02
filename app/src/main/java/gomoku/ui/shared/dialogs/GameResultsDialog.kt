@@ -1,4 +1,4 @@
-package gomoku.ui.shared.popups
+package gomoku.ui.shared.dialogs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,21 +23,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import gomoku.domain.leaderboard.PlayerInfo
 import gomoku.ui.shared.background.BackgroundConfig
 import gomoku.ui.shared.theme.GomokuTheme
 import pdm.gomoku.R
 
-// Constants
-private const val TITLE = "Results"
-private const val BODY_TEXT_TOP = "Winner"
-private const val BODY_TEXT_BOTTOM = "Points"
-
 // Config
+private val dialogRoundCornerShapeSize = 20.dp
+private const val DIALOG_WIDTH_FACTOR = 0.9f
 private val headerIconSize = 40.dp
 private val playerInfoSpacerHeight = 4.dp
 private val iconPointsSpacerWidth = 15.dp
@@ -50,15 +49,16 @@ val titleIconSpacerHeight = 8.dp
 private val playerTextOffsetPadding = 30.dp
 
 /**
- * Pop up that will be shown when the game is finished with the game results.
+ * Dialog that will be shown when the game is finished with the respective results.
  * @param backgroundConfig configuration of the background.
  * @param winnerInfo information of the winner.
  * @param loserInfo information of the loser.
  * @param winnerPoints points of the winner.
  * @param loserPoints points of the loser.
+ * @param onDismissRequest callback to be invoked when the user wants to dismiss the dialog.
  */
 @Composable
-fun GameResultsPopup(
+fun GameResultsDialog(
     backgroundConfig: BackgroundConfig = BackgroundConfig(
         LocalConfiguration.current
     ),
@@ -68,13 +68,13 @@ fun GameResultsPopup(
     loserPoints: Int,
     onDismissRequest: () -> Unit,
 ) {
-    DomainPopup(onDismissRequest = onDismissRequest) {
-        val screenWidth = backgroundConfig.screenWidth
-        val cornerShape = RoundedCornerShape(popupRoundCornerShapeSize)
+    val screenWidth = backgroundConfig.screenWidth
+    val cornerShape = RoundedCornerShape(dialogRoundCornerShapeSize)
+    Dialog(onDismissRequest = onDismissRequest) {
         Column(
             modifier = Modifier
+                .width(screenWidth * DIALOG_WIDTH_FACTOR)
                 .clip(cornerShape)
-                .width(screenWidth * POPUP_WIDTH_FACTOR)
                 .border(borderWidth, MaterialTheme.colorScheme.outline, cornerShape)
                 .background(MaterialTheme.colorScheme.primary),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -97,7 +97,7 @@ fun GameResultsPopup(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        BodyTitle(text = TITLE)
+                        BodyTitle(text = stringResource(id = gomoku.domain.dialog.Dialog.GameResults.TITLE))
                         Spacer(modifier = Modifier.height(titleIconSpacerHeight))
                         Image(
                             painterResource(id = R.drawable.checklist),
@@ -127,9 +127,9 @@ fun GameResultsPopup(
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        BodyTitle(text = BODY_TEXT_TOP)
+                        BodyTitle(text = stringResource(id = gomoku.domain.dialog.Dialog.GameResults.BODY_TEXT_TOP))
                         IconHeightSpacer()
-                        BodyTitle(text = BODY_TEXT_BOTTOM)
+                        BodyTitle(text = stringResource(id = gomoku.domain.dialog.Dialog.GameResults.BODY_TEXT_BOTTOM))
                     }
                     IconPointsSpacer()
                     // Loser match points
@@ -224,9 +224,9 @@ private fun IconHeightSpacer() = Spacer(modifier = Modifier.height(iconPointsSpa
 
 @Preview(showBackground = true)
 @Composable
-fun GameResultsPopup() {
+fun GameResultsDialog() {
     GomokuTheme {
-        GameResultsPopup(
+        GameResultsDialog(
             winnerInfo = PlayerInfo("Host Player", R.drawable.man),
             loserInfo = PlayerInfo("Guest Player", R.drawable.woman),
             winnerPoints = 250,

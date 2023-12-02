@@ -1,4 +1,4 @@
-package gomoku.ui.leaderboard.components
+package gomoku.ui.shared.dialogs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -37,11 +38,12 @@ import gomoku.ui.shared.theme.GomokuTheme
 import pdm.gomoku.R
 
 // Config
-const val DIALOG_WIDTH_FACTOR = 0.9f
-const val DIALOG_HEIGHT_FACTOR = 0.55f
+private const val DIALOG_WIDTH_FACTOR = 0.9f
+private const val DIALOG_HEIGHT_FACTOR = 0.55f
 private val interiorDialogPadding = 5.dp
 private val borderSize = 2.dp
-private val spaceBetweenTexts = (-7).dp
+private val verticalSpaceBetweenTexts = (-7).dp
+private val horizontalSpaceBetweenTexts = 5.dp
 private val dialogCornerShapeSize = 55.dp
 private val iconProfileSize = 150.dp
 private val leftRightPadding = 15.dp
@@ -50,8 +52,14 @@ private val bottomPadding = 30.dp
 private val topTextPadding = 10.dp
 private val bottomSymbolPadding = 10.dp
 
+/**
+ * Dialog that will be shown when the user clicks on the profile icon.
+ * @param background configuration of the background.
+ * @param userRankingInfo ranking info of the user.
+ * @param onDismissRequest callback to be invoked when the user wants to dismiss the dialog.
+ */
 @Composable
-fun UserDialog(
+fun UserStatsDialog(
     background: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     userRankingInfo: RankingInfo,
     onDismissRequest: () -> Unit,
@@ -99,9 +107,7 @@ fun UserDialog(
                                 .size(iconProfileSize)
                         )
                     }
-                    Row {
-                        DisplayRankingInfo(gamesInfo = userRankingInfo)
-                    }
+                    DisplayRankingInfo(gamesInfo = userRankingInfo)
                 }
 
             }
@@ -111,36 +117,38 @@ fun UserDialog(
 
 @Composable
 fun DisplayRankingInfo(gamesInfo: RankingInfo) {
-    // games
-    GameStat(
-        amount = gamesInfo.playedGames.toString(),
-        component = "Games",
-        iconId = R.drawable.game_controller,
-        iconDescription = "Player Games"
-    )
-    // wins
-    GameStat(
-        amount = gamesInfo.wins.toString(),
-        component = "Wins",
-        iconId = R.drawable.win_badge,
-        iconDescription = "Game Wins"
-    )
-
-    // losses
-    GameStat(
-        amount = gamesInfo.losses.toString(),
-        component = "Losses",
-        iconId = R.drawable.lost,
-        iconDescription = "Games Lost"
-    )
-
-    // draws
-    GameStat(
-        amount = gamesInfo.draws.toString(),
-        component = "Draws",
-        iconId = R.drawable.handshake,
-        iconDescription = "Game Draws"
-    )
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(horizontalSpaceBetweenTexts),
+    ) {
+        // games
+        GameStat(
+            amount = gamesInfo.playedGames.toString(),
+            component = stringResource(id = gomoku.domain.dialog.Dialog.UserStats.GAMES),
+            iconId = R.drawable.game_controller,
+            iconDescription = "Player Games"
+        )
+        // wins
+        GameStat(
+            amount = gamesInfo.wins.toString(),
+            component = stringResource(id = gomoku.domain.dialog.Dialog.UserStats.WINS),
+            iconId = R.drawable.win_badge,
+            iconDescription = "Game Wins"
+        )
+        // losses
+        GameStat(
+            amount = gamesInfo.losses.toString(),
+            component = stringResource(id = gomoku.domain.dialog.Dialog.UserStats.LOSSES),
+            iconId = R.drawable.lost,
+            iconDescription = "Games Lost"
+        )
+        // draws
+        GameStat(
+            amount = gamesInfo.draws.toString(),
+            component = stringResource(id = gomoku.domain.dialog.Dialog.UserStats.DRAWS),
+            iconId = R.drawable.handshake,
+            iconDescription = "Game Draws"
+        )
+    }
 }
 
 @Composable
@@ -186,7 +194,7 @@ fun GameStat(amount: String, component: String, iconId: Int, iconDescription: St
 fun TextTitle(text: String, value: String) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(spaceBetweenTexts)
+        verticalArrangement = Arrangement.spacedBy(verticalSpaceBetweenTexts)
     ) {
         Text(
             text = NumberFormatter.format(text),
@@ -201,7 +209,7 @@ fun TextTitle(text: String, value: String) {
 @Composable
 fun ProfileDialogPreview() {
     GomokuTheme {
-        UserDialog(
+        UserStatsDialog(
             userRankingInfo = RankingInfo(
                 id = 1,
                 playerInfo = PlayerInfo(
@@ -224,7 +232,7 @@ fun ProfileDialogPreview() {
 @Composable
 fun ProfileDialogPreviewWithALotOfGames() {
     GomokuTheme {
-        UserDialog(
+        UserStatsDialog(
             userRankingInfo = RankingInfo(
                 id = 1,
                 playerInfo = PlayerInfo(

@@ -85,32 +85,32 @@ abstract class AbstractFakeService {
         VariantConfig(
             2,
             VariantName.RENJU,
-            OpeningRule.PRO,
-            BoardSize.FIFTEEN
+            OpeningRule.LONG_PRO,
+            BoardSize.NINETEEN
         ),
         VariantConfig(
             3,
             VariantName.CARO,
-            OpeningRule.PRO,
+            OpeningRule.LONG_PRO,
             BoardSize.FIFTEEN
         ),
         VariantConfig(
             4,
             VariantName.OMOK,
             OpeningRule.PRO,
-            BoardSize.FIFTEEN
+            BoardSize.NINETEEN
         ),
         VariantConfig(
             5,
             VariantName.NINUKI_RENJU,
-            OpeningRule.PRO,
+            OpeningRule.LONG_PRO,
             BoardSize.FIFTEEN
         ),
         VariantConfig(
             6,
             VariantName.PENTE,
             OpeningRule.PRO,
-            BoardSize.FIFTEEN
+            BoardSize.NINETEEN
         )
     )
 

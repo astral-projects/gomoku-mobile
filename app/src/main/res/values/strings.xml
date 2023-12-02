@@ -45,4 +45,18 @@
     <string name="nav_item_logout">Logout</string>
     <string name="register_invalid_credentials">Invalid credentials</string>
     <string name="login_failed_message">Invalid credentials</string>
+    <string name="user_stats_games">Games</string>
+    <string name="user_stats_wins">Wins</string>
+    <string name="user_stats_losses">Losses</string>
+    <string name="user_stats_draws">Draws</string>
+    <string name="game_results_title">Results</string>
+    <string name="game_results_body_text_top">Winner</string>
+    <string name="game_results_body_text_bottom">Points</string>
+    <string name="leave_game_message">Are you sure you want to quit this game? You won\'t receive any points as a result.</string>
+    <string name="leave_game_leave_msg">Yes</string>
+    <string name="leave_game_continue_msg">Never-mind</string>
+    <string name="turn_time_exceed_title">Turn Time Exceeded</string>
+    <string name="turn_time_exceed_body_msg">Your strategic moves were on point, but this time, the clock got better of you. Unfortunately, no points can be awarded as a result.</string>
+    <string name="turn_time_exceed_button_msg">Acknowledge</string>
+    <string name="waiting_opponent_title">Waiting for an opponent…</string>
 </resources>

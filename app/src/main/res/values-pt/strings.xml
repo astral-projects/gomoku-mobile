@@ -42,4 +42,18 @@
     <string name="nav_group_items_settings">Definições</string>
     <string name="register_invalid_credentials">Credenciais inválidas</string>
     <string name="login_failed_message">Credenciais inválidas</string>
+    <string name="user_stats_games">Jogos</string>
+    <string name="user_stats_wins">Vitórias</string>
+    <string name="user_stats_losses">Perdas</string>
+    <string name="user_stats_draws">Empates</string>
+    <string name="game_results_title">Resultados</string>
+    <string name="game_results_body_text_top">Vencedor</string>
+    <string name="game_results_body_text_bottom">Pontos</string>
+    <string name="leave_game_message">Tens a certeza de que queres desistir deste jogo? Não receberás nenhum ponto como resultado.</string>
+    <string name="leave_game_leave_msg">Sim</string>
+    <string name="leave_game_continue_msg">Continuar</string>
+    <string name="turn_time_exceed_title">Tempo de vez terminou</string>
+    <string name="turn_time_exceed_body_msg">As tuas jogadas estratégicas foram perfeitas, mas desta vez, o relógio levou a melhor. Infelizmente, não podes ganhar pontos por isso.</string>
+    <string name="turn_time_exceed_button_msg">Percebi</string>
+    <string name="waiting_opponent_title">À espera de um adversário…</string>
 </resources>

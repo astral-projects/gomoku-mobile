@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,10 +31,12 @@ import gomoku.ui.game.components.chips.GameInfoChip
 import gomoku.ui.game.components.chips.PlayerInfoChip
 import gomoku.ui.shared.components.DismissButton
 import gomoku.ui.shared.components.SkeletonLoader
+import gomoku.ui.shared.dialogs.LeaveGameDialog
 import pdm.gomoku.R
 
 /**
  * Represents the game view.
+ * @param playerInfo the player info.
  * @param localPlayer the local player.
  * @param onLeaveGameRequest callback to be called when the user wants to leave the game.
  * @param onCellClick callback to be called when a cell is clicked.
@@ -46,10 +52,16 @@ fun GameView(
     game: Game,
     isLoading: Boolean = false
 ) {
+    var showLeaveGameDialog by rememberSaveable { mutableStateOf(false) }
+    if (showLeaveGameDialog) {
+        LeaveGameDialog(
+            onContinueRequest = { showLeaveGameDialog = false },
+            onLeaveRequest = onLeaveGameRequest
+        )
+    }
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -61,7 +73,6 @@ fun GameView(
                     label = "${game.board.turn.timer}"
                 )
             }
-
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -108,7 +119,7 @@ fun GameView(
                 DismissButton(
                     onButtonText = stringResource(id = R.string.game_leave_button_text),
                     enable = !isLoading,
-                    onDismiss = onLeaveGameRequest
+                    onDismiss = { showLeaveGameDialog = true }
                 )
             }
         }

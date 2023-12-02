@@ -4,11 +4,13 @@ import androidx.compose.runtime.Composable
 import gomoku.domain.IOState
 import gomoku.domain.leaderboard.Term
 import gomoku.domain.leaderboard.UserStats
+import gomoku.domain.login.UserInfo
 import gomoku.ui.leaderboard.components.LeaderboardView
 
 /**
  * Represents the Leaderboard screen main composable.
  * @param state the state of the screen.
+ * @param userInfo the user info.
  * @param isDarkTheme the current theme of the app.
  * @param setDarkTheme the callback to be called when the user changes the theme.
  * @param onSearchRequest callback to be executed when the user types on the search bar.
@@ -21,6 +23,7 @@ import gomoku.ui.leaderboard.components.LeaderboardView
 @Composable
 fun LeaderboardScreen(
     state: IOState<List<UserStats>>,
+    userInfo: UserInfo,
     isDarkTheme: Boolean,
     setDarkTheme: (isDarkTheme: Boolean) -> Unit,
     onSearchRequest: (term: Term) -> Unit,
@@ -32,6 +35,7 @@ fun LeaderboardScreen(
 ) {
     LeaderboardView(
         state = state,
+        userInfo = userInfo,
         getUserStats = getUserStats,
         getItemsFromPage = getItemsFromPage,
         onSearchRequest = onSearchRequest,

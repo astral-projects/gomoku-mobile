@@ -39,6 +39,7 @@ import gomoku.ui.shared.components.TopNavBarWithBurgerMenu
 import gomoku.ui.shared.components.navigationDrawer.NavigationDrawer
 import gomoku.ui.shared.components.navigationDrawer.NavigationItem
 import gomoku.ui.shared.components.navigationDrawer.NavigationItemGroup
+import gomoku.ui.shared.dialogs.UserStatsDialog
 import gomoku.ui.shared.theme.GomokuTheme
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -55,8 +56,9 @@ private const val PAGE_SIZE = 20
 /**
  * Represents the Leaderboard screen main composable.
  * @param state the state of the screen.
- * @param scope the lifecycle scope of the activity.
- * @param usersRankingInfo the users ranking info to be displayed in the leaderboard.
+ * @param userInfo the logged user.
+ * @param isDarkTheme the current theme of the app.
+ * @param setDarkTheme the callback to be called when the user changes the theme.
  * @param getUserStats callback to get the user stats, given an id.
  * @param getItemsFromPage callback to get the items to be displayed in the leaderboard, given a page number.
  * @param onSearchRequest callback to be executed when a search is requested.
@@ -66,6 +68,7 @@ private const val PAGE_SIZE = 20
  */
 @Composable
 fun LeaderboardView(
+    userInfo: UserInfo,
     isDarkTheme: Boolean,
     setDarkTheme: (Boolean) -> Unit,
     state: IOState<List<UserStats>>,
@@ -80,9 +83,6 @@ fun LeaderboardView(
         .getOrNull()
         ?.map { it.toRankingInfo() }
         ?: emptyList()
-    println("usersRankingInfo: $usersRankingInfo")
-    // logged user user // TODO("should retrieve from datastore")
-    val loggedUser = UserInfo(1, "Hello", "token", "email", R.drawable.man2)
     // search
     var query by rememberSaveable { mutableStateOf("") }
     // list and pagination
@@ -92,7 +92,7 @@ fun LeaderboardView(
     // profile dialog
     var showUserProfileDialog by rememberSaveable { mutableStateOf(false) }
     // user info to be displayed in the profile dialog
-    var userRankInfo by remember { mutableStateOf(UserStats(loggedUser).toRankingInfo()) }
+    var userRankInfo by remember { mutableStateOf(UserStats(userInfo).toRankingInfo()) }
     var isSelfPositionEnabled by rememberSaveable { mutableStateOf(false) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     // data for the navigation drawer
@@ -160,7 +160,7 @@ fun LeaderboardView(
     GomokuTheme(darkTheme = isDarkTheme) {
         // Evaluate if the profile dialog should be displayed
         if (showUserProfileDialog) {
-            UserDialog(
+            UserStatsDialog(
                 userRankingInfo = userRankInfo,
                 onDismissRequest = { showUserProfileDialog = false }
             )
@@ -244,7 +244,7 @@ fun LeaderboardView(
                                     lazyListState.scrollToItem(0)
                                 }
                             } else {
-                                getUserStats(loggedUser.id)
+                                getUserStats(userInfo.id)
                             }
                             // toggle
                             isSelfPositionEnabled = !isSelfPositionEnabled

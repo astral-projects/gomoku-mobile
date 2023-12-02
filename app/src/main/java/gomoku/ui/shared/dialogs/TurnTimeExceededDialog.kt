@@ -1,4 +1,4 @@
-package gomoku.ui.shared.popups
+package gomoku.ui.shared.dialogs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,36 +20,41 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import gomoku.ui.shared.background.BackgroundConfig
 import gomoku.ui.shared.components.SubmitButton
 import gomoku.ui.shared.theme.LightOrange
 import pdm.gomoku.R
 
 // Config
-private val popupPadding = 8.dp
+private val dialogRoundCornerShapeSize = 20.dp
+private const val DIALOG_WIDTH_FACTOR = 0.9f
+private val dialogPadding = 8.dp
 private val titleSpacerWidth = 8.dp
 private val bodyMsgPadding = 8.dp
 
 /**
- * Pop up that will be shown when the user's turn time is exceeded.
+ * Dialog that will be shown when the user's turn time is exceeded.
  * @param background configuration of the background.
- * @param onDismissRequest callback to be invoked when the user wants to dismiss the popup.
+ * @param onDismissRequest callback to be invoked when the user wants to dismiss the dialog.
  */
 @Composable
-fun TurnTimeExceedPopup(
+fun TurnTimeExceedDialog(
     background: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     onDismissRequest: () -> Unit = {}
 ) {
-    DomainPopup(onDismissRequest = onDismissRequest) {
+    Dialog(onDismissRequest = onDismissRequest) {
         val screenWidth = background.screenWidth
+        val cornerShape = RoundedCornerShape(dialogRoundCornerShapeSize)
         Box(
             modifier = Modifier
-                .width(screenWidth * POPUP_WIDTH_FACTOR)
-                .clip(RoundedCornerShape(popupRoundCornerShapeSize))
+                .width(screenWidth * DIALOG_WIDTH_FACTOR)
+                .clip(cornerShape)
                 .background(MaterialTheme.colorScheme.primary)
-                .padding(popupPadding)
+                .padding(dialogPadding)
                 .clickable(onClick = onDismissRequest)
         ) {
             Column(
@@ -64,7 +69,7 @@ fun TurnTimeExceedPopup(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = Popup.TurnTimeExceed.TITLE,
+                        text = stringResource(id = gomoku.domain.dialog.Dialog.TurnTimeExceed.TITLE),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Spacer(modifier = Modifier.width(titleSpacerWidth))
@@ -81,7 +86,7 @@ fun TurnTimeExceedPopup(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = Popup.TurnTimeExceed.BODY_MSG,
+                        text = stringResource(id = gomoku.domain.dialog.Dialog.TurnTimeExceed.BODY_MSG),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -89,7 +94,7 @@ fun TurnTimeExceedPopup(
                     SubmitButton(
                         backgroundColor = LightOrange,
                         textColor = MaterialTheme.colorScheme.onPrimary,
-                        onButtonText = Popup.TurnTimeExceed.BUTTON_MSG,
+                        onButtonText = stringResource(id = gomoku.domain.dialog.Dialog.TurnTimeExceed.BUTTON_MSG),
                         onClick = onDismissRequest
                     )
                 }
@@ -101,6 +106,6 @@ fun TurnTimeExceedPopup(
 @Composable
 @Preview(showBackground = true)
 private fun TurnTimeExceedPopupPreview() {
-    TurnTimeExceedPopup()
+    TurnTimeExceedDialog()
 }
 

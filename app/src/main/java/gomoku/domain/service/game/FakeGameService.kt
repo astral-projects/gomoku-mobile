@@ -35,7 +35,8 @@ object FakeGameService : GameService, AbstractFakeService() {
             it.variantId == variant.id && it.host.id != userInfo.id
         }
         if (lobby != null) {
-            lobbies.remove(lobby)
+            // TODO("keeping lobby for now to avoid having to create a new one")
+            // lobbies.remove(lobby)
             val game = Game(
                 id = generateRandomId(),
                 variant = variant,

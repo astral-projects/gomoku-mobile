@@ -1,4 +1,4 @@
-package gomoku.ui.shared.popups
+package gomoku.ui.shared.dialogs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,59 +19,65 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import gomoku.ui.shared.background.BackgroundConfig
 import pdm.gomoku.R
 
 // Config
-private val popupPadding = 8.dp
-private val iconSize = 75.dp
+private val dialogRoundCornerShapeSize = 20.dp
+private const val DIALOG_WIDTH_FACTOR = 0.95f
+private const val TEXT_WEIGHT_FACTOR = 0.6f
+private val textHorizontalPadding = 15.dp
+private val dialogPadding = 8.dp
+private val iconSize = 50.dp
 
 /**
- * Pop up that will be shown when the user is in lobby waiting for an opponent.
+ * Dialog that will be shown when the user is in the lobby waiting for an opponent.
  * @param background configuration of the background.
  * @param playerIconId id of the player's icon.
  * @param onDismissRequest callback to be invoked when the user wants to dismiss the popup.
  */
 @Composable
-fun WaitingOpponentPopup(
+fun WaitingOpponentDialog(
     background: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
     playerIconId: Int,
     onDismissRequest: () -> Unit
 ) {
-    DomainPopup(
-        onDismissRequest = onDismissRequest,
-    ) {
+    Dialog(onDismissRequest = onDismissRequest) {
         val screenWidth = background.screenWidth
+        val cornerShape = RoundedCornerShape(dialogRoundCornerShapeSize)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .width(screenWidth * POPUP_WIDTH_FACTOR)
-                .clip(RoundedCornerShape(popupRoundCornerShapeSize))
+                .width(screenWidth * DIALOG_WIDTH_FACTOR)
+                .clip(cornerShape)
                 .background(MaterialTheme.colorScheme.primary)
-                .padding(popupPadding)
+                .padding(dialogPadding)
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable(onClick = onDismissRequest),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 Image(
                     painterResource(id = playerIconId),
                     contentDescription = null,
-                    modifier = Modifier
-                        .requiredSize(iconSize)
+                    modifier = Modifier.requiredSize(iconSize)
                 )
                 Text(
-                    modifier = Modifier.weight(0.6f),
-                    text = Popup.WaitingOpponent.TITLE,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .weight(TEXT_WEIGHT_FACTOR)
+                        .padding(horizontal = textHorizontalPadding),
+                    text = stringResource(id = gomoku.domain.dialog.Dialog.WaitingOpponent.TITLE),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.secondary,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Center
@@ -90,7 +96,7 @@ fun WaitingOpponentPopup(
 @Composable
 @Preview(showBackground = true)
 private fun WaitingOpponentPopupPreview() {
-    WaitingOpponentPopup(
+    WaitingOpponentDialog(
         playerIconId = R.drawable.man5,
         onDismissRequest = {}
     )
