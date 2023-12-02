@@ -2,8 +2,11 @@ package gomoku.ui.variant
 
 import gomoku.domain.IOState
 import gomoku.domain.Idle
+import gomoku.domain.Loaded
 import gomoku.domain.Loading
-import gomoku.domain.game.Game
+import gomoku.domain.game.match.Game
+import gomoku.domain.game.match.Lobby
+import gomoku.domain.game.match.Match
 import gomoku.domain.variant.VariantConfig
 
 /**
@@ -12,6 +15,7 @@ import gomoku.domain.variant.VariantConfig
 enum class VariantScreenState {
     LoadingVariants,
     LoadingGameMatch,
+    WaitingInLobby,
     Loaded,
     Error
 }
@@ -20,13 +24,14 @@ enum class VariantScreenState {
  * Returns the [VariantScreenState] based on the [IOState]s of the variants and the game match.
  */
 fun variantScreenState(
-    variantsState: IOState<List<VariantConfig>?>,
-    gameMatchState: IOState<Game?>
+    variantsState: IOState<List<VariantConfig>>,
+    gameMatchState: IOState<Match>
 ): VariantScreenState {
     return when {
         variantsState is Loading || variantsState is Idle -> VariantScreenState.LoadingVariants
         gameMatchState is Loading -> VariantScreenState.LoadingGameMatch
-        variantsState is Error || gameMatchState is Error -> VariantScreenState.Error
-        else -> VariantScreenState.Loaded
+        gameMatchState is Loaded && gameMatchState.value.getOrNull() is Lobby -> VariantScreenState.WaitingInLobby
+        gameMatchState is Loaded && gameMatchState.value.getOrNull() is Game -> VariantScreenState.Loaded
+        else -> VariantScreenState.Error
     }
 }

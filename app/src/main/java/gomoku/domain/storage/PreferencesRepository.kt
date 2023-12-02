@@ -17,7 +17,7 @@ interface PreferencesRepository {
     /**
      * Updates the user info.
      */
-    suspend fun updateUserInfo(userInfo: UserInfo)
+    suspend fun setUserInfo(userInfo: UserInfo)
 
     /**
      * Gets the dark mode state if it exists, null otherwise.

@@ -3,7 +3,7 @@ package gomoku.ui.game
 import gomoku.domain.IOState
 import gomoku.domain.Idle
 import gomoku.domain.Loading
-import gomoku.domain.game.Game
+import gomoku.domain.game.match.Game
 
 /**
  * Represents the game view state.

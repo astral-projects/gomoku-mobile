@@ -7,11 +7,10 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import gomoku.domain.IOState
 import gomoku.domain.Idle
 import gomoku.domain.Loaded
-import gomoku.domain.game.Game
+import gomoku.domain.game.match.Match
 import gomoku.domain.idle
 import gomoku.domain.loaded
 import gomoku.domain.loading
-import gomoku.domain.saved
 import gomoku.domain.service.game.GameService
 import gomoku.domain.service.variant.VariantService
 import gomoku.domain.storage.PreferencesRepository
@@ -45,60 +44,57 @@ class VariantScreenViewModel(
         }
     }
 
-    val variants: Flow<IOState<List<VariantConfig>?>>
+    val variants: Flow<IOState<List<VariantConfig>>>
         get() = _variantsFlow.asStateFlow()
 
-    private val _variantsFlow: MutableStateFlow<IOState<List<VariantConfig>?>> =
+    private val _variantsFlow: MutableStateFlow<IOState<List<VariantConfig>>> =
         MutableStateFlow(idle())
 
-    val game: Flow<IOState<Game?>>
-        get() = _gameFlow.asStateFlow()
+    val match: Flow<IOState<Match>>
+        get() = _matchFlow.asStateFlow()
 
-    private val _gameFlow: MutableStateFlow<IOState<Game?>> =
+    private val _matchFlow: MutableStateFlow<IOState<Match>> =
         MutableStateFlow(idle())
 
 
     fun fetchVariants() {
-        if (_variantsFlow.value !is Idle)
-            throw IllegalStateException("The view model is not in the idle state.")
+        check(_variantsFlow.value is Idle) { "The view model is not in the idle state." }
         _variantsFlow.value = loading()
-
         viewModelScope.launch {
             Log.v("ViewModelVariants", "fetching variants in view model...")
-            if (preferences.getVariants() != null) {
-                _variantsFlow.value = loaded(Result.success(preferences.getVariants()))
+            val storedVariants = preferences.getVariants()
+            if (storedVariants != null) {
+                _variantsFlow.value = loaded(Result.success(storedVariants))
             } else {
                 val result: Result<List<VariantConfig>> = runCatching { service.fetchVariants() }
                 Log.v("ViewModelVariants", "fetched variants in view model")
-                preferences.setVariants(result.getOrNull()!!)
-                _variantsFlow.value = saved(result)
+                preferences.setVariants(result.getOrThrow())
                 _variantsFlow.value = loaded(result)
             }
         }
     }
 
     fun findGame(variantConfig: VariantConfig) {
-        if (_gameFlow.value !is Idle) {
-            throw IllegalStateException("The view model is not in the idle state.")
-        }
-        _gameFlow.value = loading()
+        check(_matchFlow.value is Idle) { "The view model is not in the idle state." }
+        _matchFlow.value = loading()
         viewModelScope.launch {
-            Log.v("ViewModelVariants", "finding game in view model...")
-            val result: Result<Game?> =
-                runCatching { gameService.findGame(variantConfig, preferences.getUserInfo()!!) }
-            Log.v("ViewModelVariants", "found game in view model")
-            _gameFlow.value = loaded(result)
+            Log.v("ViewModelVariants", "finding match in view model...")
+            val userInfo = preferences.getUserInfo()
+            checkNotNull(userInfo) { "The user info in ${VariantScreenViewModel::class.java.simpleName} is null." }
+            val result: Result<Match> =
+                runCatching { gameService.findGame(variantConfig, userInfo) }
+            Log.v("ViewModelVariants", "found match in view model")
+            Log.v("ViewModelVariants", "Match: ${result.getOrThrow()}")
+            _matchFlow.value = loaded(result)
         }
     }
 
 
     /**
-     * Resets the view model to the idle state. From the idle state, the user information
-     * can be fetched again.
+     * Resets the view model to the idle state.
      */
     fun resetToIdle() {
-        if (_gameFlow.value !is Loaded)
-            throw IllegalStateException("The view model is not in the idle state.")
-        _gameFlow.value = idle()
+        check(_matchFlow.value is Loaded) { "The view model is not in a loaded state." }
+        _matchFlow.value = idle()
     }
 }

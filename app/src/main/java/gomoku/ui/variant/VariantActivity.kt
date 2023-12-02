@@ -14,7 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import gomoku.GomokuDependencyProvider
 import gomoku.domain.Idle
 import gomoku.domain.Loaded
-import gomoku.domain.game.Game
+import gomoku.domain.game.match.Game
 import gomoku.domain.idle
 import gomoku.ui.about.AboutActivity
 import gomoku.ui.game.GameActivity
@@ -55,11 +55,13 @@ class VariantActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            viewModel.game.collect {
-                if (it is Loaded && it.value.isSuccess) {
-                    doNavigation(it.value.getOrNull()!!)
+            viewModel.match.collect {
+                // only navigate to the game screen if the game is successfully loaded
+                if (it is Loaded && it.value.isSuccess && it.value.getOrThrow() is Game) {
+                    doNavigation(it.value.getOrThrow() as Game)
                     viewModel.resetToIdle()
-                } else if (it is Loaded && it.value.getOrNull() == null) {
+                } else if (it is Loaded && it.value.isFailure) {
+                    // if an error occurred while trying to find a game, reset the state
                     viewModel.resetToIdle()
                 }
             }
@@ -82,21 +84,17 @@ class VariantActivity : ComponentActivity() {
 
         setContent {
             val stateVariants by viewModel.variants.collectAsState(initial = idle())
-            val stateFindGame by viewModel.game.collectAsState(initial = idle())
-            val stateIsDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
+            val stateFindGame by viewModel.match.collectAsState(initial = idle())
+            val stateIsInDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             VariantScreen(
-                onSubmit = { variantConfig ->
-                    viewModel.findGame(variantConfig)
-                },
+                onPlayRequest = { variantConfig -> viewModel.findGame(variantConfig) },
                 gameMatchState = stateFindGame,
                 toLeaderboardScreen = { LeaderboardActivity.navigateTo(this) },
                 toAboutScreen = { AboutActivity.navigateTo(this) },
                 onLogoutRequest = { LoginActivity.navigateTo(this) },
                 variantsState = stateVariants,
-                isDarkTheme = stateIsDarkTheme,
-                setDarkTheme = { isDarkTheme ->
-                    viewModel.setDarkTheme(isDarkTheme)
-                }
+                isDarkTheme = stateIsInDarkTheme,
+                setDarkTheme = { isDarkTheme -> viewModel.setDarkTheme(isDarkTheme) }
             )
         }
     }

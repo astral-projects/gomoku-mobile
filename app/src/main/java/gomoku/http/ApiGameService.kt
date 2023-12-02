@@ -1,12 +1,12 @@
 package gomoku.http
 
 import com.google.gson.Gson
-import gomoku.domain.game.Game
-import gomoku.domain.game.Lobby
 import gomoku.domain.game.Timer
 import gomoku.domain.game.board.Board
 import gomoku.domain.game.board.BoardSize
 import gomoku.domain.game.board.BoardTurn
+import gomoku.domain.game.match.Game
+import gomoku.domain.game.match.Match
 import gomoku.domain.game.moves.Move
 import gomoku.domain.game.moves.move.Piece
 import gomoku.domain.game.moves.move.Player
@@ -14,7 +14,9 @@ import gomoku.domain.game.moves.move.Square
 import gomoku.domain.leaderboard.PlayerInfo
 import gomoku.domain.login.UserInfo
 import gomoku.domain.service.game.GameService
+import gomoku.domain.variant.OpeningRule
 import gomoku.domain.variant.VariantConfig
+import gomoku.domain.variant.VariantName
 import okhttp3.OkHttpClient
 import pdm.gomoku.R
 
@@ -23,27 +25,15 @@ class GomokuGame(
     private val gson: Gson
 ) : GameService {
 
-    override suspend fun fetchGame(): Game {
+    override suspend fun fetchGameById(id: String): Game {
         TODO("Not yet implemented")
     }
 
-    override suspend fun fetchGameById(id: String): Game? {
+    override suspend fun findGame(variant: VariantConfig, userInfo: UserInfo): Match {
         TODO("Not yet implemented")
     }
 
-    override suspend fun createGame(
-        variant: VariantConfig,
-        lobby: Lobby,
-        userInfo: UserInfo
-    ): Game {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun findGame(variant: VariantConfig, userInfo: UserInfo): Game? {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun makeMove(gameId: Int, move: Move): Game {
+    override suspend fun makeMove(gameId: String, move: Move): Game {
         TODO("Not yet implemented")
     }
 
@@ -78,14 +68,17 @@ class GomokuGame(
 
             return Game(
                 id,
-                state,
-                variant,
+                variant = VariantConfig(
+                    id = 1,
+                    name = VariantName.FREESTYLE,
+                    openingRule = OpeningRule.LONG_PRO,
+                    boardSize = BoardSize.NINETEEN
+                ),
                 board2,
-                createdAt,
-                updatedAt,
                 PlayerInfo("Player W", R.drawable.man5),
                 PlayerInfo("Player B", R.drawable.woman2)
             )
         }
     }
+
 }

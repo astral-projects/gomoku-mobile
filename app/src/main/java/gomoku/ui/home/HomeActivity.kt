@@ -57,7 +57,7 @@ class HomeActivity : ComponentActivity() {
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             HomeScreen(
                 inDarkTheme = isDarkTheme,
-                username = username ?: "",
+                username = username,
                 onFindMatch = { VariantActivity.navigateTo(this@HomeActivity, username) },
                 onLeaderBoard = { LeaderboardActivity.navigateTo(this) },
                 onAbout = { AboutActivity.navigateTo(this) },
@@ -67,12 +67,7 @@ class HomeActivity : ComponentActivity() {
     }
 
     val username: String by lazy {
-        getUsernameExtra() ?: throw IllegalArgumentException("Username must be provided")
-    }
-
-    private fun getUsernameExtra(): String? =
         intent?.getStringExtra(USERNAME_EXTRA)
-
-
+            ?: throw IllegalArgumentException("Username must be provided")
+    }
 }
-

@@ -8,6 +8,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+/**
+ * Base class for all view models in the app.
+ * @param preferences the repository that provides access to the user's preferences.
+ */
 abstract class BaseViewModel(
     protected val preferences: PreferencesRepository
 ) : ViewModel() {
@@ -16,7 +20,6 @@ abstract class BaseViewModel(
         get() = _isDarkThemeFlow.asStateFlow()
 
     private val _isDarkThemeFlow: MutableStateFlow<Boolean?> = MutableStateFlow(null)
-
 
     fun isDarkTheme() {
         viewModelScope.launch {

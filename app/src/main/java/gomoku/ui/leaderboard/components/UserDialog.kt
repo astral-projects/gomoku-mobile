@@ -39,6 +39,7 @@ import pdm.gomoku.R
 // Config
 const val DIALOG_WIDTH_FACTOR = 0.9f
 const val DIALOG_HEIGHT_FACTOR = 0.55f
+private val interiorDialogPadding = 5.dp
 private val borderSize = 2.dp
 private val spaceBetweenTexts = (-7).dp
 private val dialogCornerShapeSize = 55.dp
@@ -75,7 +76,7 @@ fun UserDialog(
             // Interior section
             Box(
                 modifier = Modifier
-                    .padding(all = 5.dp)
+                    .padding(interiorDialogPadding)
                     .border(borderSize, MaterialTheme.colorScheme.outline, cornerShape)
                     .background(MaterialTheme.colorScheme.primary),
             ) {

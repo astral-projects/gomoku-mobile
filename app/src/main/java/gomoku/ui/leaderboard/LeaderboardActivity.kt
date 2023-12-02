@@ -57,7 +57,7 @@ class LeaderboardActivity : ComponentActivity() {
             val state by viewModel.usersStats.collectAsState(initial = idle())
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             LeaderboardScreen(
-                inDarkTheme = isDarkTheme ?: false,
+                isDarkTheme = isDarkTheme ?: false,
                 state = state,
                 setDarkTheme = { viewModel.setDarkTheme(it) },
                 getUserStats = { id -> viewModel.fetchUserStats(id) },

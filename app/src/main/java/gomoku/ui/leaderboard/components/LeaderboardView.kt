@@ -51,7 +51,6 @@ private const val LEADERBOARD_TABLE_HEIGHT_FACTOR = 0.85f
 private const val FIRST_PAGE = 1
 private const val LOAD_MORE_ITEMS_THRESHOLD = 3
 private const val PAGE_SIZE = 20
-private const val LEADERBOARD_VIEW_TAG = "LeaderboardView"
 
 /**
  * Represents the Leaderboard screen main composable.
@@ -67,7 +66,7 @@ private const val LEADERBOARD_VIEW_TAG = "LeaderboardView"
  */
 @Composable
 fun LeaderboardView(
-    inDarkTheme: Boolean,
+    isDarkTheme: Boolean,
     setDarkTheme: (Boolean) -> Unit,
     state: IOState<List<UserStats>>,
     getUserStats: (id: Int) -> Unit,
@@ -83,7 +82,7 @@ fun LeaderboardView(
         ?: emptyList()
     println("usersRankingInfo: $usersRankingInfo")
     // logged user user // TODO("should retrieve from datastore")
-    val loggedUser = UserInfo(1, "Hello", "token", "email")
+    val loggedUser = UserInfo(1, "Hello", "token", "email", R.drawable.man2)
     // search
     var query by rememberSaveable { mutableStateOf("") }
     // list and pagination
@@ -124,7 +123,7 @@ fun LeaderboardView(
             NavigationItem(
                 title = stringResource(id = R.string.nav_item_switch_theme),
                 selectedIconId = R.drawable.nav_switch_theme,
-                onClick = { setDarkTheme(!inDarkTheme) }
+                onClick = { setDarkTheme(!isDarkTheme) }
             ),
             NavigationItem(
                 title = stringResource(id = R.string.nav_item_logout),
@@ -141,8 +140,8 @@ fun LeaderboardView(
         } else if (query == "") {
             page = FIRST_PAGE
             getItemsFromPage(page)
-            lazyListState.scrollToItem(0)
         }
+        lazyListState.scrollToItem(0)
     }
     // Observe scroll state to load more items
     LaunchedEffect(key1 = lazyListState) {
@@ -158,7 +157,7 @@ fun LeaderboardView(
             }
     }
     // UI
-    GomokuTheme(darkTheme = inDarkTheme) {
+    GomokuTheme(darkTheme = isDarkTheme) {
         // Evaluate if the profile dialog should be displayed
         if (showUserProfileDialog) {
             UserDialog(

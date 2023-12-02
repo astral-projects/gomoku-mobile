@@ -41,8 +41,6 @@ class LoginViewModel(
 
     private val _userInfoInfoFlow: MutableStateFlow<IOState<UserInfo>> = MutableStateFlow(idle())
 
-
-
     fun login(username: String, password: String) {
         if (_userInfoInfoFlow.value !is Idle && _userInfoInfoFlow.value !is Fail)
             throw IllegalStateException("The view model is not in the idle state or in fail state.")
@@ -54,7 +52,8 @@ class LoginViewModel(
             if (result.isFailure) {
                 _userInfoInfoFlow.value = fail()
             } else {
-                preferences.updateUserInfo(result.getOrThrow())
+                Log.v(ContentValues.TAG, "fetched done and is ${result.getOrNull()}")
+                preferences.setUserInfo(result.getOrThrow())
                 _userInfoInfoFlow.value = loaded(result)
             }
         }
@@ -69,6 +68,4 @@ class LoginViewModel(
             throw IllegalStateException("The view model is not in the idle state.")
         _userInfoInfoFlow.value = idle()
     }
-
 }
-

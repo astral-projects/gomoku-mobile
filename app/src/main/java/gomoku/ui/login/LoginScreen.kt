@@ -21,7 +21,7 @@ fun LoginScreen(
     inDarkTheme: Boolean? = false,
     authenticatedUserInfo: IOState<UserInfo>,
     onSubmit: (username: String, password: String) -> Unit,
-    onSignUpLinkClick: (Int) -> Unit = {}
+    onSignUpLinkClick: (Int) -> Unit
 ) {
     GomokuTheme(darkTheme = inDarkTheme ?: false) {
         Background(
@@ -40,16 +40,10 @@ fun LoginScreen(
 @Composable
 @Preview
 private fun LoginScreenPreview() {
+    val userInfo = UserInfo(1, "John", "123", "dfqwdew@.com", 3)
     LoginScreen(
-        authenticatedUserInfo = Loaded(
-            Result.success(
-                UserInfo(
-                    1,
-                    "John",
-                    "123",
-                    "dqwdqw@.com"
-                )
-            )
-        ),
-        onSubmit = { _, _ -> UserInfo(1, "John", "123", "dfqwdew@.com") })
+        authenticatedUserInfo = Loaded(Result.success(userInfo)),
+        onSubmit = { _, _ -> },
+        onSignUpLinkClick = { },
+    )
 }

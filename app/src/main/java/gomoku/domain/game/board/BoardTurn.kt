@@ -8,4 +8,9 @@ import gomoku.domain.game.moves.move.Player
  * @param player the player that can make a move.
  * @param timer the timer that is running for the player.
  */
-class BoardTurn(val player: Player, val timer: Timer)
+data class BoardTurn(val player: Player, val timer: Timer) {
+    fun other(): Player = when (player) {
+        Player.W -> Player.B
+        Player.B -> Player.W
+    }
+}

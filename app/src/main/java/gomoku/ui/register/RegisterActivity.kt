@@ -64,11 +64,7 @@ class RegisterActivity : ComponentActivity() {
                 registerState = state,
                 inDarkTheme = isDarkTheme,
                 onCreateUser = { username, email, password ->
-                    viewModel.register(
-                        username,
-                        email,
-                        password
-                    )
+                    viewModel.register(username, email, password)
                 },
             )
         }

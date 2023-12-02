@@ -6,11 +6,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import gomoku.domain.IOState
 import gomoku.domain.Loaded
-import gomoku.domain.game.Game
 import gomoku.domain.game.Timer
 import gomoku.domain.game.board.Board
 import gomoku.domain.game.board.BoardSize
 import gomoku.domain.game.board.BoardTurn
+import gomoku.domain.game.match.Game
 import gomoku.domain.game.moves.Move
 import gomoku.domain.game.moves.move.Piece
 import gomoku.domain.game.moves.move.Player
@@ -18,6 +18,9 @@ import gomoku.domain.game.moves.move.Square
 import gomoku.domain.getOrNull
 import gomoku.domain.home.Home.gameName
 import gomoku.domain.leaderboard.PlayerInfo
+import gomoku.domain.variant.OpeningRule
+import gomoku.domain.variant.VariantConfig
+import gomoku.domain.variant.VariantName
 import gomoku.ui.game.components.GameView
 import gomoku.ui.shared.background.Background
 import gomoku.ui.shared.background.BackgroundConfig
@@ -29,7 +32,7 @@ import pdm.gomoku.R
  * Represents the game screen main composable.
  * @param isDarkTheme the [Boolean] that represents if the theme is dark or not.
  * @param backgroundConfig the [BackgroundConfig] to be used.
- * @param localPlayer the [Player] that is playing locally.
+ * @param localPlayer the [PlayerInfo] of the local player.
  * @param onLeaveGameRequest the callback to be called when the dismiss button is clicked.
  * @param onCellClick the callback to be called when a cell is clicked.
  * @param gameState the [IOState] of the [Game] to be displayed.
@@ -41,35 +44,43 @@ fun GameScreen(
     localPlayer: PlayerInfo,
     onLeaveGameRequest: () -> Unit,
     onCellClick: (toSquare: Square) -> Unit,
-    gameState: IOState<Game?>,
+    gameState: IOState<Game>,
 ) {
     GomokuTheme(darkTheme = isDarkTheme ?: false) {
         Background(
             config = backgroundConfig,
             useBodySurface = false,
-            header = {
-                HeaderText(text = stringResource(id = gameName))
-            },
+            header = { HeaderText(text = stringResource(id = gameName)) },
         ) {
-
-            val g = gameState.getOrNull() ?: Game(
-                "I got nothing",
-                "https://www.example.com",
-                "FREESTYLE",
-                Board(emptyMap(), BoardTurn(Player.W, Timer(0, 0)), BoardSize.NINETEEN),
-                "DSSDSDDS",
-                "WEQEWQWEWQE",
-                PlayerInfo("Player W", R.drawable.man5),
-                PlayerInfo("Player B", R.drawable.woman2)
-            )
+            val game = gameState.getOrNull()
+            val gameScreenState = gameState.toGameStateScreen()
             GameView(
                 playerInfo = localPlayer,
                 localPlayer = Player.W,
                 onLeaveGameRequest = onLeaveGameRequest,
                 onCellClick = onCellClick,
-                game = g,
-                isLoading = gameState.toGameStateScreen()
-                    .isLoading() || gameState.toGameStateScreen().isIdle(),
+                game = game ?: Game(
+                    id = "1",
+                    variant = VariantConfig(
+                        id = 1,
+                        name = VariantName.FREESTYLE,
+                        openingRule = OpeningRule.LONG_PRO,
+                        boardSize = BoardSize.NINETEEN
+                    ),
+                    board = Board(
+                        moves = emptyMap(),
+                        turn = BoardTurn(
+                            player = Player.W,
+                            timer = Timer(0, 55)
+                        ),
+                        size = BoardSize.NINETEEN
+                    ),
+                    host = PlayerInfo("Player W", R.drawable.man5),
+                    guest = PlayerInfo(
+                        "Player B", R.drawable.woman2
+                    )
+                ),
+                isLoading = gameScreenState.isLoading() || gameScreenState.isIdle(),
             )
         }
     }
@@ -104,18 +115,21 @@ private fun GameScreenPreview() {
         gameState = Loaded(
             Result.success(
                 Game(
-                    "I got nothing",
-                    "https://www.example.com",
-                    "FREESTYLE",
-                    board,
-                    "DSSDSDDS",
-                    "WEQEWQWEWQE",
-                    PlayerInfo("Player W", R.drawable.man5),
-                    PlayerInfo("Player B", R.drawable.woman2)
+                    id = "1",
+                    variant = VariantConfig(
+                        id = 1,
+                        name = VariantName.FREESTYLE,
+                        openingRule = OpeningRule.LONG_PRO,
+                        boardSize = BoardSize.NINETEEN
+                    ),
+                    board = board,
+                    host = PlayerInfo("Player W", R.drawable.man5),
+                    guest = PlayerInfo(
+                        "Player B", R.drawable.woman2
+                    )
                 )
             )
-        ),
-
         )
+    )
 }
 

@@ -1,6 +1,5 @@
 package gomoku.ui.shared.components
 
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -19,7 +18,7 @@ fun ThemedCircularProgressIndicator(
     modifier: Modifier = Modifier
 ) {
     CircularProgressIndicator(
-        modifier = modifier.fillMaxHeight(),
+        modifier = modifier,
         color = MaterialTheme.colorScheme.secondary,
         trackColor = MaterialTheme.colorScheme.inversePrimary.copy(alpha = PROGRESS_INDICATOR_TRACK_COLOR_OPACITY)
     )

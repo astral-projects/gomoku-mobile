@@ -26,7 +26,8 @@ class RegisterViewModel(
 
     companion object {
         fun factory(
-            service: UserService, preferences: PreferencesRepository
+            service: UserService,
+            preferences: PreferencesRepository
         ) = viewModelFactory {
             initializer { RegisterViewModel(service, preferences) }
         }
@@ -34,7 +35,6 @@ class RegisterViewModel(
 
     val userId: Flow<IOState<Int>>
         get() = _createUserIdFlowInfo.asStateFlow()
-
 
     private val _createUserIdFlowInfo: MutableStateFlow<IOState<Int>> =
         MutableStateFlow(idle())

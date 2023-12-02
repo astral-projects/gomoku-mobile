@@ -22,6 +22,7 @@ class PreferencesDataStore(
         private const val USER_ID_KEY = "$USER_KEY-id"
         private const val USER_TOKEN_KEY = "$USER_KEY-token"
         private const val USER_EMAIL_KEY = "$USER_KEY-email"
+        private const val ICON_ID_KEY = "$USER_KEY-icon-id"
         private const val DARK_MODE_KEY = "dark-mode"
         private const val VARIANTS_KEY = "variants"
     }
@@ -30,6 +31,7 @@ class PreferencesDataStore(
     private val idKey = intPreferencesKey(USER_ID_KEY)
     private val tokenKey = stringPreferencesKey(USER_TOKEN_KEY)
     private val emailKey = stringPreferencesKey(USER_EMAIL_KEY)
+    private val iconIdKey = intPreferencesKey(ICON_ID_KEY)
     private val darkModeKey = booleanPreferencesKey(DARK_MODE_KEY)
     private val variantsKey = stringPreferencesKey(VARIANTS_KEY)
 
@@ -39,23 +41,29 @@ class PreferencesDataStore(
         val id = preferences[idKey]
         val token = preferences[tokenKey]
         val email = preferences[emailKey]
-        return if (username != null && id != null && token != null && email != null)
-            preferences[idKey]?.let {
-                UserInfo(
-                    id = it,
-                    username = username,
-                    email = email,
-                    token = token
-                )
-            } else null
+        val iconId = preferences[iconIdKey]
+        return if (username != null && id != null && token != null && email != null &&
+            iconId != null
+        ) {
+            UserInfo(
+                id = id,
+                username = username,
+                email = email,
+                token = token,
+                iconId = iconId
+            )
+        } else {
+            null
+        }
     }
 
-    override suspend fun updateUserInfo(userInfo: UserInfo) {
+    override suspend fun setUserInfo(userInfo: UserInfo) {
         store.edit { preferences ->
             preferences[nameKey] = userInfo.username
             preferences[idKey] = userInfo.id
             preferences[tokenKey] = userInfo.token
             preferences[emailKey] = userInfo.email
+            preferences[iconIdKey] = userInfo.iconId
         }
     }
 
