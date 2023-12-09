@@ -4,17 +4,17 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.test.annotation.ExperimentalTestApi
-import gomoku.about.domain.About
-import gomoku.about.ui.AboutScreen
-import gomoku.shared.components.AboutTheDeveloperLabel
-import gomoku.shared.components.BurgerMenuButton
-import gomoku.shared.components.FeedbackAndSupportLabel
-import gomoku.shared.components.GameInformationLabel
-import gomoku.shared.components.navigation.BurgerMenuButtonClose
-import gomoku.shared.components.navigation.BurgerMenuFindGameButton
-import gomoku.shared.components.navigation.BurgerMenuLeaderboardButton
-import gomoku.shared.components.navigation.BurgerMenuLogoutButton
-import gomoku.shared.components.navigation.BurgerMenuSwitchThemeButton
+import gomoku.domain.about.About
+import gomoku.ui.about.AboutScreen
+import gomoku.ui.shared.components.AboutTheDeveloperLabel
+import gomoku.ui.shared.components.BurgerMenuButton
+import gomoku.ui.shared.components.FeedbackAndSupportLabel
+import gomoku.ui.shared.components.GameInformationLabel
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuButtonClose
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuFindGameButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuLeaderboardButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuLogoutButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuSwitchThemeButton
 import junit.framework.TestCase.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -176,7 +176,7 @@ class AboutScreenTests {
     }
 
     @Test
-    fun on_burger_menu_try_to_switchtheme() {
+    fun on_burger_menu_try_to_switch_theme() {
         // Arrange
         composeTestRule.setContent {
             AboutScreen(

@@ -40,4 +40,20 @@
     <string name="nav_item_find_game">"Spiel finden "</string>
     <string name="nav_group_items_screens">"Bildschirme "</string>
     <string name="nav_group_items_settings">"Einstellungen "</string>
+    <string name="register_invalid_credentials">Ungültige Zugangsdaten</string>
+    <string name="login_failed_message">Ungültige Zugangsdaten</string>
+    <string name="user_stats_games">Spiele</string>
+    <string name="user_stats_wins">Gewinnt</string>
+    <string name="user_stats_losses">Verluste</string>
+    <string name="user_stats_draws">Auslosungen</string>
+    <string name="game_results_title">Ergebnisse</string>
+    <string name="game_results_body_text_top">Gewinner</string>
+    <string name="game_results_body_text_bottom">Punkte</string>
+    <string name="leave_game_message">Sind Sie sicher, dass Sie das Spiel beenden wollen? Sie erhalten dann keine Punkte mehr.</string>
+    <string name="leave_game_leave_msg">Ja</string>
+    <string name="leave_game_continue_msg">Vergessen Sie</string>
+    <string name="turn_time_exceed_title">Abbiegezeitüberschreitung</string>
+    <string name="turn_time_exceed_body_msg">Ihre strategischen Züge waren genau richtig, aber dieses Mal hat die Uhr das bessere Ende für Sie. Leider können dafür keine Punkte vergeben werden.</string>
+    <string name="turn_time_exceed_button_msg">Bestätigen Sie</string>
+    <string name="waiting_opponent_title">Warten auf einen Gegner…</string>
 </resources>
