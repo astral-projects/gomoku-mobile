@@ -74,6 +74,7 @@ dependencies {
     // Extended material icons
     implementation("androidx.compose.material:material-icons-extended-android:1.5.4")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-core:1.0.0")
 
 
     // for Junit tests with coroutines and mockk
