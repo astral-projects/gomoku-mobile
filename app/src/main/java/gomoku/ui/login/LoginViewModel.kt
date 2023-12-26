@@ -1,7 +1,5 @@
 package gomoku.ui.login
 
-import android.content.ContentValues
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -71,6 +69,7 @@ class LoginViewModel(
         }
     }
 
+    @Throws(IllegalStateException::class)
     fun login(username: String, password: String) {
         if (_userInfoFlow.value !is Idle && _userInfoFlow.value !is Fail)
             throw IllegalStateException("The view model is not in the idle state or in fail state.")
@@ -95,8 +94,8 @@ class LoginViewModel(
      * can be fetched again.
      */
     fun resetToIdle() {
-        if (_userInfoFlow.value !is Loaded)
-            throw IllegalStateException("The view model is not in the idle state.")
+        if (_userInfoFlow.value !is Loaded && _userInfoFlow.value !is Fail)
+            throw IllegalStateException("The view model is not in the loaded state or in fail state.")
         _userInfoFlow.value = idle()
     }
 }
