@@ -1,7 +1,5 @@
 package gomoku.ui.login
 
-import android.content.ContentValues
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -41,18 +39,16 @@ class LoginViewModel(
 
     private val _userInfoInfoFlow: MutableStateFlow<IOState<UserInfo>> = MutableStateFlow(idle())
 
+    @Throws(IllegalStateException::class)
     fun login(username: String, password: String) {
         if (_userInfoInfoFlow.value !is Idle && _userInfoInfoFlow.value !is Fail)
             throw IllegalStateException("The view model is not in the idle state or in fail state.")
         _userInfoInfoFlow.value = loading()
         viewModelScope.launch {
-            Log.v(ContentValues.TAG, "fetching for login....")
             val result = runCatching { service.login(username, password) }
-            Log.v(ContentValues.TAG, "fetched done....")
             if (result.isFailure) {
                 _userInfoInfoFlow.value = fail()
             } else {
-                Log.v(ContentValues.TAG, "fetched done and is ${result.getOrNull()}")
                 preferences.setUserInfo(result.getOrThrow())
                 _userInfoInfoFlow.value = loaded(result)
             }
@@ -64,8 +60,8 @@ class LoginViewModel(
      * can be fetched again.
      */
     fun resetToIdle() {
-        if (_userInfoInfoFlow.value !is Loaded)
-            throw IllegalStateException("The view model is not in the idle state.")
+        if (_userInfoInfoFlow.value !is Loaded && _userInfoInfoFlow.value !is Fail)
+            throw IllegalStateException("The view model is not in the loaded state or in fail state.")
         _userInfoInfoFlow.value = idle()
     }
 }
