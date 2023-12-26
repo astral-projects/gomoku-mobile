@@ -32,7 +32,6 @@ class LeaderboardViewModel(
         private const val FIRST_PAGE = 1
     }
 
-
     val usersStats: Flow<IOState<List<UserStats>>>
         get() = _usersStatsFlow.asStateFlow()
 
@@ -43,7 +42,11 @@ class LeaderboardViewModel(
         _usersStatsFlow.value = loading()
         viewModelScope.launch {
             val result = runCatching { userService.fetchUserStats(userId) }
-            _usersStatsFlow.value = loaded(result.map { listOf(it) })
+            if (result.isFailure) {
+                _usersStatsFlow.value = loaded(Result.success(emptyList()))
+            } else {
+                _usersStatsFlow.value = loaded(result.map { listOf(it) })
+            }
         }
     }
 

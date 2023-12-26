@@ -63,22 +63,27 @@ suspend fun <T> Flow<T>.collectAllWithTimeout(timeout: Long = THREE_SECONDS): Li
 /**
  * Subscribes to the flow before calling the operation, while collecting all the values emitted by the flow within the specified timeout.
  * If the flow does not emit any value withing the timeout, the list of values will be empty.
- * @param operation the operation to call after subscribing the flow.
+ * @param millisToDelayOpCall the number of milliseconds to delay before calling the operation.
+ * @param millisToCollect the number of milliseconds to wait for the values to be collected.
+ * @param operation the operation that will be called after the flow is subscribed. Such operation should change the state of the flow.
  * @return the list of values emitted by the flow.
  */
 suspend fun <T> Flow<T>.subscribeBeforeCallingOperation(
+    millisToDelayOpCall: Long = 1000,
+    millisToCollect: Long = 3000,
     operation: () -> Unit,
 ): List<T> = coroutineScope {
     val gate = SuspendingGate()
     lateinit var collectedValues: List<T>
     val collectJob = launch {
-        collectedValues = this@subscribeBeforeCallingOperation.collectAllWithTimeout()
+        collectedValues =
+            this@subscribeBeforeCallingOperation.collectAllWithTimeout(millisToCollect)
         gate.open()
     }
 
     // if the operation is not delayed,
     // the flow will not have time to collect the first values
-    delay(1000)
+    delay(millisToDelayOpCall)
 
     // operation call
     operation()

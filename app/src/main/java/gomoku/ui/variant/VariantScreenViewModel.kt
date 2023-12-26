@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-//TODO(Ask to the engineer if its okay to change preferences to be a mandatory parameter in the constructor)
 class VariantScreenViewModel(
     private val service: VariantService,
     private val gameService: GameService,

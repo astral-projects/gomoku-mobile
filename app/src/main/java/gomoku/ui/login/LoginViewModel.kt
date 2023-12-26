@@ -56,9 +56,10 @@ class LoginViewModel(
     }
 
     /**
-     * Resets the view model to the idle state. From the idle state, the user information
-     * can be fetched again.
+     * Resets the view model to the idle state.
+     * @throws IllegalStateException If the view model is not in the loaded state or in fail state.
      */
+    @Throws(IllegalStateException::class)
     fun resetToIdle() {
         if (_userInfoInfoFlow.value !is Loaded && _userInfoInfoFlow.value !is Fail)
             throw IllegalStateException("The view model is not in the loaded state or in fail state.")
