@@ -33,7 +33,10 @@ class RegisterActivity : ComponentActivity() {
     private val dependencies by lazy { application as GomokuDependencyProvider }
 
     private val viewModel by viewModels<RegisterViewModel> {
-        RegisterViewModel.factory(dependencies.userService, dependencies.preferencesRepository)
+        RegisterViewModel.factory(
+            dependencies.userServiceInterface,
+            dependencies.preferencesRepository
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

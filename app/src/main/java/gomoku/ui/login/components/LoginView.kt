@@ -23,8 +23,6 @@ import gomoku.domain.login.Login
 import gomoku.domain.login.Password
 import gomoku.domain.login.Username
 import gomoku.ui.login.LoginScreenState
-import gomoku.ui.login.isFailedLogin
-import gomoku.ui.login.isLoading
 import gomoku.ui.shared.components.Form
 import gomoku.ui.shared.components.HyperLink
 import gomoku.ui.shared.components.InputTextField
@@ -94,7 +92,7 @@ fun LoginView(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (screenState.isLoading()) {
+                if (screenState is LoginScreenState.Loading) {
                     ThemedCircularProgressIndicator()
                 } else {
                     SubmitButton(
@@ -105,9 +103,10 @@ fun LoginView(
                         }
                     )
                     Spacer(modifier = Modifier.height(signUpSpacerHeight))
-                    if (screenState.isFailedLogin()) {
+                    if (screenState is LoginScreenState.FailedLogin) {
                         Text(
-                            text = stringResource(Login.loginFailedMessage),
+                            // here i want to use the incoming error message from the api
+                            text = screenState.message,
                             color = MaterialTheme.colorScheme.error
                         )
                     }

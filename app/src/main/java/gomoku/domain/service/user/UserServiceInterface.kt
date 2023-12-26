@@ -9,7 +9,7 @@ import gomoku.domain.service.user.errors.RegisterUserException
 /**
  * Defines the behavior of a user service.
  */
-interface UserService {
+interface UserServiceInterface {
 
     /**
      * Attempts to log in a user with the given username and password.

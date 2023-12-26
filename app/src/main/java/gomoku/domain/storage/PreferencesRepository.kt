@@ -1,6 +1,7 @@
 package gomoku.domain.storage
 
 import gomoku.domain.login.UserInfo
+import gomoku.domain.service.utils.recipes.Recipe
 import gomoku.domain.variant.VariantConfig
 
 /**
@@ -38,4 +39,14 @@ interface PreferencesRepository {
      * Updates the variants.
      */
     suspend fun setVariants(variants: List<VariantConfig>)
+
+    /**
+     * Gets the uri templates if they exist, null otherwise.
+     */
+    suspend fun getUriTemplates(): List<Recipe>?
+
+    /**
+     * Updates the uri templates.
+     */
+    suspend fun setUriTemplates(uriTemplates: List<Recipe>)
 }

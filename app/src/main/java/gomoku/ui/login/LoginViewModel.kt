@@ -14,7 +14,9 @@ import gomoku.domain.idle
 import gomoku.domain.loaded
 import gomoku.domain.loading
 import gomoku.domain.login.UserInfo
-import gomoku.domain.service.user.UserService
+import gomoku.domain.service.user.UserServiceInterface
+import gomoku.domain.service.utils.recipes.Recipe
+import gomoku.domain.service.utils.recipes.fetchRecipes
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.ui.shared.BaseViewModel
 import kotlinx.coroutines.flow.Flow
@@ -23,38 +25,67 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val service: UserService,
+    private val service: UserServiceInterface,
     preferences: PreferencesRepository,
 ) : BaseViewModel(preferences) {
 
     companion object {
         fun factory(
-            service: UserService,
+            service: UserServiceInterface,
             preferences: PreferencesRepository
         ) = viewModelFactory {
             initializer { LoginViewModel(service, preferences) }
         }
     }
 
-    val userInfo: Flow<IOState<UserInfo>>
-        get() = _userInfoInfoFlow.asStateFlow()
+    val uriTemplates: Flow<IOState<List<Recipe>>>
+        get() = _uriTemplatesFlow.asStateFlow()
 
-    private val _userInfoInfoFlow: MutableStateFlow<IOState<UserInfo>> = MutableStateFlow(idle())
+    private val _uriTemplatesFlow: MutableStateFlow<IOState<List<Recipe>>> =
+        MutableStateFlow(idle())
+
+    val userInfo: Flow<IOState<UserInfo>>
+        get() = _userInfoFlow.asStateFlow()
+
+    private val _userInfoFlow: MutableStateFlow<IOState<UserInfo>> = MutableStateFlow(idle())
+
+    /**
+     * Make the first request to fetch the uri templates for all routes and store them in the
+     * data store. This method should be called only once when the app is first launched.
+     */
+    fun fetchUriTemplates() {
+        if (_uriTemplatesFlow.value !is Idle)
+            throw IllegalStateException("The view model is not in the idle state.")
+        _uriTemplatesFlow.value = loading()
+        viewModelScope.launch {
+            Log.v("UriTemplates", "fetching for uri templates....")
+            val result = runCatching { fetchRecipes() }
+            Log.v("UriTemplates", "fetched done....")
+            if (result.isFailure) {
+                _uriTemplatesFlow.value = fail(result.toString())
+            } else {
+                Log.v("UriTemplates", "fetched done and is ${result.getOrNull()}")
+                preferences.setUriTemplates(result.getOrThrow())
+                _uriTemplatesFlow.value = idle()
+            }
+        }
+    }
 
     fun login(username: String, password: String) {
-        if (_userInfoInfoFlow.value !is Idle && _userInfoInfoFlow.value !is Fail)
+        if (_userInfoFlow.value !is Idle && _userInfoFlow.value !is Fail)
             throw IllegalStateException("The view model is not in the idle state or in fail state.")
-        _userInfoInfoFlow.value = loading()
+        _userInfoFlow.value = loading()
         viewModelScope.launch {
             Log.v(ContentValues.TAG, "fetching for login....")
             val result = runCatching { service.login(username, password) }
             Log.v(ContentValues.TAG, "fetched done....")
             if (result.isFailure) {
-                _userInfoInfoFlow.value = fail()
+                val message = result.exceptionOrNull()?.message ?: "Unknown error"
+                _userInfoFlow.value = fail(message)
             } else {
                 Log.v(ContentValues.TAG, "fetched done and is ${result.getOrNull()}")
                 preferences.setUserInfo(result.getOrThrow())
-                _userInfoInfoFlow.value = loaded(result)
+                _userInfoFlow.value = loaded(result)
             }
         }
     }
@@ -64,8 +95,8 @@ class LoginViewModel(
      * can be fetched again.
      */
     fun resetToIdle() {
-        if (_userInfoInfoFlow.value !is Loaded)
+        if (_userInfoFlow.value !is Loaded)
             throw IllegalStateException("The view model is not in the idle state.")
-        _userInfoInfoFlow.value = idle()
+        _userInfoFlow.value = idle()
     }
 }

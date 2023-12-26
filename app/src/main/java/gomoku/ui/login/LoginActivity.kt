@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import gomoku.GomokuDependencyProvider
+import gomoku.domain.Idle
 import gomoku.domain.Loaded
 import gomoku.domain.getOrThrow
 import gomoku.domain.idle
@@ -36,7 +37,7 @@ class LoginActivity : ComponentActivity() {
 
     private val viewModel by viewModels<LoginViewModel> {
         LoginViewModel.factory(
-            dependencies.userService,
+            dependencies.userServiceInterface,
             dependencies.preferencesRepository
         )
     }
@@ -44,6 +45,10 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
+            viewModel.uriTemplates.collect {
+                if (it is Idle)
+                    viewModel.fetchUriTemplates()
+            }
             viewModel.userInfo.collect {
                 if (it is Loaded && it.value.isSuccess) {
                     doNavigation(userName = it.getOrThrow().username)

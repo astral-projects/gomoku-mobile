@@ -9,17 +9,12 @@ import gomoku.domain.login.UserInfo
 /**
  * Represents the login screen state.
  */
-enum class LoginScreenState {
-    Loading,
-    FailedLogin,
-    Loaded,
-    Error
+sealed class LoginScreenState {
+    data object Loading : LoginScreenState()
+    data class FailedLogin(val message: String) : LoginScreenState()
+    data object Loaded : LoginScreenState()
+    data object Error : LoginScreenState()
 }
-
-fun LoginScreenState.isLoading() = this == LoginScreenState.Loading
-fun LoginScreenState.isFailedLogin() = this == LoginScreenState.FailedLogin
-fun LoginScreenState.isLoaded() = this == LoginScreenState.Loaded
-fun LoginScreenState.isError() = this == LoginScreenState.Error
 
 /**
  * Returns the screen state based on the user authentication state.
@@ -27,6 +22,6 @@ fun LoginScreenState.isError() = this == LoginScreenState.Error
 fun IOState<UserInfo>.toLoginScreenState(): LoginScreenState = when (this) {
     is Loading -> LoginScreenState.Loading
     is Loaded -> LoginScreenState.Loaded
-    is Fail -> LoginScreenState.FailedLogin
+    is Fail -> LoginScreenState.FailedLogin(message)
     else -> LoginScreenState.Error
 }

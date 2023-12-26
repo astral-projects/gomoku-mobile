@@ -11,7 +11,7 @@ import gomoku.domain.fail
 import gomoku.domain.idle
 import gomoku.domain.loaded
 import gomoku.domain.loading
-import gomoku.domain.service.user.UserService
+import gomoku.domain.service.user.UserServiceInterface
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.ui.shared.BaseViewModel
 import kotlinx.coroutines.flow.Flow
@@ -20,13 +20,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
-    private val service: UserService,
+    private val service: UserServiceInterface,
     preferences: PreferencesRepository
 ) : BaseViewModel(preferences) {
 
     companion object {
         fun factory(
-            service: UserService,
+            service: UserServiceInterface,
             preferences: PreferencesRepository
         ) = viewModelFactory {
             initializer { RegisterViewModel(service, preferences) }
@@ -51,7 +51,7 @@ class RegisterViewModel(
             val result =
                 runCatching { service.register(username, email, password) }
             if (result.isFailure) {
-                _createUserIdFlowInfo.value = fail()
+                _createUserIdFlowInfo.value = fail(result.toString())
             } else {
                 _createUserIdFlowInfo.value = loaded(result)
             }

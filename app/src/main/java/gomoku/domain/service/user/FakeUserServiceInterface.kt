@@ -8,7 +8,7 @@ import gomoku.domain.service.user.errors.FetchUserException
 import gomoku.domain.service.user.errors.RegisterUserException
 import kotlinx.coroutines.delay
 
-class FakeUserService : UserService, AbstractFakeService() {
+class FakeUserServiceInterface : UserServiceInterface, AbstractFakeService() {
 
     private var users: MutableList<UserInfo> = (1..NR_PLAYERS)
         .map { playerId ->

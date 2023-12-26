@@ -25,7 +25,10 @@ class LeaderboardActivity : ComponentActivity() {
     private val dependencies by lazy { application as GomokuDependencyProvider }
 
     private val viewModel by viewModels<LeaderboardViewModel> {
-        LeaderboardViewModel.factory(dependencies.userService, dependencies.preferencesRepository)
+        LeaderboardViewModel.factory(
+            dependencies.userServiceInterface,
+            dependencies.preferencesRepository
+        )
     }
 
     companion object : Navigation {

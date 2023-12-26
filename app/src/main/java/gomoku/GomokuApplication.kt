@@ -7,12 +7,13 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
 import gomoku.domain.service.game.FakeGameService
 import gomoku.domain.service.game.GameService
-import gomoku.domain.service.user.FakeUserService
-import gomoku.domain.service.user.UserService
+import gomoku.domain.service.user.UserServiceInterface
 import gomoku.domain.service.variant.FakeVariantService
 import gomoku.domain.service.variant.VariantService
+import gomoku.http.UserService
 import gomoku.infrastructure.PreferencesDataStore
 import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 
 /**
  * The application's class used to resolve dependencies, acting as a Service Locator.
@@ -38,7 +39,7 @@ class GomokuApplication : Application(), GomokuDependencyProvider {
      */
     override val httpClient: OkHttpClient =
         OkHttpClient.Builder()
-            .callTimeout(timeout, java.util.concurrent.TimeUnit.SECONDS)
+            .callTimeout(timeout, TimeUnit.SECONDS)
             .build()
 
     /**
@@ -50,5 +51,9 @@ class GomokuApplication : Application(), GomokuDependencyProvider {
 
     override val variantService: VariantService = FakeVariantService
 
-    override val userService: UserService = FakeUserService()
+    // How can i pass the preferencesRepository to the UserService? I can't use the constructor
+    // because the UserService is created at the runtime of the application.
+    override val userServiceInterface: UserServiceInterface by lazy {
+        UserService(preferencesRepository)
+    }
 }

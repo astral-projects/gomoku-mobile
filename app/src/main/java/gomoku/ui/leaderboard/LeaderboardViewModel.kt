@@ -10,7 +10,7 @@ import gomoku.domain.leaderboard.Term
 import gomoku.domain.leaderboard.UserStats
 import gomoku.domain.loaded
 import gomoku.domain.loading
-import gomoku.domain.service.user.UserService
+import gomoku.domain.service.user.UserServiceInterface
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.ui.shared.BaseViewModel
 import kotlinx.coroutines.flow.Flow
@@ -19,12 +19,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LeaderboardViewModel(
-    private val userService: UserService,
+    private val userServiceInterface: UserServiceInterface,
     preferences: PreferencesRepository
 ) : BaseViewModel(preferences) {
 
     companion object {
-        fun factory(service: UserService, preferences: PreferencesRepository) =
+        fun factory(service: UserServiceInterface, preferences: PreferencesRepository) =
             viewModelFactory {
                 initializer { LeaderboardViewModel(service, preferences) }
             }
@@ -42,7 +42,7 @@ class LeaderboardViewModel(
     fun fetchUserStats(userId: Int) {
         _usersStatsFlow.value = loading()
         viewModelScope.launch {
-            val result = runCatching { userService.fetchUserStats(userId) }
+            val result = runCatching { userServiceInterface.fetchUserStats(userId) }
             _usersStatsFlow.value = loaded(result.map { listOf(it) })
         }
     }
@@ -51,7 +51,7 @@ class LeaderboardViewModel(
         val previousList: List<UserStats>? = _usersStatsFlow.value.getOrNull()
         _usersStatsFlow.value = loading(previousList)
         viewModelScope.launch {
-            val result = runCatching { userService.fetchUsersStats(page) }
+            val result = runCatching { userServiceInterface.fetchUsersStats(page) }
             if (page == FIRST_PAGE) {
                 _usersStatsFlow.value = loaded(result)
             } else {
@@ -70,7 +70,7 @@ class LeaderboardViewModel(
     fun searchUsers(term: Term) {
         _usersStatsFlow.value = loading()
         viewModelScope.launch {
-            val result = runCatching { userService.searchUsers(term) }
+            val result = runCatching { userServiceInterface.searchUsers(term) }
             _usersStatsFlow.value = loaded(result)
         }
     }

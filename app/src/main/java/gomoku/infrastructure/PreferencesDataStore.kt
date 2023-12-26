@@ -7,8 +7,10 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import gomoku.domain.login.UserInfo
+import gomoku.domain.service.utils.recipes.Recipe
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.domain.variant.VariantConfig
+import gomoku.infrastructure.serializer.UriTemplatesGsonSerializer
 import gomoku.infrastructure.serializer.VariantsGsonSerializer
 import kotlinx.coroutines.flow.first
 
@@ -25,6 +27,7 @@ class PreferencesDataStore(
         private const val ICON_ID_KEY = "$USER_KEY-icon-id"
         private const val DARK_MODE_KEY = "dark-mode"
         private const val VARIANTS_KEY = "variants"
+        private const val URI_TEMPLATES_KEY = "uri-templates"
     }
 
     private val nameKey = stringPreferencesKey(USER_NAME_KEY)
@@ -34,6 +37,7 @@ class PreferencesDataStore(
     private val iconIdKey = intPreferencesKey(ICON_ID_KEY)
     private val darkModeKey = booleanPreferencesKey(DARK_MODE_KEY)
     private val variantsKey = stringPreferencesKey(VARIANTS_KEY)
+    private val uriTemplatesKey = stringPreferencesKey(URI_TEMPLATES_KEY)
 
     override suspend fun getUserInfo(): UserInfo? {
         val preferences = store.data.first()
@@ -87,6 +91,19 @@ class PreferencesDataStore(
     override suspend fun setVariants(variants: List<VariantConfig>) {
         store.edit { preferences ->
             preferences[variantsKey] = VariantsGsonSerializer.serialize(variants)
+        }
+    }
+
+    override suspend fun getUriTemplates(): List<Recipe>? {
+        val preferences = store.data.first()
+        val uriTemplatesString = preferences[uriTemplatesKey]
+        return uriTemplatesString?.let { UriTemplatesGsonSerializer.deserialize(it) }
+
+    }
+
+    override suspend fun setUriTemplates(uriTemplates: List<Recipe>) {
+        store.edit { preferences ->
+            preferences[uriTemplatesKey] = UriTemplatesGsonSerializer.serialize(uriTemplates)
         }
     }
 }
