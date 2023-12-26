@@ -11,6 +11,7 @@ import gomoku.domain.service.user.FakeUserService
 import gomoku.domain.service.user.UserService
 import gomoku.domain.service.variant.FakeVariantService
 import gomoku.domain.service.variant.VariantService
+import gomoku.http.GomokuGame
 import gomoku.infrastructure.PreferencesDataStore
 import okhttp3.OkHttpClient
 
@@ -51,4 +52,6 @@ class GomokuApplication : Application(), GomokuDependencyProvider {
     override val variantService: VariantService = FakeVariantService
 
     override val userService: UserService = FakeUserService()
+
+    override val gamesServiceHttp: GameService = GomokuGame(httpClient, gson)
 }

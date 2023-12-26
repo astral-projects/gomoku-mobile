@@ -1,5 +1,6 @@
 package gomoku.ui.shared.components
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -46,6 +47,7 @@ fun SubmitButton(
 ) {
     val boxWidth = backgroundConfig.screenWidth * BUTTON_WIDTH_FACTOR
     val boxHeight = backgroundConfig.screenHeight * BUTTON_HEIGHT_FACTOR
+    Log.v("SubmitButton", "onButtonText = $onButtonText")
     Button(
         modifier = modifier
             .width(boxWidth)

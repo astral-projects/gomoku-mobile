@@ -1,12 +1,17 @@
-/*
+
 package gomoku.screens.mainscreen
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import gomoku.domain.Loaded
-import gomoku.domain.leaderboard.Leaderboard
-import gomoku.ui.leaderboard.ui.LeaderboardScreen
+import gomoku.domain.login.UserInfo
+import gomoku.ui.leaderboard.LeaderboardScreen
+import gomoku.ui.shared.components.BurgerMenuButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuAboutButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuFindGameButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuLogoutButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuSwitchThemeButton
 import junit.framework.TestCase.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -22,11 +27,13 @@ class LeaderBoardScreenTests {
     fun try_to_click_on_burger_menu_and_check_if_it_opens() {
         //Arrange
         composeTestRule.setContent {
-            val nPlayers = 200
-            val playersRankingInfo = Leaderboard.generateRankingInfo(nPlayers)
             LeaderboardScreen(
-                inDarkTheme = false,
-                listLeaderboard = Loaded(Result.success(emptyList())),
+                isDarkTheme = false,
+                state = Loaded(Result.success(emptyList())),
+                userInfo = UserInfo(1, "test", "test", "test", 1),
+                getItemsFromPage = {},
+                getUserStats = {},
+                onSearchRequest = {},
                 toFindGameScreen = {},
                 setDarkTheme = {},
                 toAboutScreen = {},
@@ -44,13 +51,15 @@ class LeaderBoardScreenTests {
         var findGameWasCalled = false
 
         composeTestRule.setContent {
-            val nPlayers = 200
-            val playersRankingInfo = Leaderboard.generateRankingInfo(nPlayers)
             LeaderboardScreen(
-                inDarkTheme = false,
-                listLeaderboard = Loaded(Result.success(emptyList())),
-                setDarkTheme = {},
+                isDarkTheme = false,
+                state = Loaded(Result.success(emptyList())),
+                userInfo = UserInfo(1, "test", "test", "test", 1),
+                getItemsFromPage = {},
+                getUserStats = {},
+                onSearchRequest = {},
                 toFindGameScreen = { findGameWasCalled = true },
+                setDarkTheme = {},
                 toAboutScreen = {},
                 onLogoutRequest = {}
             )
@@ -68,13 +77,15 @@ class LeaderBoardScreenTests {
         var aboutWasCalled = false
 
         composeTestRule.setContent {
-            val nPlayers = 200
-            val playersRankingInfo = Leaderboard.generateRankingInfo(nPlayers)
             LeaderboardScreen(
-                inDarkTheme = false,
-                listLeaderboard = Loaded(Result.success(emptyList())),
-                setDarkTheme = {},
+                isDarkTheme = false,
+                state = Loaded(Result.success(emptyList())),
+                userInfo = UserInfo(1, "test", "test", "test", 1),
+                getItemsFromPage = {},
+                getUserStats = {},
+                onSearchRequest = {},
                 toFindGameScreen = {},
+                setDarkTheme = {},
                 toAboutScreen = { aboutWasCalled = true },
                 onLogoutRequest = {}
             )
@@ -93,13 +104,15 @@ class LeaderBoardScreenTests {
         var logoutWasCalled = false
 
         composeTestRule.setContent {
-            val nPlayers = 200
-            val playersRankingInfo = Leaderboard.generateRankingInfo(nPlayers)
             LeaderboardScreen(
-                inDarkTheme = false,
-                listLeaderboard = Loaded(Result.success(emptyList())),
-                setDarkTheme = {},
+                isDarkTheme = false,
+                state = Loaded(Result.success(emptyList())),
+                userInfo = UserInfo(1, "test", "test", "test", 1),
+                getItemsFromPage = {},
+                getUserStats = {},
+                onSearchRequest = {},
                 toFindGameScreen = {},
+                setDarkTheme = {},
                 toAboutScreen = {},
                 onLogoutRequest = { logoutWasCalled = true }
             )
@@ -117,13 +130,15 @@ class LeaderBoardScreenTests {
     fun on_burger_menu_try_to_switch_theme() {
         //Arrange
         composeTestRule.setContent {
-            val nPlayers = 200
-            val playersRankingInfo = Leaderboard.generateRankingInfo(nPlayers)
             LeaderboardScreen(
-                inDarkTheme = false,
-                Loaded(Result.success(emptyList())),
-                setDarkTheme = {},
+                isDarkTheme = false,
+                state = Loaded(Result.success(emptyList())),
+                userInfo = UserInfo(1, "test", "test", "test", 1),
+                getItemsFromPage = {},
+                getUserStats = {},
+                onSearchRequest = {},
                 toFindGameScreen = {},
+                setDarkTheme = {},
                 toAboutScreen = {},
                 onLogoutRequest = {}
             )
@@ -137,4 +152,4 @@ class LeaderBoardScreenTests {
         composeTestRule.onNodeWithTag(BurgerMenuSwitchThemeButton).assertExists()
 
     }
-}*/
+}

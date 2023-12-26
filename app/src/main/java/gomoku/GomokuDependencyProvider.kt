@@ -40,4 +40,6 @@ interface GomokuDependencyProvider {
      * The data store used to store the user info
      */
     val preferencesRepository: PreferencesRepository
+
+    val gamesServiceHttp: GameService
 }
