@@ -1,6 +1,5 @@
 package gomoku.ui.variant
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -57,18 +56,15 @@ class VariantScreenViewModel(
     private val _matchFlow: MutableStateFlow<IOState<Match>> =
         MutableStateFlow(idle())
 
-
     fun fetchVariants() {
         check(_variantsFlow.value is Idle) { "The view model is not in the idle state." }
         _variantsFlow.value = loading()
         viewModelScope.launch {
-            Log.v("ViewModelVariants", "fetching variants in view model...")
             val storedVariants = preferences.getVariants()
             if (storedVariants != null) {
                 _variantsFlow.value = loaded(Result.success(storedVariants))
             } else {
                 val result: Result<List<VariantConfig>> = runCatching { service.fetchVariants() }
-                Log.v("ViewModelVariants", "fetched variants in view model")
                 preferences.setVariants(result.getOrThrow())
                 _variantsFlow.value = loaded(result)
             }
@@ -79,13 +75,10 @@ class VariantScreenViewModel(
         check(_matchFlow.value is Idle) { "The view model is not in the idle state." }
         _matchFlow.value = loading()
         viewModelScope.launch {
-            Log.v("ViewModelVariants", "finding match in view model...")
             val userInfo = preferences.getUserInfo()
             checkNotNull(userInfo) { "The user info in ${VariantScreenViewModel::class.java.simpleName} is null." }
             val result: Result<Match> =
                 runCatching { gameService.findGame(variantConfig, userInfo) }
-            Log.v("ViewModelVariants", "found match in view model")
-            Log.v("ViewModelVariants", "Match: ${result.getOrThrow()}")
             _matchFlow.value = loaded(result)
         }
     }
@@ -93,10 +86,10 @@ class VariantScreenViewModel(
     fun exitLobby() {
         check(_matchFlow.value is Loaded) { "The view model is not in a loaded state." }
         viewModelScope.launch {
+            val userInfo = preferences.getUserInfo()
+            checkNotNull(userInfo) { "The user info in ${VariantScreenViewModel::class.java.simpleName} is null." }
             val lobbyId = (_matchFlow.value.getOrThrow() as Lobby).id
-            Log.v("ViewModelVariants", "leaving lobby in view model...")
-            runCatching { gameService.exitLobby(lobbyId, getUserInfo()) }
-            Log.v("ViewModelVariants", "left lobby in view model")
+            runCatching { gameService.exitLobby(lobbyId, userInfo) }
             resetToIdle()
         }
     }

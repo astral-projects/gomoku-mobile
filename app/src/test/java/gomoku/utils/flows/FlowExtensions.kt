@@ -61,11 +61,11 @@ suspend fun <T> Flow<T>.collectAllWithTimeout(timeout: Long = THREE_SECONDS): Li
     }
 
 /**
- * Subscribes to the flow before calling the operation, while collecting all the values emitted by the flow within the specified timeout.
- * If the flow does not emit any value withing the timeout, the list of values will be empty.
+ * Subscribes to the flow before calling the operation, while collecting all the values emitted by the flow within the specified [millisToCollect] timeout.
+ * If the flow does not emit any value, the list of collected values will be empty.
  * @param millisToDelayOpCall the number of milliseconds to delay before calling the operation.
  * @param millisToCollect the number of milliseconds to wait for the values to be collected.
- * @param operation the operation that will be called after the flow is subscribed. Such operation should change the state of the flow.
+ * @param operation the operation that will be called after the flow is subscribed and after the [millisToDelayOpCall] delay. This operation should call the method that will emit values in the flow.
  * @return the list of values emitted by the flow.
  */
 suspend fun <T> Flow<T>.subscribeBeforeCallingOperation(
