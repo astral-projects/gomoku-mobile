@@ -17,17 +17,50 @@ import gomoku.domain.service.game.GameService
 import gomoku.domain.variant.OpeningRule
 import gomoku.domain.variant.VariantConfig
 import gomoku.domain.variant.VariantName
+import gomoku.http.models.siren.SirenModel
+import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import pdm.gomoku.R
+import java.io.IOException
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class GomokuGame(
     private val client: OkHttpClient,
     private val gson: Gson
 ) : GameService {
-
-    override suspend fun fetchGameById(id: String): Game {
-        TODO("Not yet implemented")
+    private val request: Request by lazy {
+        Request.Builder()
+            .url("https://5e85-89-114-64-92.ngrok-free.app/api/games/55")
+            .addHeader("accept", "application/json")
+            .build()
     }
+
+    override suspend fun fetchGameById(id: String): Game =
+        suspendCoroutine {
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    it.resumeWithException(FetchGameException("Could not fetch joke", e))
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body
+                    if (!response.isSuccessful || body == null)
+                        it.resumeWithException(FetchGameException("Could not fetch game. Remote service returned ${response.code}"))
+                    else {
+                        println(body.string())
+                        val dto = gson.fromJson(body.string(), SirenModel::class.java)
+                        it.resumeWith(Result.success((dto.properties as GameDto).toGame()))
+                    }
+                }
+            })
+        }
+
+    class FetchGameException(message: String, cause: Throwable? = null) :
+        Exception(message, cause)
 
     override suspend fun findGame(variant: VariantConfig, userInfo: UserInfo): Match {
         TODO("Not yet implemented")
@@ -72,11 +105,11 @@ class GomokuGame(
 
             return Game(
                 id,
-                variant = VariantConfig(
-                    id = 1,
-                    name = VariantName.FREESTYLE,
-                    openingRule = OpeningRule.LONG_PRO,
-                    boardSize = BoardSize.NINETEEN
+                VariantConfig(
+                    1,
+                    VariantName.FREESTYLE,
+                    OpeningRule.LONG_PRO,
+                    BoardSize.NINETEEN
                 ),
                 board2,
                 PlayerInfo("Player W", R.drawable.man5),
@@ -84,5 +117,4 @@ class GomokuGame(
             )
         }
     }
-
 }

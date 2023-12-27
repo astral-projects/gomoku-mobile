@@ -123,7 +123,6 @@ class AboutScreenTests {
             )
         }
         // Act
-        //why is possible to click on the Logout button if it is not visible?
         composeTestRule.onNodeWithTag(BurgerMenuLogoutButton).performClick()
 
         // Assert
@@ -145,7 +144,6 @@ class AboutScreenTests {
             )
         }
         // Act
-        //why is possible to click on the Logout button if it is not visible?
         composeTestRule.onNodeWithTag(BurgerMenuFindGameButton).performClick()
 
         // Assert
@@ -167,7 +165,6 @@ class AboutScreenTests {
             )
         }
         // Act
-        //why is possible to click on the Logout button if it is not visible?
         composeTestRule.onNodeWithTag(BurgerMenuLeaderboardButton).assertExists()
         composeTestRule.onNodeWithTag(BurgerMenuLeaderboardButton).performClick()
 
@@ -187,7 +184,6 @@ class AboutScreenTests {
             )
         }
         // Act
-        //why is possible to click on the Logout button if it is not visible?
         composeTestRule.onNodeWithTag(BurgerMenuSwitchThemeButton).performClick()
 
         // Assert

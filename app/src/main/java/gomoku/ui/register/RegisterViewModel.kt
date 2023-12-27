@@ -39,17 +39,17 @@ class RegisterViewModel(
     private val _createUserIdFlowInfo: MutableStateFlow<IOState<Int>> =
         MutableStateFlow(idle())
 
+    @Throws(IllegalStateException::class)
     fun register(
         username: String,
         email: String,
         password: String
     ) {
         if (_createUserIdFlowInfo.value !is Idle && _createUserIdFlowInfo.value !is Fail)
-            throw IllegalStateException("The view model is not in the idle state.")
+            throw IllegalStateException("The view model is not in the idle state or the fail state.")
         _createUserIdFlowInfo.value = loading()
         viewModelScope.launch {
-            val result =
-                runCatching { service.register(username, email, password) }
+            val result = runCatching { service.register(username, email, password) }
             if (result.isFailure) {
                 val message = result.exceptionOrNull()?.message ?: "Unknown error"
                 _createUserIdFlowInfo.value = fail(message)
@@ -60,12 +60,13 @@ class RegisterViewModel(
     }
 
     /**
-     * Resets the view model to the idle state. From the idle state, the create user
-     * can be fetched again.
+     * Resets the view model to the idle state.
+     * @throws IllegalStateException If the view model is not in the loaded state or the fail state.
      */
+    @Throws(IllegalStateException::class)
     fun resetToIdle() {
-        if (_createUserIdFlowInfo.value !is Loaded)
-            throw IllegalStateException("The view model is not in the idle state.")
+        if (_createUserIdFlowInfo.value !is Loaded && _createUserIdFlowInfo.value !is Fail)
+            throw IllegalStateException("The view model is not in the loaded state or the fail state.")
         _createUserIdFlowInfo.value = idle()
     }
 }

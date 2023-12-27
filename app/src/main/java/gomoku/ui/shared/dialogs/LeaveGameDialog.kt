@@ -25,6 +25,7 @@ import androidx.compose.ui.window.Dialog
 import gomoku.ui.shared.background.BackgroundConfig
 import gomoku.ui.shared.components.SubmitButton
 
+
 // Config
 private val dialogRoundCornerShapeSize = 20.dp
 private const val CONTINUE_MSG_WEIGHT_FACTOR = 0.7f

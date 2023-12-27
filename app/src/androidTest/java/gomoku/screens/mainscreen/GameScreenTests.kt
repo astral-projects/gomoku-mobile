@@ -1,4 +1,4 @@
-/*
+
 package gomoku.screens.mainscreen
 
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -12,6 +12,9 @@ import gomoku.domain.game.board.BoardTurn
 import gomoku.domain.game.match.Game
 import gomoku.domain.game.moves.move.Player
 import gomoku.domain.leaderboard.PlayerInfo
+import gomoku.domain.variant.OpeningRule
+import gomoku.domain.variant.VariantConfig
+import gomoku.domain.variant.VariantName
 import gomoku.ui.game.GameScreen
 import junit.framework.TestCase.assertTrue
 import org.junit.Rule
@@ -19,6 +22,7 @@ import org.junit.Test
 import pdm.gomoku.R
 
 class GameScreenTests {
+    private val leaveGameDialog = "Yes"
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -39,11 +43,13 @@ class GameScreenTests {
                     Result.success(
                         Game(
                             "I got nothing",
-                            "https://www.example.com",
-                            "FREESTYLE",
+                            VariantConfig(
+                                1,
+                                VariantName.FREESTYLE,
+                                OpeningRule.PRO,
+                                BoardSize.NINETEEN
+                            ),
                             Board(emptyMap(), BoardTurn(Player.W, Timer(0, 0)), BoardSize.NINETEEN),
-                            "DSSDSDDS",
-                            "WEQEWQWEWQE",
                             PlayerInfo("Player W", R.drawable.man5),
                             PlayerInfo("Player B", R.drawable.woman2)
                         )
@@ -54,7 +60,8 @@ class GameScreenTests {
 
         // Act
         composeTestRule.onNodeWithTag("Leave game").performClick()
+        composeTestRule.onNodeWithTag("Yes").performClick()
         assertTrue(leaveGameRequested)
     }
 
-}*/
+}

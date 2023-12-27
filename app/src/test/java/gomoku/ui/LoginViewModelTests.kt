@@ -12,9 +12,8 @@ import gomoku.utils.MockMainDispatcherRule
 import gomoku.utils.flows.collectWithTimeout
 import gomoku.utils.flows.subscribeBeforeCallingOperation
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertThrows
@@ -22,7 +21,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
-private data class ValidLoginCredentials(
+private data class LoginCredentials(
     val username: String,
     val password: String,
 )
@@ -33,12 +32,12 @@ class LoginViewModelTests : AbstractViewModelTests() {
     val rule = MockMainDispatcherRule(testDispatcher = StandardTestDispatcher())
 
     companion object {
-        private val validLoginCredentials = ValidLoginCredentials(
+        private val validLoginCredentials = LoginCredentials(
             username = "admin",
             password = "password",
         )
 
-        private val invalidLoginCredentials = ValidLoginCredentials(
+        private val invalidLoginCredentials = LoginCredentials(
             username = "not-admin",
             password = "not-password",
         )
@@ -91,18 +90,16 @@ class LoginViewModelTests : AbstractViewModelTests() {
             // and: login method is called
             viewModel.login(username, password)
         }.also { collectedStates ->
-            // then: the state sequence is correct
-            verifyIOStateSequence(collectedStates)
+            // then: the states are the default IO states
+            verifyDefaultIOStateSequence(collectedStates)
 
             // and: the last state is loaded with the user info
             assertTrue(collectedStates.last().getOrThrow() == userInfo)
         }
 
         // and: the user info is stored and called only once
-        verify(exactly = 1) {
-            runBlocking {
-                mockPreferencesRepository.setUserInfo(userInfo)
-            }
+        coVerify(exactly = 1) {
+            mockPreferencesRepository.setUserInfo(userInfo)
         }
 
     }
@@ -125,11 +122,14 @@ class LoginViewModelTests : AbstractViewModelTests() {
         // then: the state is fail
         assertTrue(collectedState is Fail)
 
-        // and: the user info is not stored
-        verify(exactly = 0) {
-            runBlocking {
-                mockPreferencesRepository.setUserInfo(userInfo)
-            }
+        // and: the user info is changed
+        coVerify(exactly = 0) {
+            mockPreferencesRepository.setUserInfo(userInfo)
+        }
+
+        // and: the service is only called once
+        coVerify(exactly = 1) {
+            mockUserService.login(username, password)
         }
     }
 

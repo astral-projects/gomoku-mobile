@@ -1,5 +1,16 @@
 package gomoku.screens.mainscreen
 
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
+import gomoku.domain.Idle
+import gomoku.ui.login.LoginScreen
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
+import org.junit.Rule
+import org.junit.Test
+
 
 const val LoginSubmitButtonText = "Login"
 const val LoginUsernameLabel = "Username"
@@ -7,7 +18,7 @@ const val LoginPasswordLabel = "Password"
 const val LoginSignUpLinkText = "Sign up"
 
 class LoginScreenTests {
-    /*
+
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -18,6 +29,8 @@ class LoginScreenTests {
 
         composeTestRule.setContent {
             LoginScreen(
+                authenticatedUserInfo = Idle,
+                onSignUpLinkClick = {},
                 onSubmit = { submittedUsername, submittedPassword ->
                     loginRequested = true
                 },
@@ -38,6 +51,8 @@ class LoginScreenTests {
 
         composeTestRule.setContent {
             LoginScreen(
+                authenticatedUserInfo = Idle,
+                onSignUpLinkClick = {},
                 onSubmit = { submittedUsername, submittedPassword ->
                     loginRequested = true
                 },
@@ -59,6 +74,8 @@ class LoginScreenTests {
 
         composeTestRule.setContent {
             LoginScreen(
+                authenticatedUserInfo = Idle,
+                onSignUpLinkClick = {},
                 onSubmit = { submittedUsername, submittedPassword ->
                     loginRequested = true
                 },
@@ -81,6 +98,8 @@ class LoginScreenTests {
 
         composeTestRule.setContent {
             LoginScreen(
+                authenticatedUserInfo = Idle,
+                onSignUpLinkClick = {},
                 onSubmit = { submittedUsername, submittedPassword ->
                     if (submittedUsername == username && submittedPassword == password) {
                         loginRequested = true
@@ -93,7 +112,7 @@ class LoginScreenTests {
         composeTestRule.onNodeWithTag(LoginPasswordLabel).performTextInput(password)
         composeTestRule.onNodeWithTag(LoginSubmitButtonText).performClick()
         // Assert
-        TestCase.assertTrue(loginRequested)
+        assertTrue(loginRequested)
     }
 
     @Test
@@ -105,6 +124,8 @@ class LoginScreenTests {
 
         composeTestRule.setContent {
             LoginScreen(
+                authenticatedUserInfo = Idle,
+                onSignUpLinkClick = {},
                 onSubmit = { submittedUsername, submittedPassword ->
                     if (submittedUsername == username && submittedPassword == password) {
                         loginRequested = true
@@ -125,6 +146,9 @@ class LoginScreenTests {
         var signUpRequested = false
         composeTestRule.setContent {
             LoginScreen(
+                authenticatedUserInfo = Idle,
+                onSubmit = { _, _ ->
+                },
                 onSignUpLinkClick = {
                     signUpRequested = true
                 },
@@ -146,6 +170,8 @@ class LoginScreenTests {
 
         composeTestRule.setContent {
             LoginScreen(
+                authenticatedUserInfo = Idle,
+                onSignUpLinkClick = {},
                 onSubmit = { submittedUsername, submittedPassword ->
                     loginRequested = true
                 },
@@ -169,6 +195,8 @@ class LoginScreenTests {
 
         composeTestRule.setContent {
             LoginScreen(
+                authenticatedUserInfo = Idle,
+                onSignUpLinkClick = {},
                 onSubmit = { submittedUsername, submittedPassword ->
                     loginRequested = true
                 },
@@ -188,6 +216,8 @@ class LoginScreenTests {
 
         composeTestRule.setContent {
             LoginScreen(
+                authenticatedUserInfo = Idle,
+                onSignUpLinkClick = {},
                 onSubmit = { _, _ ->
 
                 },
@@ -204,6 +234,8 @@ class LoginScreenTests {
 
         composeTestRule.setContent {
             LoginScreen(
+                authenticatedUserInfo = Idle,
+                onSignUpLinkClick = {},
                 onSubmit = { _, _ ->
 
                 },
@@ -220,6 +252,8 @@ class LoginScreenTests {
 
         composeTestRule.setContent {
             LoginScreen(
+                authenticatedUserInfo = Idle,
+                onSignUpLinkClick = {},
                 onSubmit = { _, _ ->
 
                 },
@@ -228,5 +262,5 @@ class LoginScreenTests {
         // Act
         composeTestRule.onNodeWithTag(LoginSubmitButtonText).assertExists()
         // Assert
-    }*/
+    }
 }

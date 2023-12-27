@@ -2,7 +2,7 @@ package gomoku.domain.leaderboard
 
 import gomoku.domain.login.UserInfo
 
-class UserStats(
+data class UserStats(
     val id: Int,
     val username: String,
     val points: Int,

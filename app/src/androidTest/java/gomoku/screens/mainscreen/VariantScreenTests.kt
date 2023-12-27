@@ -1,35 +1,60 @@
 package gomoku.screens.mainscreen
 
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import gomoku.domain.Idle
+import gomoku.domain.Loaded
+import gomoku.domain.game.board.BoardSize
+import gomoku.domain.login.UserInfo
+import gomoku.domain.variant.OpeningRule
+import gomoku.domain.variant.VariantConfig
+import gomoku.domain.variant.VariantName
+import gomoku.ui.shared.components.BurgerMenuButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuAboutButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuFindGameButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuLogoutButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuSwitchThemeButton
+import gomoku.ui.variant.VariantScreen
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
+import org.junit.Rule
+import org.junit.Test
+
 const val variantSubmitButtonText = "Play"
 
 class VariantScreenTests {
-    //TODO(FIX THE TESTS)
-    /*
+
     @get:Rule
     val composeTestRule = createComposeRule()
 
     val variants = listOf(
         VariantConfig(
+            id = 1,
             name = VariantName.FREESTYLE,
             boardSize = BoardSize.FIFTEEN,
             openingRule = OpeningRule.PRO
         ),
         VariantConfig(
+            id = 2,
             name = VariantName.OMOK,
             boardSize = BoardSize.NINETEEN,
             openingRule = OpeningRule.LONG_PRO
         ),
         VariantConfig(
+            id = 3,
             name = VariantName.PENTE,
             boardSize = BoardSize.FIFTEEN,
             openingRule = OpeningRule.PRO
         ),
         VariantConfig(
+            id = 4,
             name = VariantName.RENJU,
             boardSize = BoardSize.FIFTEEN,
             openingRule = OpeningRule.PRO
         ),
         VariantConfig(
+            id = 5,
             name = VariantName.CARO,
             boardSize = BoardSize.NINETEEN,
             openingRule = OpeningRule.PRO
@@ -42,13 +67,17 @@ class VariantScreenTests {
         var variantRequested = false
         composeTestRule.setContent {
             VariantScreen(
-                onSubmit = { _ ->
+                onPlayRequest = { _ ->
                     variantRequested = true
                 },
-                variants = variants,
+                variantsState = Loaded(Result.success(variants)),
                 toLeaderboardScreen = {},
                 toAboutScreen = {},
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                gameMatchState = Idle,
+                onLobbyExitRequest = {},
+                setDarkTheme = {},
+                userInfo = UserInfo(1, "test", "test", "test", 2)
             )
         }
         // Act
@@ -63,13 +92,17 @@ class VariantScreenTests {
 
         composeTestRule.setContent {
             VariantScreen(
-                onSubmit = { _ ->
+                onPlayRequest = { _ ->
                     variantRequested = true
                 },
-                variants = variants,
+                variantsState = Loaded(Result.success(variants)),
                 toLeaderboardScreen = {},
                 toAboutScreen = {},
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                gameMatchState = Idle,
+                onLobbyExitRequest = {},
+                setDarkTheme = {},
+                userInfo = UserInfo(1, "test", "test", "test", 2)
             )
         }
         // Act
@@ -86,13 +119,17 @@ class VariantScreenTests {
 
         composeTestRule.setContent {
             VariantScreen(
-                onSubmit = { _ ->
+                onPlayRequest = { _ ->
                     variantRequested = true
                 },
-                variants = variants,
+                variantsState = Loaded(Result.success(variants)),
                 toLeaderboardScreen = {},
                 toAboutScreen = {},
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                gameMatchState = Idle,
+                onLobbyExitRequest = {},
+                setDarkTheme = {},
+                userInfo = UserInfo(1, "test", "test", "test", 2)
             )
         }
         // Act
@@ -107,11 +144,16 @@ class VariantScreenTests {
         //Arrange
         composeTestRule.setContent {
             VariantScreen(
-                onSubmit = { _ -> },
-                variants = variants,
+                onPlayRequest = { _ ->
+                },
+                variantsState = Loaded(Result.success(variants)),
                 toLeaderboardScreen = {},
                 toAboutScreen = {},
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                gameMatchState = Idle,
+                onLobbyExitRequest = {},
+                setDarkTheme = {},
+                userInfo = UserInfo(1, "test", "test", "test", 2)
             )
 
         }
@@ -127,11 +169,16 @@ class VariantScreenTests {
 
         composeTestRule.setContent {
             VariantScreen(
-                onSubmit = { _ -> },
-                variants = variants,
+                onPlayRequest = { _ ->
+                },
+                variantsState = Loaded(Result.success(variants)),
                 toLeaderboardScreen = { leaderboardWasCalled = true },
                 toAboutScreen = {},
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                gameMatchState = Idle,
+                onLobbyExitRequest = {},
+                setDarkTheme = {},
+                userInfo = UserInfo(1, "test", "test", "test", 2)
             )
 
         }
@@ -149,13 +196,17 @@ class VariantScreenTests {
 
         composeTestRule.setContent {
             VariantScreen(
-                onSubmit = { _ -> },
-                variants = variants,
+                onPlayRequest = { _ ->
+                },
+                variantsState = Loaded(Result.success(variants)),
                 toLeaderboardScreen = {},
                 toAboutScreen = { aboutWasCalled = true },
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                gameMatchState = Idle,
+                onLobbyExitRequest = {},
+                setDarkTheme = {},
+                userInfo = UserInfo(1, "test", "test", "test", 2)
             )
-
         }
 
         //Act
@@ -172,11 +223,16 @@ class VariantScreenTests {
 
         composeTestRule.setContent {
             VariantScreen(
-                onSubmit = { _ -> },
-                variants = variants,
-                toLeaderboardScreen = {},
+                onPlayRequest = { _ ->
+                },
+                variantsState = Loaded(Result.success(variants)),
+                toLeaderboardScreen = { },
                 toAboutScreen = {},
-                onLogoutRequest = { logoutWasCalled = true }
+                onLogoutRequest = { logoutWasCalled = true },
+                gameMatchState = Idle,
+                onLobbyExitRequest = {},
+                setDarkTheme = {},
+                userInfo = UserInfo(1, "test", "test", "test", 2)
             )
 
         }
@@ -194,11 +250,16 @@ class VariantScreenTests {
         //Arrange
         composeTestRule.setContent {
             VariantScreen(
-                onSubmit = { _ -> },
-                variants = variants,
-                toLeaderboardScreen = {},
+                onPlayRequest = { _ ->
+                },
+                variantsState = Loaded(Result.success(variants)),
+                toLeaderboardScreen = { },
                 toAboutScreen = {},
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                gameMatchState = Idle,
+                onLobbyExitRequest = {},
+                setDarkTheme = {},
+                userInfo = UserInfo(1, "test", "test", "test", 2)
             )
         }
 
@@ -209,6 +270,6 @@ class VariantScreenTests {
         //Assert
         composeTestRule.onNodeWithTag(BurgerMenuSwitchThemeButton).assertExists()
 
-    }*/
+    }
 
 }
