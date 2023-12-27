@@ -1,27 +1,21 @@
 package gomoku.ui.login
 
-import gomoku.domain.Fail
-import gomoku.domain.IOState
-import gomoku.domain.Loaded
-import gomoku.domain.Loading
 import gomoku.domain.login.UserInfo
+import gomoku.domain.service.utils.recipes.Recipe
 
 /**
  * Represents the login screen state.
  */
 sealed class LoginScreenState {
-    data object Loading : LoginScreenState()
-    data class FailedLogin(val message: String) : LoginScreenState()
-    data object Loaded : LoginScreenState()
-    data object Error : LoginScreenState()
-}
+    data object Idle : LoginScreenState()
+    data class FetchRecipes(
+        val recipes: List<Recipe> = emptyList(),
+        val isFetched: Boolean = false
+    ) : LoginScreenState()
 
-/**
- * Returns the screen state based on the user authentication state.
- */
-fun IOState<UserInfo>.toLoginScreenState(): LoginScreenState = when (this) {
-    is Loading -> LoginScreenState.Loading
-    is Loaded -> LoginScreenState.Loaded
-    is Fail -> LoginScreenState.FailedLogin(message)
-    else -> LoginScreenState.Error
+    data class Login(val userInfo: UserInfo? = null, val isLoggedIn: Boolean = false) :
+        LoginScreenState()
+
+    data class LoginFailed(val error: Throwable) : LoginScreenState()
+    data class Error(val error: Throwable) : LoginScreenState()
 }

@@ -51,7 +51,8 @@ class RegisterViewModel(
             val result =
                 runCatching { service.register(username, email, password) }
             if (result.isFailure) {
-                _createUserIdFlowInfo.value = fail(result.toString())
+                val message = result.exceptionOrNull()?.message ?: "Unknown error"
+                _createUserIdFlowInfo.value = fail(message)
             } else {
                 _createUserIdFlowInfo.value = loaded(result)
             }

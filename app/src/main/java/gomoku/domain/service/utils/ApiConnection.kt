@@ -4,7 +4,6 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import gomoku.domain.service.media.ProblemModel
-import gomoku.domain.service.media.siren.SirenModel
 import gomoku.domain.service.utils.recipes.URI
 import okhttp3.Call
 import okhttp3.Callback
@@ -50,11 +49,11 @@ class ApiConnection(
                                 gson.fromJson(responseBody.string(), ProblemModel::class.java)
                             continuation.resumeWithException(IOException(failResult.detail))
                         } else {
-                            val result = gson.fromJson<SirenModel<T>>(
+                            val result = gson.fromJson<T>(
                                 responseBody.string(),
-                                SirenModel::class.java
+                                object : TypeToken<T>() {}.type
                             )
-                            continuation.resume(result.properties)
+                            continuation.resumeWith(Result.success(result))
                         }
                     }
                 }
@@ -67,7 +66,7 @@ class ApiConnection(
      * @param url The url to post the data to.
      * @param data The data to post to the given url.
      */
-    suspend inline fun <reified T, R> postApi(url: String, data: T, token: String): R {
+    suspend inline fun <reified T, reified R> postApi(url: String, data: T, token: String): R {
         val json = gson.toJson(data)
         val body = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
         val request = Request
@@ -93,11 +92,11 @@ class ApiConnection(
                                 gson.fromJson(responseBody.string(), ProblemModel::class.java)
                             continuation.resumeWithException(IOException(failResult.detail))
                         } else {
-                            val result = gson.fromJson<SirenModel<R>>(
+                            val result = gson.fromJson<R>(
                                 responseBody.string(),
-                                SirenModel::class.java
+                                object : TypeToken<R>() {}.type
                             )
-                            continuation.resume(result.properties)
+                            continuation.resumeWith(Result.success(result))
                         }
                     }
                 }

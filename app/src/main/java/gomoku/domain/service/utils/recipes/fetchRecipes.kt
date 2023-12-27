@@ -15,7 +15,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-const val URI = "https://29b9-89-114-65-93.ngrok-free.app"
+const val URI = "https://0f3f-89-114-64-234.ngrok-free.app"
 
 suspend fun fetchRecipes(): List<Recipe> {
     val gson = Gson()
@@ -33,19 +33,20 @@ suspend fun fetchRecipes(): List<Recipe> {
 
             override fun onResponse(call: Call, response: Response) {
                 if (!response.isSuccessful) {
-                    continuation.resumeWithException(IOException("Unexpected code $response"))
+                    continuation.resumeWithException(IOException("Unsuccessful operation"))
                     Log.v("UriTemplates", "Unexpected code $response")
-                }
-                val body = response.body
-                if (body != null) {
-                    val data: List<Link> =
-                        gson.fromJson(body.string(), SirenModel::class.java).recipeLinks
-                    val toRecipes = data.map { Recipe(it.rel.first(), it.href) }
-                    continuation.resume(toRecipes)
-                    Log.v("UriTemplates", "Fetched uri templates")
                 } else {
-                    continuation.resumeWithException(IOException("Empty response"))
-                    Log.v("UriTemplates", "Empty response")
+                    val body = response.body
+                    if (body != null) {
+                        val data: List<Link> =
+                            gson.fromJson(body.string(), SirenModel::class.java).recipeLinks
+                        val toRecipes = data.map { Recipe(it.rel.first(), it.href) }
+                        continuation.resume(toRecipes)
+                        Log.v("UriTemplates", "Fetched uri templates")
+                    } else {
+                        continuation.resumeWithException(IOException("Empty response"))
+                        Log.v("UriTemplates", "Empty response")
+                    }
                 }
 
             }

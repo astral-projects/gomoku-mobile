@@ -40,28 +40,39 @@ class HomeActivity : ComponentActivity() {
     private val dependencies by lazy { application as GomokuDependencyProvider }
 
     private val viewModel by viewModels<HomeViewModel> {
-        HomeViewModel.factory(dependencies.preferencesRepository)
+        HomeViewModel.factory(dependencies.userServiceInterface, dependencies.preferencesRepository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
+            viewModel.stateFlow.collect {
+                if (it is HomeScreenState.Logout && it.isDone) {
+                    LoginActivity.navigateTo(this@HomeActivity)
+                    viewModel.resetToIdle()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isDarkTheme.collect {
-                        viewModel.isDarkTheme()
+                    viewModel.isDarkTheme()
                 }
             }
 
         }
         setContent {
+            val state = viewModel.stateFlow.collectAsState(initial = HomeScreenState.Idle).value
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             HomeScreen(
                 inDarkTheme = isDarkTheme,
+                isFetchingLogout = state is HomeScreenState.Logout && !state.isDone,
                 username = username,
                 onFindMatch = { VariantActivity.navigateTo(this@HomeActivity, username) },
                 onLeaderBoard = { LeaderboardActivity.navigateTo(this) },
                 onAbout = { AboutActivity.navigateTo(this) },
-                onLogout = { LoginActivity.navigateTo(this) }
+                onLogout = { viewModel.logout() }
             )
         }
     }

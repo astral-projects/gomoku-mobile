@@ -2,8 +2,6 @@ package gomoku.ui.login
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.domain.IOState
-import gomoku.domain.Loaded
 import gomoku.domain.login.UserInfo
 import gomoku.ui.login.components.HeaderLogo
 import gomoku.ui.login.components.LoginView
@@ -18,8 +16,9 @@ import gomoku.ui.shared.theme.GomokuTheme
  */
 @Composable
 fun LoginScreen(
+    isLoggingIn: Boolean = false,
     inDarkTheme: Boolean? = false,
-    authenticatedUserInfo: IOState<UserInfo>,
+    authenticatedUserInfo: LoginScreenState,
     onSubmit: (username: String, password: String) -> Unit,
     onSignUpLinkClick: (Int) -> Unit
 ) {
@@ -28,7 +27,8 @@ fun LoginScreen(
             header = { HeaderLogo() },
         ) {
             LoginView(
-                screenState = authenticatedUserInfo.toLoginScreenState(),
+                isLoggingIn = isLoggingIn,
+                screenState = authenticatedUserInfo,
                 onSubmit = onSubmit,
                 onSignUpLinkClick = onSignUpLinkClick
             )
@@ -42,7 +42,7 @@ fun LoginScreen(
 private fun LoginScreenPreview() {
     val userInfo = UserInfo(1, "John", "123", "dfqwdew@.com", 3)
     LoginScreen(
-        authenticatedUserInfo = Loaded(Result.success(userInfo)),
+        authenticatedUserInfo = LoginScreenState.Idle,
         onSubmit = { _, _ -> },
         onSignUpLinkClick = { },
     )

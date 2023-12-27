@@ -91,6 +91,10 @@ class FakeUserServiceInterface : UserServiceInterface, AbstractFakeService() {
         return paginatedRankingInfo(userStats, page)
     }
 
+    override suspend fun logout(token: String) {
+        delay(fetchDelay)
+    }
+
     companion object {
         private const val PAGE_SIZE = 20
         private const val NR_PLAYERS = 300

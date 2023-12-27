@@ -21,6 +21,11 @@ interface PreferencesRepository {
     suspend fun setUserInfo(userInfo: UserInfo)
 
     /**
+     * Clears the user info.
+     */
+    suspend fun clearUserInfo(userInfo: UserInfo)
+
+    /**
      * Gets the dark mode state if it exists, null otherwise.
      */
     suspend fun isInDarkMode(): Boolean?

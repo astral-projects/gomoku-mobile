@@ -71,6 +71,18 @@ class PreferencesDataStore(
         }
     }
 
+    override suspend fun clearUserInfo(userInfo: UserInfo) {
+        if (userInfo == getUserInfo()) {
+            store.edit { preferences ->
+                preferences.remove(nameKey)
+                preferences.remove(idKey)
+                preferences.remove(tokenKey)
+                preferences.remove(emailKey)
+                preferences.remove(iconIdKey)
+            }
+        }
+    }
+
     override suspend fun isInDarkMode(): Boolean? {
         val preferences = store.data.first()
         return preferences[darkModeKey]

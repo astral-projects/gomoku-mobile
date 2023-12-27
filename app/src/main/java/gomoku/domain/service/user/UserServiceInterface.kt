@@ -61,4 +61,10 @@ interface UserServiceInterface {
      */
     @Throws(FetchUserException::class)
     suspend fun fetchUserStats(userId: Int): UserStats
+
+    /**
+     * Attempts to logout the logged in user.
+     * @param token The token of the logged in user.
+     */
+    suspend fun logout(token: String)
 }

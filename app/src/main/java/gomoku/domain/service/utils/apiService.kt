@@ -22,8 +22,8 @@ suspend inline fun <reified T, reified R> callApi(
 ): R {
     val apiConnection = ApiConnection(OkHttpClient(), Gson())
     return when (method) {
-        Method.GET -> apiConnection.getApi<T>(url, token) as R
+        Method.GET -> apiConnection.getApi(url, token)
         Method.POST -> apiConnection.postApi(url, data, token)
-        Method.DELETE -> apiConnection.deleteApi(url, token) as R
+        Method.DELETE -> apiConnection.deleteApi(url, token)
     }
 }

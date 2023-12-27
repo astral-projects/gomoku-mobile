@@ -42,6 +42,7 @@ private val signUpSpacerHeight = 10.dp
  */
 @Composable
 fun LoginView(
+    isLoggingIn: Boolean,
     screenState: LoginScreenState,
     onSubmit: (username: String, password: String) -> Unit,
     onSignUpLinkClick: (Int) -> Unit = {}
@@ -92,7 +93,7 @@ fun LoginView(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (screenState is LoginScreenState.Loading) {
+                if (isLoggingIn) {
                     ThemedCircularProgressIndicator()
                 } else {
                     SubmitButton(
@@ -103,10 +104,17 @@ fun LoginView(
                         }
                     )
                     Spacer(modifier = Modifier.height(signUpSpacerHeight))
-                    if (screenState is LoginScreenState.FailedLogin) {
+                    if (screenState is LoginScreenState.LoginFailed) {
                         Text(
-                            // here i want to use the incoming error message from the api
-                            text = screenState.message,
+                            // want to show the error message from the server
+                            // password change then the error message is not shown
+                            text = stringResource(Login.loginFailedMessage),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    } else if (screenState is LoginScreenState.Error) {
+                        Text(
+                            text = screenState.error.message
+                                ?: stringResource(Login.loginFailedMessage),
                             color = MaterialTheme.colorScheme.error
                         )
                     }

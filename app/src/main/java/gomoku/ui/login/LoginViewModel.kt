@@ -1,19 +1,10 @@
 package gomoku.ui.login
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import gomoku.domain.Fail
-import gomoku.domain.IOState
-import gomoku.domain.Idle
-import gomoku.domain.Loaded
-import gomoku.domain.fail
-import gomoku.domain.idle
-import gomoku.domain.loaded
-import gomoku.domain.loading
-import gomoku.domain.login.UserInfo
 import gomoku.domain.service.user.UserServiceInterface
-import gomoku.domain.service.utils.recipes.Recipe
 import gomoku.domain.service.utils.recipes.fetchRecipes
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.ui.shared.BaseViewModel
@@ -36,66 +27,81 @@ class LoginViewModel(
         }
     }
 
-    val uriTemplates: Flow<IOState<List<Recipe>>>
-        get() = _uriTemplatesFlow.asStateFlow()
+    val stateFlow: Flow<LoginScreenState>
+        get() = _stateFlow.asStateFlow()
 
-    private val _uriTemplatesFlow: MutableStateFlow<IOState<List<Recipe>>> =
-        MutableStateFlow(idle())
-
-    val userInfo: Flow<IOState<UserInfo>>
-        get() = _userInfoFlow.asStateFlow()
-
-    private val _userInfoFlow: MutableStateFlow<IOState<UserInfo>> = MutableStateFlow(idle())
+    private val _stateFlow: MutableStateFlow<LoginScreenState> =
+        MutableStateFlow(LoginScreenState.Idle)
 
     /**
      * Make the first request to fetch the uri templates for all routes and store them in the
      * data store. This method should be called only once when the app is first launched.
      */
     fun fetchUriTemplates() {
-        if (_uriTemplatesFlow.value !is Idle)
+        if (_stateFlow.value !is LoginScreenState.Idle)
             throw IllegalStateException("The view model is not in the idle state.")
-        _uriTemplatesFlow.value = loading()
+        _stateFlow.value = LoginScreenState.FetchRecipes()
         viewModelScope.launch {
+            val uris = preferences.getUriTemplates()
+            val user = preferences.getUserInfo()
+            if (uris != null && user != null) {
+                _stateFlow.value = LoginScreenState.Login(user, true)
+                return@launch
+            }
             Log.v("UriTemplates", "fetching for uri templates....")
             val result = runCatching { fetchRecipes() }
             Log.v("UriTemplates", "fetched done....")
             if (result.isFailure) {
-                _uriTemplatesFlow.value = fail(result.toString())
+                _stateFlow.value =
+                    LoginScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
             } else {
                 Log.v("UriTemplates", "fetched done and is ${result.getOrNull()}")
                 preferences.setUriTemplates(result.getOrThrow())
-                _uriTemplatesFlow.value = idle()
+                if (user != null) {
+                    _stateFlow.value = LoginScreenState.Login(user, true)
+                } else {
+                    _stateFlow.value = LoginScreenState.FetchRecipes(result.getOrThrow(), true)
+                }
             }
         }
     }
 
     @Throws(IllegalStateException::class)
     fun login(username: String, password: String) {
-        if (_userInfoFlow.value !is Idle && _userInfoFlow.value !is Fail)
-            throw IllegalStateException("The view model is not in the idle state or in fail state.")
-        _userInfoFlow.value = loading()
+        _stateFlow.value.let { state ->
+            check(state is LoginScreenState.FetchRecipes && state.isFetched || state is LoginScreenState.LoginFailed) {
+                "The view model is not in the idle state or in fail state"
+            }
+        }
+        _stateFlow.value = LoginScreenState.Login()
         viewModelScope.launch {
-            Log.v(ContentValues.TAG, "fetching for login....")
+            Log.v("Login", "fetching for login....")
             val result = runCatching { service.login(username, password) }
-            Log.v(ContentValues.TAG, "fetched done....")
+            Log.v("Login", "fetched done....")
             if (result.isFailure) {
-                val message = result.exceptionOrNull()?.message ?: "Unknown error"
-                _userInfoFlow.value = fail(message)
+                _stateFlow.value = LoginScreenState.LoginFailed(
+                    result.exceptionOrNull() ?: Exception("Unknown error")
+                )
             } else {
-                Log.v(ContentValues.TAG, "fetched done and is ${result.getOrNull()}")
+                Log.v("Login", "fetched done and is ${result.getOrNull()}")
                 preferences.setUserInfo(result.getOrThrow())
-                _userInfoFlow.value = loaded(result)
+                _stateFlow.value = LoginScreenState.Login(result.getOrThrow(), true)
             }
         }
     }
+
 
     /**
      * Resets the view model to the idle state. From the idle state, the user information
      * can be fetched again.
      */
     fun resetToIdle() {
-        if (_userInfoFlow.value !is Loaded && _userInfoFlow.value !is Fail)
+        if (_stateFlow.value !is LoginScreenState.Login &&
+            _stateFlow.value !is LoginScreenState.LoginFailed &&
+            _stateFlow.value !is LoginScreenState.Error
+        ) {
             throw IllegalStateException("The view model is not in the loaded state or in fail state.")
-        _userInfoFlow.value = idle()
+        }
+        _stateFlow.value = LoginScreenState.Idle
     }
 }

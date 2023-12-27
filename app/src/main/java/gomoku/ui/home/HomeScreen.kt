@@ -11,6 +11,7 @@ import gomoku.ui.login.components.HeaderLogo
 import gomoku.ui.shared.background.Background
 import gomoku.ui.shared.components.Form
 import gomoku.ui.shared.components.IconButton
+import gomoku.ui.shared.components.ThemedCircularProgressIndicator
 import gomoku.ui.shared.theme.GomokuTheme
 import pdm.gomoku.R
 
@@ -32,15 +33,17 @@ private val HomeScreenTestTagLogout = "Logout"
 fun HomeScreen(
     inDarkTheme: Boolean?,
     username: String,
+    isFetchingLogout: Boolean = false,
     onFindMatch: () -> Unit = {},
     onLeaderBoard: () -> Unit = {},
     onAbout: () -> Unit = {},
-    onLogout: () -> Unit = {}
+    onLogout: () -> Unit
 ) {
     GomokuTheme(darkTheme = inDarkTheme ?: false) {
         Background(
             header = { HeaderLogo() }
         ) {
+            if (isFetchingLogout) ThemedCircularProgressIndicator()
             Form(
                 title = stringResource(id = Home.welcome, username),
                 inputFieldsData = listOf(
@@ -55,7 +58,11 @@ fun HomeScreen(
                         onClick = onLeaderBoard
                     ),
                     ButtonData(stringResource(Home.about), R.drawable.about, onClick = onAbout),
-                    ButtonData(stringResource(Home.logout), R.drawable.door_out, onClick = onLogout)
+                    ButtonData(
+                        stringResource(Home.logout),
+                        R.drawable.door_out,
+                        onClick = onLogout
+                    )
                 ),
                 renderInputField = { inputData ->
                     IconButton(
@@ -73,5 +80,22 @@ fun HomeScreen(
 @Composable
 @Preview
 private fun HomeScreenPreview() {
-    HomeScreen(false, "Admin-".repeat(100))
+    HomeScreen(
+        inDarkTheme = false,
+        username = "John",
+        onFindMatch = {},
+        onLeaderBoard = {},
+        onAbout = {},
+        onLogout = {}
+    )
+
+    HomeScreen(
+        inDarkTheme = false,
+        username = "John",
+        onFindMatch = {},
+        onLeaderBoard = {},
+        onAbout = {},
+        onLogout = {},
+        isFetchingLogout = true
+    )
 }

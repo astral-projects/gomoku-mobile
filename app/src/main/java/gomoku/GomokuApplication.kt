@@ -10,7 +10,7 @@ import gomoku.domain.service.game.GameService
 import gomoku.domain.service.user.UserServiceInterface
 import gomoku.domain.service.variant.FakeVariantService
 import gomoku.domain.service.variant.VariantService
-import gomoku.http.UserService
+import gomoku.http.ApiUserService
 import gomoku.infrastructure.PreferencesDataStore
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
@@ -54,6 +54,6 @@ class GomokuApplication : Application(), GomokuDependencyProvider {
     // How can i pass the preferencesRepository to the UserService? I can't use the constructor
     // because the UserService is created at the runtime of the application.
     override val userServiceInterface: UserServiceInterface by lazy {
-        UserService(preferencesRepository)
+        ApiUserService(preferencesRepository)
     }
 }

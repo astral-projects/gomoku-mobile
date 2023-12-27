@@ -12,10 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import gomoku.GomokuDependencyProvider
-import gomoku.domain.Idle
-import gomoku.domain.Loaded
-import gomoku.domain.getOrThrow
-import gomoku.domain.idle
 import gomoku.ui.Navigation
 import gomoku.ui.home.HomeActivity
 import gomoku.ui.register.RegisterActivity
@@ -45,16 +41,20 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            viewModel.uriTemplates.collect {
-                if (it is Idle)
-                    viewModel.fetchUriTemplates()
+            viewModel.stateFlow.collect {
+                if (it is LoginScreenState.Login && it.isLoggedIn) {
+                    doNavigation(userName = it.userInfo?.username ?: "")
+                    viewModel.resetToIdle()
+                }
             }
-            viewModel.userInfo.collect {
-                if (it is Loaded && it.value.isSuccess) {
-                    doNavigation(userName = it.getOrThrow().username)
-                    viewModel.resetToIdle()
-                } else if (it is Loaded && it.value.isFailure) {
-                    viewModel.resetToIdle()
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.stateFlow.collect {
+                    if (it is LoginScreenState.Idle) {
+                        viewModel.fetchUriTemplates()
+                    }
                 }
             }
         }
@@ -68,9 +68,10 @@ class LoginActivity : ComponentActivity() {
 
         }
         setContent {
-            val state by viewModel.userInfo.collectAsState(initial = idle())
+            val state = viewModel.stateFlow.collectAsState(initial = LoginScreenState.Idle).value
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             LoginScreen(
+                isLoggingIn = state is LoginScreenState.Login && !state.isLoggedIn,
                 inDarkTheme = isDarkTheme,
                 authenticatedUserInfo = state,
                 onSubmit = { username, password ->
