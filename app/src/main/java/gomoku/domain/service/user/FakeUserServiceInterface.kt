@@ -86,7 +86,7 @@ class FakeUserServiceInterface : UserServiceInterface, AbstractFakeService() {
         return userStats.findOrThrow(FetchUserException()) { it.id == userId }
     }
 
-    override suspend fun fetchUsersStats(page: Int): List<UserStats> {
+    override suspend fun fetchUsersStats(page: Int, itemsPerPage: Int): List<UserStats> {
         delay(fetchDelay)
         return paginatedRankingInfo(userStats, page)
     }

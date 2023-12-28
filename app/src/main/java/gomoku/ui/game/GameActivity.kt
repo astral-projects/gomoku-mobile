@@ -61,8 +61,7 @@ class GameActivity : ComponentActivity() {
     private val viewModel by viewModels<GameViewModel> {
         GameViewModel.factory(
             dependencies.gameService,
-            dependencies.preferencesRepository,
-            dependencies.gamesServiceHttp
+            dependencies.preferencesRepository
         )
     }
 

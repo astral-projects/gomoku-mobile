@@ -14,10 +14,10 @@ import gomoku.domain.game.moves.move.Square
 import gomoku.domain.leaderboard.PlayerInfo
 import gomoku.domain.login.UserInfo
 import gomoku.domain.service.game.GameService
+import gomoku.domain.service.media.siren.SirenModel
 import gomoku.domain.variant.OpeningRule
 import gomoku.domain.variant.VariantConfig
 import gomoku.domain.variant.VariantName
-import gomoku.http.models.siren.SirenModel
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -28,7 +28,7 @@ import java.io.IOException
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class GomokuGame(
+class ApiGameService(
     private val client: OkHttpClient,
     private val gson: Gson
 ) : GameService {

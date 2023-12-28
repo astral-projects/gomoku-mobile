@@ -50,6 +50,9 @@ class HomeActivity : ComponentActivity() {
                 if (it is HomeScreenState.Logout && it.isDone) {
                     LoginActivity.navigateTo(this@HomeActivity)
                     viewModel.resetToIdle()
+                } else if (it is HomeScreenState.Error) {
+                    LoginActivity.navigateTo(this@HomeActivity)
+                    viewModel.resetToIdle()
                 }
             }
         }

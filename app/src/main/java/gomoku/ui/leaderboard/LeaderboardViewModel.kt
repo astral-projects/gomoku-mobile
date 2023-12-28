@@ -3,13 +3,7 @@ package gomoku.ui.leaderboard
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import gomoku.domain.IOState
-import gomoku.domain.getOrNull
-import gomoku.domain.idle
 import gomoku.domain.leaderboard.Term
-import gomoku.domain.leaderboard.UserStats
-import gomoku.domain.loaded
-import gomoku.domain.loading
 import gomoku.domain.service.user.UserServiceInterface
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.ui.shared.BaseViewModel
@@ -19,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LeaderboardViewModel(
-    private val userServiceInterface: UserServiceInterface,
+    private val service: UserServiceInterface,
     preferences: PreferencesRepository
 ) : BaseViewModel(preferences) {
 
@@ -32,46 +26,46 @@ class LeaderboardViewModel(
         private const val FIRST_PAGE = 1
     }
 
+    val stateFlow: Flow<LeaderBoardScreenState>
+        get() = _stateFlow.asStateFlow()
 
-    val usersStats: Flow<IOState<List<UserStats>>>
-        get() = _usersStatsFlow.asStateFlow()
-
-    private val _usersStatsFlow: MutableStateFlow<IOState<List<UserStats>>> =
-        MutableStateFlow(idle())
+    private val _stateFlow: MutableStateFlow<LeaderBoardScreenState> =
+        MutableStateFlow(LeaderBoardScreenState.Idle)
 
     fun fetchUserStats(userId: Int) {
-        _usersStatsFlow.value = loading()
+        _stateFlow.value = LeaderBoardScreenState.Loading(page = 0)
         viewModelScope.launch {
-            val result = runCatching { userServiceInterface.fetchUserStats(userId) }
-            _usersStatsFlow.value = loaded(result.map { listOf(it) })
-        }
-    }
-
-    fun fetchUsersStats(page: Int = FIRST_PAGE) {
-        val previousList: List<UserStats>? = _usersStatsFlow.value.getOrNull()
-        _usersStatsFlow.value = loading(previousList)
-        viewModelScope.launch {
-            val result = runCatching { userServiceInterface.fetchUsersStats(page) }
-            if (page == FIRST_PAGE) {
-                _usersStatsFlow.value = loaded(result)
+            val result = runCatching { service.fetchUserStats(userId) }
+            _stateFlow.value = if (result.isSuccess) {
+                LeaderBoardScreenState.UserStatsLoaded(result.getOrThrow())
             } else {
-                val newList: List<UserStats>? = result.getOrNull()
-                val mergedList = previousList.orEmpty() + newList.orEmpty()
-                val sortedList = mergedList.sortedBy { it.rank }
-                _usersStatsFlow.value = loaded(Result.success(sortedList))
+                LeaderBoardScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
             }
         }
     }
 
-    /**
-     * Searches for users with the given term.
-     * @param term the term to search for.
-     */
-    fun searchUsers(term: Term) {
-        _usersStatsFlow.value = loading()
+    fun fetchUsersStats(page: Int = FIRST_PAGE) {
+        _stateFlow.value = LeaderBoardScreenState.Loading(page = page)
         viewModelScope.launch {
-            val result = runCatching { userServiceInterface.searchUsers(term) }
-            _usersStatsFlow.value = loaded(result)
+            val result = runCatching { service.fetchUsersStats(page) }
+            _stateFlow.value = if (result.isSuccess) {
+                LeaderBoardScreenState.UsersStatsLoaded(result.getOrThrow(), isLastPage = false)
+            } else {
+                LeaderBoardScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
+            }
         }
     }
+
+    fun searchUsers(term: String) {
+        _stateFlow.value = LeaderBoardScreenState.SearchUsers(term)
+        viewModelScope.launch {
+            val result = runCatching { service.searchUsers(term = Term(term)) }
+            _stateFlow.value = if (result.isSuccess) {
+                LeaderBoardScreenState.UsersStatsLoaded(result.getOrThrow(), isLastPage = false)
+            } else {
+                LeaderBoardScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
+            }
+        }
+    }
+
 }

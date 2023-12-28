@@ -1,5 +1,5 @@
 package gomoku.http.models.users
 
-class RegisterOutputModel(
+data class RegisterOutputModel(
     val id: Int
 )

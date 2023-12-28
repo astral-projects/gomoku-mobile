@@ -1,9 +1,7 @@
 package gomoku.ui.leaderboard
 
 import androidx.compose.runtime.Composable
-import gomoku.domain.IOState
 import gomoku.domain.leaderboard.Term
-import gomoku.domain.leaderboard.UserStats
 import gomoku.domain.login.UserInfo
 import gomoku.ui.leaderboard.components.LeaderboardView
 
@@ -22,7 +20,7 @@ import gomoku.ui.leaderboard.components.LeaderboardView
  */
 @Composable
 fun LeaderboardScreen(
-    state: IOState<List<UserStats>>,
+    state: LeaderBoardScreenState,
     userInfo: UserInfo,
     isDarkTheme: Boolean,
     setDarkTheme: (isDarkTheme: Boolean) -> Unit,

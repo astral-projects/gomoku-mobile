@@ -51,6 +51,8 @@ class HomeViewModel(
                     preferences.clearUserInfo(user)
                     _stateFlow.value = HomeScreenState.Logout(true)
                 }
+            } else {
+                _stateFlow.value = HomeScreenState.Error(Exception("User not logged in"))
             }
         }
     }

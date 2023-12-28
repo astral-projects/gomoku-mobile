@@ -11,8 +11,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.lifecycleScope
 import gomoku.GomokuDependencyProvider
-import gomoku.domain.Idle
-import gomoku.domain.idle
 import gomoku.ui.Navigation
 import gomoku.ui.about.AboutActivity
 import gomoku.ui.home.USERNAME_EXTRA
@@ -41,10 +39,14 @@ class LeaderboardActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            viewModel.usersStats.collect {
-                if (it is Idle) {
+            viewModel.stateFlow.collect {
+                if (it is LeaderBoardScreenState.Idle) {
                     Log.v("LeaderboardActivity", "fetching users stats")
                     viewModel.fetchUsersStats()
+                }
+                if (it is LeaderBoardScreenState.SearchUsers) {
+                    Log.v("LeaderboardActivity", "searching users")
+                    viewModel.searchUsers(it.term)
                 }
             }
         }
@@ -57,7 +59,8 @@ class LeaderboardActivity : ComponentActivity() {
             }
         }
         setContent {
-            val state by viewModel.usersStats.collectAsState(initial = idle())
+            val state =
+                viewModel.stateFlow.collectAsState(initial = LeaderBoardScreenState.Idle).value
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             LeaderboardScreen(
                 state = state,
@@ -65,7 +68,7 @@ class LeaderboardActivity : ComponentActivity() {
                 isDarkTheme = isDarkTheme ?: false,
                 setDarkTheme = { viewModel.setDarkTheme(it) },
                 getUserStats = { id -> viewModel.fetchUserStats(id) },
-                onSearchRequest = { term -> viewModel.searchUsers(term) },
+                onSearchRequest = { term -> viewModel.searchUsers(term.value) },
                 getItemsFromPage = { page -> viewModel.fetchUsersStats(page) },
                 toFindGameScreen = { VariantActivity.navigateTo(this, username) },
                 toAboutScreen = { AboutActivity.navigateTo(this) },

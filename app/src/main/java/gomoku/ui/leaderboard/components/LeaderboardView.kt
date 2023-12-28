@@ -25,13 +25,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import gomoku.domain.IOState
-import gomoku.domain.Loading
-import gomoku.domain.getOrNull
 import gomoku.domain.leaderboard.Leaderboard
 import gomoku.domain.leaderboard.Term
 import gomoku.domain.leaderboard.UserStats
 import gomoku.domain.login.UserInfo
+import gomoku.ui.leaderboard.LeaderBoardScreenState
 import gomoku.ui.shared.background.Background
 import gomoku.ui.shared.components.ClickableIcon
 import gomoku.ui.shared.components.ThemedCircularProgressIndicator
@@ -71,7 +69,7 @@ fun LeaderboardView(
     userInfo: UserInfo,
     isDarkTheme: Boolean,
     setDarkTheme: (Boolean) -> Unit,
-    state: IOState<List<UserStats>>,
+    state: LeaderBoardScreenState,
     getUserStats: (id: Int) -> Unit,
     getItemsFromPage: (page: Int) -> Unit,
     onSearchRequest: (term: Term) -> Unit,
@@ -79,10 +77,6 @@ fun LeaderboardView(
     toAboutScreen: () -> Unit,
     onLogoutRequest: () -> Unit,
 ) {
-    val usersRankingInfo = state
-        .getOrNull()
-        ?.map { it.toRankingInfo() }
-        ?: emptyList()
     // search
     var query by rememberSaveable { mutableStateOf("") }
     // list and pagination
@@ -148,7 +142,7 @@ fun LeaderboardView(
         snapshotFlow { lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collectLatest { itemIndex ->
                 if (
-                    state !is Loading
+                    state is LeaderBoardScreenState.Loading
                     && itemIndex != null
                     && itemIndex >= page * PAGE_SIZE - LOAD_MORE_ITEMS_THRESHOLD
                 ) {
@@ -213,13 +207,14 @@ fun LeaderboardView(
                             .fillMaxHeight(LEADERBOARD_TABLE_HEIGHT_FACTOR)
                             .align(Alignment.TopCenter)
                     ) {
-                        if (state is Loading && page == FIRST_PAGE) {
+                        if (state is LeaderBoardScreenState.Loading && page == FIRST_PAGE) {
                             ThemedCircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally))
                         } else {
                             LeaderboardTable(
-                                playersRankingInfo = usersRankingInfo,
+                                playersRankingInfo = (state as? LeaderBoardScreenState.UsersStatsLoaded)?.usersStats?.map { it.toRankingInfo() }
+                                    ?: emptyList(),
                                 listState = lazyListState,
-                                loading = state is Loading
+                                loading = state is LeaderBoardScreenState.Loading
                             ) {
                                 userRankInfo = it
                                 showUserProfileDialog = true

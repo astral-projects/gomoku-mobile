@@ -21,17 +21,15 @@ import kotlinx.coroutines.launch
 
 class GameViewModel(
     private val service: GameService,
-    preferences: PreferencesRepository,
-    private val gamesServiceHttp: GameService
+    preferences: PreferencesRepository
 ) : BaseViewModel(preferences) {
 
     companion object {
         fun factory(
             service: GameService,
             preferences: PreferencesRepository,
-            gamesServiceHttp: GameService,
         ) = viewModelFactory {
-            initializer { GameViewModel(service, preferences, gamesServiceHttp) }
+            initializer { GameViewModel(service, preferences) }
         }
     }
 
@@ -47,7 +45,7 @@ class GameViewModel(
         viewModelScope.launch {
             Log.v(TAG, "fetch game")
             Log.v(TAG, preferences.getUserInfo().toString())
-            val result = runCatching { gamesServiceHttp.fetchGameById("54") }
+            val result = runCatching { service.fetchGameById("54") }
             Log.v(TAG, "exit fetch game")
             _gameFlow.value = loaded(result)
         }
