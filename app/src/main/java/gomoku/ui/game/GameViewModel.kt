@@ -1,12 +1,11 @@
 package gomoku.ui.game
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import gomoku.domain.IOState
 import gomoku.domain.Idle
+import gomoku.domain.Loaded
 import gomoku.domain.game.match.Game
 import gomoku.domain.game.moves.Move
 import gomoku.domain.idle
@@ -40,19 +39,15 @@ class GameViewModel(
 
     fun fetchGameById(gameId: String) {
         check(_gameFlow.value is Idle) { "The view model is not in the idle state." }
-        Log.v(TAG, "goes to LoadingState")
         _gameFlow.value = loading()
         viewModelScope.launch {
-            Log.v(TAG, "fetch game")
-            Log.v(TAG, preferences.getUserInfo().toString())
-            val result = runCatching { service.fetchGameById("54") }
-            Log.v(TAG, "exit fetch game")
+            val result = runCatching { service.fetchGameById(gameId) }
             _gameFlow.value = loaded(result)
         }
     }
 
     fun makeMove(gameId: String, move: Move) {
-        check(_gameFlow.value is Idle) { "The view model is not in the idle state." }
+        check(_gameFlow.value is Loaded) { "The view model is not in the loaded state." }
         _gameFlow.value = loading()
         viewModelScope.launch {
             val result = runCatching { service.makeMove(gameId, move) }

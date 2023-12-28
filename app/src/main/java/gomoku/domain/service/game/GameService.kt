@@ -46,7 +46,8 @@ interface GameService {
      * Attempts to exit the lobby with the specified id.
      * @param lobbyId The id of the lobby to exit.
      * @param userInfo The user information for the player exiting the lobby.
-     * @throws FetchLobbyException If the lobby with the given id cannot be found.
+     * @throws FetchLobbyException If the lobby with the given id cannot be found,
+     * or the player is not in the lobby.
      */
     @Throws(FetchLobbyException::class)
     suspend fun exitLobby(lobbyId: String, userInfo: UserInfo)
