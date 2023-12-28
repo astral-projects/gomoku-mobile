@@ -11,7 +11,7 @@ import gomoku.domain.fail
 import gomoku.domain.idle
 import gomoku.domain.loaded
 import gomoku.domain.loading
-import gomoku.domain.service.user.UserServiceInterface
+import gomoku.domain.service.user.UserService
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.ui.shared.BaseViewModel
 import kotlinx.coroutines.flow.Flow
@@ -20,14 +20,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
-    private val service: UserServiceInterface,
-    preferences: PreferencesRepository
+    private val service: UserService,
+    preferences: PreferencesRepository,
 ) : BaseViewModel(preferences) {
 
     companion object {
         fun factory(
-            service: UserServiceInterface,
-            preferences: PreferencesRepository
+            service: UserService,
+            preferences: PreferencesRepository,
         ) = viewModelFactory {
             initializer { RegisterViewModel(service, preferences) }
         }
@@ -43,7 +43,7 @@ class RegisterViewModel(
     fun register(
         username: String,
         email: String,
-        password: String
+        password: String,
     ) {
         if (_createUserIdFlowInfo.value !is Idle && _createUserIdFlowInfo.value !is Fail)
             throw IllegalStateException("The view model is not in the idle state or the fail state.")
@@ -51,8 +51,8 @@ class RegisterViewModel(
         viewModelScope.launch {
             val result = runCatching { service.register(username, email, password) }
             if (result.isFailure) {
-                val message = result.exceptionOrNull()?.message ?: "Unknown error"
-                _createUserIdFlowInfo.value = fail(message)
+                _createUserIdFlowInfo.value =
+                    fail(result.exceptionOrNull() ?: Exception("Unknown error"))
             } else {
                 _createUserIdFlowInfo.value = loaded(result)
             }

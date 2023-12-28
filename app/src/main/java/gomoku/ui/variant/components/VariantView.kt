@@ -63,11 +63,10 @@ fun VariantView(
     variantScreenState: VariantScreenState,
     onPlayRequest: (variantConfig: VariantConfig) -> Unit,
     onLobbyExitRequest: () -> Unit,
-    variants: List<VariantConfig>,
     setDarkTheme: (Boolean) -> Unit,
     toLeaderboardScreen: () -> Unit,
     toAboutScreen: () -> Unit,
-    onLogoutRequest: () -> Unit
+    onLogoutRequest: () -> Unit,
 ) {
     val (selectedOption, onOptionSelected) = remember { mutableStateOf<VariantConfig?>(null) }
     val scope = rememberCoroutineScope()
@@ -146,15 +145,15 @@ fun VariantView(
                             contentDescription = null
                         )
                     }
-                    if (variantScreenState == VariantScreenState.LoadingVariants) {
+                    if (variantScreenState is VariantScreenState.FetchVariants && !variantScreenState.isDone) {
                         ThemedCircularProgressIndicator(
                             modifier = Modifier
                                 .align(Alignment.CenterHorizontally)
                                 .padding(ThemedCircularProgressIndicatorPadding)
                         )
-                    } else {
+                    } else if (variantScreenState is VariantScreenState.FetchVariants) {
                         VariantTable(
-                            variants = variants,
+                            variants = variantScreenState.variants,
                             selectedOption = selectedOption,
                             onOptionSelected = onOptionSelected
                         )
@@ -164,11 +163,11 @@ fun VariantView(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         when (variantScreenState) {
-                            VariantScreenState.LoadingGameMatch -> {
+                            is VariantScreenState.FindGame -> {
                                 ThemedCircularProgressIndicator()
                             }
 
-                            VariantScreenState.WaitingInLobby -> {
+                            is VariantScreenState.WaitingInLobby -> {
                                 WaitingOpponentDialog(
                                     playerIconId = userInfo.iconId,
                                     onDismissRequest = onLobbyExitRequest
@@ -176,11 +175,13 @@ fun VariantView(
                             }
 
                             else -> {
-                                SubmitButton(
-                                    enable = selectedOption != null,
-                                    onButtonText = stringResource(Variant.submitButtonText),
-                                    onClick = { selectedOption?.let { onPlayRequest(it) } }
-                                )
+                                if (variantScreenState is VariantScreenState.FetchVariants && variantScreenState.isDone) {
+                                    SubmitButton(
+                                        enable = selectedOption != null,
+                                        onButtonText = stringResource(Variant.submitButtonText),
+                                        onClick = { selectedOption?.let { onPlayRequest(it) } }
+                                    )
+                                }
                             }
                         }
                     }

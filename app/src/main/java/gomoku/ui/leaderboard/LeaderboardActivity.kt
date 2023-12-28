@@ -24,7 +24,7 @@ class LeaderboardActivity : ComponentActivity() {
 
     private val viewModel by viewModels<LeaderboardViewModel> {
         LeaderboardViewModel.factory(
-            dependencies.userServiceInterface,
+            dependencies.userService,
             dependencies.preferencesRepository
         )
     }

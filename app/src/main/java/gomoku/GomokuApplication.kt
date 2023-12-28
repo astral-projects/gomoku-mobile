@@ -5,12 +5,12 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
-import gomoku.domain.service.game.FakeGameService
 import gomoku.domain.service.game.GameService
-import gomoku.domain.service.user.UserServiceInterface
-import gomoku.domain.service.variant.FakeVariantService
+import gomoku.domain.service.user.UserService
 import gomoku.domain.service.variant.VariantService
+import gomoku.http.ApiGameService
 import gomoku.http.ApiUserService
+import gomoku.http.ApiVariantsService
 import gomoku.infrastructure.PreferencesDataStore
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
@@ -47,13 +47,17 @@ class GomokuApplication : Application(), GomokuDependencyProvider {
      */
     override val gson: Gson = Gson()
 
-    override val gameService: GameService = FakeGameService
+    override val gameService: GameService by lazy {
+        ApiGameService(preferencesRepository)
+    }
 
-    override val variantService: VariantService = FakeVariantService
+    override val variantService: VariantService by lazy {
+        ApiVariantsService(preferencesRepository)
+    }
 
     // How can i pass the preferencesRepository to the UserService? I can't use the constructor
     // because the UserService is created at the runtime of the application.
-    override val userServiceInterface: UserServiceInterface by lazy {
+    override val userService: UserService by lazy {
         ApiUserService(preferencesRepository)
     }
 }

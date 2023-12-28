@@ -60,7 +60,7 @@ fun GameScreen(
                 onLeaveGameRequest = onLeaveGameRequest,
                 onCellClick = onCellClick,
                 game = game ?: Game(
-                    id = "1",
+                    id = 1,
                     variant = VariantConfig(
                         id = 1,
                         name = VariantName.FREESTYLE,
@@ -115,7 +115,7 @@ private fun GameScreenPreview() {
         gameState = Loaded(
             Result.success(
                 Game(
-                    id = "1",
+                    id = 1,
                     variant = VariantConfig(
                         id = 1,
                         name = VariantName.FREESTYLE,

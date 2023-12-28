@@ -37,7 +37,7 @@ class GameViewModel(
 
     private val _gameFlow: MutableStateFlow<IOState<Game>> = MutableStateFlow(idle())
 
-    fun fetchGameById(gameId: String) {
+    fun fetchGameById(gameId: Int) {
         check(_gameFlow.value is Idle) { "The view model is not in the idle state." }
         _gameFlow.value = loading()
         viewModelScope.launch {
@@ -46,11 +46,12 @@ class GameViewModel(
         }
     }
 
-    fun makeMove(gameId: String, move: Move) {
+    fun makeMove(gameId: Int, move: Move) {
         check(_gameFlow.value is Loaded) { "The view model is not in the loaded state." }
         _gameFlow.value = loading()
         viewModelScope.launch {
-            val result = runCatching { service.makeMove(gameId, move) }
+            val userInfo = preferences.getUserInfo()!!
+            val result = runCatching { service.makeMove(gameId, move, userInfo.token) }
             _gameFlow.value = loaded(result)
         }
     }

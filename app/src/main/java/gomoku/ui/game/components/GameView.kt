@@ -152,7 +152,7 @@ private fun GameViewPreview() {
         onLeaveGameRequest = {},
         onCellClick = {},
         game = Game(
-            id = "1",
+            id = 1,
             variant = VariantConfig(
                 id = 1,
                 name = VariantName.CARO,

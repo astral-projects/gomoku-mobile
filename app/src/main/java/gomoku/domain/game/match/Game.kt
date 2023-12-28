@@ -5,7 +5,7 @@ import gomoku.domain.leaderboard.PlayerInfo
 import gomoku.domain.variant.VariantConfig
 
 data class Game(
-    val id: String,
+    val id: Int,
     val variant: VariantConfig,
     val board: Board,
     val host: PlayerInfo,

@@ -1,37 +1,23 @@
 package gomoku.ui.variant
 
-import gomoku.domain.IOState
-import gomoku.domain.Idle
-import gomoku.domain.Loaded
-import gomoku.domain.Loading
-import gomoku.domain.game.match.Game
-import gomoku.domain.game.match.Lobby
-import gomoku.domain.game.match.Match
 import gomoku.domain.variant.VariantConfig
 
 /**
  * Represents the state of the Variant screen.
  */
-enum class VariantScreenState {
-    LoadingVariants,
-    LoadingGameMatch,
-    WaitingInLobby,
-    FoundGame,
-    Error
-}
+sealed class VariantScreenState {
+    data object Idle : VariantScreenState()
+    data class FetchVariants(
+        val variants: List<VariantConfig> = emptyList(),
+        val isDone: Boolean = false,
+    ) : VariantScreenState()
 
-/**
- * Returns the [VariantScreenState] based on the [IOState]s of the variants and the game match.
- */
-fun variantScreenState(
-    variantsState: IOState<List<VariantConfig>>,
-    gameMatchState: IOState<Match>
-): VariantScreenState {
-    return when {
-        variantsState is Loading || variantsState is Idle -> VariantScreenState.LoadingVariants
-        gameMatchState is Loading -> VariantScreenState.LoadingGameMatch
-        variantsState is Loaded && gameMatchState is Loaded && gameMatchState.value.getOrNull() is Game -> VariantScreenState.FoundGame
-        variantsState is Loaded && gameMatchState is Loaded && gameMatchState.value.getOrNull() is Lobby -> VariantScreenState.WaitingInLobby
-        else -> VariantScreenState.Error
-    }
+    data class FindGame(val variantId: Int) : VariantScreenState()
+    data class WaitingInLobby(val lobbyId: Int, val isPolling: Boolean = false) :
+        VariantScreenState()
+
+    data class JoinGame(val gameId: Int) : VariantScreenState()
+    data object ExitLobby : VariantScreenState()
+    data class Error(val error: Throwable) : VariantScreenState()
+
 }

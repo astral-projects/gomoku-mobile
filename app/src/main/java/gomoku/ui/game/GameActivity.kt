@@ -70,7 +70,7 @@ class GameActivity : ComponentActivity() {
         lifecycleScope.launch {
             viewModel.game.collect {
                 if (it is Idle) {
-                    viewModel.fetchGameById(gameId)
+                    viewModel.fetchGameById(gameId.toInt())
                 }
             }
         }
@@ -93,7 +93,7 @@ class GameActivity : ComponentActivity() {
                 onLeaveGameRequest = { HomeActivity.navigateTo(this, username) },
                 onCellClick = { square: Square ->
                     viewModel.makeMove(
-                        gameId = gameId,
+                        gameId = gameId.toInt(),
                         move = Move(
                             square,
                             Piece(Player.W)

@@ -2,8 +2,6 @@ package gomoku.ui.variant
 
 import androidx.compose.runtime.Composable
 import gomoku.domain.IOState
-import gomoku.domain.game.match.Match
-import gomoku.domain.getOrNull
 import gomoku.domain.login.UserInfo
 import gomoku.domain.variant.VariantConfig
 import gomoku.ui.variant.components.VariantView
@@ -19,24 +17,22 @@ import gomoku.ui.variant.components.VariantView
  */
 @Composable
 fun VariantScreen(
+    state: VariantScreenState,
     userInfo: UserInfo,
-    gameMatchState: IOState<Match>,
     isDarkTheme: Boolean? = false,
     setDarkTheme: (Boolean) -> Unit,
-    variantsState: IOState<List<VariantConfig>>,
     onPlayRequest: (variantConfig: VariantConfig) -> Unit,
     onLobbyExitRequest: () -> Unit,
     toLeaderboardScreen: () -> Unit,
     toAboutScreen: () -> Unit,
-    onLogoutRequest: () -> Unit
+    onLogoutRequest: () -> Unit,
 ) {
     VariantView(
         userInfo = userInfo,
         inDarkTheme = isDarkTheme ?: false,
-        variantScreenState = variantScreenState(variantsState, gameMatchState),
+        variantScreenState = state,
         onPlayRequest = onPlayRequest,
         onLobbyExitRequest = onLobbyExitRequest,
-        variants = variantsState.getOrNull() ?: emptyList(),
         setDarkTheme = setDarkTheme,
         toLeaderboardScreen = toLeaderboardScreen,
         toAboutScreen = toAboutScreen,

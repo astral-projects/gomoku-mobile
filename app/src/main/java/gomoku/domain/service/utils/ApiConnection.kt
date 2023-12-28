@@ -3,8 +3,8 @@ package gomoku.domain.service.utils
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import gomoku.domain.service.media.ProblemModel
 import gomoku.domain.service.utils.recipes.URI
+import gomoku.http.media.ProblemModel
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
