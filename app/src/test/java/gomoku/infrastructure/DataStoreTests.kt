@@ -8,6 +8,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -42,8 +43,8 @@ class DataStoreTests {
         val expected = UserInfo(1, "first test user", "first test motto", "rwerwer", 2)
         //sut.updateUserInfo(expected)
         // Act
-        //val result = sut.getUserInfo()
+        val result = sut.getUserInfo()
         // Assert
-        // assertEquals(expected, result)
+        assertEquals(expected, result)
     }
 }
