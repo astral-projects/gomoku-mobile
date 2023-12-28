@@ -1,4 +1,4 @@
-package gomoku.domain.service.utils
+package gomoku.http.utils
 
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
@@ -9,10 +9,10 @@ enum class Method {
 
 /**
  * Function that calls the API and returns the response as a json or a problem model.
- * @param uri - the uri to call
- * @param method - the method to use for the request
- * @param body - optional body for POST and PUT requests
- * @param token - optional token for authentication
+ * @param method The method to use for the API call.
+ * @param url The url to call.
+ * @param data The data to send to the API.
+ * @param token The token to use for the API call.
  */
 suspend inline fun <reified T, reified R> callApi(
     method: Method = Method.GET,

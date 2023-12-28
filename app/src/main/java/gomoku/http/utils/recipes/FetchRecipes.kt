@@ -1,9 +1,9 @@
-package gomoku.domain.service.utils.recipes
+package gomoku.http.utils.recipes
 
 import android.util.Log
 import com.google.gson.Gson
-import gomoku.domain.service.media.siren.Link
-import gomoku.domain.service.media.siren.SirenModel
+import gomoku.http.media.siren.Link
+import gomoku.http.media.siren.SirenModel
 import gomoku.infrastructure.PreferencesDataStore
 import okhttp3.Call
 import okhttp3.Callback
@@ -15,7 +15,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-const val URI = "https://139e-79-168-159-175.ngrok-free.app"
+const val URI = "https://0f3f-89-114-64-234.ngrok-free.app"
 
 suspend fun fetchRecipes(): List<Recipe> {
     val gson = Gson()

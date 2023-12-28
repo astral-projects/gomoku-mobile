@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import gomoku.domain.service.user.UserServiceInterface
-import gomoku.domain.service.utils.recipes.fetchRecipes
+import gomoku.domain.service.user.UserService
 import gomoku.domain.storage.PreferencesRepository
+import gomoku.http.utils.recipes.fetchRecipes
 import gomoku.ui.shared.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,14 +14,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val service: UserServiceInterface,
+    private val service: UserService,
     preferences: PreferencesRepository,
 ) : BaseViewModel(preferences) {
 
     companion object {
         fun factory(
-            service: UserServiceInterface,
-            preferences: PreferencesRepository
+            service: UserService,
+            preferences: PreferencesRepository,
         ) = viewModelFactory {
             initializer { LoginViewModel(service, preferences) }
         }

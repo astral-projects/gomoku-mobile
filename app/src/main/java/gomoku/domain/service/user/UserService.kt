@@ -9,7 +9,7 @@ import gomoku.domain.service.user.errors.RegisterUserException
 /**
  * Defines the behavior of a user service.
  */
-interface UserServiceInterface {
+interface UserService {
 
     /**
      * Attempts to log in a user with the given username and password.
@@ -21,7 +21,7 @@ interface UserServiceInterface {
     @Throws(FetchUserException::class)
     suspend fun login(
         username: String,
-        password: String
+        password: String,
     ): UserInfo
 
     /**

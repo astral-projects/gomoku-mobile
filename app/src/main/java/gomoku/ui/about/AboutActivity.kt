@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import gomoku.GomokuDependencyProvider
+import gomoku.domain.Loaded
 import gomoku.domain.about.About
 import gomoku.ui.Navigation
 import gomoku.ui.home.USERNAME_EXTRA
@@ -34,11 +35,19 @@ class AboutActivity : ComponentActivity() {
     private val dependencies by lazy { application as GomokuDependencyProvider }
 
     private val viewModel by viewModels<AboutViewModel> {
-        AboutViewModel.factory(dependencies.preferencesRepository)
+        AboutViewModel.factory(dependencies.userService, dependencies.preferencesRepository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lifecycleScope.launch {
+            viewModel.stateFlow.collect {
+                if (it is Loaded) {
+                    LoginActivity.navigateTo(this@AboutActivity)
+                }
+            }
+        }
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isDarkTheme.collect {
@@ -56,7 +65,7 @@ class AboutActivity : ComponentActivity() {
                 setDarkTheme = { viewModel.setDarkTheme(it) },
                 toLeaderboardScreen = { LeaderboardActivity.navigateTo(this) },
                 toFindGameScreen = { VariantActivity.navigateTo(this, username) },
-                onLogoutRequest = { LoginActivity.navigateTo(this) }
+                onLogoutRequest = { viewModel.logout() }
             )
         }
 

@@ -1,7 +1,7 @@
 package gomoku.ui.login
 
 import gomoku.domain.login.UserInfo
-import gomoku.domain.service.utils.recipes.Recipe
+import gomoku.http.utils.recipes.Recipe
 
 /**
  * Represents the login screen state.

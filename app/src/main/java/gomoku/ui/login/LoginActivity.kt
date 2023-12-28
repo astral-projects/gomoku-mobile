@@ -33,7 +33,7 @@ class LoginActivity : ComponentActivity() {
 
     private val viewModel by viewModels<LoginViewModel> {
         LoginViewModel.factory(
-            dependencies.userServiceInterface,
+            dependencies.userService,
             dependencies.preferencesRepository
         )
     }

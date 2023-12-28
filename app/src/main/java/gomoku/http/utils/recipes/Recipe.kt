@@ -1,4 +1,4 @@
-package gomoku.domain.service.utils.recipes
+package gomoku.http.utils.recipes
 
 /**
  * Represents a recipe from the response of the initial API call.

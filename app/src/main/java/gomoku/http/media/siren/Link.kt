@@ -1,4 +1,4 @@
-package gomoku.domain.service.media.siren
+package gomoku.http.media.siren
 
 class Link(
     val rel: List<String>,

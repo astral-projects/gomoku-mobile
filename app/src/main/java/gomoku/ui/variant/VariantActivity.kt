@@ -12,12 +12,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import gomoku.GomokuDependencyProvider
-import gomoku.domain.Idle
-import gomoku.domain.Loaded
-import gomoku.domain.game.match.Game
-import gomoku.domain.idle
 import gomoku.ui.about.AboutActivity
 import gomoku.ui.game.GameActivity
+import gomoku.ui.home.HomeActivity
 import gomoku.ui.home.USERNAME_EXTRA
 import gomoku.ui.leaderboard.LeaderboardActivity
 import gomoku.ui.login.LoginActivity
@@ -55,21 +52,20 @@ class VariantActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            viewModel.match.collect {
-                // only navigate to the game screen if the game is successfully loaded
-                if (it is Loaded && it.value.isSuccess && it.value.getOrThrow() is Game) {
-                    doNavigation(it.value.getOrThrow() as Game)
-                    viewModel.resetToIdle()
-                } else if (it is Loaded && it.value.isFailure) {
-                    // if an error occurred while trying to find a game, reset the state
+            viewModel.stateFlow.collect {
+                if (it is VariantScreenState.Idle) {
+                    viewModel.fetchVariants()
+                }
+                if (it is VariantScreenState.WaitingInLobby && !it.isPolling) {
+                    viewModel.startPollingLobby(it.lobbyId)
+                }
+                if (it is VariantScreenState.JoinGame) {
+                    doNavigation(it.gameId.toString())
                     viewModel.resetToIdle()
                 }
-            }
-        }
-        lifecycleScope.launch {
-            viewModel.variants.collect {
-                if (it is Idle) {
-                    viewModel.fetchVariants()
+                if (it is VariantScreenState.ExitLobby) {
+                    HomeActivity.navigateTo(this@VariantActivity, username)
+                    viewModel.resetToIdle()
                 }
             }
         }
@@ -83,18 +79,20 @@ class VariantActivity : ComponentActivity() {
         }
 
         setContent {
-            val stateVariants by viewModel.variants.collectAsState(initial = idle())
-            val stateFindGame by viewModel.match.collectAsState(initial = idle())
+            val state = viewModel.stateFlow.collectAsState(initial = VariantScreenState.Idle).value
             val stateIsInDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             VariantScreen(
+                state = state,
                 userInfo = viewModel.getUserInfo(),
-                onPlayRequest = { variantConfig -> viewModel.findGame(variantConfig) },
-                onLobbyExitRequest = { viewModel.exitLobby() },
-                gameMatchState = stateFindGame,
+                onPlayRequest = { variantConfig -> viewModel.findGame(variantConfig.id) },
+                onLobbyExitRequest = {
+                    if (state is VariantScreenState.WaitingInLobby) {
+                        viewModel.exitLobby(state.lobbyId)
+                    }
+                },
                 toLeaderboardScreen = { LeaderboardActivity.navigateTo(this) },
                 toAboutScreen = { AboutActivity.navigateTo(this) },
                 onLogoutRequest = { LoginActivity.navigateTo(this) },
-                variantsState = stateVariants,
                 isDarkTheme = stateIsInDarkTheme,
                 setDarkTheme = { isDarkTheme -> viewModel.setDarkTheme(isDarkTheme) }
             )
@@ -105,10 +103,10 @@ class VariantActivity : ComponentActivity() {
     /**
      * Navigates to the appropriate activity, depending on whether the
      * user information has already been provided or not.
-     * @param game the user information.
+     * @param gameId the id of the game to be displayed.
      */
-    private fun doNavigation(game: Game) {
-        GameActivity.navigateTo(this@VariantActivity, game.id, username)
+    private fun doNavigation(gameId: String) {
+        GameActivity.navigateTo(this@VariantActivity, gameId, username)
     }
 
     val username: String by lazy {

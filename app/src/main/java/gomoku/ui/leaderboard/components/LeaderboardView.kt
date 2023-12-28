@@ -16,7 +16,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -81,12 +80,12 @@ fun LeaderboardView(
     var query by rememberSaveable { mutableStateOf("") }
     // list and pagination
     val lazyListState = rememberLazyListState()
-    var page by remember { mutableIntStateOf(FIRST_PAGE) }
+    var page by rememberSaveable { mutableIntStateOf(FIRST_PAGE) }
     val scope = rememberCoroutineScope()
     // profile dialog
     var showUserProfileDialog by rememberSaveable { mutableStateOf(false) }
     // user info to be displayed in the profile dialog
-    var userRankInfo by remember { mutableStateOf(UserStats(userInfo).toRankingInfo()) }
+    var userRankInfo by rememberSaveable { mutableStateOf(UserStats(userInfo).toRankingInfo()) }
     var isSelfPositionEnabled by rememberSaveable { mutableStateOf(false) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     // data for the navigation drawer

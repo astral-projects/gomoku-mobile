@@ -40,7 +40,7 @@ class HomeActivity : ComponentActivity() {
     private val dependencies by lazy { application as GomokuDependencyProvider }
 
     private val viewModel by viewModels<HomeViewModel> {
-        HomeViewModel.factory(dependencies.userServiceInterface, dependencies.preferencesRepository)
+        HomeViewModel.factory(dependencies.userService, dependencies.preferencesRepository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,9 +48,6 @@ class HomeActivity : ComponentActivity() {
         lifecycleScope.launch {
             viewModel.stateFlow.collect {
                 if (it is HomeScreenState.Logout && it.isDone) {
-                    LoginActivity.navigateTo(this@HomeActivity)
-                    viewModel.resetToIdle()
-                } else if (it is HomeScreenState.Error) {
                     LoginActivity.navigateTo(this@HomeActivity)
                     viewModel.resetToIdle()
                 }

@@ -34,7 +34,7 @@ class RegisterActivity : ComponentActivity() {
 
     private val viewModel by viewModels<RegisterViewModel> {
         RegisterViewModel.factory(
-            dependencies.userServiceInterface,
+            dependencies.userService,
             dependencies.preferencesRepository
         )
     }

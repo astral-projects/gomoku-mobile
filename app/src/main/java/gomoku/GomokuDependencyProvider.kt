@@ -2,7 +2,7 @@ package gomoku
 
 import com.google.gson.Gson
 import gomoku.domain.service.game.GameService
-import gomoku.domain.service.user.UserServiceInterface
+import gomoku.domain.service.user.UserService
 import gomoku.domain.service.variant.VariantService
 import gomoku.domain.storage.PreferencesRepository
 import okhttp3.OkHttpClient
@@ -39,5 +39,5 @@ interface GomokuDependencyProvider {
     /**
      * The service used to fetch users
      */
-    val userServiceInterface: UserServiceInterface
+    val userService: UserService
 }

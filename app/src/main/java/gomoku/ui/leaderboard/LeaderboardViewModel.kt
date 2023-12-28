@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import gomoku.domain.leaderboard.Term
-import gomoku.domain.service.user.UserServiceInterface
+import gomoku.domain.service.user.UserService
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.ui.shared.BaseViewModel
 import kotlinx.coroutines.flow.Flow
@@ -13,12 +13,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LeaderboardViewModel(
-    private val service: UserServiceInterface,
-    preferences: PreferencesRepository
+    private val service: UserService,
+    preferences: PreferencesRepository,
 ) : BaseViewModel(preferences) {
 
     companion object {
-        fun factory(service: UserServiceInterface, preferences: PreferencesRepository) =
+        fun factory(service: UserService, preferences: PreferencesRepository) =
             viewModelFactory {
                 initializer { LeaderboardViewModel(service, preferences) }
             }

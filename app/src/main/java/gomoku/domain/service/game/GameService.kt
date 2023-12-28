@@ -6,7 +6,6 @@ import gomoku.domain.game.moves.Move
 import gomoku.domain.login.UserInfo
 import gomoku.domain.service.game.errors.FetchGameException
 import gomoku.domain.service.game.errors.FetchLobbyException
-import gomoku.domain.variant.VariantConfig
 
 /**
  * Defines the behavior of a game service.
@@ -20,17 +19,17 @@ interface GameService {
      * @throws FetchGameException If the game with the given id cannot be found.
      */
     @Throws(FetchGameException::class)
-    suspend fun fetchGameById(id: String): Game
+    suspend fun fetchGameById(id: Int): Game
 
     /**
      * Attempts to find a game with the specified variant configuration
      * for a player.
      * If a game cannot be found, a new lobby is created.
-     * @param variant The variant configuration for the game to find.
-     * @param userInfo The user information for the player searching for a game.
+     * @param variantId The variant id for the game to find.
+     * @param token The user token for the logged user that is searching the game.
      * @return The match which was found or created.
      */
-    suspend fun findGame(variant: VariantConfig, userInfo: UserInfo): Match
+    suspend fun findGame(variantId: Int, userInfo: UserInfo): Match
 
     /**
      * Attempts to make a move in the game with the specified id.
@@ -40,15 +39,23 @@ interface GameService {
      * @throws FetchGameException If the game with the given id cannot be found.
      */
     @Throws(FetchGameException::class)
-    suspend fun makeMove(gameId: String, move: Move): Game
+    suspend fun makeMove(gameId: Int, move: Move, token: String): Game
 
     /**
      * Attempts to exit the lobby with the specified id.
      * @param lobbyId The id of the lobby to exit.
-     * @param userInfo The user information for the player exiting the lobby.
+     * @param token The user token for the player exiting the lobby.
      * @throws FetchLobbyException If the lobby with the given id cannot be found,
      * or the player is not in the lobby.
      */
     @Throws(FetchLobbyException::class)
-    suspend fun exitLobby(lobbyId: String, userInfo: UserInfo)
+    suspend fun exitLobby(lobbyId: Int, token: String)
+
+    /**
+     * Attempts to retrieve the information to know if the player is
+     * waiting in a lobby.
+     * @param lobbyId The id of the lobby to check.
+     * @return True if the player is waiting in the lobby, false otherwise.
+     */
+    suspend fun waitingInLobby(lobbyId: Int, token: String): Boolean
 }

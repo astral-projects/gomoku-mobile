@@ -1,4 +1,4 @@
-package gomoku.domain.service.media
+package gomoku.http.media
 
 class ProblemModel(
     val type: String,
