@@ -1,12 +1,9 @@
-package gomoku.http
+package gomoku.http.service
 
 import gomoku.domain.leaderboard.Term
 import gomoku.domain.leaderboard.UserStats
 import gomoku.domain.login.UserInfo
 import gomoku.domain.service.user.UserService
-import gomoku.domain.service.utils.Method
-import gomoku.domain.service.utils.callApi
-import gomoku.domain.service.utils.recipes.findRecipeUri
 import gomoku.http.media.siren.SirenModel
 import gomoku.http.models.users.LoginInputModel
 import gomoku.http.models.users.LoginOutputModel
@@ -15,7 +12,10 @@ import gomoku.http.models.users.RegisterInputModel
 import gomoku.http.models.users.RegisterOutputModel
 import gomoku.http.models.users.UserStatsOutputModel
 import gomoku.http.models.users.UsersStatsOutputModel
+import gomoku.http.utils.Method
+import gomoku.http.utils.callApi
 import gomoku.http.utils.convertTemplateToUrl
+import gomoku.http.utils.recipes.findRecipeUri
 import gomoku.infrastructure.PreferencesDataStore
 import pdm.gomoku.R
 

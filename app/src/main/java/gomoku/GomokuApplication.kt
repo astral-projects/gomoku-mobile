@@ -8,9 +8,9 @@ import com.google.gson.Gson
 import gomoku.domain.service.game.GameService
 import gomoku.domain.service.user.UserService
 import gomoku.domain.service.variant.VariantService
-import gomoku.http.ApiGameService
-import gomoku.http.ApiUserService
-import gomoku.http.ApiVariantsService
+import gomoku.http.service.ApiGameService
+import gomoku.http.service.ApiUserService
+import gomoku.http.service.ApiVariantsService
 import gomoku.infrastructure.PreferencesDataStore
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit

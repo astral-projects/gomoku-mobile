@@ -1,10 +1,10 @@
-package gomoku.domain.service.utils
+package gomoku.http.utils
 
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import gomoku.domain.service.utils.recipes.URI
 import gomoku.http.media.ProblemModel
+import gomoku.http.utils.recipes.URI
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -33,7 +33,7 @@ class ApiConnection(
         suspendCoroutine { continuation ->
             val request = Request
                 .Builder()
-                .url("${URI}$url")
+                .url("$URI$url")
                 .addHeader("Authorization", "Bearer $token")
                 .build()
             client.newCall(request).enqueue(object : Callback {
@@ -71,7 +71,7 @@ class ApiConnection(
         val body = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
         val request = Request
             .Builder()
-            .url("${URI}$url")
+            .url("$URI$url")
             .addHeader("Content-Type", "application/json")
             .addHeader("Authorization", "Bearer $token")
             .post(body)
@@ -111,7 +111,7 @@ class ApiConnection(
     suspend inline fun <reified T> deleteApi(url: String, token: String): T {
         val request = Request
             .Builder()
-            .url("${URI}$url")
+            .url("$URI$url")
             .addHeader("Authorization", "Bearer $token")
             .delete()
             .build()

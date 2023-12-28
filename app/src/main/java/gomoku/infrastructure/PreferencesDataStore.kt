@@ -7,9 +7,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import gomoku.domain.login.UserInfo
-import gomoku.domain.service.utils.recipes.Recipe
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.domain.variant.VariantConfig
+import gomoku.http.utils.recipes.Recipe
 import gomoku.infrastructure.serializer.UriTemplatesGsonSerializer
 import gomoku.infrastructure.serializer.VariantsGsonSerializer
 import kotlinx.coroutines.flow.first

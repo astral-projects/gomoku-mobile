@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import gomoku.domain.service.user.UserService
-import gomoku.domain.service.utils.recipes.fetchRecipes
 import gomoku.domain.storage.PreferencesRepository
+import gomoku.http.utils.recipes.fetchRecipes
 import gomoku.ui.shared.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

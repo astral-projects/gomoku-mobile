@@ -1,4 +1,4 @@
-package gomoku.domain.service.utils.recipes
+package gomoku.http.utils.recipes
 
 import android.util.Log
 import com.google.gson.Gson
@@ -80,5 +80,3 @@ fun replaceParams(href: String, params: Map<String, String>): String {
     }
     return newHref
 }
-
-

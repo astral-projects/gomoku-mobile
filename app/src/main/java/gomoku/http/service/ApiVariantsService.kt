@@ -1,14 +1,14 @@
-package gomoku.http
+package gomoku.http.service
 
 import gomoku.domain.game.board.BoardSize
-import gomoku.domain.service.utils.callApi
-import gomoku.domain.service.utils.recipes.findRecipeUri
 import gomoku.domain.service.variant.VariantService
 import gomoku.domain.variant.OpeningRule
 import gomoku.domain.variant.VariantConfig
 import gomoku.domain.variant.VariantName
 import gomoku.http.media.siren.SirenModel
 import gomoku.http.models.games.VariantOutputModel
+import gomoku.http.utils.callApi
+import gomoku.http.utils.recipes.findRecipeUri
 import gomoku.infrastructure.PreferencesDataStore
 
 class ApiVariantsService(

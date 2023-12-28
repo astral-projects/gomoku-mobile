@@ -2,7 +2,7 @@ package gomoku.infrastructure.serializer
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import gomoku.domain.service.utils.recipes.Recipe
+import gomoku.http.utils.recipes.Recipe
 
 object UriTemplatesGsonSerializer : GsonSerializer<List<Recipe>> {
     override fun serialize(data: List<Recipe>): String {

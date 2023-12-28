@@ -1,8 +1,8 @@
 package gomoku.domain.storage
 
 import gomoku.domain.login.UserInfo
-import gomoku.domain.service.utils.recipes.Recipe
 import gomoku.domain.variant.VariantConfig
+import gomoku.http.utils.recipes.Recipe
 
 /**
  * Contract to be supported by the user info repository.

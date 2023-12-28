@@ -1,4 +1,4 @@
-package gomoku.http
+package gomoku.http.service
 
 import gomoku.domain.game.match.Game
 import gomoku.domain.game.match.Lobby
@@ -6,15 +6,15 @@ import gomoku.domain.game.match.Match
 import gomoku.domain.game.moves.Move
 import gomoku.domain.login.UserInfo
 import gomoku.domain.service.game.GameService
-import gomoku.domain.service.utils.Method
-import gomoku.domain.service.utils.callApi
-import gomoku.domain.service.utils.recipes.findRecipeUri
 import gomoku.http.media.siren.SirenModel
 import gomoku.http.models.games.FindGameInputModel
 import gomoku.http.models.games.FindGameOutputModel
 import gomoku.http.models.lobby.DeleteLobbyOutputModel
 import gomoku.http.models.lobby.WaitingInLobbyOutputModel
+import gomoku.http.utils.Method
+import gomoku.http.utils.callApi
 import gomoku.http.utils.convertTemplateToUrl
+import gomoku.http.utils.recipes.findRecipeUri
 import gomoku.infrastructure.PreferencesDataStore
 
 class ApiGameService(
@@ -49,7 +49,6 @@ class ApiGameService(
         } else {
             throw IllegalArgumentException("Unknown match type: ${res.`class`}")
         }
-
 
     }
 
