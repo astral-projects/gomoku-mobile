@@ -84,4 +84,30 @@ class LeaderboardViewModel(
         }
     }
 
+    fun logout() {
+        _stateFlow.value = LeaderBoardScreenState.Loading()
+        viewModelScope.launch {
+            val user = preferences.getUserInfo()
+            if (user != null) {
+                val result = runCatching { service.logout(user.token) }
+                if (result.isFailure) {
+                    Log.v("Leaderboard", "failure in logged out")
+                    _stateFlow.value = LeaderBoardScreenState.Error(
+                        result.exceptionOrNull() ?: Exception("Unknown error")
+                    )
+                } else {
+                    Log.v("Leaderboard", "logged out successfully")
+                    preferences.clearUserInfo(user)
+                    _stateFlow.value = LeaderBoardScreenState.Logout
+                }
+            } else {
+                _stateFlow.value = LeaderBoardScreenState.Error(Exception("User not logged in"))
+            }
+        }
+    }
+
+    fun resetToIdle() {
+        _stateFlow.value = LeaderBoardScreenState.Idle
+    }
+
 }

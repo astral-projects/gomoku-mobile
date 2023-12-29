@@ -19,5 +19,6 @@ sealed class VariantScreenState {
     data class JoinGame(val gameId: Int) : VariantScreenState()
     data object ExitLobby : VariantScreenState()
     data class Error(val error: Throwable) : VariantScreenState()
-
+    data object LoggingOut : VariantScreenState()
+    data object Logout : VariantScreenState()
 }

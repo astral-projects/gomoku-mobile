@@ -1,5 +1,6 @@
 package gomoku.ui.shared
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import gomoku.domain.login.UserInfo
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 /**
  * Base class for all view models in the app.
@@ -38,7 +40,13 @@ abstract class BaseViewModel(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getUserInfo(): UserInfo = viewModelScope.async {
-        preferences.getUserInfo()
-    }.getCompleted() ?: throw IllegalStateException("User info is null.")
+    fun getUserInfo(): UserInfo = let {
+        runBlocking {
+            val value = preferences.getUserInfo()
+            Log.v("BaseViewModel", "getUserInfo: $value")
+        }
+        viewModelScope.async {
+            preferences.getUserInfo()
+        }.getCompleted() ?: throw IllegalStateException("User not logged in")
+    }
 }

@@ -10,6 +10,7 @@ sealed class LeaderBoardScreenState {
         LeaderBoardScreenState()
 
     data class Error(val message: Throwable) : LeaderBoardScreenState()
+    data object Logout : LeaderBoardScreenState()
 }
 
 fun LeaderBoardScreenState.extractUsers(): List<RankingInfo> =

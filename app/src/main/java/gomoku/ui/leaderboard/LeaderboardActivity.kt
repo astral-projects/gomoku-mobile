@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import gomoku.GomokuDependencyProvider
 import gomoku.ui.Navigation
 import gomoku.ui.about.AboutActivity
-import gomoku.ui.home.USERNAME_EXTRA
 import gomoku.ui.login.LoginActivity
 import gomoku.ui.variant.VariantActivity
 import kotlinx.coroutines.launch
@@ -43,6 +42,9 @@ class LeaderboardActivity : ComponentActivity() {
                 if (it is LeaderBoardScreenState.Idle) {
                     Log.v("LeaderboardActivity", "fetching users stats")
                     viewModel.fetchUsersStats()
+                } else if (it is LeaderBoardScreenState.Logout) {
+                    LoginActivity.navigateTo(this@LeaderboardActivity)
+                    viewModel.resetToIdle()
                 }
             }
         }
@@ -65,16 +67,15 @@ class LeaderboardActivity : ComponentActivity() {
                 getUserStats = { id -> viewModel.fetchUserStats(id) },
                 onSearchRequest = { term -> viewModel.searchUsers(term) },
                 getItemsFromPage = { page -> viewModel.fetchUsersStats(page) },
-                toFindGameScreen = { VariantActivity.navigateTo(this, username) },
+                toFindGameScreen = {
+                    VariantActivity.navigateTo(
+                        this,
+                        viewModel.getUserInfo().username
+                    )
+                },
                 toAboutScreen = { AboutActivity.navigateTo(this) },
-                onLogoutRequest = { LoginActivity.navigateTo(this) },
+                onLogoutRequest = { viewModel.logout() },
             )
         }
     }
-
-    val username: String by lazy {
-        intent?.getStringExtra(USERNAME_EXTRA)
-            ?: throw IllegalArgumentException("Username must be provided")
-    }
-
 }
