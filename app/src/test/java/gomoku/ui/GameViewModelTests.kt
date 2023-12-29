@@ -41,11 +41,12 @@ class GameViewModelTests : AbstractViewModelTests() {
     val rule = MockMainDispatcherRule(testDispatcher = StandardTestDispatcher())
 
     companion object {
-        private val gameId = newTestString()
-        private val invalidGameId = newTestString()
+        private val gameId = newTestNumber()
+        private val invalidGameId = newTestNumber()
         private val validMove: Move = Move(Square(1, 'a'), Piece(Player.W))
         private val invalidMove: Move = Move(Square(1, 'a'), Piece(Player.B))
         private val board = Board(emptyMap(), BoardTurn(Player.W, Timer(0, 0)), BoardSize.NINETEEN)
+        private val token = newTestString()
         private val game = Game(
             id = gameId,
             variant = VariantConfig(
@@ -63,8 +64,8 @@ class GameViewModelTests : AbstractViewModelTests() {
     private val mockGameService = mockk<GameService> {
         coEvery { fetchGameById(gameId) } coAnswers { game }
         coEvery { fetchGameById(invalidGameId) } throws FetchGameException("Invalid game id")
-        coEvery { makeMove(gameId, validMove) } coAnswers { game }
-        coEvery { makeMove(gameId, invalidMove) } throws FetchGameException("Invalid move")
+        coEvery { makeMove(gameId, validMove, token) } coAnswers { game }
+        coEvery { makeMove(gameId, invalidMove, token) } throws FetchGameException("Invalid move")
     }
 
     private val mockPreferencesRepository = mockk<PreferencesRepository>()
@@ -75,7 +76,6 @@ class GameViewModelTests : AbstractViewModelTests() {
         val viewModel = GameViewModel(
             mockGameService,
             mockPreferencesRepository,
-            mockGameService
         )
 
         // when: subscriber is collecting the game for a timeout period
@@ -103,8 +103,7 @@ class GameViewModelTests : AbstractViewModelTests() {
         // given: a game view model
         val viewModel = GameViewModel(
             mockGameService,
-            mockPreferencesRepository,
-            mockGameService
+            mockPreferencesRepository
         )
 
         // when: subscriber is collecting the game for a timeout period
@@ -132,8 +131,7 @@ class GameViewModelTests : AbstractViewModelTests() {
         // given: a game view model with a loaded game state
         val viewModel = GameViewModel(
             mockGameService,
-            mockPreferencesRepository,
-            mockGameService
+            mockPreferencesRepository
         )
 
         // when: findGame method is called
@@ -159,7 +157,7 @@ class GameViewModelTests : AbstractViewModelTests() {
         assertEquals(updatedGame, game)
 
         // and: service function is called exactly once
-        coVerify(exactly = 1) { mockGameService.makeMove(gameId, validMove) }
+        coVerify(exactly = 1) { mockGameService.makeMove(gameId, validMove, token) }
     }
 
     @Test(expected = FetchGameException::class)
@@ -167,8 +165,7 @@ class GameViewModelTests : AbstractViewModelTests() {
         // given: a game view model with a loaded game state
         val viewModel = GameViewModel(
             mockGameService,
-            mockPreferencesRepository,
-            mockGameService
+            mockPreferencesRepository
         )
 
         // when: findGame method is called
@@ -181,8 +178,6 @@ class GameViewModelTests : AbstractViewModelTests() {
         assertTrue(collectedState is Loaded)
 
         // when: makeMove method is called, after the game is loaded
-
-        // when: makeMove method is called
         viewModel.makeMove(gameId, invalidMove)
 
         // and: the game is collected for a timeout period
@@ -192,7 +187,7 @@ class GameViewModelTests : AbstractViewModelTests() {
         assertTrue(collectedStateAfterInitialLoad is Loaded)
 
         // and: service function is called exactly once
-        coVerify(exactly = 1) { mockGameService.makeMove(gameId, invalidMove) }
+        coVerify(exactly = 1) { mockGameService.makeMove(gameId, invalidMove, token) }
 
         // and: the value is the expected error
         collectedStateAfterInitialLoad.getOrThrow()

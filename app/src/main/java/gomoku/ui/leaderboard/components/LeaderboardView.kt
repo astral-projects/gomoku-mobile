@@ -1,5 +1,6 @@
 package gomoku.ui.leaderboard.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -29,6 +31,7 @@ import gomoku.domain.leaderboard.Term
 import gomoku.domain.leaderboard.UserStats
 import gomoku.domain.login.UserInfo
 import gomoku.ui.leaderboard.LeaderBoardScreenState
+import gomoku.ui.leaderboard.extractUsers
 import gomoku.ui.shared.background.Background
 import gomoku.ui.shared.components.ClickableIcon
 import gomoku.ui.shared.components.ThemedCircularProgressIndicator
@@ -77,6 +80,7 @@ fun LeaderboardView(
     onLogoutRequest: () -> Unit,
 ) {
     // search
+    var wasQueryInitialized by rememberSaveable { mutableStateOf(false) }
     var query by rememberSaveable { mutableStateOf("") }
     // list and pagination
     val lazyListState = rememberLazyListState()
@@ -85,8 +89,8 @@ fun LeaderboardView(
     // profile dialog
     var showUserProfileDialog by rememberSaveable { mutableStateOf(false) }
     // user info to be displayed in the profile dialog
-    var userRankInfo by rememberSaveable { mutableStateOf(UserStats(userInfo).toRankingInfo()) }
-    var isSelfPositionEnabled by rememberSaveable { mutableStateOf(false) }
+    var userRankInfo by remember { mutableStateOf(UserStats(userInfo).toRankingInfo()) }
+    var isSelfPositionEnabled by remember { mutableStateOf(false) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     // data for the navigation drawer
     val leaderboardItem = NavigationItem(
@@ -131,8 +135,14 @@ fun LeaderboardView(
         if (term != null) {
             onSearchRequest(term)
         } else if (query == "") {
-            page = FIRST_PAGE
-            getItemsFromPage(page)
+            // fetch first page only after query initialization with another value
+            // avoiding fetching the first page when the screen is created
+            // since that is already done in lifecycleScope of the corresponding activity
+            if (wasQueryInitialized) {
+                page = FIRST_PAGE
+                getItemsFromPage(page)
+            }
+            wasQueryInitialized = true
         }
         lazyListState.scrollToItem(0)
     }
@@ -141,10 +151,11 @@ fun LeaderboardView(
         snapshotFlow { lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collectLatest { itemIndex ->
                 if (
-                    state is LeaderBoardScreenState.Loading
+                    state is LeaderBoardScreenState.UsersStatsLoaded || state is LeaderBoardScreenState.Idle
                     && itemIndex != null
                     && itemIndex >= page * PAGE_SIZE - LOAD_MORE_ITEMS_THRESHOLD
                 ) {
+                    Log.v("LeaderboardView", "fetching more items")
                     getItemsFromPage(++page)
                 }
             }
@@ -210,8 +221,7 @@ fun LeaderboardView(
                             ThemedCircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally))
                         } else {
                             LeaderboardTable(
-                                playersRankingInfo = (state as? LeaderBoardScreenState.UsersStatsLoaded)?.usersStats?.map { it.toRankingInfo() }
-                                    ?: emptyList(),
+                                playersRankingInfo = state.extractUsers(),
                                 listState = lazyListState,
                                 loading = state is LeaderBoardScreenState.Loading
                             ) {

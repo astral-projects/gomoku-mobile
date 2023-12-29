@@ -23,7 +23,11 @@ class ApiGameService(
 
     override suspend fun fetchGameById(id: Int): Game {
         val template = findRecipeUri(preferences, "game")
-        val uri = convertTemplateToUrl(template, id.toString())
+        val uri = convertTemplateToUrl(
+            template, mapOf(
+                "game_id" to id.toString()
+            )
+        )
         TODO("Not yet implemented")
         // Need to have the game model and be careful getting the host and guest that are in entities
         // Need to pass to the siren model the type of the properties and entities. See examples below
@@ -58,7 +62,11 @@ class ApiGameService(
 
     override suspend fun exitLobby(lobbyId: Int, token: String) {
         val template = findRecipeUri(preferences, "exit-lobby")
-        val uri = convertTemplateToUrl(template, lobbyId.toString())
+        val uri = convertTemplateToUrl(
+            template, mapOf(
+                "lobby_id" to lobbyId.toString()
+            )
+        )
         val res: SirenModel<DeleteLobbyOutputModel, Unit> =
             callApi<Unit, SirenModel<DeleteLobbyOutputModel, Unit>>(
                 method = Method.DELETE,
@@ -73,7 +81,11 @@ class ApiGameService(
 
     override suspend fun waitingInLobby(lobbyId: Int, token: String): Boolean {
         val template = findRecipeUri(preferences, "lobby")
-        val uri = convertTemplateToUrl(template, lobbyId.toString())
+        val uri = convertTemplateToUrl(
+            template, mapOf(
+                "lobby_id" to lobbyId.toString()
+            )
+        )
         val res: SirenModel<WaitingInLobbyOutputModel, Unit> =
             callApi<Unit, SirenModel<WaitingInLobbyOutputModel, Unit>>(
                 url = uri,

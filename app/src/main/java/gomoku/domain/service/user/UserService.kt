@@ -49,10 +49,10 @@ interface UserService {
     /**
      * Fetches the user statistics for the given page.
      * @param page The page number to fetch.
-     * @param itemsPerPage The number of items per page by default is 10.
+     * @param itemsPerPage The number of items per page by default is **20**.
      * @return A list of user statistics for the given page, which could be empty.
      */
-    suspend fun fetchUsersStats(page: Int, itemsPerPage: Int = 10): List<UserStats>
+    suspend fun fetchUsersStats(page: Int, itemsPerPage: Int = 20): List<UserStats>
 
     /**
      * Fetches the user statistics for the given user id.

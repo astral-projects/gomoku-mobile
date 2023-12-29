@@ -44,10 +44,6 @@ class LeaderboardActivity : ComponentActivity() {
                     Log.v("LeaderboardActivity", "fetching users stats")
                     viewModel.fetchUsersStats()
                 }
-                if (it is LeaderBoardScreenState.SearchUsers) {
-                    Log.v("LeaderboardActivity", "searching users")
-                    viewModel.searchUsers(it.term)
-                }
             }
         }
 
@@ -59,8 +55,7 @@ class LeaderboardActivity : ComponentActivity() {
             }
         }
         setContent {
-            val state =
-                viewModel.stateFlow.collectAsState(initial = LeaderBoardScreenState.Idle).value
+            val state by viewModel.stateFlow.collectAsState(initial = LeaderBoardScreenState.Idle)
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             LeaderboardScreen(
                 state = state,
@@ -68,7 +63,7 @@ class LeaderboardActivity : ComponentActivity() {
                 isDarkTheme = isDarkTheme ?: false,
                 setDarkTheme = { viewModel.setDarkTheme(it) },
                 getUserStats = { id -> viewModel.fetchUserStats(id) },
-                onSearchRequest = { term -> viewModel.searchUsers(term.value) },
+                onSearchRequest = { term -> viewModel.searchUsers(term) },
                 getItemsFromPage = { page -> viewModel.fetchUsersStats(page) },
                 toFindGameScreen = { VariantActivity.navigateTo(this, username) },
                 toAboutScreen = { AboutActivity.navigateTo(this) },
