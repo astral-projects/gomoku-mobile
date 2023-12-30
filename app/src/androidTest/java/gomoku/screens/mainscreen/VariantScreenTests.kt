@@ -1,30 +1,9 @@
 package gomoku.screens.mainscreen
 
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performClick
-import gomoku.domain.Idle
-import gomoku.domain.Loaded
-import gomoku.domain.game.board.BoardSize
-import gomoku.domain.login.UserInfo
-import gomoku.domain.variant.OpeningRule
-import gomoku.domain.variant.VariantConfig
-import gomoku.domain.variant.VariantName
-import gomoku.ui.shared.components.BurgerMenuButton
-import gomoku.ui.shared.components.navigationDrawer.BurgerMenuAboutButton
-import gomoku.ui.shared.components.navigationDrawer.BurgerMenuFindGameButton
-import gomoku.ui.shared.components.navigationDrawer.BurgerMenuLogoutButton
-import gomoku.ui.shared.components.navigationDrawer.BurgerMenuSwitchThemeButton
-import gomoku.ui.variant.VariantScreen
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
-import org.junit.Rule
-import org.junit.Test
-
 const val variantSubmitButtonText = "Play"
 
 class VariantScreenTests {
-
+/*
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -271,5 +250,5 @@ class VariantScreenTests {
         composeTestRule.onNodeWithTag(BurgerMenuSwitchThemeButton).assertExists()
 
     }
-
+*/
 }

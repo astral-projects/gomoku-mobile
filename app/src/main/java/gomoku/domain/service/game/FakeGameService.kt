@@ -1,18 +1,6 @@
 package gomoku.domain.service.game
 
-import gomoku.domain.game.Timer
-import gomoku.domain.game.board.Board
-import gomoku.domain.game.board.BoardTurn
-import gomoku.domain.game.match.Game
-import gomoku.domain.game.match.Lobby
-import gomoku.domain.game.match.Match
-import gomoku.domain.game.moves.Move
-import gomoku.domain.game.moves.move.Player
-import gomoku.domain.login.UserInfo
-import gomoku.domain.service.AbstractFakeService
-import gomoku.domain.service.game.errors.FetchGameException
-import gomoku.domain.service.game.errors.FetchLobbyException
-import java.util.UUID
+/*
 
 object FakeGameService : GameService, AbstractFakeService() {
 
@@ -38,7 +26,7 @@ object FakeGameService : GameService, AbstractFakeService() {
             // lobbies.remove(lobby)
             val game = Game(
                 id = generateRandomId(),
-                variant = variants.find { it.id == variantId }!!,
+                variantId = variants.find { it.id == variantId }!!,
                 board = Board(
                     moves = emptyMap(),
                     turn = BoardTurn(Player.W, turnTimer),
@@ -82,4 +70,4 @@ object FakeGameService : GameService, AbstractFakeService() {
      * Generates a random UUID to be used as an id.
      */
     private fun generateRandomId(): Int = UUID.randomUUID().hashCode()
-}
+}*/

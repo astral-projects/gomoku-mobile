@@ -88,8 +88,8 @@ fun LeaderBoardPreviewLoading() {
 }
 
 private val fakePlayers = listOf(
-    PlayerInfo("John Marston", R.drawable.man),
-    PlayerInfo("Arthur Morgan", R.drawable.man2)
+    PlayerInfo(1, "John Marston", R.drawable.man),
+    PlayerInfo(2, "Arthur Morgan", R.drawable.man2)
 )
 
 /**

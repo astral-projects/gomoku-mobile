@@ -42,7 +42,7 @@ fun RankingInfoTilePreview() {
         rankData = RankingInfo(
             id = 1,
             rank = 1,
-            playerInfo = PlayerInfo("Player 1", R.drawable.man),
+            playerInfo = PlayerInfo(6, "Player 1", R.drawable.man),
             playedGames = 115,
             points = 1000,
             wins = 100,

@@ -95,11 +95,11 @@ class VariantScreenViewModel(
             delay(5000)
             if (result.isSuccess) {
                 // poll again
-                if (result.getOrThrow()) {
+                if (result.getOrThrow().first == true) {
                     _stateFlow.value = VariantScreenState.WaitingInLobby(lobbyId)
                 } else {
                     // navigate to the game screen
-                    _stateFlow.value = VariantScreenState.JoinGame(lobbyId)
+                    _stateFlow.value = VariantScreenState.JoinGame(result.getOrThrow().second)
                 }
             } else {
                 _stateFlow.value = VariantScreenState.Error(

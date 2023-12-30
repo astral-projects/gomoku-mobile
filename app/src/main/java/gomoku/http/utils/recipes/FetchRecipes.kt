@@ -15,7 +15,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-const val URI = "https://0f3f-89-114-64-234.ngrok-free.app"
+const val URI = "https://9619-79-168-159-175.ngrok-free.app"
 
 suspend fun fetchRecipes(): List<Recipe> {
     val gson = Gson()

@@ -12,12 +12,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import gomoku.GomokuDependencyProvider
-import gomoku.domain.Idle
 import gomoku.domain.game.moves.Move
 import gomoku.domain.game.moves.move.Piece
 import gomoku.domain.game.moves.move.Player
 import gomoku.domain.game.moves.move.Square
-import gomoku.domain.idle
 import gomoku.ui.home.HomeActivity
 import gomoku.ui.home.USERNAME_EXTRA
 import kotlinx.coroutines.launch
@@ -69,8 +67,10 @@ class GameActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             viewModel.game.collect {
-                if (it is Idle) {
+                if (it is GameScreenState.Idle) {
                     viewModel.fetchGameById(gameId.toInt())
+                } else if (it is GameScreenState.GameLoadedAndNotYourTurn) {
+                    viewModel.startPollingGame(gameId.toInt())
                 }
             }
         }
@@ -84,22 +84,30 @@ class GameActivity : ComponentActivity() {
         }
 
         setContent {
-            val gameState by viewModel.game.collectAsState(initial = idle())
+            val gameState by viewModel.game.collectAsState(initial = GameScreenState.Idle)
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             GameScreen(
                 gameState = gameState,
                 isDarkTheme = isDarkTheme,
                 localPlayer = viewModel.getUserInfo().toPlayerInfo(),
-                onLeaveGameRequest = { HomeActivity.navigateTo(this, username) },
                 onCellClick = { square: Square ->
-                    viewModel.makeMove(
-                        gameId = gameId.toInt(),
-                        move = Move(
-                            square,
-                            Piece(Player.W)
+                    if (gameState is GameScreenState.GameLoadedAndYourTurn) {
+                        viewModel.makeMove(
+                            gameId = gameId.toInt(),
+                            move = Move(
+                                square,
+                                Piece(Player.W)
+                            )
                         )
-                    )
-                }
+
+                    }
+                },
+                onLeaveGameRequest = {
+                    viewModel.exitGame(gameId.toInt())
+                    HomeActivity.navigateTo(this, username)
+                },
+                onGameEnd = { HomeActivity.navigateTo(this, username) }
+
             )
         }
     }

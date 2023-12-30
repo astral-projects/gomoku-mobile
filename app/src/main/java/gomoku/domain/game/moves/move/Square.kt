@@ -9,7 +9,7 @@ import gomoku.domain.game.moves.square.toRow
  * Represents a square on the board, which is a combination of a row and a column.
  */
 @Suppress("DataClassPrivateConstructor")
-data class Square private constructor(val row: Row, val col: Column) {
+data class Square constructor(val row: Row, val col: Column) {
     companion object {
         operator fun invoke(row: Int, col: Char): Square =
             Square(Row(row), Column(col))

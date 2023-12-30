@@ -55,6 +55,7 @@
     <string name="leave_game_message">Are you sure you want to quit this game? You won\'t receive any points as a result.</string>
     <string name="leave_game_leave_msg">Yes</string>
     <string name="leave_game_continue_msg">Never-mind</string>
+    <string name="leave_game_back_home">Yes</string>
     <string name="turn_time_exceed_title">Turn Time Exceeded</string>
     <string name="turn_time_exceed_body_msg">Your strategic moves were on point, but this time, the clock got better of you. Unfortunately, no points can be awarded as a result.</string>
     <string name="turn_time_exceed_button_msg">Acknowledge</string>

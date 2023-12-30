@@ -60,16 +60,16 @@ abstract class AbstractFakeService {
      * A list of fake players.
      */
     val fakePlayers = listOf(
-        PlayerInfo("Hosea Matthews", R.drawable.man),
-        PlayerInfo("John Marston", R.drawable.man2),
-        PlayerInfo("Arthur Morgan", R.drawable.man3),
-        PlayerInfo("Dutch van der Linde", R.drawable.man4),
-        PlayerInfo("Bill Williamson", R.drawable.man5),
-        PlayerInfo("Abigail Roberts", R.drawable.woman),
-        PlayerInfo("Sadie Adler", R.drawable.woman2),
-        PlayerInfo("Karen Jones", R.drawable.woman3),
-        PlayerInfo("Mary-Beth Gaskill", R.drawable.woman4),
-        PlayerInfo("Tilly Jackson", R.drawable.woman5)
+        PlayerInfo(1, "Hosea Matthews", R.drawable.man),
+        PlayerInfo(2, "John Marston", R.drawable.man2),
+        PlayerInfo(4, "Arthur Morgan", R.drawable.man3),
+        PlayerInfo(5, "Dutch van der Linde", R.drawable.man4),
+        PlayerInfo(6, "Bill Williamson", R.drawable.man5),
+        PlayerInfo(7, "Abigail Roberts", R.drawable.woman),
+        PlayerInfo(8, "Sadie Adler", R.drawable.woman2),
+        PlayerInfo(9, "Karen Jones", R.drawable.woman3),
+        PlayerInfo(23, "Mary-Beth Gaskill", R.drawable.woman4),
+        PlayerInfo(22, "Tilly Jackson", R.drawable.woman5)
     )
 
     /**

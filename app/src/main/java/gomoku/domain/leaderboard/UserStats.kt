@@ -31,7 +31,7 @@ data class UserStats(
     fun toRankingInfo(): RankingInfo {
         return RankingInfo(
             id = id,
-            playerInfo = PlayerInfo(username, iconId),
+            playerInfo = PlayerInfo(id, username, iconId),
             rank = rank,
             points = points,
             playedGames = gamesPlayed,

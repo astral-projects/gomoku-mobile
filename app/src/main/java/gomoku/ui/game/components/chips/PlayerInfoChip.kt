@@ -43,6 +43,7 @@ fun PlayerInfoChip(
 private fun PlayerInfoChipPreview() {
     PlayerInfoChip(
         playerInfo = PlayerInfo(
+            id = 1,
             name = "Player 1",
             iconId = R.drawable.man
         ),

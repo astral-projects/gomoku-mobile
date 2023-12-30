@@ -57,5 +57,14 @@ interface GameService {
      * @param lobbyId The id of the lobby to check.
      * @return True if the player is waiting in the lobby, false otherwise.
      */
-    suspend fun waitingInLobby(lobbyId: Int, token: String): Boolean
+    suspend fun waitingInLobby(lobbyId: Int, token: String): Pair<Boolean, Int>
+
+    /**
+     * Attempts to exit the game with the specified id.
+     * @param gameId The id of the game to exit.
+     * @param token The user token for the player exiting the game.
+     * @throws FetchGameException If the game with the given id cannot be found,
+     * or the player is not in the game.
+     */
+    suspend fun exitGame(gameId: Int, token: String)
 }

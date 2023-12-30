@@ -213,6 +213,7 @@ fun ProfileDialogPreview() {
             userRankingInfo = RankingInfo(
                 id = 1,
                 playerInfo = PlayerInfo(
+                    id = 3,
                     name = "Geralt of Rivia",
                     iconId = R.drawable.man,
                 ),
@@ -236,6 +237,7 @@ fun ProfileDialogPreviewWithALotOfGames() {
             userRankingInfo = RankingInfo(
                 id = 1,
                 playerInfo = PlayerInfo(
+                    id = 4,
                     name = "Geralt of Rivia and more text so we see that is working correctly",
                     iconId = R.drawable.man,
                 ),

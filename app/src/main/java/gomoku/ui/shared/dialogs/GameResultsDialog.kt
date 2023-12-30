@@ -224,11 +224,11 @@ private fun IconHeightSpacer() = Spacer(modifier = Modifier.height(iconPointsSpa
 
 @Preview(showBackground = true)
 @Composable
-fun GameResultsDialog() {
+fun GameResultsDialog3() {
     GomokuTheme {
         GameResultsDialog(
-            winnerInfo = PlayerInfo("Host Player", R.drawable.man),
-            loserInfo = PlayerInfo("Guest Player", R.drawable.woman),
+            winnerInfo = PlayerInfo(4, "Host Player", R.drawable.man),
+            loserInfo = PlayerInfo(7, "Guest Player", R.drawable.woman),
             winnerPoints = 250,
             loserPoints = 100,
             onDismissRequest = {}

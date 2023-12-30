@@ -14,3 +14,11 @@ data class BoardTurn(val player: Player, val timer: Timer) {
         Player.B -> Player.W
     }
 }
+
+fun String.toBoardTurn(): BoardTurn {
+    when (this) {
+        "W" -> return BoardTurn(Player.W, Timer(0, 0))
+        "B" -> return BoardTurn(Player.B, Timer(0, 0))
+        else -> throw IllegalArgumentException("Invalid player.")
+    }
+}

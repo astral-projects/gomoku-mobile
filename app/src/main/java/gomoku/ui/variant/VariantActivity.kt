@@ -3,6 +3,7 @@ package gomoku.ui.variant
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -60,6 +61,10 @@ class VariantActivity : ComponentActivity() {
                     viewModel.startPollingLobby(it.lobbyId)
                 }
                 if (it is VariantScreenState.JoinGame) {
+                    Log.v(
+                        "VariantActivity",
+                        "Joining game with id ${it.gameId} in string ${it.gameId.toString()}"
+                    )
                     doNavigation(it.gameId.toString())
                     viewModel.resetToIdle()
                 }

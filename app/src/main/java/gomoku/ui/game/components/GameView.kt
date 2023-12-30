@@ -18,25 +18,24 @@ import gomoku.domain.game.board.Board
 import gomoku.domain.game.board.BoardSize
 import gomoku.domain.game.board.BoardTurn
 import gomoku.domain.game.match.Game
+import gomoku.domain.game.match.GameState
 import gomoku.domain.game.moves.Move
 import gomoku.domain.game.moves.move.Piece
 import gomoku.domain.game.moves.move.Player
 import gomoku.domain.game.moves.move.Square
 import gomoku.domain.leaderboard.PlayerInfo
-import gomoku.domain.variant.OpeningRule
-import gomoku.domain.variant.VariantConfig
-import gomoku.domain.variant.VariantName
 import gomoku.ui.game.components.board.BoardContainer
 import gomoku.ui.game.components.chips.GameInfoChip
 import gomoku.ui.game.components.chips.PlayerInfoChip
 import gomoku.ui.shared.components.DismissButton
 import gomoku.ui.shared.components.SkeletonLoader
+import gomoku.ui.shared.dialogs.GameResultsDialog
 import gomoku.ui.shared.dialogs.LeaveGameDialog
 import pdm.gomoku.R
 
 /**
  * Represents the game view.
- * @param playerInfo the player info.
+ * @param playerInfoHost the player info.
  * @param localPlayer the local player.
  * @param onLeaveGameRequest callback to be called when the user wants to leave the game.
  * @param onCellClick callback to be called when a cell is clicked.
@@ -45,10 +44,11 @@ import pdm.gomoku.R
  */
 @Composable
 fun GameView(
-    playerInfo: PlayerInfo,
+    playerInfoHost: PlayerInfo,
     localPlayer: Player,
     onLeaveGameRequest: () -> Unit,
     onCellClick: (toSquare: Square) -> Unit,
+    onGameEnd: () -> Unit,
     game: Game,
     isLoading: Boolean = false
 ) {
@@ -57,6 +57,15 @@ fun GameView(
         LeaveGameDialog(
             onContinueRequest = { showLeaveGameDialog = false },
             onLeaveRequest = onLeaveGameRequest
+        )
+    }
+    if (game.board.winner != null) {
+        GameResultsDialog(
+            winnerInfo = game.board.winner,
+            loserInfo = if (game.board.winner == game.host) game.guest else game.host,
+            winnerPoints = 200,
+            loserPoints = 100,
+            onDismissRequest = { onGameEnd() }
         )
     }
     Column(
@@ -70,7 +79,7 @@ fun GameView(
             SkeletonLoader(loading = isLoading) {
                 GameInfoChip(
                     leadingIconId = R.drawable.timer,
-                    label = "${game.board.turn.timer}"
+                    label = "${game.board.turn?.timer}"
                 )
             }
         }
@@ -80,9 +89,9 @@ fun GameView(
         ) {
             SkeletonLoader(loading = isLoading) {
                 PlayerInfoChip(
-                    playerInfo = playerInfo,
+                    playerInfo = playerInfoHost,
                     trailingIconId = R.drawable.white_circle,
-                    select = game.board.turn.player == Player.W
+                    select = game.board.turn?.player == Player.W
                 )
             }
         }
@@ -99,9 +108,9 @@ fun GameView(
         ) {
             SkeletonLoader(loading = isLoading) {
                 PlayerInfoChip(
-                    playerInfo = game.host,
+                    playerInfo = game.guest,
                     trailingIconId = R.drawable.black_circle,
-                    select = game.board.turn.player == Player.B
+                    select = game.board.turn?.player == Player.B
                 )
             }
             SkeletonLoader(loading = isLoading) {
@@ -147,21 +156,18 @@ private fun GameViewPreview() {
         size = BoardSize.NINETEEN
     )
     GameView(
-        playerInfo = PlayerInfo("Player W", R.drawable.man5),
+        playerInfoHost = PlayerInfo(2, "Player W", R.drawable.man5),
         localPlayer = Player.W,
         onLeaveGameRequest = {},
         onCellClick = {},
         game = Game(
             id = 1,
-            variant = VariantConfig(
-                id = 1,
-                name = VariantName.CARO,
-                openingRule = OpeningRule.LONG_PRO,
-                boardSize = BoardSize.NINETEEN
-            ),
+            variantId = 1,
             board = board,
-            host = PlayerInfo("Player W", R.drawable.man),
-            guest = PlayerInfo("Player B", R.drawable.man2),
-        )
+            host = PlayerInfo(3, "Player W", R.drawable.man),
+            guest = PlayerInfo(4, "Player B", R.drawable.man2),
+            state = GameState.IN_PROGRESS
+        ),
+        onGameEnd = {}
     )
 }

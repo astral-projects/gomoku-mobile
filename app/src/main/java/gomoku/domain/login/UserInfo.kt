@@ -9,5 +9,5 @@ data class UserInfo(
     val token: String,
     val iconId: Int
 ) {
-    fun toPlayerInfo() = PlayerInfo(username, iconId)
+    fun toPlayerInfo() = PlayerInfo(id, username, iconId)
 }

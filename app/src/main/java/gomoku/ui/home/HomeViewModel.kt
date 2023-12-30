@@ -39,8 +39,10 @@ class HomeViewModel(
         viewModelScope.launch {
             val user = preferences.getUserInfo()
             if (user != null) {
+                preferences.clearUserInfo(user)
                 Log.v("Home", "logging out....")
                 val result = runCatching { service.logout(user.token) }
+                preferences.clearUserInfo(user)
                 if (result.isFailure) {
                     _stateFlow.value =
                         HomeScreenState.Error(

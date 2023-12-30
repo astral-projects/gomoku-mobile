@@ -42,15 +42,16 @@ class ApiConnection(
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    val responseBody = response.body
+                    val responseBody = response.body?.string()
                     if (responseBody != null) {
                         if (!response.isSuccessful) {
+                            Log.v("Response Body ", responseBody)
                             val failResult =
-                                gson.fromJson(responseBody.string(), ProblemModel::class.java)
+                                gson.fromJson(responseBody, ProblemModel::class.java)
                             continuation.resumeWithException(IOException(failResult.detail))
                         } else {
                             val result = gson.fromJson<T>(
-                                responseBody.string(),
+                                responseBody,
                                 object : TypeToken<T>() {}.type
                             )
                             continuation.resumeWith(Result.success(result))
@@ -85,15 +86,15 @@ class ApiConnection(
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    val responseBody = response.body
+                    val responseBody = response.body?.string()
                     if (responseBody != null) {
                         if (!response.isSuccessful) {
                             val failResult =
-                                gson.fromJson(responseBody.string(), ProblemModel::class.java)
+                                gson.fromJson(responseBody, ProblemModel::class.java)
                             continuation.resumeWithException(IOException(failResult.detail))
                         } else {
                             val result = gson.fromJson<R>(
-                                responseBody.string(),
+                                responseBody,
                                 object : TypeToken<R>() {}.type
                             )
                             continuation.resumeWith(Result.success(result))

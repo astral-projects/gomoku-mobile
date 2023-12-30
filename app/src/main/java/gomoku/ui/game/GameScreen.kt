@@ -5,22 +5,18 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import gomoku.domain.IOState
-import gomoku.domain.Loaded
 import gomoku.domain.game.Timer
 import gomoku.domain.game.board.Board
 import gomoku.domain.game.board.BoardSize
 import gomoku.domain.game.board.BoardTurn
 import gomoku.domain.game.match.Game
+import gomoku.domain.game.match.GameState
 import gomoku.domain.game.moves.Move
 import gomoku.domain.game.moves.move.Piece
 import gomoku.domain.game.moves.move.Player
 import gomoku.domain.game.moves.move.Square
-import gomoku.domain.getOrNull
 import gomoku.domain.home.Home.gameName
 import gomoku.domain.leaderboard.PlayerInfo
-import gomoku.domain.variant.OpeningRule
-import gomoku.domain.variant.VariantConfig
-import gomoku.domain.variant.VariantName
 import gomoku.ui.game.components.GameView
 import gomoku.ui.shared.background.Background
 import gomoku.ui.shared.background.BackgroundConfig
@@ -44,7 +40,8 @@ fun GameScreen(
     localPlayer: PlayerInfo,
     onLeaveGameRequest: () -> Unit,
     onCellClick: (toSquare: Square) -> Unit,
-    gameState: IOState<Game>,
+    gameState: GameScreenState,
+    onGameEnd: () -> Unit
 ) {
     GomokuTheme(darkTheme = isDarkTheme ?: false) {
         Background(
@@ -52,33 +49,37 @@ fun GameScreen(
             useBodySurface = false,
             header = { HeaderText(text = stringResource(id = gameName)) },
         ) {
-            val game = gameState.getOrNull()
+            val game = if (gameState is GameScreenState.GameLoadedAndYourTurn) {
+                gameState.game
+            } else if (gameState is GameScreenState.GameLoadedAndNotYourTurn) {
+                gameState.game
+            } else if (gameState is GameScreenState.GameFinished) {
+                gameState.game
+            } else null
             val gameScreenState = gameState.toGameStateScreen()
+
             GameView(
-                playerInfo = localPlayer,
+                playerInfoHost = localPlayer,
                 localPlayer = Player.W,
                 onLeaveGameRequest = onLeaveGameRequest,
+                onGameEnd = onGameEnd,
                 onCellClick = onCellClick,
                 game = game ?: Game(
                     id = 1,
-                    variant = VariantConfig(
-                        id = 1,
-                        name = VariantName.FREESTYLE,
-                        openingRule = OpeningRule.LONG_PRO,
-                        boardSize = BoardSize.NINETEEN
-                    ),
+                    variantId = 1,
                     board = Board(
                         moves = emptyMap(),
                         turn = BoardTurn(
                             player = Player.W,
                             timer = Timer(0, 55)
                         ),
-                        size = BoardSize.NINETEEN
+                        size = BoardSize.FIFTEEN
                     ),
-                    host = PlayerInfo("Player W", R.drawable.man5),
+                    host = PlayerInfo(1, "Player W2", R.drawable.man),
                     guest = PlayerInfo(
-                        "Player B", R.drawable.woman2
-                    )
+                        1, "Player B2", R.drawable.man
+                    ),
+                    state = GameState.IN_PROGRESS
                 ),
                 isLoading = gameScreenState.isLoading() || gameScreenState.isIdle(),
             )
@@ -109,26 +110,24 @@ private fun GameScreenPreview() {
     GameScreen(
         isDarkTheme = false,
         backgroundConfig = BackgroundConfig(LocalConfiguration.current),
-        localPlayer = PlayerInfo("Player W", R.drawable.man5),
+        localPlayer = PlayerInfo(2, "Player W", R.drawable.man5),
         onLeaveGameRequest = {},
         onCellClick = {},
-        gameState = Loaded(
+        onGameEnd = {},
+        gameState = GameScreenState.GameLoadedAndNotYourTurn(
             Result.success(
                 Game(
                     id = 1,
-                    variant = VariantConfig(
-                        id = 1,
-                        name = VariantName.FREESTYLE,
-                        openingRule = OpeningRule.LONG_PRO,
-                        boardSize = BoardSize.NINETEEN
-                    ),
+                    variantId = 1,
                     board = board,
-                    host = PlayerInfo("Player W", R.drawable.man5),
+                    host = PlayerInfo(4, "Player W", R.drawable.man5),
                     guest = PlayerInfo(
+                        3,
                         "Player B", R.drawable.woman2
-                    )
+                    ),
+                    state = GameState.IN_PROGRESS
                 )
-            )
+            ).getOrNull()
         )
     )
 }

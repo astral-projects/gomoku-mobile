@@ -20,6 +20,7 @@ object Dialog {
         val MESSAGE = R.string.leave_game_message
         val LEAVE_MSG = R.string.leave_game_leave_msg
         val CONTINUE_MSG = R.string.leave_game_continue_msg
+        val BACK_HOME = R.string.leave_game_back_home
     }
 
     object TurnTimeExceed {

@@ -52,7 +52,7 @@ fun CustomIconChip(
     backgroundConfig: BackgroundConfig = BackgroundConfig(
         LocalConfiguration.current
     ),
-    leadingIconId: Int,
+    leadingIconId: Int = R.drawable.man,
     label: String,
     textColor: Color = MaterialTheme.colorScheme.inversePrimary,
     borderWidth: Dp = defaultChipBorderWidth,

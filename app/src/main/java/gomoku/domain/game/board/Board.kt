@@ -4,6 +4,7 @@ import gomoku.domain.game.moves.Moves
 import gomoku.domain.game.moves.move.Piece
 import gomoku.domain.game.moves.move.Player
 import gomoku.domain.game.moves.move.Square
+import gomoku.domain.leaderboard.PlayerInfo
 
 /**
  * Represents a board in the game.
@@ -13,9 +14,10 @@ import gomoku.domain.game.moves.move.Square
  */
 data class Board(
     var moves: Moves,
-    val turn: BoardTurn,
-    val size: BoardSize
+    val turn: BoardTurn? = null,
+    val winner: PlayerInfo? = null,
+    val size: BoardSize,
 ) {
-    fun isPlayerTurn(player: Player) = turn.player == player
+    fun isPlayerTurn(player: Player) = turn?.player == player
     fun getPiece(currSquare: Square): Piece? = moves[currSquare]
 }
