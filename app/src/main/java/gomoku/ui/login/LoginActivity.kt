@@ -65,7 +65,6 @@ class LoginActivity : ComponentActivity() {
                     viewModel.isDarkTheme()
                 }
             }
-
         }
         setContent {
             val state = viewModel.stateFlow.collectAsState(initial = LoginScreenState.Idle).value
@@ -77,7 +76,11 @@ class LoginActivity : ComponentActivity() {
                 onSubmit = { username, password ->
                     viewModel.login(username, password)
                 },
-                onSignUpLinkClick = { RegisterActivity.navigateTo(this) }
+                onSignUpLinkClick = { RegisterActivity.navigateTo(this) },
+                onNoServerConnDialogDismiss = {
+                    // retry fetching the uri templates
+                    viewModel.fetchUriTemplates()
+                }
             )
         }
     }

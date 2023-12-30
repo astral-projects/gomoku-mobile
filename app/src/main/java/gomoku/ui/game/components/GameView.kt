@@ -35,23 +35,19 @@ import pdm.gomoku.R
 
 /**
  * Represents the game view.
- * @param playerInfoHost the player info.
- * @param localPlayer the local player.
  * @param onLeaveGameRequest callback to be called when the user wants to leave the game.
  * @param onCellClick callback to be called when a cell is clicked.
+ * @param onGameEnd callback to be called when the game ends.
  * @param game the game to be displayed.
  * @param isLoading if the game is loading.
  */
 @Composable
 fun GameView(
-    playerInfoHost: PlayerInfo,
-    localPlayer: Player,
     onLeaveGameRequest: () -> Unit,
     onCellClick: (toSquare: Square) -> Unit,
     onGameEnd: () -> Unit,
     game: Game?,
     isLoading: Boolean = false,
-    invalidMessage: String? = null
 ) {
     val g = game ?: Game(
         id = 1,
@@ -68,7 +64,8 @@ fun GameView(
         guest = PlayerInfo(
             1, "Player B2", R.drawable.man
         ),
-        state = GameState.IN_PROGRESS
+        state = GameState.IN_PROGRESS,
+        localPlayer = Player.W
     )
 
     var showLeaveGameDialog by rememberSaveable { mutableStateOf(false) }
@@ -117,7 +114,7 @@ fun GameView(
         SkeletonLoader(loading = isLoading) {
             BoardContainer(
                 board = g.board,
-                localPlayer = localPlayer,
+                localPlayer = g.localPlayer,
                 onCellClick = onCellClick,
             )
         }
@@ -175,8 +172,6 @@ private fun GameViewPreview() {
         size = BoardSize.NINETEEN
     )
     GameView(
-        playerInfoHost = PlayerInfo(2, "Player W", R.drawable.man5),
-        localPlayer = Player.W,
         onLeaveGameRequest = {},
         onCellClick = {},
         game = Game(
@@ -185,8 +180,9 @@ private fun GameViewPreview() {
             board = board,
             host = PlayerInfo(3, "Player W", R.drawable.man),
             guest = PlayerInfo(4, "Player B", R.drawable.man2),
-            state = GameState.IN_PROGRESS
+            state = GameState.IN_PROGRESS,
+            localPlayer = Player.W
         ),
-        onGameEnd = {}
+        onGameEnd = {},
     )
 }

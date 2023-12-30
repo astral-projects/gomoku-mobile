@@ -19,8 +19,21 @@ object About {
         ),
         Section(
             title = Title(R.string.about_section_c_title),
-            description = Description(R.string.about_section_c_description),
             iconId = R.drawable.authors
         )
+    )
+    val authors = listOf(
+        Author(
+            name = "Diogo Rodrigues",
+            githubUrl = "https://github.com/Diogofmr"
+        ),
+        Author(
+            name = "Tiago Frazão",
+            githubUrl = "https://github.com/TiagoFrazao01"
+        ),
+        Author(
+            name = "Francisco Engenheiro",
+            githubUrl = "https://github.com/FranciscoEngenheiro"
+        ),
     )
 }

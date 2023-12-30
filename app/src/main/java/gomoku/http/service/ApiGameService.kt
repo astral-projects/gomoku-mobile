@@ -38,8 +38,10 @@ class ApiGameService(
                 email = it.properties.email
             )
         }
+        val userInfo = preferences.getUserInfo()
+        checkNotNull(userInfo) { "The user info in ${ApiGameService::class.java.simpleName} is null." }
         val g = res.properties
-        return g.toGame(users)
+        return g.toGame(users, userInfo)
     }
 
     override suspend fun findGame(variantId: Int, userInfo: UserInfo): Match {

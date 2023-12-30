@@ -1,5 +1,6 @@
 package gomoku.ui.game.components.board
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -109,7 +110,14 @@ fun BoardView(
                                     selectedCell = selectedSquare == square,
                                     piece = board.getPiece(square)
                                 ) {
-                                    if (board.isPlayerTurn(localPlayer)) {
+                                    Log.v(
+                                        "BoardView",
+                                        "isPlayerTurn: ${board.isPlayerTurn(localPlayer)}"
+                                    )
+                                    Log.v("BoardView", "isCellEmpty: ${board.isCellEmpty(square)}")
+                                    Log.v("BoardView", "LocalPlayer: $localPlayer")
+                                    Log.v("BoardView", "board: $board")
+                                    if (board.isPlayerTurn(localPlayer) && board.isCellEmpty(square)) {
                                         selectedSquare = square
                                         if (previousSquare == selectedSquare) {
                                             onCellClick(square)

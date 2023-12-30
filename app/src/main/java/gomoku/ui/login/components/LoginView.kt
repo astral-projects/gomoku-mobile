@@ -104,17 +104,9 @@ fun LoginView(
                         }
                     )
                     Spacer(modifier = Modifier.height(signUpSpacerHeight))
-                    if (screenState is LoginScreenState.LoginFailed) {
+                    if (screenState is LoginScreenState.Error) {
                         Text(
-                            // want to show the error message from the server
-                            // password change then the error message is not shown
-                            text = stringResource(Login.loginFailedMessage),
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    } else if (screenState is LoginScreenState.Error) {
-                        Text(
-                            text = screenState.error.message
-                                ?: stringResource(Login.loginFailedMessage),
+                            stringResource(Login.loginFailedMessage),
                             color = MaterialTheme.colorScheme.error
                         )
                     }

@@ -6,9 +6,13 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.Card
@@ -18,8 +22,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,7 +35,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,12 +44,9 @@ import pdm.gomoku.R
 private val iconTitleSpacerWidth = 10.dp
 private val cardPadding = 10.dp
 private val rounderCornerShapeSize = 15.dp
-private val descriptionPadding = 10.dp
 private const val ANIMATION_DURATION = 300
 
-//TAGS
-//This value is used to tests , because i need to differentiate this tag for the test of the usange of the VariantScreen
-//and i can´t use the same tag for the two test because the test will be overwritten
+// tags
 const val test = "testPropose"
 const val GameInformationLabel = "Game Information$test"
 const val FeedbackAndSupportLabel = "Feedback and Support$test"
@@ -57,8 +60,6 @@ const val AboutTheDeveloperLabel = "Authors$test"
  * @param backgroundColor Color of the card background.
  * @param leadingIconId Id of the icon to be placed at the start of the [title].
  * @param title Card title.
- * @param description Card hidden text.
- * @param descriptionMaxLines Max lines the [description] can have. Text above this limit
  * will be treated as text overflow.
  * @param titleColor Color of the [title].
  * @param arrowColor Color of the arrow icon, used to expand the card.
@@ -70,10 +71,9 @@ fun ExpandableCard(
     backgroundColor: Color = Color.Transparent,
     leadingIconId: Int? = null,
     title: String,
-    description: String,
-    descriptionMaxLines: Int = Int.MAX_VALUE,
     titleColor: Color = MaterialTheme.colorScheme.secondary,
     arrowColor: Color = MaterialTheme.colorScheme.secondary,
+    content: @Composable () -> Unit
 ) {
     var expandedState by rememberSaveable { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
@@ -138,17 +138,8 @@ fun ExpandableCard(
                     )
                 }
             }
-            //TODO(MAYBE HERE ADED ANOTER TESTTAG JUST TO VERIFY THAT THE DESCRI+TION APPEARED)
             if (expandedState) {
-                Text(
-                    modifier = Modifier.padding(descriptionPadding),
-                    text = description,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.inversePrimary,
-                    maxLines = descriptionMaxLines,
-                    textAlign = TextAlign.Left,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                content()
             }
         }
     }
@@ -159,12 +150,11 @@ fun ExpandableCard(
 private fun ExpandableCardWithIconPreview() {
     ExpandableCard(
         title = "Some random text",
-        description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
-                "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when " +
-                "an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         leadingIconId = R.drawable.rule,
         titleColor = Color.Red,
-    )
+    ) {
+
+    }
 }
 
 @Preview
@@ -172,11 +162,10 @@ private fun ExpandableCardWithIconPreview() {
 private fun ExpandableCardWithoutIconPreview() {
     ExpandableCard(
         title = "Some random text",
-        description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
-                "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when " +
-                "an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         titleColor = Color.Red,
-    )
+    ) {
+
+    }
 }
 
 @Preview
@@ -184,10 +173,9 @@ private fun ExpandableCardWithoutIconPreview() {
 private fun ExpandableCardWithBackgroundPreview() {
     ExpandableCard(
         title = "Some random text",
-        description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
-                "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when " +
-                "an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         backgroundColor = Color.Cyan,
         titleColor = Color.Red,
-    )
+    ) {
+
+    }
 }

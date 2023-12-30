@@ -56,4 +56,7 @@
     <string name="turn_time_exceed_body_msg">Ihre strategischen Züge waren genau richtig, aber dieses Mal hat die Uhr das bessere Ende für Sie. Leider können dafür keine Punkte vergeben werden.</string>
     <string name="turn_time_exceed_button_msg">Bestätigen Sie</string>
     <string name="waiting_opponent_title">Warten auf einen Gegner…</string>
+    <string name="no_server_connection">Keine Verbindung zum Server</string>
+    <string name="no_server_connection_detail">Es kann keine Verbindung zum Server hergestellt werden. Dies kann auf ein Problem mit Ihrer Internetverbindung zurückzuführen sein oder darauf, dass der Server vorübergehend nicht verfügbar ist. Bitte versuchen Sie es später noch einmal.</string>
+    <string name="leave_game_back_home">Ja</string>
 </resources>

@@ -13,11 +13,12 @@ import gomoku.domain.leaderboard.PlayerInfo
  * @param size the size of the board.
  */
 data class Board(
-    var moves: Moves,
+    val moves: Moves,
     val turn: BoardTurn? = null,
     val winner: PlayerInfo? = null,
     val size: BoardSize,
 ) {
     fun isPlayerTurn(player: Player) = turn?.player == player
     fun getPiece(currSquare: Square): Piece? = moves[currSquare]
+    fun isCellEmpty(square: Square): Boolean = getPiece(square) == null
 }

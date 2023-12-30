@@ -13,9 +13,8 @@ sealed class LoginScreenState {
         val isFetched: Boolean = false
     ) : LoginScreenState()
 
+    data class ErrorFetchingRecipes(val error: Throwable) : LoginScreenState()
     data class Login(val userInfo: UserInfo? = null, val isLoggedIn: Boolean = false) :
         LoginScreenState()
-
-    data class LoginFailed(val error: Throwable) : LoginScreenState()
     data class Error(val error: Throwable) : LoginScreenState()
 }

@@ -2,7 +2,6 @@ package gomoku.ui.game
 
 import gomoku.domain.game.match.Game
 
-
 fun GameScreenState.toGameStateScreen(): GameScreenState {
     return when (this) {
         is GameScreenState.Idle -> GameScreenState.Idle
@@ -27,7 +26,6 @@ fun GameScreenState.isIdle(): Boolean {
  */
 sealed class GameScreenState {
     data object Idle : GameScreenState()
-
     data object Loading : GameScreenState()
     data class GameLoadedAndYourTurn(val game: Game? = null, val message: String? = null) :
         GameScreenState()

@@ -28,7 +28,6 @@ import pdm.gomoku.R
  * Represents the game screen main composable.
  * @param isDarkTheme the [Boolean] that represents if the theme is dark or not.
  * @param backgroundConfig the [BackgroundConfig] to be used.
- * @param localPlayer the [PlayerInfo] of the local player.
  * @param onLeaveGameRequest the callback to be called when the dismiss button is clicked.
  * @param onCellClick the callback to be called when a cell is clicked.
  * @param gameState the [IOState] of the [Game] to be displayed.
@@ -37,7 +36,6 @@ import pdm.gomoku.R
 fun GameScreen(
     isDarkTheme: Boolean?,
     backgroundConfig: BackgroundConfig = BackgroundConfig(LocalConfiguration.current),
-    localPlayer: PlayerInfo,
     onLeaveGameRequest: () -> Unit,
     onCellClick: (toSquare: Square) -> Unit,
     gameState: GameScreenState,
@@ -49,23 +47,28 @@ fun GameScreen(
             useBodySurface = false,
             header = { HeaderText(text = stringResource(id = gameName)) },
         ) {
-            val game = if (gameState is GameScreenState.GameLoadedAndYourTurn) {
-                gameState.game
-            } else if (gameState is GameScreenState.GameLoadedAndNotYourTurn) {
-                gameState.game
-            } else if (gameState is GameScreenState.GameFinished) {
-                gameState.game
-            } else null
+            val game = when (gameState) {
+                is GameScreenState.GameLoadedAndYourTurn -> {
+                    gameState.game
+                }
+
+                is GameScreenState.GameLoadedAndNotYourTurn -> {
+                    gameState.game
+                }
+
+                is GameScreenState.GameFinished -> {
+                    gameState.game
+                }
+
+                else -> null
+            }
             val gameScreenState = gameState.toGameStateScreen()
 
             GameView(
-                playerInfoHost = localPlayer,
-                localPlayer = Player.W,
                 onLeaveGameRequest = onLeaveGameRequest,
                 onGameEnd = onGameEnd,
                 onCellClick = onCellClick,
                 game = game,
-                invalidMessage = if (gameState is GameScreenState.GameLoadedAndYourTurn) gameState.message else null,
                 isLoading = gameScreenState.isLoading() || gameScreenState.isIdle(),
             )
         }
@@ -95,7 +98,6 @@ private fun GameScreenPreview() {
     GameScreen(
         isDarkTheme = false,
         backgroundConfig = BackgroundConfig(LocalConfiguration.current),
-        localPlayer = PlayerInfo(2, "Player W", R.drawable.man5),
         onLeaveGameRequest = {},
         onCellClick = {},
         onGameEnd = {},
@@ -110,7 +112,8 @@ private fun GameScreenPreview() {
                         3,
                         "Player B", R.drawable.woman2
                     ),
-                    state = GameState.IN_PROGRESS
+                    state = GameState.IN_PROGRESS,
+                    localPlayer = Player.B
                 )
             ).getOrNull()
         )

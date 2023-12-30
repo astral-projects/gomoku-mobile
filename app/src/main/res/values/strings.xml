@@ -10,7 +10,7 @@
     <string name="about_section_b_title">Feedback and Support</string>
     <string name="about_section_b_description">We value your input! If you have questions, suggestions, or run into any issues while using our app, please don\'t hesitate to reach out to our support team.</string>
     <string name="about_section_c_title">Authors</string>
-    <string name="about_section_c_description" translatable="false">49513 Diogo Rodrigues\n48666 Tiago Frazao\n49428 Francisco Engenheiro</string>"),
+    "),
     <string name="leaderboard_title">Leaderboard</string>
     <string name="leaderboard_search_bar_hint">Search a player…</string>
     <string name="leaderboard_no_results_found">We searched far and wide. Unfortunately, no results were found.</string>
@@ -60,4 +60,6 @@
     <string name="turn_time_exceed_body_msg">Your strategic moves were on point, but this time, the clock got better of you. Unfortunately, no points can be awarded as a result.</string>
     <string name="turn_time_exceed_button_msg">Acknowledge</string>
     <string name="waiting_opponent_title">Waiting for an opponent…</string>
+    <string name="no_server_connection">No Server Connection</string>
+    <string name="no_server_connection_detail">Unable to connect to the server. This may be due to an issue with your internet connection or the server being temporarily unavailable.</string>
 </resources>

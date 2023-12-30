@@ -89,7 +89,6 @@ class GameActivity : ComponentActivity() {
             GameScreen(
                 gameState = gameState,
                 isDarkTheme = isDarkTheme,
-                localPlayer = viewModel.getUserInfo().toPlayerInfo(),
                 onCellClick = { square: Square ->
                     if (gameState is GameScreenState.GameLoadedAndYourTurn) {
                         viewModel.makeMove(
@@ -106,7 +105,6 @@ class GameActivity : ComponentActivity() {
                     HomeActivity.navigateTo(this, username)
                 },
                 onGameEnd = { HomeActivity.navigateTo(this, username) }
-
             )
         }
     }

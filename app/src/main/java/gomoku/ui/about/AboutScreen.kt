@@ -1,19 +1,29 @@
 package gomoku.ui.about
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gomoku.domain.about.About
+import gomoku.domain.about.Author
 import gomoku.domain.about.Section
 import gomoku.domain.home.Home.gameName
 import gomoku.ui.about.components.FooterLogo
@@ -30,6 +40,7 @@ import pdm.gomoku.R
 // Config
 private val sectionVerticalPadding = 10.dp
 private val sectionPadding = 10.dp
+private val descriptionPadding = 10.dp
 
 /**
  * Represents the About screen main composable.
@@ -42,6 +53,7 @@ private val sectionPadding = 10.dp
 fun AboutScreen(
     inDarkTheme: Boolean = false,
     sections: List<Section>,
+    authors: List<Author>,
     setDarkTheme: (Boolean) -> Unit = {},
     toFindGameScreen: () -> Unit,
     toLeaderboardScreen: () -> Unit,
@@ -49,7 +61,7 @@ fun AboutScreen(
 ) {
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-
+    val uriHandler = LocalUriHandler.current
     // data for the navigation drawer
     val aboutItem = NavigationItem(
         title = stringResource(id = R.string.nav_item_about),
@@ -120,9 +132,40 @@ fun AboutScreen(
                                 titleColor = MaterialTheme.colorScheme.onSecondary,
                                 leadingIconId = section.iconId,
                                 backgroundColor = MaterialTheme.colorScheme.surface,
-                                title = stringResource(section.title.value),
-                                description = stringResource(section.description.value)
-                            )
+                                title = stringResource(section.title.value)
+                            ) {
+                                if (section.description != null) {
+                                    Text(
+                                        text = stringResource(id = section.description.value),
+                                        modifier = Modifier.padding(descriptionPadding),
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        color = MaterialTheme.colorScheme.inversePrimary,
+                                        textAlign = TextAlign.Left,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                } else {
+                                    authors.forEach {
+                                        Row(
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically,
+                                        ) {
+                                            IconButton(
+                                                onClick = { uriHandler.openUri(it.githubUrl) },
+                                                modifier = Modifier.paint(
+                                                    painter = painterResource(id = R.drawable.github)
+                                                )
+                                            ) { }
+                                            Text(
+                                                text = it.name,
+                                                style = MaterialTheme.typography.bodyLarge,
+                                                color = MaterialTheme.colorScheme.inversePrimary,
+                                                textAlign = TextAlign.Left,
+                                                overflow = TextOverflow.Ellipsis,
+                                            )
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -136,6 +179,7 @@ fun AboutScreen(
 private fun AboutScreenPreview() {
     AboutScreen(
         sections = About.sections,
+        authors = About.authors,
         toFindGameScreen = {},
         toLeaderboardScreen = {},
         onLogoutRequest = {}

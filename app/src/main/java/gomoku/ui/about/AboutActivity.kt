@@ -3,7 +3,6 @@ package gomoku.ui.about
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -42,7 +41,6 @@ class AboutActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             viewModel.stateFlow.collect {
-                Log.v("About", "stateFlow.collect")
                 if (it is Loaded) {
                     LoginActivity.navigateTo(this@AboutActivity)
                     viewModel.resetToIdle()
@@ -64,6 +62,7 @@ class AboutActivity : ComponentActivity() {
             AboutScreen(
                 isDarkTheme ?: false,
                 sections = About.sections,
+                authors = About.authors,
                 setDarkTheme = { viewModel.setDarkTheme(it) },
                 toLeaderboardScreen = { LeaderboardActivity.navigateTo(this) },
                 toFindGameScreen = { VariantActivity.navigateTo(this, username) },

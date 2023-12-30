@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +30,7 @@ private const val BODY_HEIGHT_FACTOR = 0.55f
 private val variantBodyVerticalPadding = 15.dp
 private val variantItemVerticalPadding = 6.dp
 private val radioButtonVariantItemSpacerWidth = 6.dp
+private val descriptionPadding = 10.dp
 
 @Composable
 fun VariantTable(
@@ -72,9 +74,13 @@ fun VariantTable(
                             leadingIconId = R.drawable.rule,
                             modifier = Modifier.weight(CARD_WEIGHT),
                             title = variant.name.name,
-                            description = getCardDescriptionFormat(variant),
                             arrowColor = MaterialTheme.colorScheme.tertiary,
-                        )
+                        ) {
+                            Text(
+                                text = getCardDescriptionFormat(variant),
+                                modifier = Modifier.padding(descriptionPadding)
+                            )
+                        }
                     }
                 }
             }

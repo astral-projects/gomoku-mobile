@@ -2,10 +2,10 @@ package gomoku.ui.login
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import gomoku.domain.login.UserInfo
 import gomoku.ui.login.components.HeaderLogo
 import gomoku.ui.login.components.LoginView
 import gomoku.ui.shared.background.Background
+import gomoku.ui.shared.dialogs.NoServerConnectionDialog
 import gomoku.ui.shared.theme.GomokuTheme
 
 /**
@@ -20,9 +20,15 @@ fun LoginScreen(
     inDarkTheme: Boolean? = false,
     authenticatedUserInfo: LoginScreenState,
     onSubmit: (username: String, password: String) -> Unit,
-    onSignUpLinkClick: (Int) -> Unit
+    onSignUpLinkClick: (Int) -> Unit,
+    onNoServerConnDialogDismiss: () -> Unit,
 ) {
     GomokuTheme(darkTheme = inDarkTheme ?: false) {
+        if (authenticatedUserInfo is LoginScreenState.ErrorFetchingRecipes) {
+            NoServerConnectionDialog {
+                onNoServerConnDialogDismiss()
+            }
+        }
         Background(
             header = { HeaderLogo() },
         ) {
@@ -40,10 +46,10 @@ fun LoginScreen(
 @Composable
 @Preview
 private fun LoginScreenPreview() {
-    val userInfo = UserInfo(1, "John", "123", "dfqwdew@.com", 3)
     LoginScreen(
         authenticatedUserInfo = LoginScreenState.Idle,
         onSubmit = { _, _ -> },
         onSignUpLinkClick = { },
+        onNoServerConnDialogDismiss = { }
     )
 }

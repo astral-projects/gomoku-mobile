@@ -36,6 +36,8 @@ class VariantScreenViewModel(
                 )
             }
         }
+
+        private const val POLL_DELAY = 2000L
     }
 
     val stateFlow: Flow<VariantScreenState>
@@ -95,7 +97,7 @@ class VariantScreenViewModel(
             val userInfo = preferences.getUserInfo()
             checkNotNull(userInfo) { "The user info in ${VariantScreenViewModel::class.java.simpleName} is null." }
             val result = runCatching { gameService.waitingInLobby(lobbyId, userInfo.token) }
-            delay(5000)
+            delay(POLL_DELAY)
             if (result.isSuccess) {
                 // poll again
                 if (result.getOrThrow().first == true) {

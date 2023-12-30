@@ -1,10 +1,11 @@
 package gomoku.domain.about
 
 /**
- * Represents an author of the app.
- * @param number the author's number.
- * @param name the author's name.
+ * Represents an author.
+ * @param name the name of the author.
+ * @param githubUrl the GitHub url of the author.
  */
-class Author(private val number: Int, val name: String) {
-    override fun toString() = "$number - $name"
-}
+data class Author(
+    val name: String,
+    val githubUrl: String
+)

@@ -38,7 +38,7 @@ class LoginViewModel(
      * data store. This method should be called only once when the app is first launched.
      */
     fun fetchUriTemplates() {
-        if (_stateFlow.value !is LoginScreenState.Idle)
+        if (_stateFlow.value !is LoginScreenState.Idle && _stateFlow.value !is LoginScreenState.ErrorFetchingRecipes)
             throw IllegalStateException("The view model is not in the idle state.")
         _stateFlow.value = LoginScreenState.FetchRecipes()
         viewModelScope.launch {
@@ -53,7 +53,9 @@ class LoginViewModel(
             Log.v("UriTemplates", "fetched done....")
             if (result.isFailure) {
                 _stateFlow.value =
-                    LoginScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
+                    LoginScreenState.ErrorFetchingRecipes(
+                        result.exceptionOrNull() ?: Exception("Unknown error")
+                    )
             } else {
                 Log.v("UriTemplates", "fetched done and is ${result.getOrNull()}")
                 preferences.setUriTemplates(result.getOrThrow())
@@ -69,7 +71,7 @@ class LoginViewModel(
     @Throws(IllegalStateException::class)
     fun login(username: String, password: String) {
         _stateFlow.value.let { state ->
-            check(state is LoginScreenState.FetchRecipes && state.isFetched || state is LoginScreenState.LoginFailed) {
+            check(state is LoginScreenState.FetchRecipes && state.isFetched || state is LoginScreenState.Error) {
                 "The view model is not in the idle state or in fail state"
             }
         }
@@ -79,7 +81,7 @@ class LoginViewModel(
             val result = runCatching { service.login(username, password) }
             Log.v("Login", "fetched done....")
             if (result.isFailure) {
-                _stateFlow.value = LoginScreenState.LoginFailed(
+                _stateFlow.value = LoginScreenState.Error(
                     result.exceptionOrNull() ?: Exception("Unknown error")
                 )
             } else {
@@ -90,18 +92,14 @@ class LoginViewModel(
         }
     }
 
-
     /**
      * Resets the view model to the idle state.
      * @throws IllegalStateException If the view model is not in the loaded state or in fail state.
      */
     @Throws(IllegalStateException::class)
     fun resetToIdle() {
-        if (_stateFlow.value !is LoginScreenState.Login &&
-            _stateFlow.value !is LoginScreenState.LoginFailed &&
-            _stateFlow.value !is LoginScreenState.Error
-        ) {
-            throw IllegalStateException("The view model is not in the loaded state or in fail state.")
+        check(_stateFlow.value is LoginScreenState.Login || _stateFlow.value is LoginScreenState.Error) {
+            "The view model is not in the loaded state or in fail state."
         }
         _stateFlow.value = LoginScreenState.Idle
     }

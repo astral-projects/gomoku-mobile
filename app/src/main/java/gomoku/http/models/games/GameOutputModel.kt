@@ -6,7 +6,9 @@ import gomoku.domain.game.board.toBoardTurn
 import gomoku.domain.game.match.Game
 import gomoku.domain.game.match.toGameState
 import gomoku.domain.game.moves.createMovesFromGrid
+import gomoku.domain.game.moves.move.Player
 import gomoku.domain.leaderboard.PlayerInfo
+import gomoku.domain.login.UserInfo
 import gomoku.http.models.users.UserOutputModel
 import pdm.gomoku.R
 
@@ -21,8 +23,7 @@ data class GameOutputModel(
     val guestId: Int
 )
 
-
-fun GameOutputModel.toGame(user: List<UserOutputModel>): Game {
+fun GameOutputModel.toGame(user: List<UserOutputModel>, loggedInPlayerInfo: UserInfo): Game {
     val host = user.first { it.id == this.hostId }
     val guest = user.first { it.id == this.guestId }
     val game = Game(
@@ -30,19 +31,20 @@ fun GameOutputModel.toGame(user: List<UserOutputModel>): Game {
         variantId = this.variant.id,
         board = Board(
             createMovesFromGrid(this.board.grid),
-            this.board?.turn?.player?.toBoardTurn(),
+            this.board.turn?.player?.toBoardTurn(),
             winner = if (this.board.winner != null) {
                 if (this.board.winner == "W") PlayerInfo(
                     this.hostId,
                     host.username,
                     R.drawable.man
-                ) else PlayerInfo(this.guestId, guest.username, R.drawable.man)
+                ) else PlayerInfo(this.guestId, guest.username, R.drawable.man5)
             } else null,
             size = this.variant.boardSize.toBoardSize()
         ),
         host = PlayerInfo(this.hostId, host.username, R.drawable.man),
-        guest = PlayerInfo(this.guestId, guest.username, R.drawable.man),
-        state = this.state.name.toGameState()
+        guest = PlayerInfo(this.guestId, guest.username, R.drawable.man5),
+        state = this.state.name.toGameState(),
+        localPlayer = if (loggedInPlayerInfo.id == this.hostId) Player.W else Player.B
     )
     return game
 }

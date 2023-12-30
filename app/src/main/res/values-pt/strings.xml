@@ -56,4 +56,7 @@
     <string name="turn_time_exceed_body_msg">As tuas jogadas estratégicas foram perfeitas, mas desta vez, o relógio levou a melhor. Infelizmente, não podes ganhar pontos por isso.</string>
     <string name="turn_time_exceed_button_msg">Percebi</string>
     <string name="waiting_opponent_title">À espera de um adversário…</string>
+    <string name="no_server_connection">Sem ligação ao Servidor</string>
+    <string name="no_server_connection_detail">Não é possível ligar ao servidor. Isto pode dever-se a um problema com a sua ligação à Internet ou ao facto de o servidor estar temporariamente indisponível. Por favor, tente novamente mais tarde.</string>
+    <string name="leave_game_back_home">Sim</string>
 </resources>
