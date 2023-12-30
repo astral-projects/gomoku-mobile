@@ -28,7 +28,7 @@ class ApiGameService(
 
     override suspend fun fetchGameById(id: Int): Game {
         val template = findRecipeUri(preferences, "game")
-        val uri = convertTemplateToUrl(template, id.toString())
+        val uri = convertTemplateToUrl(template, mapOf("game_id" to id.toString()))
         val res: SirenModel<GameOutputModel, UserOutputModel> =
             callApi<Unit, SirenModel<GameOutputModel, UserOutputModel>>(url = uri)
         val users = res.entities.map {
@@ -67,7 +67,7 @@ class ApiGameService(
 
     override suspend fun makeMove(gameId: Int, move: Move, token: String): Game {
         val template = findRecipeUri(preferences, "move")
-        val uri = convertTemplateToUrl(template, gameId.toString())
+        val uri = convertTemplateToUrl(template, mapOf("game_id" to gameId.toString()))
         val res = callApi<MoveInputModel, SirenModel<GameOutputModel, Unit>>(
             method = Method.POST,
             url = uri,
@@ -124,7 +124,7 @@ class ApiGameService(
 
     override suspend fun exitGame(gameId: Int, token: String) {
         val template = findRecipeUri(preferences, "exit-game")
-        val uri = convertTemplateToUrl(template, gameId.toString())
+        val uri = convertTemplateToUrl(template, mapOf("game_id" to gameId.toString()))
         val res: SirenModel<ExitGameOutputModel, Unit> =
             callApi<Unit, SirenModel<ExitGameOutputModel, Unit>>(
                 method = Method.POST,

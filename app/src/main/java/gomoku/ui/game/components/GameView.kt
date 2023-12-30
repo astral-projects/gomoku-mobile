@@ -49,9 +49,28 @@ fun GameView(
     onLeaveGameRequest: () -> Unit,
     onCellClick: (toSquare: Square) -> Unit,
     onGameEnd: () -> Unit,
-    game: Game,
-    isLoading: Boolean = false
+    game: Game?,
+    isLoading: Boolean = false,
+    invalidMessage: String? = null
 ) {
+    val g = game ?: Game(
+        id = 1,
+        variantId = 1,
+        board = Board(
+            moves = emptyMap(),
+            turn = BoardTurn(
+                player = Player.W,
+                timer = Timer(0, 55)
+            ),
+            size = BoardSize.FIFTEEN
+        ),
+        host = PlayerInfo(1, "Player W2", R.drawable.man),
+        guest = PlayerInfo(
+            1, "Player B2", R.drawable.man
+        ),
+        state = GameState.IN_PROGRESS
+    )
+
     var showLeaveGameDialog by rememberSaveable { mutableStateOf(false) }
     if (showLeaveGameDialog) {
         LeaveGameDialog(
@@ -59,10 +78,10 @@ fun GameView(
             onLeaveRequest = onLeaveGameRequest
         )
     }
-    if (game.board.winner != null) {
+    if (g.board.winner != null) {
         GameResultsDialog(
-            winnerInfo = game.board.winner,
-            loserInfo = if (game.board.winner == game.host) game.guest else game.host,
+            winnerInfo = g.board.winner,
+            loserInfo = if (g.board.winner == g.host) g.guest else g.host,
             winnerPoints = 200,
             loserPoints = 100,
             onDismissRequest = { onGameEnd() }
@@ -79,7 +98,7 @@ fun GameView(
             SkeletonLoader(loading = isLoading) {
                 GameInfoChip(
                     leadingIconId = R.drawable.timer,
-                    label = "${game.board.turn?.timer}"
+                    label = "${g.board.turn?.timer}"
                 )
             }
         }
@@ -89,15 +108,15 @@ fun GameView(
         ) {
             SkeletonLoader(loading = isLoading) {
                 PlayerInfoChip(
-                    playerInfo = playerInfoHost,
+                    playerInfo = g.host,
                     trailingIconId = R.drawable.white_circle,
-                    select = game.board.turn?.player == Player.W
+                    select = g.board.turn?.player == Player.W
                 )
             }
         }
         SkeletonLoader(loading = isLoading) {
             BoardContainer(
-                board = game.board,
+                board = g.board,
                 localPlayer = localPlayer,
                 onCellClick = onCellClick,
             )
@@ -108,15 +127,15 @@ fun GameView(
         ) {
             SkeletonLoader(loading = isLoading) {
                 PlayerInfoChip(
-                    playerInfo = game.guest,
+                    playerInfo = g.guest,
                     trailingIconId = R.drawable.black_circle,
-                    select = game.board.turn?.player == Player.B
+                    select = g.board.turn?.player == Player.B
                 )
             }
             SkeletonLoader(loading = isLoading) {
                 GameInfoChip(
                     leadingIconId = R.drawable.directions,
-                    label = "${game.board.moves.size}"
+                    label = "${g.board.moves.size}"
                 )
             }
         }

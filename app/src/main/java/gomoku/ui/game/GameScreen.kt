@@ -64,23 +64,8 @@ fun GameScreen(
                 onLeaveGameRequest = onLeaveGameRequest,
                 onGameEnd = onGameEnd,
                 onCellClick = onCellClick,
-                game = game ?: Game(
-                    id = 1,
-                    variantId = 1,
-                    board = Board(
-                        moves = emptyMap(),
-                        turn = BoardTurn(
-                            player = Player.W,
-                            timer = Timer(0, 55)
-                        ),
-                        size = BoardSize.FIFTEEN
-                    ),
-                    host = PlayerInfo(1, "Player W2", R.drawable.man),
-                    guest = PlayerInfo(
-                        1, "Player B2", R.drawable.man
-                    ),
-                    state = GameState.IN_PROGRESS
-                ),
+                game = game,
+                invalidMessage = if (gameState is GameScreenState.GameLoadedAndYourTurn) gameState.message else null,
                 isLoading = gameScreenState.isLoading() || gameScreenState.isIdle(),
             )
         }

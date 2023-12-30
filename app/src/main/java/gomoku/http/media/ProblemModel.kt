@@ -6,5 +6,5 @@ class ProblemModel(
     val status: Int,
     val detail: String,
     val instance: String,
-    val data: String?
+    val data: Map<String, Any>?
 )

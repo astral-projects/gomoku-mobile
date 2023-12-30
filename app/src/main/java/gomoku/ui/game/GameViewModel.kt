@@ -11,6 +11,7 @@ import gomoku.domain.login.UserInfo
 import gomoku.domain.service.game.GameService
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.ui.shared.BaseViewModel
+import gomoku.ui.variant.VariantScreenViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,6 +53,12 @@ class GameViewModel(
         viewModelScope.launch {
             val userInfo = preferences.getUserInfo()!!
             val result = runCatching { service.makeMove(gameId, move, userInfo.token) }
+            if (result.isFailure) {
+                _gameFlow.value = GameScreenState.GameLoadedAndYourTurn(
+                    (_gameFlow.value as GameScreenState.GameLoadedAndYourTurn).game,
+                    result.exceptionOrNull()?.message
+                )
+            }
             _gameFlow.value = GameScreenState.GameLoadedAndNotYourTurn(result.getOrNull())
         }
     }
@@ -59,14 +66,12 @@ class GameViewModel(
     fun startPollingGame(gameId: Int) {
         check(_gameFlow.value is GameScreenState.GameLoadedAndNotYourTurn) { "The view model is not in the loaded state and is your turn ." }
         viewModelScope.launch {
-            while (true) {
-                delay(5000)
-                val result = runCatching { service.fetchGameById(gameId) }
-                val userInfo = preferences.getUserInfo()!!
-                val g = result.getOrThrow()
-                _gameFlow.value = gameState(g, userInfo, result)
-
-            }
+            val userInfo = preferences.getUserInfo()
+            checkNotNull(userInfo) { "The user info in ${VariantScreenViewModel::class.java.simpleName} is null." }
+            val result = runCatching { service.fetchGameById(gameId) }
+            delay(5000)
+            val g = result.getOrThrow()
+            _gameFlow.value = gameState(g, userInfo, result)
         }
     }
 

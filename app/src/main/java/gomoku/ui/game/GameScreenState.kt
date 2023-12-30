@@ -29,7 +29,7 @@ sealed class GameScreenState {
     data object Idle : GameScreenState()
 
     data object Loading : GameScreenState()
-    data class GameLoadedAndYourTurn(val game: Game? = null) :
+    data class GameLoadedAndYourTurn(val game: Game? = null, val message: String? = null) :
         GameScreenState()
 
     data class GameLoadedAndNotYourTurn(val game: Game? = null) :

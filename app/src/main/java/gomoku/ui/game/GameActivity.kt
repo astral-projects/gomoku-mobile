@@ -99,7 +99,6 @@ class GameActivity : ComponentActivity() {
                                 Piece(Player.W)
                             )
                         )
-
                     }
                 },
                 onLeaveGameRequest = {
