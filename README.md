@@ -17,9 +17,9 @@
 
 ## Introduction
 
-This is a gomoku game for Android, which is a client-server application, where the server
-is implemented in Kotlin using the Spring framework in a separate project, and the client is
-implemented in Kotlin using Android. The game is multiplayer and each player plays
+Gomoku Royale is a mobile application that allows users to play
+the [Gomoku](https://en.wikipedia.org/wiki/Gomoku) game, also known as
+Five in a Row, on their mobile devices. The game is multiplayer and each player plays
 on a different device.
 
 The application has the following features:
@@ -102,7 +102,7 @@ which is available in most screen's navigation drawer.
 The application is only available in `portrait mode`.
 The `landscape mode` is not supported, has it was not implemented during the development of the
 application. Even though the application does not **block it**, users are advised to use the
-application in `portrait mode` for a better experience.
+application in `portrait mode` for a better user experience.
 
 #### Mockup
 
@@ -120,12 +120,24 @@ Below is a visual representation of the latest version:
 The application communicates with the API using the [OkHttp](https://square.github.io/okhttp/)
 library, which is an `HTTP client` for Android and Java.
 
-The service layer of the application is responsible for communicating with the API and is divided
-into the following packages:
+To abstract the communication with the API, the application uses the
+[ApiConnection](./app/src/main/java/gomoku/http/utils/ApiConnection.kt) class, which is responsible
+for
+making the HTTP requests to the API and parsing the responses into the corresponding models.
 
-TODO()
+The service layer of the application is responsible for communicating with the API. In
+the [service](./app/src/main/java/gomoku/http/service) package, there are few services:
 
----
+- `ApiGameService`: responsible for communicating with the API's game endpoints;
+- `ApiUserService`: responsible for communicating with the API's user endpoints;
+- `ApiVariantsService`: responsible for communicating with the API's variant endpoints.
+
+Leveraging the capabilities of the API's URL templating, the services mentioned above use utility
+functions that build such templates into an actual URI.
+
+The `fetchRecipes` function employs OkHttp to make asynchronous calls, adeptly parsing the responses
+into a list of Recipe objects. Its counterpart, `findRecipeUri`, seamlessly navigates stored recipe
+URIs based on provided **relations**.
 
 ### Critical Analysis
 
@@ -135,6 +147,10 @@ its purpose for this project.
 
 The primary challenge we faced centered on implementing communication with the API, particularly as
 it marked our first encounter with the `Siren Hypermedia` specification.
+
+Tests were also a challenge, as we had to learn ways to test the application's UI, which is
+implemented using Jetpack Compose, such as placing tags on components, mocking the dependencies and
+working with asynchronous operations and coroutines.
 
 ### Further Improvements
 
@@ -146,7 +162,7 @@ What can be improved/added in the future:
 - Add login with external services (Google, Facebook, etc.);
 - Add more tests.
 
-#### Authors
+### Authors
 
 - Diogo Rodrigues - 49513
 - Tiago Frazão - 48666
