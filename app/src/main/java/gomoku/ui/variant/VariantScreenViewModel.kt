@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import gomoku.domain.game.match.Game
 import gomoku.domain.game.match.Lobby
 import gomoku.domain.service.game.GameService
+import gomoku.domain.service.user.UserService
 import gomoku.domain.service.variant.VariantService
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.ui.shared.BaseViewModel
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 class VariantScreenViewModel(
     private val service: VariantService,
     private val gameService: GameService,
+    private val userService: UserService,
     preferences: PreferencesRepository,
 ) : BaseViewModel(preferences) {
 
@@ -25,11 +27,12 @@ class VariantScreenViewModel(
         fun factory(
             serviceVariant: VariantService,
             gameService: GameService,
+            userService: UserService,
             preferences: PreferencesRepository,
         ) = viewModelFactory {
             initializer {
                 VariantScreenViewModel(
-                    serviceVariant, gameService, preferences
+                    serviceVariant, gameService, userService, preferences
                 )
             }
         }
@@ -129,11 +132,31 @@ class VariantScreenViewModel(
         }
     }
 
+    fun logout() {
+        _stateFlow.value = VariantScreenState.LoggingOut
+        viewModelScope.launch {
+            val user = preferences.getUserInfo()
+            if (user != null) {
+                val result = runCatching { userService.logout(user.token) }
+                if (result.isFailure) {
+                    _stateFlow.value = VariantScreenState.Error(
+                        result.exceptionOrNull() ?: Exception("Unknown error")
+                    )
+                } else {
+                    preferences.clearUserInfo(user)
+                    _stateFlow.value = VariantScreenState.Logout
+                }
+            } else {
+                _stateFlow.value = VariantScreenState.Error(Exception("User not logged in"))
+            }
+        }
+    }
+
     /**
      * Resets the view model to the idle state.
      */
     fun resetToIdle() {
-        check(_stateFlow.value is VariantScreenState.JoinGame || _stateFlow.value is VariantScreenState.ExitLobby) { "The view model is not in a valid state." }
+        check(_stateFlow.value is VariantScreenState.JoinGame || _stateFlow.value is VariantScreenState.ExitLobby || _stateFlow.value is VariantScreenState.Error || _stateFlow.value is VariantScreenState.Logout) { "The view model is not in a state that can be reset to idle." }
         _stateFlow.value = VariantScreenState.Idle
     }
 }

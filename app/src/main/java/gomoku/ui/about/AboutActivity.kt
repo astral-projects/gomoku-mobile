@@ -3,6 +3,7 @@ package gomoku.ui.about
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -15,7 +16,6 @@ import gomoku.GomokuDependencyProvider
 import gomoku.domain.Loaded
 import gomoku.domain.about.About
 import gomoku.ui.Navigation
-import gomoku.ui.home.USERNAME_EXTRA
 import gomoku.ui.leaderboard.LeaderboardActivity
 import gomoku.ui.login.LoginActivity
 import gomoku.ui.variant.VariantActivity
@@ -42,8 +42,10 @@ class AboutActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             viewModel.stateFlow.collect {
+                Log.v("About", "stateFlow.collect")
                 if (it is Loaded) {
                     LoginActivity.navigateTo(this@AboutActivity)
+                    viewModel.resetToIdle()
                 }
             }
         }
@@ -54,11 +56,11 @@ class AboutActivity : ComponentActivity() {
                     viewModel.isDarkTheme()
                 }
             }
-
         }
 
         setContent {
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
+            val username = viewModel.getUserInfo().username
             AboutScreen(
                 isDarkTheme ?: false,
                 sections = About.sections,
@@ -68,13 +70,6 @@ class AboutActivity : ComponentActivity() {
                 onLogoutRequest = { viewModel.logout() }
             )
         }
-
-
-    }
-
-    val username: String by lazy {
-        intent?.getStringExtra(USERNAME_EXTRA)
-            ?: throw IllegalArgumentException("Username must be provided")
     }
 
 }

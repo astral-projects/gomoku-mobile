@@ -1,5 +1,6 @@
 package gomoku.infrastructure
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -46,6 +47,10 @@ class PreferencesDataStore(
         val token = preferences[tokenKey]
         val email = preferences[emailKey]
         val iconId = preferences[iconIdKey]
+        Log.v(
+            "PreferencesDataStore",
+            "username: $username, id: $id, token: $token, email: $email, iconId: $iconId"
+        )
         return if (username != null && id != null && token != null && email != null &&
             iconId != null
         ) {

@@ -29,6 +29,7 @@ class VariantActivity : ComponentActivity() {
         VariantScreenViewModel.factory(
             dependencies.variantService,
             dependencies.gameService,
+            dependencies.userService,
             dependencies.preferencesRepository
         )
     }
@@ -72,6 +73,10 @@ class VariantActivity : ComponentActivity() {
                     HomeActivity.navigateTo(this@VariantActivity, username)
                     viewModel.resetToIdle()
                 }
+                if (it is VariantScreenState.Logout) {
+                    LoginActivity.navigateTo(this@VariantActivity)
+                    viewModel.resetToIdle()
+                }
             }
         }
 
@@ -97,7 +102,7 @@ class VariantActivity : ComponentActivity() {
                 },
                 toLeaderboardScreen = { LeaderboardActivity.navigateTo(this) },
                 toAboutScreen = { AboutActivity.navigateTo(this) },
-                onLogoutRequest = { LoginActivity.navigateTo(this) },
+                onLogoutRequest = { viewModel.logout() },
                 isDarkTheme = stateIsInDarkTheme,
                 setDarkTheme = { isDarkTheme -> viewModel.setDarkTheme(isDarkTheme) }
             )

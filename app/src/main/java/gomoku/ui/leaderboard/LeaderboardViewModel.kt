@@ -1,5 +1,6 @@
 package gomoku.ui.leaderboard
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -33,11 +34,12 @@ class LeaderboardViewModel(
         MutableStateFlow(LeaderBoardScreenState.Idle)
 
     fun fetchUserStats(userId: Int) {
-        _stateFlow.value = LeaderBoardScreenState.Loading(page = 0)
+        _stateFlow.value = LeaderBoardScreenState.Loading()
         viewModelScope.launch {
             val result = runCatching { service.fetchUserStats(userId) }
             _stateFlow.value = if (result.isSuccess) {
-                LeaderBoardScreenState.UserStatsLoaded(result.getOrThrow())
+                Log.v("fetchUserStatsUnique", "result: ${result.getOrThrow()}")
+                LeaderBoardScreenState.UsersStatsLoaded(listOf(result.getOrThrow()))
             } else {
                 LeaderBoardScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
             }
@@ -45,27 +47,67 @@ class LeaderboardViewModel(
     }
 
     fun fetchUsersStats(page: Int = FIRST_PAGE) {
-        _stateFlow.value = LeaderBoardScreenState.Loading(page = page)
+        val previousList =
+            (_stateFlow.value as? LeaderBoardScreenState.UsersStatsLoaded)?.usersStats
+                ?: emptyList()
+        Log.v("fetchUsersStats", "previousList: $previousList")
+        _stateFlow.value = LeaderBoardScreenState.Loading(previousList)
         viewModelScope.launch {
             val result = runCatching { service.fetchUsersStats(page) }
             _stateFlow.value = if (result.isSuccess) {
-                LeaderBoardScreenState.UsersStatsLoaded(result.getOrThrow(), isLastPage = false)
+                val newList = result.getOrThrow()
+                if (page == FIRST_PAGE) {
+                    Log.v("fetchUsersStats", "newList: $newList")
+                    LeaderBoardScreenState.UsersStatsLoaded(newList)
+                } else {
+                    val mergedList = previousList + newList
+                    val sortedList = mergedList.sortedBy { it.rank }
+                    Log.v("fetchUsersStats", "sortedList: $sortedList")
+                    LeaderBoardScreenState.UsersStatsLoaded(sortedList)
+                }
             } else {
                 LeaderBoardScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
             }
         }
     }
 
-    fun searchUsers(term: String) {
-        _stateFlow.value = LeaderBoardScreenState.SearchUsers(term)
+    fun searchUsers(term: Term) {
+        _stateFlow.value = LeaderBoardScreenState.Loading()
         viewModelScope.launch {
-            val result = runCatching { service.searchUsers(term = Term(term)) }
+            Log.v("searchUsers", "hello: $term")
+            val result = runCatching { service.searchUsers(term = term) }
             _stateFlow.value = if (result.isSuccess) {
-                LeaderBoardScreenState.UsersStatsLoaded(result.getOrThrow(), isLastPage = false)
+                LeaderBoardScreenState.UsersStatsLoaded(result.getOrThrow())
             } else {
                 LeaderBoardScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
             }
         }
+    }
+
+    fun logout() {
+        _stateFlow.value = LeaderBoardScreenState.Loading()
+        viewModelScope.launch {
+            val user = preferences.getUserInfo()
+            if (user != null) {
+                val result = runCatching { service.logout(user.token) }
+                if (result.isFailure) {
+                    Log.v("Leaderboard", "failure in logged out")
+                    _stateFlow.value = LeaderBoardScreenState.Error(
+                        result.exceptionOrNull() ?: Exception("Unknown error")
+                    )
+                } else {
+                    Log.v("Leaderboard", "logged out successfully")
+                    preferences.clearUserInfo(user)
+                    _stateFlow.value = LeaderBoardScreenState.Logout
+                }
+            } else {
+                _stateFlow.value = LeaderBoardScreenState.Error(Exception("User not logged in"))
+            }
+        }
+    }
+
+    fun resetToIdle() {
+        _stateFlow.value = LeaderBoardScreenState.Idle
     }
 
 }

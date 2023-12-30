@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import gomoku.GomokuDependencyProvider
 import gomoku.ui.Navigation
 import gomoku.ui.about.AboutActivity
-import gomoku.ui.home.USERNAME_EXTRA
 import gomoku.ui.login.LoginActivity
 import gomoku.ui.variant.VariantActivity
 import kotlinx.coroutines.launch
@@ -43,10 +42,9 @@ class LeaderboardActivity : ComponentActivity() {
                 if (it is LeaderBoardScreenState.Idle) {
                     Log.v("LeaderboardActivity", "fetching users stats")
                     viewModel.fetchUsersStats()
-                }
-                if (it is LeaderBoardScreenState.SearchUsers) {
-                    Log.v("LeaderboardActivity", "searching users")
-                    viewModel.searchUsers(it.term)
+                } else if (it is LeaderBoardScreenState.Logout) {
+                    LoginActivity.navigateTo(this@LeaderboardActivity)
+                    viewModel.resetToIdle()
                 }
             }
         }
@@ -59,8 +57,7 @@ class LeaderboardActivity : ComponentActivity() {
             }
         }
         setContent {
-            val state =
-                viewModel.stateFlow.collectAsState(initial = LeaderBoardScreenState.Idle).value
+            val state by viewModel.stateFlow.collectAsState(initial = LeaderBoardScreenState.Idle)
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             LeaderboardScreen(
                 state = state,
@@ -68,18 +65,17 @@ class LeaderboardActivity : ComponentActivity() {
                 isDarkTheme = isDarkTheme ?: false,
                 setDarkTheme = { viewModel.setDarkTheme(it) },
                 getUserStats = { id -> viewModel.fetchUserStats(id) },
-                onSearchRequest = { term -> viewModel.searchUsers(term.value) },
+                onSearchRequest = { term -> viewModel.searchUsers(term) },
                 getItemsFromPage = { page -> viewModel.fetchUsersStats(page) },
-                toFindGameScreen = { VariantActivity.navigateTo(this, username) },
+                toFindGameScreen = {
+                    VariantActivity.navigateTo(
+                        this,
+                        viewModel.getUserInfo().username
+                    )
+                },
                 toAboutScreen = { AboutActivity.navigateTo(this) },
-                onLogoutRequest = { LoginActivity.navigateTo(this) },
+                onLogoutRequest = { viewModel.logout() },
             )
         }
     }
-
-    val username: String by lazy {
-        intent?.getStringExtra(USERNAME_EXTRA)
-            ?: throw IllegalArgumentException("Username must be provided")
-    }
-
 }

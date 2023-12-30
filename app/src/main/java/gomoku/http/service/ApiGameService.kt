@@ -84,7 +84,11 @@ class ApiGameService(
 
     override suspend fun exitLobby(lobbyId: Int, token: String) {
         val template = findRecipeUri(preferences, "exit-lobby")
-        val uri = convertTemplateToUrl(template, lobbyId.toString())
+        val uri = convertTemplateToUrl(
+            template, mapOf(
+                "lobby_id" to lobbyId.toString()
+            )
+        )
         val res: SirenModel<DeleteLobbyOutputModel, Unit> =
             callApi<Unit, SirenModel<DeleteLobbyOutputModel, Unit>>(
                 method = Method.DELETE,
@@ -99,7 +103,11 @@ class ApiGameService(
 
     override suspend fun waitingInLobby(lobbyId: Int, token: String): Pair<Boolean, Int> {
         val template = findRecipeUri(preferences, "lobby")
-        val uri = convertTemplateToUrl(template, lobbyId.toString())
+        val uri = convertTemplateToUrl(
+            template, mapOf(
+                "lobby_id" to lobbyId.toString()
+            )
+        )
         val res: SirenModel<WaitingInLobbyOutputModel, Unit> =
             callApi<Unit, SirenModel<WaitingInLobbyOutputModel, Unit>>(
                 url = uri,

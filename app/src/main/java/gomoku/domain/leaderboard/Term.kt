@@ -25,7 +25,7 @@ value class Term(val value: String) {
         override fun isValid(value: String): Boolean {
             if (value.isEmpty()) return false
             if (value.isBlank()) return false
-            if (value.length < MIN_TERM_LENGTH) return false
+            if (value.length <= MIN_TERM_LENGTH) return false
             return true
         }
 
