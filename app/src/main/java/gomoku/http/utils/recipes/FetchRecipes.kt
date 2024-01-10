@@ -15,7 +15,8 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-const val URI = "https://0512-217-129-80-67.ngrok-free.app"
+// ngrok http http://localhost:8080
+const val URI = "https://a0ac-2001-8a0-6c6a-3700-54f8-a7ca-6a9c-9b52.ngrok-free.app"
 
 suspend fun fetchRecipes(): List<Recipe> {
     val gson = Gson()
