@@ -9,8 +9,8 @@
 
 ## Introduction
 
-This is a simple battleship game for Android. The game is multiplayer and each player plays on a
-different device.
+Gomoku Royale is a captivating mobile application that brings the timeless strategy game of Gomoku to your Android device. 
+Engage in thrilling one-on-one matches against players from around the globe, strategically placing your stones on the board to form five-in-a-row and claim victory.
 
 For more information about the application structure and design, see
 the [documentation](docs/documentation.md).
@@ -18,6 +18,8 @@ the [documentation](docs/documentation.md).
 ## Demo
 
 This short video demonstrates the application in action:
+
+https://github.com/isel-leic-pdm/gomoku-2023-g22/assets/101189781/6d0d469a-a4a7-4fe7-8308-c15f9921fa21
 
 ## Features
 
