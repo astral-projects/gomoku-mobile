@@ -2,6 +2,8 @@ package gomoku.ui
 
 import gomoku.domain.Fail
 import gomoku.domain.Idle
+import gomoku.domain.Loaded
+import gomoku.domain.Loading
 import gomoku.domain.getOrThrow
 import gomoku.domain.service.user.UserService
 import gomoku.domain.service.user.errors.RegisterUserException
@@ -27,7 +29,7 @@ private data class RegisterCredentials(
     val email: String,
 )
 
-class RegisterViewModelTests : AbstractViewModelTests() {
+class RegisterViewModelTests {
 
     @get:Rule
     val rule = MockMainDispatcherRule(testDispatcher = StandardTestDispatcher())
@@ -95,7 +97,12 @@ class RegisterViewModelTests : AbstractViewModelTests() {
             viewModel.register(credentials.username, credentials.email, credentials.password)
         }.also { collectedStates ->
             // then: the default IO state sequence is emitted
-            verifyDefaultIOStateSequence(collectedStates)
+            val expectedState = listOf(
+                Idle,
+                Loading(),
+                Loaded(Result.success(userId))
+            )
+            assertTrue(collectedStates == expectedState)
 
             // and: the last state is loaded with the user ID
             assertTrue(collectedStates.last().getOrThrow() == userId)

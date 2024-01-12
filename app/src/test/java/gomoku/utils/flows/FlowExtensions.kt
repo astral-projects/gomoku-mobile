@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 
+// Constants
+private const val ONE_SECOND = 1000L
 private const val THREE_SECONDS = 3000L
 
 /**
@@ -23,10 +25,10 @@ suspend fun <T> Flow<T>.collectWithTimeout(timeout: Long = THREE_SECONDS): T =
         var collectedValue: T? = null
         try {
             withTimeout(timeout) {
-                println("collecting")
+                println("Started collecting:")
                 collect {
-                    println("collected $it")
                     collectedValue = it
+                    println("- Collected: $it")
                 }
             }
         } catch (_: TimeoutCancellationException) {
@@ -47,15 +49,14 @@ suspend fun <T> Flow<T>.collectAllWithTimeout(timeout: Long = THREE_SECONDS): Li
         val collectedValues = mutableListOf<T>()
         try {
             withTimeout(timeout) {
-                while (true) {
-                    collect {
-                        println("collecting $it")
-                        collectedValues.add(it)
-                    }
+                println("Started collecting:")
+                collect {
+                    collectedValues.add(it)
+                    println("- Collected: $it")
                 }
             }
         } catch (_: TimeoutCancellationException) {
-            println("timeout")
+            println("timedout")
         }
         collectedValues
     }
@@ -69,8 +70,8 @@ suspend fun <T> Flow<T>.collectAllWithTimeout(timeout: Long = THREE_SECONDS): Li
  * @return the list of values emitted by the flow.
  */
 suspend fun <T> Flow<T>.subscribeBeforeCallingOperation(
-    millisToDelayOpCall: Long = 1000,
-    millisToCollect: Long = 3000,
+    millisToDelayOpCall: Long = ONE_SECOND,
+    millisToCollect: Long = THREE_SECONDS,
     operation: () -> Unit,
 ): List<T> = coroutineScope {
     val gate = SuspendingGate()

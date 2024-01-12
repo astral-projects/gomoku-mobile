@@ -32,49 +32,53 @@ class GameViewModel(
         private const val FETCH_GAME_DELAY = 1000L
     }
 
-    val game: Flow<GameScreenState>
-        get() = _gameFlow
+    val stateFlow: Flow<GameScreenState>
+        get() = _stateFlow
 
-    private val _gameFlow: MutableStateFlow<GameScreenState> =
+    private val _stateFlow: MutableStateFlow<GameScreenState> =
         MutableStateFlow(GameScreenState.Idle)
 
     fun fetchGameById(gameId: Int) {
-        check(_gameFlow.value is GameScreenState.Idle) { "The view model is not in the idle state." }
-        _gameFlow.value = GameScreenState.Loading
+        check(_stateFlow.value is GameScreenState.Idle) { "The view model is not in the idle state." }
+        _stateFlow.value = GameScreenState.Loading
         viewModelScope.launch {
             val result = runCatching { service.fetchGameById(gameId) }
-            val g = result.getOrThrow()
-            val userInfo = preferences.getUserInfo()
-            checkNotNull(userInfo) { "The user info in ${GameViewModel::class.java.simpleName} is null." }
-            _gameFlow.value = gameState(g, userInfo, result)
+            if (result.isFailure) {
+                _stateFlow.value = GameScreenState.FetchFailed(result.exceptionOrNull()!!)
+            } else {
+                val userInfo = preferences.getUserInfo()
+                checkNotNull(userInfo) { "The user info in ${GameViewModel::class.java.simpleName} is null." }
+                val game = result.getOrThrow()
+                _stateFlow.value = gameState(game, userInfo, result)
+            }
         }
     }
 
     fun makeMove(gameId: Int, move: Move) {
-        check(_gameFlow.value is GameScreenState.GameLoadedAndYourTurn) { "The view model is not in the loaded state." }
+        check(_stateFlow.value is GameScreenState.GameLoadedAndYourTurn) { "The view model is not in the loaded state." }
         viewModelScope.launch {
             val userInfo = preferences.getUserInfo()
             checkNotNull(userInfo) { "The user info in ${GameViewModel::class.java.simpleName} is null." }
             val result = runCatching { service.makeMove(gameId, move, userInfo.token) }
             if (result.isFailure) {
-                _gameFlow.value = GameScreenState.GameLoadedAndYourTurn(
-                    (_gameFlow.value as GameScreenState.GameLoadedAndYourTurn).game,
+                _stateFlow.value = GameScreenState.GameLoadedAndYourTurn(
+                    (_stateFlow.value as GameScreenState.GameLoadedAndYourTurn).game,
                     result.exceptionOrNull()?.message
                 )
             }
-            _gameFlow.value = GameScreenState.GameLoadedAndNotYourTurn(result.getOrNull())
+            _stateFlow.value = GameScreenState.GameLoadedAndNotYourTurn(result.getOrNull())
         }
     }
 
     fun startPollingGame(gameId: Int) {
-        check(_gameFlow.value is GameScreenState.GameLoadedAndNotYourTurn) { "The view model is not in the loaded state and is your turn." }
+        check(_stateFlow.value is GameScreenState.GameLoadedAndNotYourTurn) { "The view model is not in the loaded state and is your turn." }
         viewModelScope.launch {
             val userInfo = preferences.getUserInfo()
             checkNotNull(userInfo) { "The user info in ${GameViewModel::class.java.simpleName} is null." }
             val result = runCatching { service.fetchGameById(gameId) }
             delay(FETCH_GAME_DELAY)
             val g = result.getOrThrow()
-            _gameFlow.value = gameState(g, userInfo, result)
+            _stateFlow.value = gameState(g, userInfo, result)
         }
     }
 
@@ -84,19 +88,19 @@ class GameViewModel(
             checkNotNull(userInfo) { "The user info in ${GameViewModel::class.java.simpleName} is null." }
             val result = runCatching { service.exitGame(gameId, userInfo.token) }
             if (result.isSuccess) {
-                _gameFlow.value = GameScreenState.Idle
+                _stateFlow.value = GameScreenState.Idle
             } else {
-                _gameFlow.value =
+                _stateFlow.value =
                     GameScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error."))
             }
         }
     }
-
 }
 
 fun gameState(g: Game, userInfo: UserInfo, result: Result<Game>): GameScreenState =
-    if (g.state == GameState.FINISHED) GameScreenState.GameFinished(result.getOrNull())
-    else if (g.state == GameState.IN_PROGRESS && g.board.turn != null) {
+    if (g.state == GameState.FINISHED) {
+        GameScreenState.GameFinished(result.getOrNull())
+    } else if (g.state == GameState.IN_PROGRESS && g.board.turn != null) {
         if ((userInfo.id == g.host.id && g.board.turn.player == Player.W) || (userInfo.id == g.guest.id && g.board.turn.player == Player.B)) {
             GameScreenState.GameLoadedAndYourTurn(result.getOrNull())
         } else {

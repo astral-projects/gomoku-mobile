@@ -1,6 +1,5 @@
 package gomoku.ui.home
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -40,7 +39,7 @@ class HomeViewModel(
             val user = preferences.getUserInfo()
             if (user != null) {
                 preferences.clearUserInfo(user)
-                Log.v("Home", "logging out....")
+                // Log.v("Home", "logging out....")
                 val result = runCatching { service.logout(user.token) }
                 preferences.clearUserInfo(user)
                 if (result.isFailure) {
@@ -49,7 +48,7 @@ class HomeViewModel(
                             result.exceptionOrNull() ?: Exception("Unknown error")
                         )
                 } else {
-                    Log.v("Home", "logged out done")
+                    // Log.v("Home", "logged out done")
                     preferences.clearUserInfo(user)
                     _stateFlow.value = HomeScreenState.Logout(true)
                 }
@@ -61,7 +60,7 @@ class HomeViewModel(
 
     fun resetToIdle() {
         check(_stateFlow.value !is HomeScreenState.Idle) {
-            "The view model is not in the idle state."
+            "The view model is already in the idle state."
         }
         _stateFlow.value = HomeScreenState.Idle
     }

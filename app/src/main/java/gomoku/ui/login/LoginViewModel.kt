@@ -1,6 +1,5 @@
 package gomoku.ui.login
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -48,16 +47,16 @@ class LoginViewModel(
                 _stateFlow.value = LoginScreenState.Login(user, true)
                 return@launch
             }
-            Log.v("UriTemplates", "fetching for uri templates....")
+            // Log.v("UriTemplates", "fetching for uri templates....")
             val result = runCatching { fetchRecipes() }
-            Log.v("UriTemplates", "fetched done....")
+            // Log.v("UriTemplates", "fetched done....")
             if (result.isFailure) {
                 _stateFlow.value =
                     LoginScreenState.ErrorFetchingRecipes(
                         result.exceptionOrNull() ?: Exception("Unknown error")
                     )
             } else {
-                Log.v("UriTemplates", "fetched done and is ${result.getOrNull()}")
+                // Log.v("UriTemplates", "fetched done and is ${result.getOrNull()}")
                 preferences.setUriTemplates(result.getOrThrow())
                 if (user != null) {
                     _stateFlow.value = LoginScreenState.Login(user, true)
@@ -71,21 +70,21 @@ class LoginViewModel(
     @Throws(IllegalStateException::class)
     fun login(username: String, password: String) {
         _stateFlow.value.let { state ->
-            check(state is LoginScreenState.FetchRecipes && state.isFetched || state is LoginScreenState.Error) {
-                "The view model is not in the idle state or in fail state"
+            check(state is LoginScreenState.FetchRecipes || state is LoginScreenState.Error) {
+                "The view model is not in the FetchRecipes state or in the Error state."
             }
         }
         _stateFlow.value = LoginScreenState.Login()
         viewModelScope.launch {
-            Log.v("Login", "fetching for login....")
+            // Log.v("Login", "fetching for login....")
             val result = runCatching { service.login(username, password) }
-            Log.v("Login", "fetched done....")
+            // Log.v("Login", "fetched done....")
             if (result.isFailure) {
                 _stateFlow.value = LoginScreenState.Error(
                     result.exceptionOrNull() ?: Exception("Unknown error")
                 )
             } else {
-                Log.v("Login", "fetched done and is ${result.getOrNull()}")
+                // Log.v("Login", "fetched done and is ${result.getOrNull()}")
                 preferences.setUserInfo(result.getOrThrow())
                 _stateFlow.value = LoginScreenState.Login(result.getOrThrow(), true)
             }
@@ -94,12 +93,12 @@ class LoginViewModel(
 
     /**
      * Resets the view model to the idle state.
-     * @throws IllegalStateException If the view model is not in the loaded state or in fail state.
+     * @throws IllegalStateException if the view model is not in the Login state or in the Error state.
      */
     @Throws(IllegalStateException::class)
     fun resetToIdle() {
         check(_stateFlow.value is LoginScreenState.Login || _stateFlow.value is LoginScreenState.Error) {
-            "The view model is not in the loaded state or in fail state."
+            "The view model is not in the Login state or in the Error state."
         }
         _stateFlow.value = LoginScreenState.Idle
     }

@@ -1,12 +1,11 @@
 package gomoku.ui
 
-import gomoku.domain.Fail
-import gomoku.domain.Idle
-import gomoku.domain.getOrThrow
 import gomoku.domain.login.UserInfo
 import gomoku.domain.service.user.UserService
 import gomoku.domain.service.user.errors.FetchUserException
 import gomoku.domain.storage.PreferencesRepository
+import gomoku.http.utils.recipes.Recipe
+import gomoku.ui.login.LoginScreenState
 import gomoku.ui.login.LoginViewModel
 import gomoku.utils.MockMainDispatcherRule
 import gomoku.utils.flows.collectWithTimeout
@@ -16,7 +15,6 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -26,7 +24,7 @@ private data class LoginCredentials(
     val password: String,
 )
 
-class LoginViewModelTests : AbstractViewModelTests() {
+class LoginViewModelTests {
 
     @get:Rule
     val rule = MockMainDispatcherRule(testDispatcher = StandardTestDispatcher())
@@ -49,6 +47,17 @@ class LoginViewModelTests : AbstractViewModelTests() {
             token = "token",
             iconId = 1,
         )
+
+        private val recipes = listOf(
+            Recipe(
+                rel = "self",
+                href = "http://localhost:8080/api/recipes",
+            ),
+            Recipe(
+                rel = "login",
+                href = "http://localhost:8080/api/login",
+            ),
+        )
     }
 
     private val mockUserService = mockk<UserService> {
@@ -62,6 +71,8 @@ class LoginViewModelTests : AbstractViewModelTests() {
 
     private val mockPreferencesRepository = mockk<PreferencesRepository> {
         coEvery { setUserInfo(userInfo) } coAnswers { }
+        coEvery { getUserInfo() } coAnswers { null }
+        coEvery { getUriTemplates() } coAnswers { recipes }
     }
 
     @Test
@@ -70,133 +81,115 @@ class LoginViewModelTests : AbstractViewModelTests() {
         val viewModel = LoginViewModel(mockUserService, mockPreferencesRepository)
 
         // when: the user info is collected without calling any method
-        val collectedState = viewModel.userInfo.collectWithTimeout()
+        val collectedState = viewModel.stateFlow.collectWithTimeout()
 
         // then: the state is idle
-        assertTrue(collectedState is Idle)
+        assertTrue(collectedState is LoginScreenState.Idle)
     }
 
     @Test
-    fun `login success sets loaded state`() = runTest {
+    fun `login success sets loaded state after fetching Uri templates`() = runTest {
         // given: a login viewmodel
         val viewModel = LoginViewModel(mockUserService, mockPreferencesRepository)
+
+        // when: subscriber is collecting the state for a timeout period
+        viewModel.stateFlow.subscribeBeforeCallingOperation {
+            // and: fetchUriTemplates method is called
+            viewModel.fetchUriTemplates()
+        }.also { collectedStates ->
+            // then: the expected state sequence is collected
+            val expectedState = listOf(
+                LoginScreenState.Idle,
+                LoginScreenState.FetchRecipes(),
+            )
+            assertTrue(collectedStates == expectedState)
+        }
 
         // and: valid login credentials are used
         val username = validLoginCredentials.username
         val password = validLoginCredentials.password
 
-        // when: subscriber is collecting the user info for a timeout period
-        viewModel.userInfo.subscribeBeforeCallingOperation {
+        // and: userInfo is present in the repository
+        coEvery { mockPreferencesRepository.getUserInfo() } coAnswers { userInfo }
+
+        // when: subscriber is collecting the state for a timeout period
+        viewModel.stateFlow.subscribeBeforeCallingOperation {
             // and: login method is called
             viewModel.login(username, password)
         }.also { collectedStates ->
-            // then: the states are the default IO states
-            verifyDefaultIOStateSequence(collectedStates)
-
-            // and: the last state is loaded with the user info
-            assertTrue(collectedStates.last().getOrThrow() == userInfo)
+            // then: the expected state sequence is collected
+            val expectedStates = listOf(
+                LoginScreenState.FetchRecipes(),
+                LoginScreenState.Login(),
+                LoginScreenState.Login(userInfo, true),
+            )
+            assertTrue(collectedStates == expectedStates)
         }
 
         // and: the user info is stored and called only once
         coVerify(exactly = 1) {
             mockPreferencesRepository.setUserInfo(userInfo)
         }
-
     }
 
     @Test
-    fun `login failure sets fail state`() = runTest {
+    fun `fetching uri templates success in userinfo presence sets loaded state`() = runTest {
         // given: a login viewmodel
         val viewModel = LoginViewModel(mockUserService, mockPreferencesRepository)
 
-        // and: invalid login credentials
-        val username = invalidLoginCredentials.username
-        val password = invalidLoginCredentials.password
+        // and: userInfo is present in the repository
+        coEvery { mockPreferencesRepository.getUserInfo() } coAnswers { userInfo }
 
-        // when: the login method is called
-        viewModel.login(username, password)
-
-        // and: the user info is collected without calling the login method
-        val collectedState = viewModel.userInfo.collectWithTimeout()
-
-        // then: the state is fail
-        assertTrue(collectedState is Fail)
-
-        // and: the user info is changed
-        coVerify(exactly = 0) {
-            mockPreferencesRepository.setUserInfo(userInfo)
-        }
-
-        // and: the service is only called once
-        coVerify(exactly = 1) {
-            mockUserService.login(username, password)
+        // when: subscriber is collecting the state for a timeout period
+        viewModel.stateFlow.subscribeBeforeCallingOperation {
+            // and: fetchUriTemplates method is called
+            viewModel.fetchUriTemplates()
+        }.also { collectedStates ->
+            // then: the expected state sequence is collected
+            val expectedState = listOf(
+                LoginScreenState.Idle,
+                LoginScreenState.FetchRecipes(),
+                LoginScreenState.Login(userInfo, true),
+            )
+            assertTrue(collectedStates == expectedState)
         }
     }
 
     @Test
-    fun `in fail state login can be called again`() = runTest {
+    fun `resetting to idle state success`() = runTest {
         // given: a login viewmodel
         val viewModel = LoginViewModel(mockUserService, mockPreferencesRepository)
 
-        // and: invalid login credentials
-        val username = invalidLoginCredentials.username
-        val password = invalidLoginCredentials.password
+        // when: fetchUriTemplates method is called
+        viewModel.fetchUriTemplates()
 
-        // when: login method is called
-        viewModel.login(username, password)
+        // and: the login method is called
+        viewModel.login(validLoginCredentials.username, validLoginCredentials.password)
 
-        // and: the user info is collected without calling the method again
-        val collectedState = viewModel.userInfo.collectWithTimeout()
+        // and: the state is collected for a timeout period
+        val lastState = viewModel.stateFlow.collectWithTimeout()
 
-        // then: the state is fail
-        assertTrue(collectedState is Fail)
+        // then: the state is loaded
+        assertTrue(lastState is LoginScreenState.Login)
 
-        // when: login is called again while in the fail state
-        // then: no exception is thrown
-        viewModel.login(username, password)
-    }
-
-    @Test
-    fun `resetToIdle sets view model to idle state or throws if not in Loaded state`() = runTest {
-        // given: a login viewmodel
-        val viewModel = LoginViewModel(mockUserService, mockPreferencesRepository)
-
-        // when: the resetToIdle method is called while in the idle state
-        // then: an exception is thrown
-        assertThrows(IllegalStateException::class.java) {
-            viewModel.resetToIdle()
-        }
-
-        // when: the resetToIdle method is called while in the fail state
-        val username = invalidLoginCredentials.username
-        val password = invalidLoginCredentials.password
-        viewModel.login(username, password)
-        val collectedState = viewModel.userInfo.collectWithTimeout()
-        assertTrue(collectedState is Fail)
-
-        // then: no exception is thrown
+        // when: reset method is called
         viewModel.resetToIdle()
 
-        // and: the state is idle
-        val collectedStateAfterReset = viewModel.userInfo.collectWithTimeout()
-        assertTrue(collectedStateAfterReset is Idle)
+        // and: the state is collected for a timeout period
+        val collectedState = viewModel.stateFlow.collectWithTimeout()
+
+        // then: the state is idle
+        assertTrue(collectedState is LoginScreenState.Idle)
     }
 
     @Test(expected = IllegalStateException::class)
-    fun `login throws exception when not in idle or fail state`() = runTest {
+    fun `resetting to idle state failure`() = runTest {
         // given: a login viewmodel
         val viewModel = LoginViewModel(mockUserService, mockPreferencesRepository)
 
-        // and: valid login credentials
-        val username = validLoginCredentials.username
-        val password = validLoginCredentials.password
+        // when: reset method is called
+        viewModel.resetToIdle()
 
-        // when: login is called
-        viewModel.login(username, password)
-
-        // when: login is called again while in the loaded state
         // then: an exception is thrown
-        viewModel.login(username, password)
     }
-
 }

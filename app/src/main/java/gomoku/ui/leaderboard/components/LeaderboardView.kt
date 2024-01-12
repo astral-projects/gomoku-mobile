@@ -31,7 +31,7 @@ import gomoku.domain.leaderboard.Term
 import gomoku.domain.leaderboard.UserStats
 import gomoku.domain.login.UserInfo
 import gomoku.ui.leaderboard.LeaderBoardScreenState
-import gomoku.ui.leaderboard.extractUsers
+import gomoku.ui.leaderboard.extractUsersWithRanking
 import gomoku.ui.shared.background.Background
 import gomoku.ui.shared.components.ClickableIcon
 import gomoku.ui.shared.components.ThemedCircularProgressIndicator
@@ -151,7 +151,7 @@ fun LeaderboardView(
         snapshotFlow { lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collectLatest { itemIndex ->
                 if (
-                    state is LeaderBoardScreenState.UsersStatsLoaded || state is LeaderBoardScreenState.Idle
+                    state is LeaderBoardScreenState.Loaded || state is LeaderBoardScreenState.Idle
                     && itemIndex != null
                     && itemIndex >= page * PAGE_SIZE - LOAD_MORE_ITEMS_THRESHOLD
                 ) {
@@ -221,7 +221,7 @@ fun LeaderboardView(
                             ThemedCircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally))
                         } else {
                             LeaderboardTable(
-                                playersRankingInfo = state.extractUsers(),
+                                playersRankingInfo = state.extractUsersWithRanking(),
                                 listState = lazyListState,
                                 loading = state is LeaderBoardScreenState.Loading
                             ) {

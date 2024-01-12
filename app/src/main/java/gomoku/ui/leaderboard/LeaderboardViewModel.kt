@@ -1,6 +1,5 @@
 package gomoku.ui.leaderboard
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -38,8 +37,8 @@ class LeaderboardViewModel(
         viewModelScope.launch {
             val result = runCatching { service.fetchUserStats(userId) }
             _stateFlow.value = if (result.isSuccess) {
-                Log.v("fetchUserStatsUnique", "result: ${result.getOrThrow()}")
-                LeaderBoardScreenState.UsersStatsLoaded(listOf(result.getOrThrow()))
+                // Log.v("fetchUserStatsUnique", "result: ${result.getOrThrow()}")
+                LeaderBoardScreenState.Loaded(listOf(result.getOrThrow()))
             } else {
                 LeaderBoardScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
             }
@@ -48,22 +47,22 @@ class LeaderboardViewModel(
 
     fun fetchUsersStats(page: Int = FIRST_PAGE) {
         val previousList =
-            (_stateFlow.value as? LeaderBoardScreenState.UsersStatsLoaded)?.usersStats
+            (_stateFlow.value as? LeaderBoardScreenState.Loaded)?.usersStats
                 ?: emptyList()
-        Log.v("fetchUsersStats", "previousList: $previousList")
+        // Log.v("fetchUsersStats", "previousList: $previousList")
         _stateFlow.value = LeaderBoardScreenState.Loading(previousList)
         viewModelScope.launch {
             val result = runCatching { service.fetchUsersStats(page) }
             _stateFlow.value = if (result.isSuccess) {
                 val newList = result.getOrThrow()
                 if (page == FIRST_PAGE) {
-                    Log.v("fetchUsersStats", "newList: $newList")
-                    LeaderBoardScreenState.UsersStatsLoaded(newList)
+                    // Log.v("fetchUsersStats", "newList: $newList")
+                    LeaderBoardScreenState.Loaded(newList)
                 } else {
                     val mergedList = previousList + newList
                     val sortedList = mergedList.sortedBy { it.rank }
-                    Log.v("fetchUsersStats", "sortedList: $sortedList")
-                    LeaderBoardScreenState.UsersStatsLoaded(sortedList)
+                    // Log.v("fetchUsersStats", "sortedList: $sortedList")
+                    LeaderBoardScreenState.Loaded(sortedList)
                 }
             } else {
                 LeaderBoardScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
@@ -74,10 +73,10 @@ class LeaderboardViewModel(
     fun searchUsers(term: Term) {
         _stateFlow.value = LeaderBoardScreenState.Loading()
         viewModelScope.launch {
-            Log.v("searchUsers", "hello: $term")
+            // Log.v("searchUsers", "hello: $term")
             val result = runCatching { service.searchUsers(term = term) }
             _stateFlow.value = if (result.isSuccess) {
-                LeaderBoardScreenState.UsersStatsLoaded(result.getOrThrow())
+                LeaderBoardScreenState.Loaded(result.getOrThrow())
             } else {
                 LeaderBoardScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
             }
@@ -91,12 +90,12 @@ class LeaderboardViewModel(
             if (user != null) {
                 val result = runCatching { service.logout(user.token) }
                 if (result.isFailure) {
-                    Log.v("Leaderboard", "failure in logged out")
+                    // Log.v("Leaderboard", "failure in logged out")
                     _stateFlow.value = LeaderBoardScreenState.Error(
                         result.exceptionOrNull() ?: Exception("Unknown error")
                     )
                 } else {
-                    Log.v("Leaderboard", "logged out successfully")
+                    // Log.v("Leaderboard", "logged out successfully")
                     preferences.clearUserInfo(user)
                     _stateFlow.value = LeaderBoardScreenState.Logout
                 }

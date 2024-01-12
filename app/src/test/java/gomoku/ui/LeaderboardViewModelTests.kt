@@ -1,17 +1,14 @@
 package gomoku.ui
 
-import gomoku.domain.Idle
-import gomoku.domain.Loaded
-import gomoku.domain.Loading
-import gomoku.domain.getOrNull
-import gomoku.domain.getOrThrow
 import gomoku.domain.leaderboard.Term
 import gomoku.domain.leaderboard.UserStats
 import gomoku.domain.login.UserInfo
 import gomoku.domain.service.user.UserService
 import gomoku.domain.service.user.errors.FetchUserException
 import gomoku.domain.storage.PreferencesRepository
+import gomoku.ui.leaderboard.LeaderBoardScreenState
 import gomoku.ui.leaderboard.LeaderboardViewModel
+import gomoku.ui.leaderboard.extractUsersStats
 import gomoku.utils.MockMainDispatcherRule
 import gomoku.utils.TestDataGenerator.generateUsersStats
 import gomoku.utils.flows.collectWithTimeout
@@ -26,7 +23,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
-class LeaderboardViewModelTests : AbstractViewModelTests() {
+class LeaderboardViewModelTests {
 
     @get:Rule
     val rule = MockMainDispatcherRule(testDispatcher = StandardTestDispatcher())
@@ -70,10 +67,10 @@ class LeaderboardViewModelTests : AbstractViewModelTests() {
         val viewModel = LeaderboardViewModel(mockUserService, mockPreferencesRepository)
 
         // when: the user stats are collected without calling any method
-        val collectedState = viewModel.usersStats.collectWithTimeout()
+        val collectedState = viewModel.stateFlow.collectWithTimeout()
 
         // then: the state is idle
-        assertTrue(collectedState is Idle)
+        assertTrue(collectedState is LeaderBoardScreenState.Idle)
     }
 
     @Test
@@ -85,19 +82,17 @@ class LeaderboardViewModelTests : AbstractViewModelTests() {
         val userId = USER_ID
 
         // when: subscriber is collecting the user stats for a timeout period
-        viewModel.usersStats.subscribeBeforeCallingOperation {
+        viewModel.stateFlow.subscribeBeforeCallingOperation {
             // and: fetchUserStats method is called
             viewModel.fetchUserStats(userId)
         }.also { collectedStates ->
             // then: the state sequence is correct
-            verifyDefaultIOStateSequence(collectedStates)
-
-            // and: the last state is loaded with the user stats
-            assertTrue(collectedStates.last() is Loaded)
-
-            // and: the value is the expected user stats
-            val userStats = collectedStates.last().getOrThrow()
-            assertEquals(userStats, userStats)
+            val expectedStates = listOf(
+                LeaderBoardScreenState.Idle,
+                LeaderBoardScreenState.Loading(),
+                LeaderBoardScreenState.Loaded(listOf(userStats))
+            )
+            assertEquals(expectedStates, collectedStates)
         }
 
         // and: service function is called exactly once
@@ -105,7 +100,7 @@ class LeaderboardViewModelTests : AbstractViewModelTests() {
     }
 
     @Test
-    fun `fetchUserStats failure sets state as loaded with an empty list`() = runTest {
+    fun `fetchUserStats failure sets state as error`() = runTest {
         // given: a leaderboard view model
         val viewModel = LeaderboardViewModel(mockUserService, mockPreferencesRepository)
 
@@ -113,14 +108,10 @@ class LeaderboardViewModelTests : AbstractViewModelTests() {
         viewModel.fetchUserStats(NON_EXISTING_ID)
 
         // and: the user stats are collected without calling the method again
-        val collectedState = viewModel.usersStats.collectWithTimeout()
+        val collectedState = viewModel.stateFlow.collectWithTimeout()
 
-        // then: the state is loaded with an empty list
-        assertTrue(collectedState is Loaded)
-
-        // and: the value is an empty list
-        val userStats = collectedState.getOrThrow()
-        assertEquals(userStats, emptyList<UserStats>())
+        // then: the state is error
+        assertTrue(collectedState is LeaderBoardScreenState.Error)
     }
 
     @Test
@@ -129,19 +120,17 @@ class LeaderboardViewModelTests : AbstractViewModelTests() {
         val viewModel = LeaderboardViewModel(mockUserService, mockPreferencesRepository)
 
         // when: subscriber is collecting the user stats for a timeout period
-        viewModel.usersStats.subscribeBeforeCallingOperation {
+        viewModel.stateFlow.subscribeBeforeCallingOperation {
             // and: fetchUsersStats method is called
             viewModel.fetchUsersStats(FIRST_PAGE)
         }.also { collectedStates ->
             // then: the state sequence is correct
-            verifyDefaultIOStateSequence(collectedStates)
-
-            // and: the last state is loaded with the user stats
-            assertTrue(collectedStates.last() is Loaded)
-
-            // and: the value is the expected user stats
-            val userStats = collectedStates.last().getOrThrow()
-            assertEquals(userStats, firstPageUsers)
+            val expectedStates = listOf(
+                LeaderBoardScreenState.Idle,
+                LeaderBoardScreenState.Loading(emptyList()),
+                LeaderBoardScreenState.Loaded(firstPageUsers)
+            )
+            assertEquals(expectedStates, collectedStates)
         }
 
         // and: service function is called exactly once
@@ -155,39 +144,34 @@ class LeaderboardViewModelTests : AbstractViewModelTests() {
             val viewModel = LeaderboardViewModel(mockUserService, mockPreferencesRepository)
 
             // when: subscriber is collecting the user stats for a timeout period, for the first page
-            viewModel.usersStats.subscribeBeforeCallingOperation {
+            viewModel.stateFlow.subscribeBeforeCallingOperation {
                 // and: fetchUsersStats method is called
                 viewModel.fetchUsersStats(FIRST_PAGE)
             }.also { collectedStates ->
                 // then: the state sequence is correct
-                verifyDefaultIOStateSequence(collectedStates)
-
-                // and: the last state is loaded with the user stats
-                assertTrue(collectedStates.last() is Loaded)
-
-                // and: the value is the expected user stats
-                val userStats = collectedStates.last().getOrThrow()
-                assertEquals(userStats, firstPageUsers)
+                val expectedStates = listOf(
+                    LeaderBoardScreenState.Idle,
+                    LeaderBoardScreenState.Loading(emptyList()),
+                    LeaderBoardScreenState.Loaded(firstPageUsers)
+                )
+                assertEquals(expectedStates, collectedStates)
             }
 
             // when: subscriber is collecting the user stats for a timeout period, for the second page
-            viewModel.usersStats.subscribeBeforeCallingOperation {
+            viewModel.stateFlow.subscribeBeforeCallingOperation {
                 // and: fetchUsersStats method is called
                 viewModel.fetchUsersStats(SECOND_PAGE)
             }.also { collectedStates ->
-                // then: the first state is Loaded, instead of Idle
-                assertTrue(collectedStates.first() is Loaded)
+                // and: expected users stats are the merged ones
+                val mergedAndSortedUsers = (firstPageUsers + secondPageUsers).sortedBy { it.rank }
 
-                // and: the middle state is Loading with the previous list
-                assertTrue(collectedStates[1] is Loading)
-                assertEquals(collectedStates[1].getOrNull(), firstPageUsers)
-
-                // and: the last state is loaded with the user stats
-                assertTrue(collectedStates.last() is Loaded)
-
-                // and: the value is the expected user stats from both pages sorted by rank
-                val userStats = collectedStates.last().getOrThrow()
-                assertEquals(userStats, (firstPageUsers + secondPageUsers).sortedBy { it.rank })
+                // then: the state sequence is correct
+                val expectedStates = listOf(
+                    LeaderBoardScreenState.Loaded(firstPageUsers),
+                    LeaderBoardScreenState.Loading(firstPageUsers),
+                    LeaderBoardScreenState.Loaded(mergedAndSortedUsers)
+                )
+                assertEquals(expectedStates, collectedStates)
             }
         }
 
@@ -200,13 +184,13 @@ class LeaderboardViewModelTests : AbstractViewModelTests() {
         viewModel.fetchUsersStats(NON_EXISTING_PAGE)
 
         // and: the user stats are collected without calling the method again
-        val collectedState = viewModel.usersStats.collectWithTimeout()
+        val collectedState = viewModel.stateFlow.collectWithTimeout()
 
         // then: the state is loaded with an empty list
-        assertTrue(collectedState is Loaded)
+        assertTrue(collectedState is LeaderBoardScreenState.Loaded)
 
         // and: the value is an empty list
-        val userStats = collectedState.getOrThrow()
+        val userStats = collectedState.extractUsersStats()
         assertEquals(userStats, emptyList<UserStats>())
     }
 
@@ -216,19 +200,17 @@ class LeaderboardViewModelTests : AbstractViewModelTests() {
         val viewModel = LeaderboardViewModel(mockUserService, mockPreferencesRepository)
 
         // when: subscriber is collecting the user stats for a timeout period
-        viewModel.usersStats.subscribeBeforeCallingOperation {
+        viewModel.stateFlow.subscribeBeforeCallingOperation {
             // and: searchUsers method is called
             viewModel.searchUsers(validSearchTerm)
         }.also { collectedStates ->
             // then: the state sequence is correct
-            verifyDefaultIOStateSequence(collectedStates)
-
-            // and: the last state is loaded with the user stats
-            assertTrue(collectedStates.last() is Loaded)
-
-            // and: the value is the expected user stats
-            val userStatsResult = collectedStates.last().getOrThrow()
-            assertEquals(userStatsResult, listOf(userStats))
+            val expectedStates = listOf(
+                LeaderBoardScreenState.Idle,
+                LeaderBoardScreenState.Loading(),
+                LeaderBoardScreenState.Loaded(listOf(userStats))
+            )
+            assertEquals(expectedStates, collectedStates)
         }
 
         // and: service function is called exactly once
@@ -244,13 +226,13 @@ class LeaderboardViewModelTests : AbstractViewModelTests() {
         viewModel.searchUsers(invalidSearchTerm)
 
         // and: the user stats are collected without calling the method again
-        val collectedState = viewModel.usersStats.collectWithTimeout()
+        val collectedState = viewModel.stateFlow.collectWithTimeout()
 
         // then: the state is loaded with an empty list
-        assertTrue(collectedState is Loaded)
+        assertTrue(collectedState is LeaderBoardScreenState.Loaded)
 
         // and: the value is an empty list
-        val userStats = collectedState.getOrThrow()
+        val userStats = collectedState.extractUsersStats()
         assertEquals(userStats, emptyList<UserStats>())
     }
 

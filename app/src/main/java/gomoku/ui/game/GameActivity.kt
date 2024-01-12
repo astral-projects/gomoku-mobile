@@ -66,7 +66,7 @@ class GameActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            viewModel.game.collect {
+            viewModel.stateFlow.collect {
                 if (it is GameScreenState.Idle) {
                     viewModel.fetchGameById(gameId.toInt())
                 } else if (it is GameScreenState.GameLoadedAndNotYourTurn) {
@@ -84,7 +84,7 @@ class GameActivity : ComponentActivity() {
         }
 
         setContent {
-            val gameState by viewModel.game.collectAsState(initial = GameScreenState.Idle)
+            val gameState by viewModel.stateFlow.collectAsState(initial = GameScreenState.Idle)
             val isDarkTheme by viewModel.isDarkTheme.collectAsState(initial = null)
             GameScreen(
                 gameState = gameState,

@@ -156,8 +156,10 @@ working with asynchronous operations and coroutines.
 
 What can be improved/added in the future:
 
+- Implement turn counter;
 - Implement the landscape (horizontal) mode;
 - Improve the documentation;
-- Improve dark theme colors and schemas;
+- Improve dark theme colors and shemas;
+- Add custom font;
 - Add login with external services (Google, Facebook, etc.);
 - Add more integration and UI tests.
