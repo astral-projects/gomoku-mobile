@@ -1,5 +1,6 @@
 package gomoku.domain.service.user
 
+import gomoku.domain.leaderboard.PaginatedResult
 import gomoku.domain.leaderboard.Term
 import gomoku.domain.leaderboard.UserStats
 import gomoku.domain.login.UserInfo
@@ -8,7 +9,7 @@ import gomoku.domain.service.user.errors.FetchUserException
 import gomoku.domain.service.user.errors.RegisterUserException
 import kotlinx.coroutines.delay
 
-class FakeUserServiceInterface : UserService, AbstractFakeService() {
+class FakeUserService : UserService, AbstractFakeService() {
 
     private var users: MutableList<UserInfo> = (1..NR_PLAYERS)
         .map { playerId ->
@@ -76,9 +77,9 @@ class FakeUserServiceInterface : UserService, AbstractFakeService() {
         return newId
     }
 
-    override suspend fun searchUsers(term: Term): List<UserStats> {
+    override suspend fun searchUsers(term: Term): PaginatedResult<UserStats> {
         delay(fetchDelay)
-        return userStats.filter { it.username.contains(term.value, true) }
+        return PaginatedResult(userStats.filter { it.username.contains(term.value, true) })
     }
 
     override suspend fun fetchUserStats(userId: Int): UserStats {
@@ -86,9 +87,13 @@ class FakeUserServiceInterface : UserService, AbstractFakeService() {
         return userStats.findOrThrow(FetchUserException()) { it.id == userId }
     }
 
-    override suspend fun fetchUsersStats(page: Int, itemsPerPage: Int): List<UserStats> {
+    override suspend fun fetchUsersStats(url: String?): PaginatedResult<UserStats> {
+        TODO()
+    }
+
+    override suspend fun fetchUsersStats(page: Int): PaginatedResult<UserStats> {
         delay(fetchDelay)
-        return paginatedRankingInfo(userStats, page)
+        return PaginatedResult(paginatedRankingInfo(userStats, page))
     }
 
     override suspend fun logout(token: String) {

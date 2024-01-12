@@ -3,7 +3,9 @@ package gomoku.ui.leaderboard
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import gomoku.domain.leaderboard.PaginatedResult
 import gomoku.domain.leaderboard.Term
+import gomoku.domain.leaderboard.UserStats
 import gomoku.domain.service.user.UserService
 import gomoku.domain.storage.PreferencesRepository
 import gomoku.ui.shared.BaseViewModel
@@ -37,8 +39,7 @@ class LeaderboardViewModel(
         viewModelScope.launch {
             val result = runCatching { service.fetchUserStats(userId) }
             _stateFlow.value = if (result.isSuccess) {
-                // Log.v("fetchUserStatsUnique", "result: ${result.getOrThrow()}")
-                LeaderBoardScreenState.Loaded(listOf(result.getOrThrow()))
+                LeaderBoardScreenState.Loaded(PaginatedResult(listOf(result.getOrThrow())))
             } else {
                 LeaderBoardScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
             }
@@ -46,28 +47,38 @@ class LeaderboardViewModel(
     }
 
     fun fetchUsersStats(page: Int = FIRST_PAGE) {
-        val previousList =
-            (_stateFlow.value as? LeaderBoardScreenState.Loaded)?.usersStats
-                ?: emptyList()
-        // Log.v("fetchUsersStats", "previousList: $previousList")
+        val (previousList, nextUrlToFetch, isLastPage) = extractPaginationInfo(page)
+        if (isLastPage) {
+            return
+        }
         _stateFlow.value = LeaderBoardScreenState.Loading(previousList)
         viewModelScope.launch {
-            val result = runCatching { service.fetchUsersStats(page) }
+            val result = runCatching { service.fetchUsersStats(nextUrlToFetch) }
             _stateFlow.value = if (result.isSuccess) {
-                val newList = result.getOrThrow()
+                val newPaginatedResult: PaginatedResult<UserStats> = result.getOrThrow()
                 if (page == FIRST_PAGE) {
-                    // Log.v("fetchUsersStats", "newList: $newList")
-                    LeaderBoardScreenState.Loaded(newList)
+                    LeaderBoardScreenState.Loaded(newPaginatedResult)
                 } else {
-                    val mergedList = previousList + newList
+                    val mergedList = previousList + newPaginatedResult.items
                     val sortedList = mergedList.sortedBy { it.rank }
-                    // Log.v("fetchUsersStats", "sortedList: $sortedList")
-                    LeaderBoardScreenState.Loaded(sortedList)
+                    LeaderBoardScreenState.Loaded(
+                        newPaginatedResult.copy(items = sortedList)
+                    )
                 }
             } else {
                 LeaderBoardScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
             }
         }
+    }
+
+    private fun extractPaginationInfo(page: Int): Triple<List<UserStats>, String?, Boolean> {
+        val previousPaginatedResult =
+            (_stateFlow.value as? LeaderBoardScreenState.Loaded)?.usersStats
+        val previousList = previousPaginatedResult?.items ?: emptyList()
+        val isFirstPage = page == FIRST_PAGE
+        val nextUrlToFetch = if (isFirstPage) null else previousPaginatedResult?.nextPageUrl
+        val isLastPage = !isFirstPage && previousPaginatedResult?.lastPageUrl == null
+        return Triple(previousList, nextUrlToFetch, isLastPage)
     }
 
     fun searchUsers(term: Term) {
@@ -76,7 +87,7 @@ class LeaderboardViewModel(
             // Log.v("searchUsers", "hello: $term")
             val result = runCatching { service.searchUsers(term = term) }
             _stateFlow.value = if (result.isSuccess) {
-                LeaderBoardScreenState.Loaded(result.getOrThrow())
+                LeaderBoardScreenState.Loaded(result.getOrElse { PaginatedResult(emptyList()) })
             } else {
                 LeaderBoardScreenState.Error(result.exceptionOrNull() ?: Exception("Unknown error"))
             }

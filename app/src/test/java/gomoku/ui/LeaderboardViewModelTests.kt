@@ -1,5 +1,6 @@
 package gomoku.ui
 
+import gomoku.domain.leaderboard.PaginatedResult
 import gomoku.domain.leaderboard.Term
 import gomoku.domain.leaderboard.UserStats
 import gomoku.domain.login.UserInfo
@@ -52,11 +53,11 @@ class LeaderboardViewModelTests {
     private val mockUserService = mockk<UserService> {
         coEvery { fetchUserStats(USER_ID) } coAnswers { userStats }
         coEvery { fetchUserStats(NON_EXISTING_ID) } throws FetchUserException()
-        coEvery { fetchUsersStats(FIRST_PAGE) } coAnswers { firstPageUsers }
-        coEvery { fetchUsersStats(SECOND_PAGE) } coAnswers { secondPageUsers }
-        coEvery { fetchUsersStats(NON_EXISTING_PAGE) } coAnswers { emptyList() }
-        coEvery { searchUsers(validSearchTerm) } coAnswers { listOf(userStats) }
-        coEvery { searchUsers(invalidSearchTerm) } coAnswers { emptyList() }
+        coEvery { fetchUsersStats(FIRST_PAGE) } coAnswers { PaginatedResult(firstPageUsers) }
+        coEvery { fetchUsersStats(SECOND_PAGE) } coAnswers { PaginatedResult(secondPageUsers) }
+        coEvery { fetchUsersStats(NON_EXISTING_PAGE) } coAnswers { PaginatedResult(emptyList()) }
+        coEvery { searchUsers(validSearchTerm) } coAnswers { PaginatedResult(listOf(userStats)) }
+        coEvery { searchUsers(invalidSearchTerm) } coAnswers { PaginatedResult(emptyList()) }
     }
 
     private val mockPreferencesRepository = mockk<PreferencesRepository>()
@@ -90,7 +91,7 @@ class LeaderboardViewModelTests {
             val expectedStates = listOf(
                 LeaderBoardScreenState.Idle,
                 LeaderBoardScreenState.Loading(),
-                LeaderBoardScreenState.Loaded(listOf(userStats))
+                LeaderBoardScreenState.Loaded(PaginatedResult(listOf(userStats)))
             )
             assertEquals(expectedStates, collectedStates)
         }
@@ -128,7 +129,7 @@ class LeaderboardViewModelTests {
             val expectedStates = listOf(
                 LeaderBoardScreenState.Idle,
                 LeaderBoardScreenState.Loading(emptyList()),
-                LeaderBoardScreenState.Loaded(firstPageUsers)
+                LeaderBoardScreenState.Loaded(PaginatedResult(firstPageUsers))
             )
             assertEquals(expectedStates, collectedStates)
         }
@@ -152,7 +153,7 @@ class LeaderboardViewModelTests {
                 val expectedStates = listOf(
                     LeaderBoardScreenState.Idle,
                     LeaderBoardScreenState.Loading(emptyList()),
-                    LeaderBoardScreenState.Loaded(firstPageUsers)
+                    LeaderBoardScreenState.Loaded(PaginatedResult(firstPageUsers))
                 )
                 assertEquals(expectedStates, collectedStates)
             }
@@ -167,9 +168,9 @@ class LeaderboardViewModelTests {
 
                 // then: the state sequence is correct
                 val expectedStates = listOf(
-                    LeaderBoardScreenState.Loaded(firstPageUsers),
+                    LeaderBoardScreenState.Loaded(PaginatedResult(firstPageUsers)),
                     LeaderBoardScreenState.Loading(firstPageUsers),
-                    LeaderBoardScreenState.Loaded(mergedAndSortedUsers)
+                    LeaderBoardScreenState.Loaded(PaginatedResult(mergedAndSortedUsers))
                 )
                 assertEquals(expectedStates, collectedStates)
             }
@@ -208,7 +209,7 @@ class LeaderboardViewModelTests {
             val expectedStates = listOf(
                 LeaderBoardScreenState.Idle,
                 LeaderBoardScreenState.Loading(),
-                LeaderBoardScreenState.Loaded(listOf(userStats))
+                LeaderBoardScreenState.Loaded(PaginatedResult(listOf(userStats)))
             )
             assertEquals(expectedStates, collectedStates)
         }

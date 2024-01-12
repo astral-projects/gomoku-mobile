@@ -1,5 +1,6 @@
 package gomoku.domain.service.user
 
+import gomoku.domain.leaderboard.PaginatedResult
 import gomoku.domain.leaderboard.Term
 import gomoku.domain.leaderboard.UserStats
 import gomoku.domain.login.UserInfo
@@ -42,17 +43,23 @@ interface UserService {
     /**
      * Searches for users matching the given term.
      * @param term The term to search for.
-     * @return A list of user statistics matching the search term, which could be empty.
+     * @return A list of users matching the given term paginated.
      */
-    suspend fun searchUsers(term: Term): List<UserStats>
+    suspend fun searchUsers(term: Term): PaginatedResult<UserStats>
 
     /**
-     * Fetches the user statistics for the given page.
-     * @param page The page number to fetch.
-     * @param itemsPerPage The number of items per page by default is **20**.
-     * @return A list of user statistics for the given page, which could be empty.
+     * Fetches the user statistics.
+     * @param url The url to fetch the users statistics from. If null, the first page is fetched.
+     * @return A list of user statistics paginated.
      */
-    suspend fun fetchUsersStats(page: Int, itemsPerPage: Int = 20): List<UserStats>
+    suspend fun fetchUsersStats(url: String?): PaginatedResult<UserStats>
+
+    /**
+     * Fetches the user statistics by page.
+     * @param page The page number to fetch the user statistics from.
+     * @return A list of user statistics paginated.
+     */
+    suspend fun fetchUsersStats(page: Int): PaginatedResult<UserStats>
 
     /**
      * Fetches the user statistics for the given user id.
