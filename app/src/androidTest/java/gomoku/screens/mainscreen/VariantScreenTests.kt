@@ -1,9 +1,29 @@
 package gomoku.screens.mainscreen
 
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import gomoku.domain.game.board.BoardSize
+import gomoku.domain.login.UserInfo
+import gomoku.domain.variant.OpeningRule
+import gomoku.domain.variant.VariantConfig
+import gomoku.domain.variant.VariantName
+import gomoku.ui.shared.components.BurgerMenuButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuAboutButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuFindGameButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuLogoutButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuSwitchThemeButton
+import gomoku.ui.variant.VariantScreen
+import gomoku.ui.variant.VariantScreenState
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
+import org.junit.Rule
+import org.junit.Test
+
 const val variantSubmitButtonText = "Play"
 
 class VariantScreenTests {
-/*
+
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -49,11 +69,10 @@ class VariantScreenTests {
                 onPlayRequest = { _ ->
                     variantRequested = true
                 },
-                variantsState = Loaded(Result.success(variants)),
+                state = VariantScreenState.FetchVariants(variants, true),
                 toLeaderboardScreen = {},
                 toAboutScreen = {},
                 onLogoutRequest = {},
-                gameMatchState = Idle,
                 onLobbyExitRequest = {},
                 setDarkTheme = {},
                 userInfo = UserInfo(1, "test", "test", "test", 2)
@@ -74,11 +93,10 @@ class VariantScreenTests {
                 onPlayRequest = { _ ->
                     variantRequested = true
                 },
-                variantsState = Loaded(Result.success(variants)),
+                state = VariantScreenState.FetchVariants(variants, true),
                 toLeaderboardScreen = {},
                 toAboutScreen = {},
                 onLogoutRequest = {},
-                gameMatchState = Idle,
                 onLobbyExitRequest = {},
                 setDarkTheme = {},
                 userInfo = UserInfo(1, "test", "test", "test", 2)
@@ -101,11 +119,10 @@ class VariantScreenTests {
                 onPlayRequest = { _ ->
                     variantRequested = true
                 },
-                variantsState = Loaded(Result.success(variants)),
+                state = VariantScreenState.FetchVariants(variants, true),
                 toLeaderboardScreen = {},
                 toAboutScreen = {},
                 onLogoutRequest = {},
-                gameMatchState = Idle,
                 onLobbyExitRequest = {},
                 setDarkTheme = {},
                 userInfo = UserInfo(1, "test", "test", "test", 2)
@@ -125,11 +142,10 @@ class VariantScreenTests {
             VariantScreen(
                 onPlayRequest = { _ ->
                 },
-                variantsState = Loaded(Result.success(variants)),
+                state = VariantScreenState.FetchVariants(variants, true),
                 toLeaderboardScreen = {},
                 toAboutScreen = {},
                 onLogoutRequest = {},
-                gameMatchState = Idle,
                 onLobbyExitRequest = {},
                 setDarkTheme = {},
                 userInfo = UserInfo(1, "test", "test", "test", 2)
@@ -150,11 +166,10 @@ class VariantScreenTests {
             VariantScreen(
                 onPlayRequest = { _ ->
                 },
-                variantsState = Loaded(Result.success(variants)),
+                state = VariantScreenState.FetchVariants(variants, true),
                 toLeaderboardScreen = { leaderboardWasCalled = true },
                 toAboutScreen = {},
                 onLogoutRequest = {},
-                gameMatchState = Idle,
                 onLobbyExitRequest = {},
                 setDarkTheme = {},
                 userInfo = UserInfo(1, "test", "test", "test", 2)
@@ -177,11 +192,10 @@ class VariantScreenTests {
             VariantScreen(
                 onPlayRequest = { _ ->
                 },
-                variantsState = Loaded(Result.success(variants)),
+                state = VariantScreenState.FetchVariants(variants, true),
                 toLeaderboardScreen = {},
                 toAboutScreen = { aboutWasCalled = true },
                 onLogoutRequest = {},
-                gameMatchState = Idle,
                 onLobbyExitRequest = {},
                 setDarkTheme = {},
                 userInfo = UserInfo(1, "test", "test", "test", 2)
@@ -204,11 +218,10 @@ class VariantScreenTests {
             VariantScreen(
                 onPlayRequest = { _ ->
                 },
-                variantsState = Loaded(Result.success(variants)),
+                state = VariantScreenState.FetchVariants(variants, true),
                 toLeaderboardScreen = { },
                 toAboutScreen = {},
                 onLogoutRequest = { logoutWasCalled = true },
-                gameMatchState = Idle,
                 onLobbyExitRequest = {},
                 setDarkTheme = {},
                 userInfo = UserInfo(1, "test", "test", "test", 2)
@@ -231,11 +244,10 @@ class VariantScreenTests {
             VariantScreen(
                 onPlayRequest = { _ ->
                 },
-                variantsState = Loaded(Result.success(variants)),
+                state = VariantScreenState.FetchVariants(variants, true),
                 toLeaderboardScreen = { },
                 toAboutScreen = {},
                 onLogoutRequest = {},
-                gameMatchState = Idle,
                 onLobbyExitRequest = {},
                 setDarkTheme = {},
                 userInfo = UserInfo(1, "test", "test", "test", 2)
@@ -250,5 +262,5 @@ class VariantScreenTests {
         composeTestRule.onNodeWithTag(BurgerMenuSwitchThemeButton).assertExists()
 
     }
-*/
+
 }

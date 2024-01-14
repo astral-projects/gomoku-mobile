@@ -33,7 +33,8 @@ class AboutScreenTests {
                 sections = About.sections,
                 toFindGameScreen = {},
                 toLeaderboardScreen = {},
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                authors = About.authors
             )
         }
         // Act
@@ -48,7 +49,8 @@ class AboutScreenTests {
                 sections = About.sections,
                 toFindGameScreen = {},
                 toLeaderboardScreen = {},
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                authors = About.authors
             )
         }
         // Act
@@ -63,7 +65,8 @@ class AboutScreenTests {
                 sections = About.sections,
                 toFindGameScreen = {},
                 toLeaderboardScreen = {},
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                authors = About.authors
             )
         }
         // Act
@@ -78,7 +81,8 @@ class AboutScreenTests {
                 sections = About.sections,
                 toFindGameScreen = {},
                 toLeaderboardScreen = {},
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                authors = About.authors
             )
         }
         // Act
@@ -95,7 +99,8 @@ class AboutScreenTests {
                 sections = About.sections,
                 toFindGameScreen = {},
                 toLeaderboardScreen = {},
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                authors = About.authors
             )
         }
         // Act
@@ -119,7 +124,8 @@ class AboutScreenTests {
                 toLeaderboardScreen = {},
                 onLogoutRequest = {
                     logoutWasCalled = true
-                }
+                },
+                authors = About.authors
             )
         }
         // Act
@@ -140,7 +146,8 @@ class AboutScreenTests {
                     findGameWasCalled = true
                 },
                 toLeaderboardScreen = {},
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                authors = About.authors
             )
         }
         // Act
@@ -161,7 +168,8 @@ class AboutScreenTests {
                 toLeaderboardScreen = {
                     leaderboardWasCalled = true
                 },
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                authors = About.authors
             )
         }
         // Act
@@ -180,7 +188,8 @@ class AboutScreenTests {
                 sections = About.sections,
                 toFindGameScreen = {},
                 toLeaderboardScreen = {},
-                onLogoutRequest = {}
+                onLogoutRequest = {},
+                authors = About.authors
             )
         }
         // Act

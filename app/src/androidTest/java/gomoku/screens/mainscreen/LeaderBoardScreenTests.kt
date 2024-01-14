@@ -1,12 +1,25 @@
-
 package gomoku.screens.mainscreen
 
-class LeaderBoardScreenTests {/*
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import gomoku.domain.leaderboard.PaginatedResult
+import gomoku.domain.login.UserInfo
+import gomoku.ui.leaderboard.LeaderBoardScreenState
+import gomoku.ui.leaderboard.LeaderboardScreen
+import gomoku.ui.shared.components.BurgerMenuButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuAboutButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuFindGameButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuLogoutButton
+import gomoku.ui.shared.components.navigationDrawer.BurgerMenuSwitchThemeButton
+import junit.framework.TestCase.assertTrue
+import org.junit.Rule
+import org.junit.Test
+
+class LeaderBoardScreenTests {
 
     @get:Rule
     val composeTestRule = createComposeRule()
-
-    //TODO(not done because i need to talk with teacher first to know how to do this test)
 
     @Test
     fun try_to_click_on_burger_menu_and_check_if_it_opens() {
@@ -14,7 +27,7 @@ class LeaderBoardScreenTests {/*
         composeTestRule.setContent {
             LeaderboardScreen(
                 isDarkTheme = false,
-                state = Loaded(Result.success(emptyList())),
+                state = LeaderBoardScreenState.Loaded(PaginatedResult(emptyList())),
                 userInfo = UserInfo(1, "test", "test", "test", 1),
                 getItemsFromPage = {},
                 getUserStats = {},
@@ -38,7 +51,7 @@ class LeaderBoardScreenTests {/*
         composeTestRule.setContent {
             LeaderboardScreen(
                 isDarkTheme = false,
-                state = Loaded(Result.success(emptyList())),
+                state = LeaderBoardScreenState.Loaded(PaginatedResult(emptyList())),
                 userInfo = UserInfo(1, "test", "test", "test", 1),
                 getItemsFromPage = {},
                 getUserStats = {},
@@ -64,7 +77,7 @@ class LeaderBoardScreenTests {/*
         composeTestRule.setContent {
             LeaderboardScreen(
                 isDarkTheme = false,
-                state = Loaded(Result.success(emptyList())),
+                state = LeaderBoardScreenState.Loaded(PaginatedResult(emptyList())),
                 userInfo = UserInfo(1, "test", "test", "test", 1),
                 getItemsFromPage = {},
                 getUserStats = {},
@@ -91,7 +104,7 @@ class LeaderBoardScreenTests {/*
         composeTestRule.setContent {
             LeaderboardScreen(
                 isDarkTheme = false,
-                state = Loaded(Result.success(emptyList())),
+                state = LeaderBoardScreenState.Loaded(PaginatedResult(emptyList())),
                 userInfo = UserInfo(1, "test", "test", "test", 1),
                 getItemsFromPage = {},
                 getUserStats = {},
@@ -117,7 +130,7 @@ class LeaderBoardScreenTests {/*
         composeTestRule.setContent {
             LeaderboardScreen(
                 isDarkTheme = false,
-                state = Loaded(Result.success(emptyList())),
+                state = LeaderBoardScreenState.Loaded(PaginatedResult(emptyList())),
                 userInfo = UserInfo(1, "test", "test", "test", 1),
                 getItemsFromPage = {},
                 getUserStats = {},
@@ -137,5 +150,5 @@ class LeaderBoardScreenTests {/*
         composeTestRule.onNodeWithTag(BurgerMenuSwitchThemeButton).assertExists()
 
     }
-    */
+
 }

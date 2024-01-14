@@ -37,7 +37,7 @@ fun HomeScreen(
     onFindMatch: () -> Unit = {},
     onLeaderBoard: () -> Unit = {},
     onAbout: () -> Unit = {},
-    onLogout: () -> Unit
+    onLogout: () -> Unit = {}
 ) {
     GomokuTheme(darkTheme = inDarkTheme ?: false) {
         Background(
