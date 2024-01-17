@@ -9,8 +9,10 @@
 - [Application](#application)
     - [Screens](#screens)
     - [Language, theme and screen orientation](#language-theme-and-screen-orientation)
+    - [Generic Components](#generic-components)
     - [Mockup](#mockup)
 - [Connection to the API](#connection-to-the-api)
+- [Tests](#tests)
 - [Critical Analysis](#critical-analysis)
 - [Further Improvements](#further-improvements)
 
@@ -97,6 +99,21 @@ The `landscape mode` is not supported, has it was not implemented during the dev
 application. Even though the application does not **block it**, users are advised to use the
 application in `portrait mode` for a better user experience.
 
+### Generic Components
+
+The application has some generic components that are used in multiple screens of the application,
+the most relevant ones are:
+
+- [Background](../app/src/main/java/gomoku/ui/shared/background/Background.kt): represents the
+  background of the application, and was designed to be tailored to the many screens of the
+  application;
+- [Form](../app/src/main/java/gomoku/ui/shared/components/Form.kt): represents a form component,
+  which can be used to create forms in the application.
+
+All components located in the [shared/components](../app/src/main/java/gomoku/ui/shared/components)
+package were designed to be generic, reusable, customizable and independent of the screen they are
+used in.
+
 ### Mockup
 
 In the development of the application, a mockup was created to help visualize and structure the
@@ -138,6 +155,21 @@ message to the user, informing them of the issue using a dialog like the one bel
 <p align="center">
     <img align="center" src="images/server-unavailable.jpg" alt="server-unavailable" width="200"/>
 </p>
+
+## Tests
+
+A variety of tests were implemented to ensure the application's correctness and robustness.
+
+We leveraged the [Mockk](https://mockk.io/) library to isolate and test individual components of the
+application, enabling us to conduct thorough and efficient testing without the burden of managing
+external dependencies.
+
+To facilitate and streamline the testing process for functions that rely on flow emissions, we
+developed a set of utility functions that simplify and enhance testability. These functions are
+designed to efficiently handle flow subscription, collection, and timeouts, allowing testers to
+focus on the specific behavior being tested without the complexities of manual flow orchestration.
+These functions can be found in
+the [FlowExtensions](../app/src/test/java/gomoku/utils/flows/FlowExtensions.kt) file.
 
 ## Critical Analysis
 
