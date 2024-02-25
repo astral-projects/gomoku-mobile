@@ -3,9 +3,9 @@
 > A mobile application that allows users to play the [Gomoku](https://en.wikipedia.org/wiki/Gomoku)
 > game.
 
-| ![Gomoku Royale](docs/images/gomoku-royale.png) |
-|:-----------------------------------------------:|
-|                 *Gomoku Royale*                 |
+<p align="center">
+  <img src="docs/images/gomoku-royale.png" alt="Gomoku Royale" width="600"/>
+</p>
 
 ## Introduction
 
@@ -58,5 +58,6 @@ Here are some screenshots of the application screens:
 ---
 
 Instituto Superior de Engenharia de Lisboa<br>
+BSc in Computer Science and Engineering<br>
 Programming in Mobile Devices<br>
 Winter Semester of 2023/2024

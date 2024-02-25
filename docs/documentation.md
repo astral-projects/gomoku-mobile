@@ -153,7 +153,7 @@ If the server is temporarily unavailable or some internet error occurs, the appl
 message to the user, informing them of the issue using a dialog like the one below:
 
 <p align="center">
-    <img align="center" src="images/server-unavailable.jpg" alt="server-unavailable" width="200"/>
+    <img src="images/server-unavailable.jpg" alt="server-unavailable" width="200"/>
 </p>
 
 ## Tests
